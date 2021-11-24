@@ -1,36 +1,26 @@
-// To parse this JSON data, do
-//
-//     final loginModel = loginModelFromJson(jsonString);
-
-import 'dart:convert';
-
-LoginModel loginModelFromJson(String str) =>
-    LoginModel.fromJson(json.decode(str));
-
-String loginModelToJson(LoginModel data) => json.encode(data.toJson());
-
 class LoginModel {
   LoginModel({
     required this.user,
     required this.token,
     required this.message,
   });
+  late final User user;
+  late final String token;
+  late final String message;
+  
+  LoginModel.fromJson(Map<String, dynamic> json){
+    user = User.fromJson(json['user']);
+    token = json['token'];
+    message = json['message'];
+  }
 
-  User user;
-  String token;
-  String message;
-
-  factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
-        user: User.fromJson(json["user"]),
-        token: json["token"],
-        message: json["message"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "user": user.toJson(),
-        "token": token,
-        "message": message,
-      };
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['user'] = user.toJson();
+    _data['token'] = token;
+    _data['message'] = message;
+    return _data;
+  }
 }
 
 class User {
@@ -39,72 +29,130 @@ class User {
     required this.name,
     required this.email,
     required this.ipAddress,
-    this.latLng,
+    required this.latLng,
     required this.isOnline,
-    required this.emailVerifiedAt,
+     this.emailVerifiedAt,
     required this.phoneNumber,
     required this.createdAt,
     required this.updatedAt,
-    required this.profileImage,
+     this.profileImage,
     required this.mobileIsPrivate,
     required this.avatar,
     required this.messengerColor,
     required this.darkMode,
     required this.activeStatus,
+    required this.role,
+     this.isBlock,
+    required this.useLocation,
+    required this.allowDirectMessage,
+    required this.profilePrivate,
+    required this.profilePicture,
   });
+  late final int id;
+  late final String name;
+  late final String email;
+  late final String ipAddress;
+  late final String latLng;
+  late final String isOnline;
+  late final Null emailVerifiedAt;
+  late final String phoneNumber;
+  late final String createdAt;
+  late final String updatedAt;
+  late final Null profileImage;
+  late final String mobileIsPrivate;
+  late final String avatar;
+  late final String messengerColor;
+  late final String darkMode;
+  late final String activeStatus;
+  late final String role;
+  late final Null isBlock;
+  late final String useLocation;
+  late final String allowDirectMessage;
+  late final String profilePrivate;
+  late final ProfilePicture profilePicture;
+  
+  User.fromJson(Map<String, dynamic> json){
+    id = json['id'];
+    name = json['name'];
+    email = json['email'];
+    ipAddress = json['ip_address'];
+    latLng = json['lat_lng'];
+    isOnline = json['is_online'];
+    emailVerifiedAt = null;
+    phoneNumber = json['phone_number'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    profileImage = null;
+    mobileIsPrivate = json['mobile_is_private'];
+    avatar = json['avatar'];
+    messengerColor = json['messenger_color'];
+    darkMode = json['dark_mode'];
+    activeStatus = json['active_status'];
+    role = json['role'];
+    isBlock = null;
+    useLocation = json['use_location'];
+    allowDirectMessage = json['allow_direct_message'];
+    profilePrivate = json['profile_private'];
+    profilePicture = ProfilePicture.fromJson(json['profile_picture']);
+  }
 
-  int id;
-  String name;
-  String email;
-  String ipAddress;
-  dynamic latLng;
-  String isOnline;
-  dynamic emailVerifiedAt;
-  String phoneNumber;
-  DateTime createdAt;
-  DateTime updatedAt;
-  dynamic profileImage;
-  String mobileIsPrivate;
-  String avatar;
-  String messengerColor;
-  String darkMode;
-  String activeStatus;
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['name'] = name;
+    _data['email'] = email;
+    _data['ip_address'] = ipAddress;
+    _data['lat_lng'] = latLng;
+    _data['is_online'] = isOnline;
+    _data['email_verified_at'] = emailVerifiedAt;
+    _data['phone_number'] = phoneNumber;
+    _data['created_at'] = createdAt;
+    _data['updated_at'] = updatedAt;
+    _data['profile_image'] = profileImage;
+    _data['mobile_is_private'] = mobileIsPrivate;
+    _data['avatar'] = avatar;
+    _data['messenger_color'] = messengerColor;
+    _data['dark_mode'] = darkMode;
+    _data['active_status'] = activeStatus;
+    _data['role'] = role;
+    _data['is_block'] = isBlock;
+    _data['use_location'] = useLocation;
+    _data['allow_direct_message'] = allowDirectMessage;
+    _data['profile_private'] = profilePrivate;
+    _data['profile_picture'] = profilePicture.toJson();
+    return _data;
+  }
+}
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["id"],
-        name: json["name"],
-        email: json["email"],
-        ipAddress: json["ip_address"],
-        latLng: json["lat_lng"],
-        isOnline: json["is_online"],
-        emailVerifiedAt: json["email_verified_at"],
-        phoneNumber: json["phone_number"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        profileImage: json["profile_image"],
-        mobileIsPrivate: json["mobile_is_private"],
-        avatar: json["avatar"],
-        messengerColor: json["messenger_color"],
-        darkMode: json["dark_mode"],
-        activeStatus: json["active_status"],
-      );
+class ProfilePicture {
+  ProfilePicture({
+    required this.id,
+    required this.image,
+    required this.userId,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+  late final int id;
+  late final String image;
+  late final String userId;
+  late final String createdAt;
+  late final String updatedAt;
+  
+  ProfilePicture.fromJson(Map<String, dynamic> json){
+    id = json['id'];
+    image = json['image'];
+    userId = json['user_id'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "email": email,
-        "ip_address": ipAddress,
-        "lat_lng": latLng,
-        "is_online": isOnline,
-        "email_verified_at": emailVerifiedAt,
-        "phone_number": phoneNumber,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "profile_image": profileImage,
-        "mobile_is_private": mobileIsPrivate,
-        "avatar": avatar,
-        "messenger_color": messengerColor,
-        "dark_mode": darkMode,
-        "active_status": activeStatus,
-      };
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['image'] = image;
+    _data['user_id'] = userId;
+    _data['created_at'] = createdAt;
+    _data['updated_at'] = updatedAt;
+    return _data;
+  }
 }

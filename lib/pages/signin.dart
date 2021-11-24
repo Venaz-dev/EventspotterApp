@@ -286,8 +286,11 @@ class _LoginScreenState extends State<LoginScreen> {
         getInitializedSharedPref();
         await _sharedPreferences.setString('name', _loginResponse.user.name);
         await _sharedPreferences.setString('email', _loginResponse.user.email);
-
         await _sharedPreferences.setString('accessToken', _loginResponse.token);
+        await _sharedPreferences.setString('Profile_picture', _loginResponse.user.profilePicture.image);
+        await _sharedPreferences.setString('phone', _loginResponse.user.phoneNumber);
+
+
         _dio.options.headers["Authorization"] =
             "Bearer ${_loginResponse.token}";
         response = await _dio.get(url2);
