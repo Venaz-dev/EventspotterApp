@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/widgets/explore/events.dart';
-import 'package:event_spotter/widgets/explore/livefeed.dart';
 import 'package:event_spotter/widgets/smallButton.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
@@ -201,6 +199,9 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+  
+
+    
     return ElevatedButton(
       onPressed: () {},
       style: ElevatedButton.styleFrom(
@@ -216,8 +217,8 @@ class Button extends StatelessWidget {
             width: 30,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              image: DecorationImage(
-                  image: NetworkImage(profileImage), fit: BoxFit.cover),
+              image:
+                  DecorationImage(image: NetworkImage(profileImage), fit: BoxFit.cover),
             ),
           ),
           const SizedBox(

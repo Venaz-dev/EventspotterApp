@@ -1,10 +1,7 @@
-import 'dart:convert';
 
-import 'package:event_spotter/constant/json/post.dart';
 import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/pages/explore.dart';
-import 'package:event_spotter/widgets/conditions.dart';
 import 'package:event_spotter/widgets/elevatedbutton.dart';
 import 'package:event_spotter/widgets/map.dart';
 import 'package:event_spotter/widgets/smallbutton.dart';
@@ -12,7 +9,6 @@ import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:like_button/like_button.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class Eventdetailing extends StatefulWidget {
   EventsModel? model;
@@ -187,16 +183,16 @@ class _EventdetailingState extends State<Eventdetailing> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Button(
-                                title: widget.model!.data[widget.indexs!].events
-                                    .user.name,
-                                radiusofbutton: BorderRadius.circular(20),
-                                profileImage: MainUrl1 +
-                                    widget.model!.data[widget.indexs!].events
-                                        .user.profilePicture.image),
-                            const SizedBox(
-                              width: 10,
-                            ),
+                            // Button(
+                            //     title: widget.model!.data[widget.indexs!].events
+                            //         .user.name,
+                            //     radiusofbutton: BorderRadius.circular(20),
+                            //     profileImage: MainUrl1 +
+                            //         widget.model!.data[widget.indexs!].events
+                            //             .user.profilePicture.image) ,
+                            // const SizedBox(
+                            //   width: 10,
+                            // ),
                             Buttonicon(
                               radiusofbutton: BorderRadius.circular(20),
                               icon: FontAwesomeIcons.userPlus,

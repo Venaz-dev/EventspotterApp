@@ -188,13 +188,8 @@ class _EventssState extends State<Eventss> {
                                               .user.name, //new
                                           radiusofbutton:
                                               BorderRadius.circular(20),
-                                          profileImage: MainUrl +
-                                              _eventsModel
-                                                  .data[index]
-                                                  .events
-                                                  .user
-                                                  .profilePicture
-                                                  .image), //new
+                                          profileImage: 
+                                              "https://imgr.search.brave.com/agcf_54hKLs35Jr3YaOMycn250z6b8N8p1HEYsRqi8Q/fit/980/980/ce/1/aHR0cDovL2Nkbi5v/bmxpbmV3ZWJmb250/cy5jb20vc3ZnL2lt/Z18yMTgwOTAucG5n"), //new
                                       const SizedBox(
                                         width: 10,
                                       ),
@@ -385,7 +380,7 @@ class _EventssState extends State<Eventss> {
           }
         }
         print(lenght);
-        print(MainUrl + _eventsModel.data[0].events.user.profilePicture.image);
+      //  print(MainUrl + _eventsModel.data[0].events.user.profilePicture!.image);
       }
     } catch (e) {
       print(e.toString() + "Catch");
