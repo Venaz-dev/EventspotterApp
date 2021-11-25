@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/event_details_page.dart';
@@ -23,6 +24,7 @@ class _EventssState extends State<Eventss> {
   bool _isLoading = true;
   late EventsModel _eventsModel;
   late List eventsLiveFeed = [];
+  bool test = false;
 
   String urlEvent = "https://theeventspotter.com/api/getEvents";
   String MainUrl = "https://theeventspotter.com/";
@@ -43,28 +45,29 @@ class _EventssState extends State<Eventss> {
 
     bool active = false;
 
-    return Column(
-      children: [
-        Livefeeds(
-          eventsLiveFeeds: eventsLiveFeed,
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        const SizedBox(
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Events near you",
-              style: TextStyle(color: Colors.black, fontSize: 15),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(right: 20.0),
-          child: _isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : Column(
+    return _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : Column(
+            children: [
+              Livefeeds(
+                eventsLiveFeeds: eventsLiveFeed,
+                test:test
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const SizedBox(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Events near you",
+                    style: TextStyle(color: Colors.black, fontSize: 15),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: Column(
                   children:
                       List.generate(lenght = _eventsModel.data.length, (index) {
                     return Padding(
@@ -75,19 +78,6 @@ class _EventssState extends State<Eventss> {
                               builder: (context) => Eventdetailing(
                                     model: _eventsModel,
                                     indexs: index,
-                                    // networkImage: posts[index]['eventImage'],
-                                    // isfollow : isFollow,
-                                    // uploaderName : posts[index]['uploaderName'],
-                                    // uploaderimage : posts[index]['uploaderImage'],
-                                    // followers :  posts[index]['followes'] +
-                                    //             " " "Followers",
-                                    // takingplace :   posts[index]['takingPlace'],
-                                    // distance : posts[index]['distance'] + " " + "away",
-                                    // description :  description,
-                                    // like :   posts[index]['likes'],
-                                    // comment :   posts[index]['comment'],
-                                    // share :   posts[index]['share'],
-                                    // views:  posts[index]['viewers'],
                                   )));
                         },
                         child: Container(
@@ -96,24 +86,45 @@ class _EventssState extends State<Eventss> {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(15),
+                            boxShadow: const [
+                              BoxShadow(
+                                  spreadRadius: 1,
+                                  blurRadius: 10,
+                                  color: Colors.black12)
+                            ],
                           ),
                           child: Column(children: [
                             Container(
                               height: size.height * 0.25,
-                              width: size.width * double.infinity,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
-                                image: DecorationImage(
-                                    image: NetworkImage(MainUrl +
-                                        _eventsModel.data[index].events
-                                            .eventPictures[0].imagePath),
-                                    fit: BoxFit.cover),
                               ),
+                              width: size.width * double.infinity,
                               child: Stack(children: [
+                                Container(
+                                  height: size.height * 0.25,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: CachedNetworkImage(
+                                      imageUrl: MainUrl +
+                                          _eventsModel.data[index].events
+                                              .eventPictures[0].imagePath,
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
                                 Positioned(
                                   right: 10,
                                   top: size.height * 0.02,
-                                  child: Container(
+                                  child: SizedBox(
                                     height: size.height * 0.04,
                                     width: size.width * 0.25,
                                     // decoration: const BoxDecoration(color: Color(0XFF38888E)),
@@ -183,16 +194,21 @@ class _EventssState extends State<Eventss> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Button(
-                                          title: _eventsModel.data[index].events
-                                              .user.name, //new
-                                          radiusofbutton:
-                                              BorderRadius.circular(20),
-                                          profileImage: 
-                                              "https://imgr.search.brave.com/agcf_54hKLs35Jr3YaOMycn250z6b8N8p1HEYsRqi8Q/fit/980/980/ce/1/aHR0cDovL2Nkbi5v/bmxpbmV3ZWJmb250/cy5jb20vc3ZnL2lt/Z18yMTgwOTAucG5n"), //new
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
+                                      // Button(
+                                      //     title: _eventsModel.data[index].events
+                                      //         .user.name, //new
+                                      //     radiusofbutton:
+                                      //         BorderRadius.circular(20),
+                                      //     profileImage: MainUrl +
+                                      //         _eventsModel
+                                      //             .data[index]
+                                      //             .events
+                                      //             .user
+                                      //             .profilePicture
+                                      //             .image), //new
+                                      // const SizedBox(
+                                      //   width: 10,
+                                      // ),
                                       Buttonicon(
                                         radiusofbutton:
                                             BorderRadius.circular(20),
@@ -315,9 +331,9 @@ class _EventssState extends State<Eventss> {
                     );
                   }),
                 ),
-        ),
-      ],
-    );
+              ),
+            ],
+          );
   }
 
   // flaggedOrLiked(Size size, IconData icon) {
@@ -363,24 +379,29 @@ class _EventssState extends State<Eventss> {
     try {
       _dio.options.headers["Authorization"] = "Bearer ${_token}";
       Response response = await _dio.get(urlEvent);
-      print(response.data);
+      //print(response.data);
       if (response.statusCode == 200) {
         _eventsModel = EventsModel.fromJson(response.data);
         lenght = _eventsModel.data.length;
         for (int i = 0; i < _eventsModel.data.length; i++) {
           var km = _eventsModel.data[i].km;
-          for (int j = 0;
-              j < _eventsModel.data[i].events.liveFeed.length;
-              j++) {
-            var js = {
-              'img': _eventsModel.data[i].events.liveFeed[j].path,
-              'km': km,
-            };
-            eventsLiveFeed.add(js);
+          if (_eventsModel.data[i].events.liveFeed.isNotEmpty) {
+            for (int j = 0;
+                j < _eventsModel.data[i].events.liveFeed.length;
+                j++) {
+              var js = {
+                'img': _eventsModel.data[i].events.liveFeed[j].path,
+                'km': km,
+              };
+              test = true;
+              eventsLiveFeed.add(js);
+            }
+          } else {
+            test = false;
           }
         }
         print(lenght);
-      //  print(MainUrl + _eventsModel.data[0].events.user.profilePicture!.image);
+        // print(MainUrl + _eventsModel.data[0].events.user.profilePicture.image);
       }
     } catch (e) {
       print(e.toString() + "Catch");

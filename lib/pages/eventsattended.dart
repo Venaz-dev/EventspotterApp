@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:event_spotter/constant/json/live_feed.dart';
 import 'package:event_spotter/constant/json/post.dart';
 import 'package:event_spotter/widgets/smallbutton.dart';
@@ -46,41 +47,52 @@ class _EventsattendedState extends State<Eventsattended> {
         },
         child: Scaffold(
           body: Padding(
-            padding: const EdgeInsets.only(top: 20.0, left: 30, right: 30),
+            padding:  EdgeInsets.only(top: 20.0, left: size.width*0.05 ),
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      ConstrainedBox(
-                        constraints:
-                            BoxConstraints.tightFor(width: size.width * 0.7),
-                        child: Textform(
-                          controller: _search,
-                          icon: Icons.search,
-                          width: size.height * 0.016,
-                          label: "Search",
-                          color: const Color(0XFFECF2F3),
-                        ),
+                  Padding(
+                     padding:  EdgeInsets.only(top : size.height * 0.02 ),
+                     child: Row(
+                        children: [
+                           SizedBox(
+                             //height: size.height*0.1,
+                             width: size.width*0.8 ,
+                             child: Textform(
+                                controller: _search,
+                                icon: Icons.search,
+                                label: "Search",
+                                color: const Color(0XFFECF2F3),
+                              
+                          ),
+                           ),
+                           SizedBox(
+                            width: size.width*0.01,
+                          ),
+                         Smallbutton(
+                             
+
+                              
+                              icon: FontAwesomeIcons.slidersH,
+
+                              onpressed: () {
+                                setState(() {
+                                 // swap = screens.filter;
+                                });
+                              },
+                            
+                          ),
+                        ],
                       ),
-                      const SizedBox(
-                        width: 3,
-                      ),
-                      Expanded(
-                        child: Smallbutton(
-                          size: size.height * 0.05,
-                          icon: FontAwesomeIcons.slidersH,
-                        ),
-                      ),
-                    ],
-                  ),
+                   ),
+                  
                   const SizedBox(height: 30),
                   
                   Column(
                     children: List.generate(feed.length, (index) {
                       return Padding(
-                        padding:  EdgeInsets.only(top: size.height*.01),
+                        padding:  EdgeInsets.only(bottom : size.height * 0.01 , top : size.height*.01 , right : size.width*0.05),
                         child: Container(
                           height: size.height * 0.3,
                           width: size.width,
@@ -104,17 +116,25 @@ class _EventsattendedState extends State<Eventsattended> {
                                   top: 0,
                                  child :  likebutton(isliked),
                                 ),
-                                Container(
-                                  height: size.height * 0.17,
-                                  width: size.width * 0.3,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                            feed[index]['picture']),
-                                        fit: BoxFit.cover,
-                                      )),
-                                ),
+                                SizedBox(
+                        
+                        height: size.height*0.17,
+                        width: size.width*0.3,
+                        child: ClipRRect(
+                        
+                          borderRadius: BorderRadius.circular(10),
+                          child: CachedNetworkImage(
+                            
+                            imageUrl: feed[index]['picture'],
+                            fit: BoxFit.cover,
+                          placeholder: (context , url)
+                          {
+                            return 
+                            const Center(child: CircularProgressIndicator(),);
+                          },
+                          ),
+                        ),
+                      ),
                                 Positioned(
                                   right: 20,
                                   left: size.width * 0.33,

@@ -294,7 +294,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _dio.options.headers["Authorization"] =
             "Bearer ${_loginResponse.token}";
         response = await _dio.get(url2);
-        print(response.data.toString());
+        //print(response.data.toString());
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => const Dashboard()));
       }

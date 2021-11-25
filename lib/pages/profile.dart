@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:event_spotter/models/getProfile.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/pages/signin.dart';
 import 'package:event_spotter/widgets/profile/yourevents.dart';
@@ -7,6 +8,7 @@ import 'package:event_spotter/widgets/toaster.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 enum scrolling { personal, settings }
 
@@ -22,12 +24,17 @@ class _ProfileState extends State<Profile> {
   int index = 0;
   late SharedPreferences _sharedPreferences;
   Dio _dio = Dio();
-  bool _isLoading = false;
+  bool _isLoading = true;
   late Response response;
   late String _name;
   late String _token;
   late String _email1;
+  late GetProfile _getProfile;
+
+  late int lenght;
   String url2 = "https://theeventspotter.com/api/logout";
+  String getuser = "https://theeventspotter.com/api/profile";
+  String MainUrl = "https://theeventspotter.com/";
   final TextEditingController _email = TextEditingController();
   final TextEditingController _phonenumber = TextEditingController();
 
@@ -35,7 +42,11 @@ class _ProfileState extends State<Profile> {
 
   final TextEditingController _city = TextEditingController();
   final TextEditingController _country = TextEditingController();
-
+  var city;
+  var country;
+  var profile_pic;
+  // ignore: prefer_typing_uninitialized_variables
+  var address;
   final languages = ["English", "Spanish"];
 
   //Text Controllers
@@ -56,9 +67,10 @@ class _ProfileState extends State<Profile> {
   ];
 
   scrolling widgetsscrolling = scrolling.personal;
+
   @override
   void initState() {
-    getInitializedSharedPref();
+    getProfileDetails();
 
     super.initState();
   }
@@ -180,28 +192,29 @@ class _ProfileState extends State<Profile> {
                                       Container(
                                         height: size.height * 0.08,
                                         width: size.width * 0.1,
-                                        decoration: const BoxDecoration(
+                                        decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             image: DecorationImage(
-                                                image: NetworkImage(
-                                                    "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"),
+                                                image:
+                                                    CachedNetworkImageProvider(
+                                                        profile_pic),
                                                 fit: BoxFit.cover)),
                                       ),
                                       const SizedBox(
                                         width: 15,
                                       ),
                                       Column(
-                                        children: const [
+                                        children: [
                                           Text(
-                                            "Jhone Doe",
-                                            style: TextStyle(
+                                            _getProfile.data.name,
+                                            style: const TextStyle(
                                                 fontSize: 23,
                                                 fontWeight: FontWeight.w500),
                                           ),
-                                          Text(
-                                            "New York City",
-                                            style: TextStyle(fontSize: 18),
-                                          )
+                                          // Text(
+                                          //   "New York City",
+                                          //   style: TextStyle(fontSize: 18),
+                                          // )
                                         ],
                                       )
                                     ],
@@ -211,8 +224,14 @@ class _ProfileState extends State<Profile> {
                                     child: FittedBox(
                                       child: Row(
                                         children: [
-                                          container(size, 2340, 'Followers'),
-                                          container(size, 234, 'Following'),
+                                          container(
+                                              size,
+                                              _getProfile.data.followers.length,
+                                              'Followers'),
+                                          container(
+                                              size,
+                                              _getProfile.data.following.length,
+                                              'Following'),
                                           container(size, 4, 'Events'),
                                         ],
                                       ),
@@ -373,7 +392,7 @@ class _ProfileState extends State<Profile> {
             const Text("Email"),
             const SizedBox(height: 10),
             Textform(
-              label: 'Joendoe@gmail.com',
+              label: _getProfile.data.email,
               controller: _email,
               isSecure: false,
               color: const Color(0XFFEBF2F2),
@@ -384,7 +403,7 @@ class _ProfileState extends State<Profile> {
             const Text("Phone number"),
             const SizedBox(height: 10),
             Textform(
-              label: '+412536748',
+              label: _getProfile.data.phoneNumber,
               controller: _phonenumber,
               isSecure: false,
               color: const Color(0XFFEBF2F2),
@@ -395,7 +414,7 @@ class _ProfileState extends State<Profile> {
             const Text("Address"),
             const SizedBox(height: 10),
             Textform(
-              label: 'Lorem 21 , street 24, 23466 CA',
+              label: address,
               controller: _address,
               isSecure: false,
               color: const Color(0XFFEBF2F2),
@@ -406,7 +425,7 @@ class _ProfileState extends State<Profile> {
             const Text("City"),
             const SizedBox(height: 10),
             Textform(
-              label: 'New York City',
+              label: city,
               controller: _city,
               isSecure: false,
               color: const Color(0XFFEBF2F2),
@@ -417,7 +436,7 @@ class _ProfileState extends State<Profile> {
             const Text("Country"),
             const SizedBox(height: 10),
             Textform(
-              label: 'United States',
+              label: country,
               controller: _country,
               isSecure: false,
               color: const Color(0XFFEBF2F2),
@@ -561,13 +580,39 @@ class _ProfileState extends State<Profile> {
     }
   }
 
-  getInitializedSharedPref() async {
+  getProfileDetails() async {
     _sharedPreferences = await SharedPreferences.getInstance();
-    _name = _sharedPreferences.getString('name')!;
-    _email1 = _sharedPreferences.getString('email')!;
     _token = _sharedPreferences.getString('accessToken')!;
-    setState(() {
+    print("Inside the Get Event function");
+    try {
+      _dio.options.headers["Authorization"] = "Bearer ${_token}";
+      Response response = await _dio.get(getuser);
+      if (response.statusCode == 200) {
+        _getProfile = GetProfile.fromJson(response.data);
+
+        if (response.data["data"]["address"] != null) {
+          city = response.data["data"]["address"]["city"];
+          country = response.data["data"]["address"]["country"];
+          address = response.data["data"]["address"]["address"];
+        } else {
+          city = "not available ";
+          country = "not available ";
+          address = "not available ";
+        }
+        if (response.data["data"]["profile_picture"] != null) {
+          profile_pic = MainUrl+response.data["data"]["profile_picture"]["image"];
+        } else {
+          profile_pic =
+              "https://imgr.search.brave.com/agcf_54hKLs35Jr3YaOMycn250z6b8N8p1HEYsRqi8Q/fit/980/980/ce/1/aHR0cDovL2Nkbi5v/bmxpbmV3ZWJmb250/cy5jb20vc3ZnL2lt/Z18yMTgwOTAucG5n";
+        }
+        print(lenght);
+        // print(MainUrl + _eventsModel.data[0].events.user.profilePicture.image);
+      }
+    } catch (e) {
+      print(e.toString() + "Catch");
+    } finally {
       _isLoading = false;
-    });
+    }
+    setState(() {});
   }
 }

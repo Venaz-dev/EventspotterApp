@@ -1,4 +1,4 @@
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/pages/explore.dart';
@@ -19,19 +19,6 @@ class Eventdetailing extends StatefulWidget {
     @required this.model,
     this.indexs,
   }) : super(key: key);
-
-  // final String ? networkImage;
-  // final String ? isfollow;
-  // final String ? uploaderName;
-  // final String ? uploaderimage;
-  // final String ? followers;
-  // final String ? takingplace;
-  // final String ? distance;
-  // final String description;
-  // final String ? like;
-  // final String ? comment;
-  // final String ? share;
-  // final String ? views;
 
   @override
   State<Eventdetailing> createState() => _EventdetailingState();
@@ -107,19 +94,35 @@ class _EventdetailingState extends State<Eventdetailing> {
                 child: Column(children: [
                   Container(
                     height: size.height * 0.25,
-                    width: size.width * double.infinity,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        image: DecorationImage(
-                            image: NetworkImage(MainUrl1 +
-                                widget.model!.data[widget.indexs!].events
-                                    .eventPictures[0].imagePath),
-                            fit: BoxFit.cover)),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    width: size.width * double.infinity,
                     child: Stack(children: [
+                      Container(
+                        height: size.height * 0.25,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: CachedNetworkImage(
+                            imageUrl: MainUrl1 +
+                                widget.model!.data[widget.indexs!].events
+                                    .eventPictures[0].imagePath,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
                       Positioned(
                         right: 10,
                         top: size.height * 0.02,
-                        child: Container(
+                        child: SizedBox(
                           height: size.height * 0.04,
                           width: size.width * 0.25,
                           // decoration: const BoxDecoration(color: Color(0XFF38888E)),
@@ -214,18 +217,19 @@ class _EventdetailingState extends State<Eventdetailing> {
                       children: [
                         Positioned(
                           top: size.height * 0.008,
-                          right: size.width * 0.020,
+                          right: size.width * 0.05,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                           
                             children: [
                               const Icon(
                                 FontAwesomeIcons.calendar,
                                 size: 15,
                                 color: Colors.black54,
                               ),
+                              const SizedBox(width: 2,),
                               Text(
                                 widget.model!.data[widget.indexs!].events
-                                    .location,
+                                    .eventDate,
                                 style: const TextStyle(color: Colors.black87),
                               ),
                               const SizedBox(
@@ -360,7 +364,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                           children: List.generate(
                               widget.model!.data[widget.indexs!].events
                                   .conditions.length, (index) {
-             return  widget.model!.data[widget.indexs!].events
+                        return widget.model!.data[widget.indexs!].events
                                     .conditions[index] !=
                                 ''
                             ? Padding(
@@ -406,16 +410,21 @@ class _EventdetailingState extends State<Eventdetailing> {
                             )
                           ],
                         ),
-                        child:  Map(lat:widget.model!.data[widget.indexs!].events.lat.toString(),
-                        long: widget.model!.data[widget.indexs!].events.lng.toString(),
+                        child: Map(
+                          lat: widget.model!.data[widget.indexs!].events.lat
+                              .toString(),
+                          long: widget.model!.data[widget.indexs!].events.lng
+                              .toString(),
                         ),
                       ),
                       const SizedBox(
                         height: 10,
                       ),
-                       Text(
-                        widget.model!.data[widget.indexs!].events.location.toString(),
-                        style:const TextStyle(color: Colors.black54, fontSize: 16),
+                      Text(
+                        widget.model!.data[widget.indexs!].events.location
+                            .toString(),
+                        style: const TextStyle(
+                            color: Colors.black54, fontSize: 16),
                       ),
                       const SizedBox(
                         height: 20,

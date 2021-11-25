@@ -42,7 +42,7 @@ class Uploadimage extends StatelessWidget {
             )
           ],
           leading: Smallbutton(
-            size: size.height * 0.06,
+            height: size.height * 0.06,
             icon: FontAwesomeIcons.arrowLeft,
             onpressed: () {
               Navigator.of(context).pop();
