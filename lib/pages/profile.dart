@@ -211,10 +211,10 @@ class _ProfileState extends State<Profile> {
                                                 fontSize: 23,
                                                 fontWeight: FontWeight.w500),
                                           ),
-                                          // Text(
-                                          //   "New York City",
-                                          //   style: TextStyle(fontSize: 18),
-                                          // )
+                                        //  const Text(
+                                        //     "New York City",
+                                        //     style: TextStyle(fontSize: 18),
+                                        //   )
                                         ],
                                       )
                                     ],

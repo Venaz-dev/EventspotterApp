@@ -287,16 +287,16 @@ class _YeventsState extends State<Yevents> {
                       //     ),
                       //   ),
                       // ),
-                      Positioned(
-                        right: 20,
-                        left: size.width * 0.33,
-                        top: size.height * 0.02,
-                        child: Text(
-                          _getUserUpcomingEvents.data[0].events.eventName,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 17),
-                        ),
-                      ),
+                      // Positioned(
+                      //   right: 20,
+                      //   left: size.width * 0.33,
+                      //   top: size.height * 0.02,
+                      //   child: Text(
+                      //     _getUserUpcomingEvents.data[0].events.eventName,
+                      //     style: TextStyle(
+                      //         fontWeight: FontWeight.w400, fontSize: 17),
+                      //   ),
+                      // ),
                       Positioned(
                         top: size.height * 0.14,
                         left: size.width * 0.33,
@@ -311,10 +311,10 @@ class _YeventsState extends State<Yevents> {
                             const SizedBox(
                               width: 5,
                             ),
-                            Text(
-                              posts[1]['takingPlace'],
-                              style: const TextStyle(color: Colors.black87),
-                            ),
+                            // Text(
+                            //   posts[1]['takingPlace'],
+                            //   style: const TextStyle(color: Colors.black87),
+                            // ),
                             const SizedBox(
                               width: 20,
                             ),
@@ -393,7 +393,7 @@ class _YeventsState extends State<Yevents> {
             children: [
               Elevatedbuttons(
                 sidecolor: Colors.black,
-                text: "Upcoming",
+                text: "Upcomingg",
                 textColor: Colors.black,
                 coloring: Colors.white,
                 primary: Colors.white,
@@ -437,7 +437,7 @@ class _YeventsState extends State<Yevents> {
           ),
         ),
         const Center(
-          child: Text("No past events"),
+          child: Text("No past eventsss"),
         ),
       ],
     );

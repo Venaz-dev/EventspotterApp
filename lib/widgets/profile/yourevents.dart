@@ -1,8 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:event_spotter/constant/json/post.dart';
+import 'package:event_spotter/models/userDraftEvents.dart';
+import 'package:event_spotter/models/userPastEvents.dart';
+import 'package:event_spotter/models/userUpcomingEvent.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum yourevent { upcoming, pastevents, drafts }
 
@@ -21,44 +26,74 @@ class Yourevents extends StatefulWidget {
 }
 
 class _YoureventsState extends State<Yourevents> {
-
-
   yourevent eventshuffling = yourevent.upcoming;
+  late GetUserUpcomingEvents _getUserUpcomingEvents;
+  late GetUserDraftEvents _getUserDraftEvents;
+  late UserPastEvents _userPastEvents;
+  String getUpComingEventUrl =
+      "https://theeventspotter.com/api/getUserUpcomingEvents";
+  String getPastEventsUrl = "https://theeventspotter.com/api/getUserPastEvent";
+  String getDraftUrl = "https://theeventspotter.com/api/getUserDraftEvent";
+  String MainUrl = "https://theeventspotter.com/";
+  late SharedPreferences _sharedPreferences;
+  Dio _dio = Dio();
+  late String _token;
+  bool test = false;
+  bool test1 = false;
+  bool test2 = false;
+  bool _isLoading = true;
+  @override
+  void initState() {
+    super.initState();
+    
+    getUpComingEvents().whenComplete(() {
+      setState(() {});
+    });
+    getPastEvents().whenComplete(() {
+      setState(() {});
+    });
+    getDaftEvents().whenComplete(() {
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
-              boxShadow: const [
-                BoxShadow(
-                    color: Colors.black12,
-                    spreadRadius: 2,
-                    blurRadius: 2,
-                    offset: Offset(
-                      0,
-                      0,
-                    )),
-              ]),
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const Text(
-                "Your Events",
-                style: TextStyle(fontSize: 20),
+    return _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : Column(
+            children: [
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Colors.black12,
+                          spreadRadius: 2,
+                          blurRadius: 2,
+                          offset: Offset(
+                            0,
+                            0,
+                          )),
+                    ]),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Your Events",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        const SizedBox(height: 10),
+                        eventstype(),
+                      ]),
+                ),
               ),
-              const SizedBox(height: 10),
-              eventstype(),
-            ]),
-          ),
-        ),
-      ],
-    );
+            ],
+          );
   }
 
   Widget eventstype() {
@@ -131,111 +166,7 @@ class _YoureventsState extends State<Yourevents> {
         const SizedBox(
           height: 20,
         ),
-        Column(
-          children: List.generate(widget.images.length, (index) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-              child: FittedBox(
-                child: Container(
-                  // width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: const [
-                        BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 10,
-                            spreadRadius: 2)
-                      ]),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 20.0, right: 15, left: 15, bottom: 15),
-                    child: Row(
-                      children: [
-                        // Container(
-                        //   height: widget.size.height * 0.17,
-                        //   width: widget.size.width * 0.3,
-                        //   decoration: BoxDecoration(
-                        //       borderRadius: BorderRadius.circular(15),
-                        //       image: DecorationImage(
-                        //           image: CachedNetworkImageProvider(
-                        //               widget.images[index]['eventimage']),
-                        //           fit: BoxFit.cover)),
-                        // ),
-                        SizedBox(
-                        
-                        height: widget.size.height*0.17,
-                        width: widget.size.width*0.3,
-                        child: ClipRRect(
-                        
-                          borderRadius: BorderRadius.circular(10),
-                          child: CachedNetworkImage(
-                            
-                            imageUrl: widget.images[index]['eventimage'],
-                            fit: BoxFit.cover,
-                          placeholder: (context , url)
-                          {
-                            return 
-                            const Center(child: CircularProgressIndicator(),);
-                          },
-                          ),
-                        ),
-                      ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "New year party\nat local park",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 20),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    FontAwesomeIcons.calendar,
-                                    size: 15,
-                                    color: Colors.black54,
-                                  ),
-                                  Text(
-                                    posts[1]['takingPlace'],
-                                    style:
-                                        const TextStyle(color: Colors.black87),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    FontAwesomeIcons.mapMarkerAlt,
-                                    size: 15,
-                                    color: Colors.black54,
-                                  ),
-                                  Text(posts[1]['distance'] + " " + "away",
-                                      style: const TextStyle(
-                                          color: Colors.black87)),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            );
-          }),
-        ),
+        upcomingeventlist(), ////////////////////////////
       ],
     );
   }
@@ -262,7 +193,7 @@ class _YoureventsState extends State<Yourevents> {
               const SizedBox(
                 width: 30,
               ),
-             Elevatedbuttons(
+              Elevatedbuttons(
                 sidecolor: Colors.white,
                 primary: const Color(0XFF38888F),
                 text: "Past Events",
@@ -296,93 +227,7 @@ class _YoureventsState extends State<Yourevents> {
           height: 20,
         ),
 
-       const  Center(child: Text('No past events'),)
-        // Column(
-        //   children: List.generate(widget.images.length, (index) {
-        //     return Padding(
-        //       padding: const EdgeInsets.only(top: 20.0),
-        //       child: FittedBox(
-        //         child: Container(
-        //           // width: double.infinity,
-        //           decoration: BoxDecoration(
-        //               color: Colors.white,
-        //               borderRadius: BorderRadius.circular(15),
-        //               boxShadow: const [
-        //                 BoxShadow(
-        //                     color: Colors.black12,
-        //                     blurRadius: 10,
-        //                     spreadRadius: 2)
-        //               ]),
-        //           child: Padding(
-        //             padding: const EdgeInsets.only(
-        //                 top: 20.0, right: 15, left: 15, bottom: 15),
-        //             child: Row(
-        //               children: [
-        //                 Container(
-        //                   height: widget.size.height * 0.17,
-        //                   width: widget.size.width * 0.3,
-        //                   decoration: BoxDecoration(
-        //                       borderRadius: BorderRadius.circular(15),
-        //                       image: DecorationImage(
-        //                           image: NetworkImage(
-        //                               widget.images[index]['eventimage']),
-        //                           fit: BoxFit.cover)),
-        //                 ),
-        //                 Padding(
-        //                   padding: const EdgeInsets.only(left: 10.0),
-        //                   child: Column(
-        //                     crossAxisAlignment: CrossAxisAlignment.start,
-        //                     children: [
-        //                       const Text(
-        //                         "New year party\nat local park",
-        //                         style: TextStyle(
-        //                             color: Colors.black,
-        //                             fontWeight: FontWeight.w500,
-        //                             fontSize: 20),
-        //                       ),
-        //                       const SizedBox(
-        //                         height: 10,
-        //                       ),
-        //                       Row(
-        //                         children: [
-        //                           const Icon(
-        //                             FontAwesomeIcons.calendar,
-        //                             size: 15,
-        //                             color: Colors.black54,
-        //                           ),
-        //                           Text(
-        //                             posts[1]['takingPlace'],
-        //                             style:
-        //                                 const TextStyle(color: Colors.black87),
-        //                           ),
-        //                         ],
-        //                       ),
-        //                       const SizedBox(
-        //                         height: 10,
-        //                       ),
-        //                       Row(
-        //                         children: [
-        //                           const Icon(
-        //                             FontAwesomeIcons.mapMarkerAlt,
-        //                             size: 15,
-        //                             color: Colors.black54,
-        //                           ),
-        //                           Text(posts[1]['distance'] + " " + "away",
-        //                               style: const TextStyle(
-        //                                   color: Colors.black87)),
-        //                         ],
-        //                       )
-        //                     ],
-        //                   ),
-        //                 ),
-        //               ],
-        //             ),
-        //           ),
-        //         ),
-        //       ),
-        //     );
-        //   }),
-        // ),
+        pasEventslist(), //////////////////////////
       ],
     );
   }
@@ -445,98 +290,407 @@ class _YoureventsState extends State<Yourevents> {
           height: 20,
         ),
 
-        const Text("No Drafts"),
-        // Column(
-        //   children: List.generate(widget.images.length, (index) {
-        //     return Padding(
-        //       padding: const EdgeInsets.only(top : 20.0),
-        //       child: FittedBox(
-        //         child: Container(
-        //           // width: double.infinity,
-        //           decoration: BoxDecoration(
-        //               color: Colors.white,
-        //               borderRadius: BorderRadius.circular(15),
-        //               boxShadow: const [
-        //                 BoxShadow(
-        //                     color: Colors.black12,
-        //                     blurRadius: 10,
-        //                     spreadRadius: 2)
-        //               ]),
-        //           child: Padding(
-        //             padding: const EdgeInsets.only(
-        //                 top: 20.0,
-        //                 right: 15,
-        //                 left: 15,
-        //                 bottom: 15),
-        //             child: Row(
-        //               children: [
-        //                 Container(
-        //                   height: widget.size.height * 0.17,
-        //                   width: widget.size.width * 0.3,
-        //                   decoration: BoxDecoration(
-        //                       borderRadius:
-        //                           BorderRadius.circular(15),
-        //                       image: DecorationImage(
-        //                           image: NetworkImage(
-        //                               widget.images[index]['eventimage']),
-        //                           fit: BoxFit.cover)),
-        //                 ),
-        //                 Padding(
-        //                   padding: const EdgeInsets.only(left  : 10.0),
-        //                   child: Column(
-        //                     crossAxisAlignment: CrossAxisAlignment.start,
-        //                     children: [
-        //                      const  Text(
-        //                         "New year party\nat local park",
-        //                         style: TextStyle(
-        //                             color: Colors.black,
-        //                             fontWeight: FontWeight.w500,
-        //                             fontSize: 20),
-        //                       ),
-        //                       const SizedBox(height: 10,),
-        //                       Row(
-        //                         children: [
-        //                           const Icon(
-        //                             FontAwesomeIcons.calendar,
-        //                             size: 15,
-        //                             color: Colors.black54,
-        //                           ),
-        //                           Text(
-        //                             posts[1]['takingPlace'],
-        //                             style: const TextStyle(
-        //                                 color: Colors.black87),
-        //                           ),
-        //                         ],
-        //                       ),
-
-        //                       const SizedBox(height: 10,),
-        //                       Row(
-        //                         children: [
-        //                           const Icon(
-        //                             FontAwesomeIcons.mapMarkerAlt,
-        //                             size: 15,
-        //                             color: Colors.black54,
-        //                           ),
-        //                           Text(
-        //                               posts[1]['distance'] +
-        //                                   " " +
-        //                                   "away",
-        //                               style: const TextStyle(
-        //                                   color: Colors.black87)),
-        //                         ],
-        //                       )
-        //                     ],
-        //                   ),
-        //                 ),
-        //               ],
-        //             ),
-        //           ),
-        //         ),
-        //       ),
-        //     );
-        //   }),
-        // ),
+        userDraftlist(), ///////////////////////
       ],
     );
+  }
+
+  getUpComingEvents() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _token = _sharedPreferences.getString('accessToken')!;
+    print("Inside the Get upcomming function");
+
+    try {
+      _dio.options.headers["Authorization"] = "Bearer ${_token}";
+      Response response = await _dio.get(getUpComingEventUrl);
+      if (response.data["data"].length > 0) {
+        print(response.data);
+        print("inside has data");
+        _getUserUpcomingEvents = GetUserUpcomingEvents.fromJson(response.data);
+        setState(() {
+          test = true;
+        });
+      } else {
+        test = false;
+        print('Empty data nahi hai');
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {}
+  }
+
+  getPastEvents() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _token = _sharedPreferences.getString('accessToken')!;
+    print("Inside the Get upcomming function");
+
+    try {
+      _dio.options.headers["Authorization"] = "Bearer ${_token}";
+      Response response = await _dio.get(getPastEventsUrl);
+      if (response.data["data"].length > 0) {
+        print(response.data);
+        print("inside has data past events");
+        _userPastEvents = UserPastEvents.fromJson(response.data);
+        setState(() {
+          test1 = true;
+        });
+      } else {
+        test1 = false;
+        print('Empty nahi ha hai');
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      _isLoading = false;
+    }
+  }
+
+  getDaftEvents() async {
+    print("Inside the Get upcomming function");
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _token = _sharedPreferences.getString('accessToken')!;
+    try {
+      _dio.options.headers["Authorization"] = "Bearer ${_token}";
+      Response response = await _dio.get(getDraftUrl);
+      if (response.data["data"].length > 0) {
+        print(response.data);
+        print("inside has data Draft events");
+        _getUserDraftEvents = GetUserDraftEvents.fromJson(response.data);
+        setState(() {
+          test2 = true;
+        });
+      } else {
+        test2 = false;
+        print('Empty nahi ha hai in Draft');
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      _isLoading = false;
+    }
+  }
+
+ 
+  upcomingeventlist() {
+    if (test) {
+      return Column(
+        children: List.generate(_getUserUpcomingEvents.data.length, (index) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: FittedBox(
+              child: Container(
+                // width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 10,
+                          spreadRadius: 2)
+                    ]),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 20.0, right: 15, left: 15, bottom: 15),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        height: widget.size.height * 0.17,
+                        width: widget.size.width * 0.3,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: CachedNetworkImage(
+                            imageUrl: MainUrl +
+                                _getUserUpcomingEvents.data[index].events
+                                    .eventPictures[0].imagePath,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _getUserUpcomingEvents
+                                  .data[index].events.eventName,
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 20),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  FontAwesomeIcons.calendar,
+                                  size: 15,
+                                  color: Colors.black54,
+                                ),
+                                Text(
+                                  _getUserUpcomingEvents
+                                      .data[index].events.location,
+                                  style: const TextStyle(color: Colors.black87),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  FontAwesomeIcons.mapMarkerAlt,
+                                  size: 15,
+                                  color: Colors.black54,
+                                ),
+                                Text(
+                                    _getUserUpcomingEvents.data[index].km +
+                                        " " +
+                                        "away",
+                                    style:
+                                        const TextStyle(color: Colors.black87)),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        }),
+      );
+    } else {
+      return const Text("No Upcoming Events");
+    }
+  }
+
+  pasEventslist() {
+    if (test1) {
+      return Column(
+        children: List.generate(_userPastEvents.data.length, (index) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: FittedBox(
+              child: Container(
+                // width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 10,
+                          spreadRadius: 2)
+                    ]),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 20.0, right: 15, left: 15, bottom: 15),
+                  child: Row(
+                    children: [
+                      // Container(
+                      //   height: widget.size.height * 0.17,
+                      //   width: widget.size.width * 0.3,
+                      //   decoration: BoxDecoration(
+                      //       borderRadius: BorderRadius.circular(15),
+                      //       image: DecorationImage(
+                      //           image: CachedNetworkImageProvider(MainUrl+
+                      //               _getUserUpcomingEvents.data[index].events.eventPictures[0].imagePath),
+                      //           fit: BoxFit.cover)),
+                      // ),
+                      SizedBox(
+                        height: widget.size.height * 0.17,
+                        width: widget.size.width * 0.3,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: CachedNetworkImage(
+                            imageUrl: MainUrl +
+                                _userPastEvents.data[index].events
+                                    .eventPictures[0].imagePath,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _userPastEvents.data[index].events.eventName,
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 20),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  FontAwesomeIcons.calendar,
+                                  size: 15,
+                                  color: Colors.black54,
+                                ),
+                                Text(
+                                  _userPastEvents.data[index].events.location,
+                                  style: const TextStyle(color: Colors.black87),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  FontAwesomeIcons.mapMarkerAlt,
+                                  size: 15,
+                                  color: Colors.black54,
+                                ),
+                                Text(
+                                    _userPastEvents.data[index].km +
+                                        " " +
+                                        "away",
+                                    style:
+                                        const TextStyle(color: Colors.black87)),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        }),
+      );
+    } else {
+      return const Center(
+        child: Text('No past events'),
+      );
+    }
+  }
+
+  userDraftlist() {
+    if (test2) {
+      return Column(
+        children: List.generate(_getUserDraftEvents.data.length, (index) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: FittedBox(
+              child: Container(
+                // width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 10,
+                          spreadRadius: 2)
+                    ]),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 20.0, right: 15, left: 15, bottom: 15),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        height: widget.size.height * 0.17,
+                        width: widget.size.width * 0.3,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: CachedNetworkImage(
+                            imageUrl: MainUrl +
+                               _getUserDraftEvents.data[index].events
+                                    .eventPictures[0].imagePath,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _getUserDraftEvents.data[index].events.eventName,
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 20),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  FontAwesomeIcons.calendar,
+                                  size: 15,
+                                  color: Colors.black54,
+                                ),
+                                Text(
+                                  _getUserDraftEvents.data[index].events.location,
+                                  style: const TextStyle(color: Colors.black87),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  FontAwesomeIcons.mapMarkerAlt,
+                                  size: 15,
+                                  color: Colors.black54,
+                                ),
+                                Text(
+                                    _getUserDraftEvents.data[index].km +
+                                        " " +
+                                        "away",
+                                    style:
+                                        const TextStyle(color: Colors.black87)),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        }),
+      );
+    } else {
+      return const Text("No Drafts Saved");
+    }
   }
 }

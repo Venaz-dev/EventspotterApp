@@ -25,15 +25,15 @@ class _LivefeedsState extends State<Livefeeds> {
     // print('hello g $lenght');
     //lenght = lenght - 1;
     // print(lenght);
-    _controller = VideoPlayerController.network(
-        MainUrl + widget.eventsLiveFeeds[1]['img']);
+    // _controller = VideoPlayerController.network(
+    //     MainUrl + widget.eventsLiveFeeds[1]['img']);
 
-    _controller.addListener(() {
-      setState(() {});
-    });
-    _controller.setLooping(true);
-    _controller.initialize().then((_) => setState(() {}));
-    _controller.play();
+    // _controller.addListener(() {
+    //   setState(() {});
+    // });
+    // _controller.setLooping(true);
+    // _controller.initialize().then((_) => setState(() {}));
+    // _controller.play();
   }
 
   @override
