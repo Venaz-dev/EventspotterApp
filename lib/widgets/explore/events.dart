@@ -49,10 +49,7 @@ class _EventssState extends State<Eventss> {
         ? const Center(child: CircularProgressIndicator())
         : Column(
             children: [
-              Livefeeds(
-                eventsLiveFeeds: eventsLiveFeed,
-                test:test
-              ),
+              Livefeeds(eventsLiveFeeds: eventsLiveFeed, test: test),
               const SizedBox(
                 height: 20,
               ),
@@ -194,21 +191,22 @@ class _EventssState extends State<Eventss> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      // Button(
-                                      //     title: _eventsModel.data[index].events
-                                      //         .user.name, //new
-                                      //     radiusofbutton:
-                                      //         BorderRadius.circular(20),
-                                      //     profileImage: MainUrl +
-                                      //         _eventsModel
-                                      //             .data[index]
-                                      //             .events
-                                      //             .user
-                                      //             .profilePicture
-                                      //             .image), //new
-                                      // const SizedBox(
-                                      //   width: 10,
-                                      // ),
+                                      Button(
+                                          title: _eventsModel.data[index].events
+                                              .user.name, //new
+                                          radiusofbutton:
+                                              BorderRadius.circular(20),
+                                          profileImage: MainUrl +
+                                                  _eventsModel
+                                                      .data[index]
+                                                      .events
+                                                      .user
+                                                      .profilePicture!.image!
+                                                    
+                                              ), //new
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
                                       Buttonicon(
                                         radiusofbutton:
                                             BorderRadius.circular(20),

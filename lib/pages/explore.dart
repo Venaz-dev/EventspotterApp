@@ -443,7 +443,7 @@ class Button extends StatelessWidget {
   }) : super(key: key);
 
   final BorderRadiusGeometry? radiusofbutton;
-  final String profileImage;
+  final String? profileImage;
   final String title;
 
   @override
@@ -464,7 +464,7 @@ class Button extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               image: DecorationImage(
-                  image: NetworkImage(profileImage), fit: BoxFit.cover),
+                  image: NetworkImage(profileImage!), fit: BoxFit.cover),
             ),
           ),
           const SizedBox(

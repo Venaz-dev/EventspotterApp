@@ -7,17 +7,17 @@ class EventsModel {
   late final bool success;
   late final List<Data> data;
   late final String message;
-  
-  EventsModel.fromJson(Map<String, dynamic> json){
+
+  EventsModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    data = List.from(json['data']).map((e)=>Data.fromJson(e)).toList();
+    data = List.from(json['data']).map((e) => Data.fromJson(e)).toList();
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['success'] = success;
-    _data['data'] = data.map((e)=>e.toJson()).toList();
+    _data['data'] = data.map((e) => e.toJson()).toList();
     _data['message'] = message;
     return _data;
   }
@@ -26,7 +26,7 @@ class EventsModel {
 class Data {
   Data({
     required this.events,
-     this.livefeed,
+    this.livefeed,
     required this.km,
     required this.isFavroute,
     required this.Following,
@@ -38,8 +38,8 @@ class Data {
   late final int isFavroute;
   late final int Following;
   late final int isLiked;
-  
-  Data.fromJson(Map<String, dynamic> json){
+
+  Data.fromJson(Map<String, dynamic> json) {
     events = Events.fromJson(json['events']);
     livefeed = null;
     km = json['km'];
@@ -76,7 +76,7 @@ class Events {
     required this.createdAt,
     required this.updatedAt,
     required this.isDrafted,
-     this.ticketLink,
+    this.ticketLink,
     required this.eventPictures,
     required this.user,
     required this.comment,
@@ -101,8 +101,8 @@ class Events {
   late final User user;
   late final List<Comment> comment;
   late final List<LiveFeed> liveFeed;
-  
-  Events.fromJson(Map<String, dynamic> json){
+
+  Events.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     eventName = json['event_name'];
     eventDescription = json['event_description'];
@@ -118,10 +118,14 @@ class Events {
     updatedAt = json['updated_at'];
     isDrafted = json['is_drafted'];
     ticketLink = null;
-    eventPictures = List.from(json['event_pictures']).map((e)=>EventPictures.fromJson(e)).toList();
+    eventPictures = List.from(json['event_pictures'])
+        .map((e) => EventPictures.fromJson(e))
+        .toList();
     user = User.fromJson(json['user']);
-    comment = List.from(json['comment']).map((e)=>Comment.fromJson(e)).toList();
-    liveFeed = List.from(json['live_feed']).map((e)=>LiveFeed.fromJson(e)).toList();
+    comment =
+        List.from(json['comment']).map((e) => Comment.fromJson(e)).toList();
+    liveFeed =
+        List.from(json['live_feed']).map((e) => LiveFeed.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -141,10 +145,10 @@ class Events {
     _data['updated_at'] = updatedAt;
     _data['is_drafted'] = isDrafted;
     _data['ticket_link'] = ticketLink;
-    _data['event_pictures'] = eventPictures.map((e)=>e.toJson()).toList();
+    _data['event_pictures'] = eventPictures.map((e) => e.toJson()).toList();
     _data['user'] = user.toJson();
-    _data['comment'] = comment.map((e)=>e.toJson()).toList();
-    _data['live_feed'] = liveFeed.map((e)=>e.toJson()).toList();
+    _data['comment'] = comment.map((e) => e.toJson()).toList();
+    _data['live_feed'] = liveFeed.map((e) => e.toJson()).toList();
     return _data;
   }
 }
@@ -162,8 +166,8 @@ class EventPictures {
   late final String imagePath;
   late final String createdAt;
   late final String updatedAt;
-  
-  EventPictures.fromJson(Map<String, dynamic> json){
+
+  EventPictures.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     eventId = json['event_id'];
     imagePath = json['image_path'];
@@ -190,22 +194,21 @@ class User {
     required this.ipAddress,
     required this.latLng,
     required this.isOnline,
-     this.emailVerifiedAt,
+    this.emailVerifiedAt,
     required this.phoneNumber,
     required this.createdAt,
     required this.updatedAt,
-     this.profileImage,
+    this.profileImage,
     required this.mobileIsPrivate,
     required this.avatar,
     required this.messengerColor,
     required this.darkMode,
     required this.activeStatus,
     required this.role,
-     this.isBlock,
+    this.isBlock,
     required this.useLocation,
-    required this.allowDirectMessage,
     required this.profilePrivate,
-   //  this.profilePicture,
+    this.profilePicture,
     required this.followers,
   });
   late final int id;
@@ -227,12 +230,11 @@ class User {
   late final String role;
   late final Null isBlock;
   late final String useLocation;
-  late final String allowDirectMessage;
   late final String profilePrivate;
-//  late final ProfilePicture? profilePicture;
+  ProfilePicture? profilePicture;
   late final List<Followers> followers;
-  
-  User.fromJson(Map<String, dynamic> json){
+
+  User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     email = json['email'];
@@ -252,11 +254,16 @@ class User {
     role = json['role'];
     isBlock = null;
     useLocation = json['use_location'];
-    allowDirectMessage = json['allow_direct_message'];
     profilePrivate = json['profile_private'];
-    
-   // profilePicture = ProfilePicture.fromJson(json['profile_picture']);
-    followers = List.from(json['followers']).map((e)=>Followers.fromJson(e)).toList();
+
+    if (json['profile_picture'] != null) {
+      profilePicture = (ProfilePicture.fromJson(json['profile_picture']));
+    } else {
+      profilePicture = ProfilePicture(
+          id: 0, image: "images/user.jpeg", userId: "0", createdAt: "112", updatedAt: "12332");
+    }
+    followers =
+        List.from(json['followers']).map((e) => Followers.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -280,15 +287,14 @@ class User {
     _data['role'] = role;
     _data['is_block'] = isBlock;
     _data['use_location'] = useLocation;
-    _data['allow_direct_message'] = allowDirectMessage;
     _data['profile_private'] = profilePrivate;
-    //_data['profile_picture'] = profilePicture;
-    _data['followers'] = followers.map((e)=>e.toJson()).toList();
+    _data['profile_picture'] = profilePicture;
+    _data['followers'] = followers.map((e) => e.toJson()).toList();
     return _data;
   }
 }
 
-class  ProfilePicture {
+class ProfilePicture {
   ProfilePicture({
     required this.id,
     required this.image,
@@ -301,8 +307,8 @@ class  ProfilePicture {
   late final String userId;
   late final String createdAt;
   late final String updatedAt;
-  
-  ProfilePicture.fromJson(Map<String, dynamic> json){
+
+  ProfilePicture.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     image = json['image'];
     userId = json['user_id'];
@@ -336,8 +342,8 @@ class Followers {
   late final String followingId;
   late final String createdAt;
   late final String updatedAt;
-  
-  Followers.fromJson(Map<String, dynamic> json){
+
+  Followers.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
     followerId = json['follower_id'];
@@ -373,8 +379,8 @@ class Comment {
   late final String comment;
   late final String createdAt;
   late final String updatedAt;
-  
-  Comment.fromJson(Map<String, dynamic> json){
+
+  Comment.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     eventId = json['event_id'];
     userId = json['user_id'];
@@ -401,8 +407,8 @@ class LiveFeed {
     required this.eventId,
     required this.userId,
     required this.path,
-     this.description,
-     this.tagPeople,
+    this.description,
+    this.tagPeople,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -414,8 +420,8 @@ class LiveFeed {
   late final Null tagPeople;
   late final String createdAt;
   late final String updatedAt;
-  
-  LiveFeed.fromJson(Map<String, dynamic> json){
+
+  LiveFeed.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     eventId = json['event_id'];
     userId = json['user_id'];
@@ -446,8 +452,8 @@ class Livefeed {
     required this.eventId,
     required this.userId,
     required this.path,
-     this.description,
-     this.tagPeople,
+    this.description,
+    this.tagPeople,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -459,8 +465,8 @@ class Livefeed {
   late final Null tagPeople;
   late final String createdAt;
   late final String updatedAt;
-  
-  Livefeed.fromJson(Map<String, dynamic> json){
+
+  Livefeed.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     eventId = json['event_id'];
     userId = json['user_id'];
