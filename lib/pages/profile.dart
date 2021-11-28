@@ -183,15 +183,15 @@ class _ProfileState extends State<Profile> {
                                     ),
                                   ),
 
-                                  const SizedBox(
-                                    height: 10,
+                                   SizedBox(
+                                    height:size.height * 0.006,
                                   ),
 
                                   Row(
                                     children: [
                                       Container(
-                                        height: size.height * 0.08,
-                                        width: size.width * 0.1,
+                                        height: size.height * 0.15,
+                                        width: size.width * 0.15,
                                         decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             image: DecorationImage(
@@ -204,6 +204,7 @@ class _ProfileState extends State<Profile> {
                                         width: 15,
                                       ),
                                       Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             _getProfile.data.name,
@@ -211,10 +212,10 @@ class _ProfileState extends State<Profile> {
                                                 fontSize: 23,
                                                 fontWeight: FontWeight.w500),
                                           ),
-                                        //  const Text(
-                                        //     "New York City",
-                                        //     style: TextStyle(fontSize: 18),
-                                        //   )
+                                          Text(
+                                            _getProfile.data.email,
+                                            style: const TextStyle(fontSize: 15),
+                                          )
                                         ],
                                       )
                                     ],

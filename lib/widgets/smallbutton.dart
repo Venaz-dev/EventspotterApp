@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class Smallbutton extends StatelessWidget {
   const Smallbutton({
     Key? key,
-     this.height, this.icon, this.onpressed, 
+    this.height,
+    this.icon,
+    this.onpressed,
   }) : super(key: key);
 
-  final double  ? height;
-  final IconData ? icon;
-  final VoidCallback ? onpressed;
+  final double? height;
+  final IconData? icon;
+  final VoidCallback? onpressed;
 
   @override
   Widget build(BuildContext context) {
@@ -16,20 +18,19 @@ class Smallbutton extends StatelessWidget {
     return Column(
       children: [
         Container(
-            height: height,
-          
-            decoration: BoxDecoration(
-                color: const Color(0XFFECF2F3),
-                borderRadius: BorderRadius.circular(10)),
-          
-              child: Flexible(
-                child: IconButton(
-                  onPressed: onpressed,
-                  icon:  Icon(icon , size: size.height*0.023,),
-                  color: const Color(0XFF38888F),
-                ),
-              ),
-            )
+          height: height,
+          decoration: BoxDecoration(
+              color: const Color(0XFFECF2F3),
+              borderRadius: BorderRadius.circular(10)),
+          child: IconButton(
+            onPressed: onpressed,
+            icon: Icon(
+              icon,
+              size: size.height * 0.023,
+            ),
+            color: const Color(0XFF38888F),
+          ),
+        )
       ],
     );
   }

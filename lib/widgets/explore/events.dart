@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/event_details_page.dart';
 import 'package:event_spotter/pages/explore.dart';
+import 'package:event_spotter/pages/userprofile.dart';
 import 'package:event_spotter/widgets/explore/livefeed.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -17,7 +18,7 @@ class Eventss extends StatefulWidget {
 }
 
 class _EventssState extends State<Eventss> {
-  Dio _dio = Dio();
+  final Dio _dio = Dio();
   late SharedPreferences _sharedPreferences;
   late String _token;
   late int lenght;
@@ -25,8 +26,12 @@ class _EventssState extends State<Eventss> {
   late EventsModel _eventsModel;
   late List eventsLiveFeed = [];
   bool test = false;
-
+  bool active = false;
+  String isFollow = "follow";
+  late String id;
   String urlEvent = "https://theeventspotter.com/api/getEvents";
+  String Favourite = "https://theeventspotter.com/api/favrouite";
+  String UnFavourite = "https://theeventspotter.com/api/unfavrouit";
   String MainUrl = "https://theeventspotter.com/";
   @override
   void initState() {
@@ -39,11 +44,8 @@ class _EventssState extends State<Eventss> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    String isFollow = "follow";
 
-    String description = "new year party at local park";
-
-    bool active = false;
+    // String description = "new year party at local park";
 
     return _isLoading
         ? const Center(child: CircularProgressIndicator())
@@ -122,66 +124,37 @@ class _EventssState extends State<Eventss> {
                                   right: 10,
                                   top: size.height * 0.02,
                                   child: SizedBox(
-                                    height: size.height * 0.04,
-                                    width: size.width * 0.25,
-                                    // decoration: const BoxDecoration(color: Color(0XFF38888E)),
-                                    child: ElevatedButton(
-                                        onPressed: () {},
-                                        style: ElevatedButton.styleFrom(
-                                          primary: const Color(0XFF38888E),
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            const Icon(
-                                              FontAwesomeIcons.userPlus,
-                                              size: 10,
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(isFollow),
-                                          ],
-                                        )),
-                                  ),
+                                      height: size.height * 0.04,
+                                      width: size.width * 0.25,
+                                      // decoration: const BoxDecoration(color: Color(0XFF38888E)),
+                                      child: followingcheck(index)),
                                 ),
                                 Positioned(
                                   top: size.height * 0.07,
                                   right: 20,
-                                  child: Column(children: [
-                                    LikeButton(
-                                        size: 20,
-                                        isLiked: active,
-                                        likeBuilder: (isliked) {
-                                          final color = isliked
-                                              ? Colors.red
-                                              : Colors.grey;
-                                          return Icon(Icons.favorite,
-                                              color: color, size: 20);
-                                        },
-                                        countBuilder: (count, isliked, text) {
-                                          final color = isliked
-                                              ? Colors.red
-                                              : Colors.grey;
-                                        }),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    LikeButton(
-                                        size: 20,
-                                        isLiked: active,
-                                        likeBuilder: (isliked) {
-                                          final color = isliked
-                                              ? Colors.green
-                                              : Colors.grey;
-                                          return Icon(Icons.flag,
-                                              color: color, size: 20);
-                                        },
-                                        countBuilder: (count, isliked, text) {
-                                          final color = isliked
-                                              ? Colors.green
-                                              : Colors.grey;
-                                        }),
-                                  ]),
+                                  child: LikeButton(
+                                    size: 20,
+                                    onTap: (isLiked) {
+                                      print("hello");
+
+                                      if (active == isLiked) {
+                                        setState(() {
+                                          active = !active;
+                                        });
+                                        return PostLike(index,
+                                            _eventsModel.data[index].events.id);
+                                      } else {
+                                        return PostDislike(index,
+                                            _eventsModel.data[index].events.id);
+                                      }
+                                    },
+                                    likeBuilder: (isLiked) {
+                                      final color =
+                                          active ? Colors.red : Colors.grey;
+                                      return Icon(Icons.favorite,
+                                          color: color, size: 20);
+                                    },
+                                  ),
                                 ),
                                 Positioned(
                                   bottom: 0,
@@ -192,18 +165,22 @@ class _EventssState extends State<Eventss> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Button(
+                                          onpressed: () {
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                         Eventposterprofile(
+                                                         id: _eventsModel.data[index].events.user.id,
+                                                          
+                                                        )));
+                                          },
                                           title: _eventsModel.data[index].events
                                               .user.name, //new
                                           radiusofbutton:
                                               BorderRadius.circular(20),
                                           profileImage: MainUrl +
-                                                  _eventsModel
-                                                      .data[index]
-                                                      .events
-                                                      .user
-                                                      .profilePicture!.image!
-                                                    
-                                              ), //new
+                                              _eventsModel.data[index].events
+                                                  .user.profilePicture!.image!),
                                       const SizedBox(
                                         width: 10,
                                       ),
@@ -211,8 +188,8 @@ class _EventssState extends State<Eventss> {
                                         radiusofbutton:
                                             BorderRadius.circular(20),
                                         icon: FontAwesomeIcons.userPlus,
-                                        title: _eventsModel
-                                                .data[index].Following
+                                        title: _eventsModel.data[index].events
+                                                .user.followers.length
                                                 .toString() +
                                             " " "Followers",
                                       ),
@@ -334,18 +311,6 @@ class _EventssState extends State<Eventss> {
           );
   }
 
-  // flaggedOrLiked(Size size, IconData icon) {
-  //   return Container(
-  //     height: size.height * 0.03,
-  //     width: size.width * 0.07,
-  //     decoration: const BoxDecoration(color: Colors.white),
-  //     child: Icon(
-  //       icon,
-  //       size: 15,
-  //     ),
-  //   );
-  // }
-
   VerticalDivider divider() {
     return const VerticalDivider(
       thickness: 1,
@@ -373,6 +338,7 @@ class _EventssState extends State<Eventss> {
   Future getEvetns() async {
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
+    id = _sharedPreferences.getString('id')!;
     print("Inside the Get Event function");
     try {
       _dio.options.headers["Authorization"] = "Bearer ${_token}";
@@ -407,5 +373,101 @@ class _EventssState extends State<Eventss> {
       _isLoading = false;
     }
     setState(() {});
+  }
+
+//   isliked(bool like, int index) {
+//     print(_eventsModel.data[index].isFavroute.toInt());
+//     if (_eventsModel.data[index].isFavroute.toInt() == 1) {
+//       setState(() {
+//         active = !active;
+
+//       });
+// return !active;
+
+//     } else {
+//       setState(() {
+//         active = active;
+//       });
+// return active;
+//     }
+//   }
+
+  Future<bool> PostDislike(int index, int eventId) async {
+    print("inside postlike");
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _token = _sharedPreferences.getString('accessToken')!;
+    FormData formData = new FormData.fromMap({
+      "event_id": eventId,
+    });
+    // try {
+    _dio.options.headers["Authorization"] = "Bearer ${_token}";
+    await _dio.post(UnFavourite, data: formData).then((value) {
+      print(value.data.toString());
+      if (value.data['success'] == true) {
+        print(value.data.toString());
+        setState(() {
+          active = false;
+        });
+      }
+    });
+    return Future.value(active);
+    //     } else {
+    //       print("error while getting favouites");
+    //     }
+    //   });
+    // } catch (e) {
+    //   print(e.toString());
+    // } finally {
+    //   return Future.value(false);
+    // }
+  }
+
+  Future<bool> PostLike(int index, int eventId) async {
+    print("inside postlike");
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _token = _sharedPreferences.getString('accessToken')!;
+    FormData formData = new FormData.fromMap({
+      "event_id": eventId,
+    });
+    // try {
+    _dio.options.headers["Authorization"] = "Bearer ${_token}";
+
+    await _dio.post(Favourite, data: formData).then((value) {
+      print(value.toString());
+      if (value.data['status'] == true) {
+        print(value.data.toString());
+        setState(() {
+          active = true;
+        });
+      }
+    });
+    return Future.value(active);
+    //     } else {
+
+    //       print("error while getting favouites");
+
+    //     }
+    //   });
+    // } catch (e) {
+    //   print(e.toString());
+    // } finally {
+    //   return Future.value(false);
+    // }
+  }
+
+  followingcheck(int index) {
+    print("inside followingcheck");
+
+    if (_eventsModel.data[index].events.user.id.toString() != id) {
+      return ElevatedButton(
+        onPressed: () {},
+        style: ElevatedButton.styleFrom(
+          primary: const Color(0XFF38888E),
+        ),
+        child: const Text("Follow"),
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 }

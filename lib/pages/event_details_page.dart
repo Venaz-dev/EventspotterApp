@@ -186,16 +186,16 @@ class _EventdetailingState extends State<Eventdetailing> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            // Button(
-                            //     title: widget.model!.data[widget.indexs!].events
-                            //         .user.name,
-                            //     radiusofbutton: BorderRadius.circular(20),
-                            //     profileImage: MainUrl1 +
-                            //         widget.model!.data[widget.indexs!].events
-                            //             .user.profilePicture.image) ,
-                            // const SizedBox(
-                            //   width: 10,
-                            // ),
+                            Button(
+                                title: widget.model!.data[widget.indexs!].events
+                                    .user.name,
+                                radiusofbutton: BorderRadius.circular(20),
+                                profileImage: MainUrl1 +
+                                    widget.model!.data[widget.indexs!].events
+                                        .user.profilePicture!.image!) ,
+                            const SizedBox(
+                              width: 10,
+                            ),
                             Buttonicon(
                               radiusofbutton: BorderRadius.circular(20),
                               icon: FontAwesomeIcons.userPlus,
