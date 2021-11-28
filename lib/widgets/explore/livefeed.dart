@@ -75,7 +75,11 @@ class _LivefeedsState extends State<Livefeeds> {
                             widget.eventsLiveFeeds[index]
                                         ['img'] //////////////////////////
                                     .toString()
-                                    .contains('.mp4')
+                                    .contains('.mp4')||
+                                    widget.eventsLiveFeeds[index]
+                                        ['img'] //////////////////////////
+                                    .toString()
+                                    .contains('.mov')
                                 ? VideoPlayerScreen(
                                     url: MainUrl +
                                         widget.eventsLiveFeeds[index]['img'])
@@ -167,6 +171,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
     // Use the controller to loop the video.
     _controller.setLooping(true);
+    _controller.setVolume(0.0);
 
     super.initState();
   }

@@ -4,6 +4,7 @@ import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/models/getUserFollowingStatusModel.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
+import 'package:event_spotter/widgets/toaster.dart';
 import 'package:flutter/material.dart';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -341,12 +342,11 @@ class _EventposterprofileState extends State<Eventposterprofile> {
       if (response.data["success"] == true) {
         _getUserFollowingStatus =
             GetUserFollowingStatus.fromJson(response.data);
-        print("??//////////////////////");
+
         setState(() {
           pending = response.data["status"];
           print(pending);
           _isLoading = false;
-          datanull = false;
         });
       } else {
         print("error while getting the status of user");
@@ -366,8 +366,11 @@ class _EventposterprofileState extends State<Eventposterprofile> {
               style: ElevatedButton.styleFrom(
                   primary: isfollow ? Colors.blue : const Color(0XFF9CC4C6)),
               onPressed: () {
+                print("clicking /////////////////");
+
                 setState(() {
                   gg = "Follow";
+                  isfollow = true;
                 });
               },
               child: Text(gg)),
@@ -380,12 +383,13 @@ class _EventposterprofileState extends State<Eventposterprofile> {
               style: ElevatedButton.styleFrom(
                   primary: isfollow ? Colors.blue : const Color(0XFF9CC4C6)),
               onPressed: () {
-                // print("clicking");
-                // following();
-                // setState(() {
-                //   gg = "pending";
-                //   pending = "pending";
-                // });
+                print("clicking /////////////////");
+
+                //following();
+                setState(() {
+                  gg = "pending";
+                  pending = "pending";
+                });
               },
               child: Text(gg)),
         );
@@ -409,6 +413,30 @@ class _EventposterprofileState extends State<Eventposterprofile> {
   }
 
   following() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _token = _sharedPreferences.getString('accessToken')!;
+    FormData formData = new FormData.fromMap({
+      "following_id": widget.id,
+    });
+    try {
+      _dio.options.headers["Authorization"] = "Bearer ${_token}";
+      response = await _dio.post(FollowingUrl, data: formData);
+      print(response.data);
+      {
+        if (response.data["success"] == true) {
+          print(response.data);
+          showToaster(response.data["message"]);
+        } else {
+          print("error while sending request");
+          pending = "error";
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {}
+  }
+
+  cancelpending() async {
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
     FormData formData = new FormData.fromMap({
