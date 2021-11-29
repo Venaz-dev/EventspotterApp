@@ -25,6 +25,7 @@ class _EventssState extends State<Eventss> {
   late SharedPreferences _sharedPreferences;
   late String _token;
   late int lenght;
+  late String valuee;
   bool _isLoading = true;
   late EventsModel _eventsModel;
   late List eventsLiveFeed = [];
@@ -36,6 +37,7 @@ class _EventssState extends State<Eventss> {
   String Favourite = "https://theeventspotter.com/api/favrouite";
   String UnFavourite = "https://theeventspotter.com/api/unfavrouit";
   String MainUrl = "https://theeventspotter.com/";
+  String PostlikeUrl = "https://theeventspotter.com/api/like";
   @override
   void initState() {
     super.initState();
@@ -287,12 +289,16 @@ class _EventssState extends State<Eventss> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
                                         children: [
-                                          extras(
-                                              FontAwesomeIcons.thumbsUp,
-                                              _eventsModel.data[index].isLiked
-                                                  .toString(),
-                                              size,
-                                              () {}),
+                                          // extras(
+                                          //     FontAwesomeIcons.thumbsUp,
+                                          //     _eventsModel.data[index].isLiked
+                                          //         .toString(),
+                                          //     size, () {
+                                          //   postThumbs(_eventsModel
+                                          //       .data[index].events.id);
+                                          // }),
+                                          likefunction(
+                                              index, FontAwesomeIcons.thumbsUp),
                                           divider(),
                                           extras(
                                               Icons.comment,
@@ -362,6 +368,31 @@ class _EventssState extends State<Eventss> {
     );
   }
 
+  likefunction(int index, IconData icon) {
+    print(_eventsModel.data[index].totalLikes.toString());
+    String likecount = _eventsModel.data[index].totalLikes.toString();
+    String vv = "0";
+
+    return Row(
+      children: [
+        IconButton(
+          icon: Icon(
+            icon,
+            size: 16,
+          ),
+          onPressed: () async {
+           vv= await postThumbs(_eventsModel.data[index].events.id);
+            setState(() {
+              likecount = vv;
+            });
+           
+          },
+        ),
+         Text(likecount),
+      ],
+    );
+  }
+
   Future getEvetns() async {
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
@@ -373,6 +404,7 @@ class _EventssState extends State<Eventss> {
       //print(response.data);
       if (response.statusCode == 200) {
         _eventsModel = EventsModel.fromJson(response.data);
+
         lenght = _eventsModel.data.length;
         for (int i = 0; i < _eventsModel.data.length; i++) {
           var km = _eventsModel.data[i].km;
@@ -502,7 +534,27 @@ class _EventssState extends State<Eventss> {
       return const SizedBox();
     }
   }
-  
+
+  postThumbs(int id) async {
+    String count = "0";
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _token = _sharedPreferences.getString('accessToken')!;
+    FormData formData = new FormData.fromMap({
+      "event_id": id,
+    });
+    _dio.options.headers["Authorization"] = "Bearer ${_token}";
+    _dio.post(PostlikeUrl, data: formData).then((value) {
+      if (value.data['success'] == true) {
+        print("///////////////??????????????????");
+        setState(() {
+          count = value.data['totalLikes'].toString();
+        });
+      } else {
+        count = "0";
+      }
+    });
+    return count;
+  }
 }
 
 class VideoPlayerScreenn extends StatefulWidget {
@@ -590,5 +642,4 @@ class _VideoPlayerScreennState extends State<VideoPlayerScreenn> {
       ],
     );
   }
-  
 }

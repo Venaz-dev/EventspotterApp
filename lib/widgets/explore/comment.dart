@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/explore.dart';
 import 'package:event_spotter/pages/timeago.dart';
 import 'package:event_spotter/pages/userprofile.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
+import 'package:event_spotter/widgets/toaster.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 
 class Commentofuser extends StatefulWidget {
@@ -88,12 +91,9 @@ class _CommentofuserState extends State<Commentofuser> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15),
                                   child: CachedNetworkImage(
-                                    imageUrl:MainUrl+ widget
-                                        .eventsModel
-                                        .data[widget.index]
-                                        .events
-                                        .eventPictures[0]
-                                        .imagePath,
+                                    imageUrl: MainUrl +
+                                        widget.eventsModel.data[widget.index]
+                                            .events.eventPictures[0].imagePath,
                                     // imageUrl: mainurl +
                                     //     widget.model!.data[widget.indexs!].events
                                     //         .eventPictures[0].imagePath,
@@ -333,7 +333,9 @@ class _CommentofuserState extends State<Commentofuser> {
                         ),
                         Commentbyperson(
                             eventsModel: widget.eventsModel,
-                            index: widget.index)
+                            index: widget.index,
+                            eventId:
+                                widget.eventsModel.data[widget.index].events.id)
                       ],
                     ),
                   ),
@@ -377,22 +379,42 @@ class _CommentofuserState extends State<Commentofuser> {
 class Commentbyperson extends StatefulWidget {
   EventsModel eventsModel;
   int index;
-  Commentbyperson({Key? key, required this.eventsModel, required this.index})
+  int eventId;
+  Commentbyperson(
+      {Key? key,
+      required this.eventsModel,
+      required this.index,
+      required this.eventId})
       : super(key: key);
 
   @override
   State<Commentbyperson> createState() => _CommentbypersonState();
 }
 
+final Dio _dio = Dio();
+late SharedPreferences _sharedPreferences;
+late String _token;
+
 class _CommentbypersonState extends State<Commentbyperson> {
+  final TextEditingController _comment = TextEditingController();
+  // late String text;
+  String postCommenturl = "https://theeventspotter.com/api/storeComment";
+  late List listcomments = [];
+  late List createdAt = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getcomments(widget.index);
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(widget.eventsModel.data[widget.index].events.comment.length);
     return Column(
       children: [
         Column(
-            children: List.generate(
-                widget.eventsModel.data[widget.index].events.comment.length,
-                (index) {
+            children: List.generate(listcomments.length, (index) {
           return Padding(
             padding: const EdgeInsets.only(bottom: 10.0),
             child: Container(
@@ -431,8 +453,7 @@ class _CommentbypersonState extends State<Commentbyperson> {
                     Padding(
                         padding: EdgeInsets.only(
                             right: 40.0, left: 40, top: 5, bottom: 5),
-                        child: Text(widget.eventsModel.data[widget.index].events
-                            .comment[index].comment))
+                        child: Text(listcomments[index]))
                   ],
                 ),
               ),
@@ -447,11 +468,12 @@ class _CommentbypersonState extends State<Commentbyperson> {
             padding: const EdgeInsets.all(10),
             child: Row(
               children: [
-                const Flexible(
-                  child: const TextField(
+                Flexible(
+                  child: TextField(
                     maxLines: null,
+                    controller: _comment,
                     cursorColor: Colors.black54,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: "Write the comment"),
                   ),
@@ -461,7 +483,10 @@ class _CommentbypersonState extends State<Commentbyperson> {
                         primary: const Color(0xFF3BACEC),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
-                    onPressed: () {},
+                    onPressed: ()async {
+                       await PostComment(widget.eventId);
+                      clearText();
+                    },
                     child: const Text('Comment')),
               ],
             ),
@@ -471,18 +496,68 @@ class _CommentbypersonState extends State<Commentbyperson> {
     );
   }
 
+  getcomments(int index) {
+    if (widget.eventsModel.data[index].events.comment.length > 0) {
+      for (int i = 0;
+          i < widget.eventsModel.data[index].events.comment.length;
+          i++) {
+        {
+          var comment =
+              widget.eventsModel.data[index].events.comment[i].comment;
+          listcomments.add(comment);
+          var created =
+              widget.eventsModel.data[index].events.comment[i].createdAt;
+          createdAt.add(created);
+        }
+      }
+    }
+  }
+
   time(int index) {
     return Padding(
       padding: const EdgeInsets.only(right: 10.0),
       child: Align(
         alignment: Alignment.bottomRight,
         child: Text(
-          TimeAgo.displayTimeAgoFromTimestamp(
-              widget.eventsModel.data[index].events.comment[index].createdAt),
+          TimeAgo.displayTimeAgoFromTimestamp(createdAt[index]),
           style: const TextStyle(fontSize: 15, color: Colors.black45),
         ),
       ),
     );
+  }
+
+  PostComment(int id) async {
+    /////////////////////////
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _token = _sharedPreferences.getString('accessToken')!;
+    FormData formData = new FormData.fromMap({
+      "event_id": id,
+      "comment": _comment.text,
+    });
+    _dio.options.headers["Authorization"] = "Bearer ${_token}";
+    await _dio.post(postCommenturl, data: formData).then((value) {
+      if (value.data['success'] == true) {
+        print(value.data);
+        showToaster("Comment Sent");
+        setState(() {
+          var text = value.data["data"]["comment"];
+          var text1 = value.data["data"]["created_at"];
+          // print(text);
+          // print(created);
+          print("////////////");
+          listcomments.add(text);
+          createdAt.add(text1);
+        });
+      } else {
+        showToaster("error");
+        //text = " ";
+      }
+    });
+    //  print(text);
+  }
+
+  void clearText() {
+    _comment.clear();
   }
 }
 
