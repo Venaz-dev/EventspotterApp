@@ -27,6 +27,10 @@ class _EventposterprofileState extends State<Eventposterprofile> {
   late String gg;
   late String _token;
   bool datanull = true;
+  var Address;
+  var city;
+  var country;
+  var primaryid;
   late String pending;
   bool _isLoading = true;
   final languages = ["English", "Spanish"];
@@ -34,6 +38,7 @@ class _EventposterprofileState extends State<Eventposterprofile> {
   String GetUSerStatusUrl =
       "https://theeventspotter.com/api/getUserFollowingStatus";
   String FollowingUrl = "https://theeventspotter.com/api/following";
+  String unfollow = "http://theeventspotter.com/api/unfollow";
   late GetUserFollowingStatus _getUserFollowingStatus;
   late Response response;
 
@@ -113,11 +118,12 @@ class _EventposterprofileState extends State<Eventposterprofile> {
                                 Row(
                                   children: [
                                     Container(
-                                      height: size.height * 0.08,
-                                      width: size.width * 0.1,
+                                      height: size.height * 0.12,
+                                      width: size.width * 0.12,
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
+
                                               image: CachedNetworkImageProvider(
                                                   MainUrl +
                                                       _getUserFollowingStatus
@@ -295,7 +301,7 @@ class _EventposterprofileState extends State<Eventposterprofile> {
             const Text("Address"),
             const SizedBox(height: 10),
             Textform(
-              label: '442425252',
+              label: Address,
               controller: _address,
               isSecure: false,
               color: const Color(0XFFEBF2F2),
@@ -306,7 +312,7 @@ class _EventposterprofileState extends State<Eventposterprofile> {
             const Text("City"),
             const SizedBox(height: 10),
             Textform(
-              label: '25253535',
+              label: city,
               controller: _city,
               isSecure: false,
               color: const Color(0XFFEBF2F2),
@@ -317,7 +323,7 @@ class _EventposterprofileState extends State<Eventposterprofile> {
             const Text("Country"),
             const SizedBox(height: 10),
             Textform(
-              label: 'Pakistan',
+              label: country,
               controller: _country,
               isSecure: false,
               color: const Color(0XFFEBF2F2),
@@ -342,7 +348,18 @@ class _EventposterprofileState extends State<Eventposterprofile> {
       if (response.data["success"] == true) {
         _getUserFollowingStatus =
             GetUserFollowingStatus.fromJson(response.data);
-
+        if (response.data["data"]["address"] != null) {
+          Address = response.data["data"]["address"]["address"] ?? "";
+          city = response.data["data"]["address"]["city"] ?? "";
+          country = response.data["data"]["address"]["country"] ?? "";
+        } else {
+          Address = "not available";
+          city = "not available";
+          country = "not available";
+        }
+        if (response.data["status"] == "Following") {
+          primaryid = response.data["data"]["id"];
+        }
         setState(() {
           pending = response.data["status"];
           print(pending);
@@ -363,48 +380,54 @@ class _EventposterprofileState extends State<Eventposterprofile> {
         return Padding(
           padding: const EdgeInsets.only(left: 20),
           child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  primary: isfollow ? Colors.blue : const Color(0XFF9CC4C6)),
-              onPressed: () {
-                print("clicking /////////////////");
-
-                setState(() {
-                  gg = "Follow";
-                  isfollow = true;
-                });
-              },
-              child: Text(gg)),
+            onPressed: () {
+              print("clicking /////////////////");
+              following();
+              setState(() {
+                gg = "Follow";
+                pending = "nothing";
+                isfollow = true;
+              });
+            },
+            style: ElevatedButton.styleFrom(
+                primary: isfollow ? Colors.blue : const Color(0XFF9CC4C6)),
+            child: Text(gg),
+          ),
         );
-      } else if (pending == "You are not following") {
+      } else if (pending == "nothing") {
         gg = "Follow";
         return Padding(
           padding: const EdgeInsets.only(left: 20),
           child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  primary: isfollow ? Colors.blue : const Color(0XFF9CC4C6)),
               onPressed: () {
                 print("clicking /////////////////");
-
+                following();
                 //following();
                 setState(() {
                   gg = "pending";
-                  pending = "pending";
+                  pending = "Pending";
                 });
               },
+              style: ElevatedButton.styleFrom(
+                  primary: isfollow ? Colors.blue : const Color(0XFF9CC4C6)),
               child: Text(gg)),
         );
-      } else {
+      } else if (pending == "Following") {
+        gg = "Un-Follow";
         return Padding(
           padding: const EdgeInsets.only(left: 20),
           child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  primary: isfollow ? Colors.blue : const Color(0XFF9CC4C6)),
               onPressed: () {
+                postUnfollow();
                 setState(() {
                   isfollow = !isfollow;
+                  gg = "Follow";
+                  pending = "nothing";
                 });
               },
-              child: const Text("Follow")),
+              style: ElevatedButton.styleFrom(
+                  primary: isfollow ? Colors.blue : const Color(0XFF9CC4C6)),
+              child:  Text(gg)),
         );
       }
     } else {
@@ -436,7 +459,7 @@ class _EventposterprofileState extends State<Eventposterprofile> {
     } finally {}
   }
 
-  cancelpending() async {
+  postUnfollow() async {
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
     FormData formData = new FormData.fromMap({
@@ -444,13 +467,14 @@ class _EventposterprofileState extends State<Eventposterprofile> {
     });
     try {
       _dio.options.headers["Authorization"] = "Bearer ${_token}";
-      response = await _dio.post(FollowingUrl, data: formData);
+      response = await _dio.post(unfollow, data: formData);
       print(response.data);
       {
         if (response.data["success"] == true) {
           print(response.data);
+          showToaster(response.data["message"]);
         } else {
-          print("error while getting the status of user");
+          print("error while sending request");
           pending = "error";
         }
       }

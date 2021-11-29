@@ -46,7 +46,7 @@ class Data {
     required this.useLocation,
     required this.allowDirectMessage,
     required this.profilePrivate,
-    required this.address,
+   //required this.address,
     required this.profilePicture,
     required this.followers,
     required this.following,
@@ -73,7 +73,7 @@ class Data {
   late final String useLocation;
   late final String allowDirectMessage;
   late final String profilePrivate;
-  late final Address address;
+  //late final Address address;
    ProfilePicture? profilePicture;
   late final List<dynamic> followers;
   late final List<Following> following;
@@ -101,7 +101,7 @@ class Data {
     useLocation = json['use_location'];
     allowDirectMessage = json['allow_direct_message'];
     profilePrivate = json['profile_private'];
-    address = Address.fromJson(json['address']);
+    //address = Address.fromJson(json['address']);
 
      if (json['profile_picture'] != null) {
       profilePicture = (ProfilePicture.fromJson(json['profile_picture']));
@@ -137,7 +137,7 @@ class Data {
     _data['use_location'] = useLocation;
     _data['allow_direct_message'] = allowDirectMessage;
     _data['profile_private'] = profilePrivate;
-    _data['address'] = address.toJson();
+   // _data['address'] = address.toJson();
     _data['profile_picture'] = profilePicture;
     _data['followers'] = followers;
     _data['following'] = following.map((e)=>e.toJson()).toList();

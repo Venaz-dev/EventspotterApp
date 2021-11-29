@@ -9,6 +9,7 @@ import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:like_button/like_button.dart';
+import 'package:video_player/video_player.dart';
 
 class Eventdetailing extends StatefulWidget {
   EventsModel? model;
@@ -99,26 +100,38 @@ class _EventdetailingState extends State<Eventdetailing> {
                     ),
                     width: size.width * double.infinity,
                     child: Stack(children: [
-                      Container(
-                        height: size.height * 0.25,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20)),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: CachedNetworkImage(
-                            imageUrl: MainUrl1 +
-                                widget.model!.data[widget.indexs!].events
-                                    .eventPictures[0].imagePath,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
+                      widget.model!.data[widget.indexs!].events.eventPictures[0]
+                                  .imagePath
+                                  .toString()
+                                  .contains('.mp4') ||
+                              widget.model!.data[widget.indexs!].events
+                                  .eventPictures[0].imagePath
+                                  .toString()
+                                  .contains('.mov')
+                          ? VideoPlayerScreem(
+                              url: MainUrl1 +
+                                  widget.model!.data[widget.indexs!].events
+                                      .eventPictures[0].imagePath)
+                          : Container(
+                              height: size.height * 0.25,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: CachedNetworkImage(
+                                  imageUrl: MainUrl1 +
+                                      widget.model!.data[widget.indexs!].events
+                                          .eventPictures[0].imagePath,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
                       Positioned(
                         right: 10,
                         top: size.height * 0.02,
@@ -192,7 +205,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                                 radiusofbutton: BorderRadius.circular(20),
                                 profileImage: MainUrl1 +
                                     widget.model!.data[widget.indexs!].events
-                                        .user.profilePicture!.image!) ,
+                                        .user.profilePicture!.image!),
                             const SizedBox(
                               width: 10,
                             ),
@@ -219,14 +232,15 @@ class _EventdetailingState extends State<Eventdetailing> {
                           top: size.height * 0.008,
                           right: size.width * 0.05,
                           child: Row(
-                           
                             children: [
                               const Icon(
                                 FontAwesomeIcons.calendar,
                                 size: 15,
                                 color: Colors.black54,
                               ),
-                              const SizedBox(width: 2,),
+                              const SizedBox(
+                                width: 2,
+                              ),
                               Text(
                                 widget.model!.data[widget.indexs!].events
                                     .eventDate,
@@ -429,12 +443,12 @@ class _EventdetailingState extends State<Eventdetailing> {
                       const SizedBox(
                         height: 20,
                       ),
-                      const Elevatedbutton(
-                        text: "Create",
-                        width: double.infinity,
-                        coloring: Color(0xFF304747),
-                        textColor: Color(0XFFFFFFFF),
-                      ),
+                      // const Elevatedbutton(
+                      //   text: "Create",
+                      //   width: double.infinity,
+                      //   coloring: Color(0xFF304747),
+                      //   textColor: Color(0XFFFFFFFF),
+                      // ),
                     ],
                   ),
                 ),
@@ -697,3 +711,88 @@ class _EventdetailingState extends State<Eventdetailing> {
 //   ),
 // ),
 // ),
+class VideoPlayerScreem extends StatefulWidget {
+  VideoPlayerScreem({Key? key, required this.url}) : super(key: key);
+  late String url;
+
+  @override
+  _VideoPlayerScreemState createState() => _VideoPlayerScreemState();
+}
+
+class _VideoPlayerScreemState extends State<VideoPlayerScreem> {
+  late VideoPlayerController _controller;
+  late Future<void> _initializeVideoPlayerFuture;
+  String MainUrl = "https://theeventspotter.com/";
+  @override
+  void initState() {
+    // Create and store the VideoPlayerController. The VideoPlayerController
+    // offers several different constructors to play videos from assets, files,
+    // or the internet.
+    _controller = VideoPlayerController.network(widget.url);
+    print(widget.url);
+
+    // Initialize the controller and store the Future for later use.
+    _initializeVideoPlayerFuture = _controller.initialize();
+
+    // Use the controller to loop the video.
+    _controller.setLooping(true);
+    _controller.setVolume(0.0);
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // Ensure disposing of the VideoPlayerController to free up resources.
+    _controller.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Column(
+      children: [
+        FutureBuilder(
+          future: _initializeVideoPlayerFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              _controller.play();
+
+              // If the VideoPlayerController has finished initialization, use
+              // the data it provides to limit the aspect ratio of the video.
+              return Container(
+                height: size.height * 0.25,
+                width: double.infinity,
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: VideoPlayer(_controller)),
+              );
+            } else {
+              // If the VideoPlayerController is still initializing, show a
+              // loading spinner.
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
+        // ElevatedButton(
+        //     onPressed: () {
+        //       // If the video is playing, pause it.
+        //       if (_controller.value.isPlaying) {
+        //         _controller.pause();
+        //       } else {
+        //         // If the video is paused, play it.
+        //         _controller.play();
+        //       }
+        //       setState(() {});
+        //     },
+        //     child: Text('PLAY'))
+      ],
+    );
+  }
+}

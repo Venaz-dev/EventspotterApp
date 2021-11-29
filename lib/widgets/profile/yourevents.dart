@@ -8,6 +8,7 @@ import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:video_player/video_player.dart';
 
 enum yourevent { upcoming, pastevents, drafts }
 
@@ -45,7 +46,7 @@ class _YoureventsState extends State<Yourevents> {
   @override
   void initState() {
     super.initState();
-    
+
     getUpComingEvents().whenComplete(() {
       setState(() {});
     });
@@ -370,7 +371,6 @@ class _YoureventsState extends State<Yourevents> {
     }
   }
 
- 
   upcomingeventlist() {
     if (test) {
       return Column(
@@ -394,24 +394,36 @@ class _YoureventsState extends State<Yourevents> {
                       top: 20.0, right: 15, left: 15, bottom: 15),
                   child: Row(
                     children: [
-                      SizedBox(
-                        height: widget.size.height * 0.17,
-                        width: widget.size.width * 0.3,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: CachedNetworkImage(
-                            imageUrl: MainUrl +
-                                _getUserUpcomingEvents.data[index].events
-                                    .eventPictures[0].imagePath,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
+                      _getUserUpcomingEvents
+                                  .data[index].events.eventPictures[0].imagePath
+                                  .toString()
+                                  .contains('.mp4') ||
+                              _getUserUpcomingEvents
+                                  .data[index].events.eventPictures[0].imagePath
+                                  .toString()
+                                  .contains('.mov')
+                          ? VideoPlayerScreennn(
+                              url: MainUrl +
+                                  _getUserUpcomingEvents.data[index].events
+                                      .eventPictures[0].imagePath)
+                          : SizedBox(
+                              height: widget.size.height * 0.17,
+                              width: widget.size.width * 0.3,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: CachedNetworkImage(
+                                  imageUrl: MainUrl +
+                                      _getUserUpcomingEvents.data[index].events
+                                          .eventPictures[0].imagePath,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
                       Padding(
                         padding: const EdgeInsets.only(left: 10.0),
                         child: Column(
@@ -499,34 +511,36 @@ class _YoureventsState extends State<Yourevents> {
                       top: 20.0, right: 15, left: 15, bottom: 15),
                   child: Row(
                     children: [
-                      // Container(
-                      //   height: widget.size.height * 0.17,
-                      //   width: widget.size.width * 0.3,
-                      //   decoration: BoxDecoration(
-                      //       borderRadius: BorderRadius.circular(15),
-                      //       image: DecorationImage(
-                      //           image: CachedNetworkImageProvider(MainUrl+
-                      //               _getUserUpcomingEvents.data[index].events.eventPictures[0].imagePath),
-                      //           fit: BoxFit.cover)),
-                      // ),
-                      SizedBox(
-                        height: widget.size.height * 0.17,
-                        width: widget.size.width * 0.3,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: CachedNetworkImage(
-                            imageUrl: MainUrl +
-                                _userPastEvents.data[index].events
-                                    .eventPictures[0].imagePath,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
+                      _userPastEvents
+                                  .data[index].events.eventPictures[0].imagePath
+                                  .toString()
+                                  .contains('.mp4') ||
+                              _userPastEvents
+                                  .data[index].events.eventPictures[0].imagePath
+                                  .toString()
+                                  .contains('.mov')
+                          ? VideoPlayerScreennn(
+                              url: MainUrl +
+                                  _userPastEvents.data[index].events
+                                      .eventPictures[0].imagePath)
+                          : SizedBox(
+                              height: widget.size.height * 0.17,
+                              width: widget.size.width * 0.3,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: CachedNetworkImage(
+                                  imageUrl: MainUrl +
+                                      _userPastEvents.data[index].events
+                                          .eventPictures[0].imagePath,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
                       Padding(
                         padding: const EdgeInsets.only(left: 10.0),
                         child: Column(
@@ -614,24 +628,36 @@ class _YoureventsState extends State<Yourevents> {
                       top: 20.0, right: 15, left: 15, bottom: 15),
                   child: Row(
                     children: [
-                      SizedBox(
-                        height: widget.size.height * 0.17,
-                        width: widget.size.width * 0.3,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: CachedNetworkImage(
-                            imageUrl: MainUrl +
-                               _getUserDraftEvents.data[index].events
-                                    .eventPictures[0].imagePath,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
+                      _getUserDraftEvents
+                                  .data[index].events.eventPictures[0].imagePath
+                                  .toString()
+                                  .contains('.mp4') ||
+                              _getUserDraftEvents
+                                  .data[index].events.eventPictures[0].imagePath
+                                  .toString()
+                                  .contains('.mov')
+                          ? VideoPlayerScreennn(
+                              url: MainUrl +
+                                  _getUserDraftEvents.data[index].events
+                                      .eventPictures[0].imagePath)
+                          : SizedBox(
+                              height: widget.size.height * 0.17,
+                              width: widget.size.width * 0.3,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: CachedNetworkImage(
+                                  imageUrl: MainUrl +
+                                      _getUserDraftEvents.data[index].events
+                                          .eventPictures[0].imagePath,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
                       Padding(
                         padding: const EdgeInsets.only(left: 10.0),
                         child: Column(
@@ -655,7 +681,8 @@ class _YoureventsState extends State<Yourevents> {
                                   color: Colors.black54,
                                 ),
                                 Text(
-                                  _getUserDraftEvents.data[index].events.location,
+                                  _getUserDraftEvents
+                                      .data[index].events.location,
                                   style: const TextStyle(color: Colors.black87),
                                 ),
                               ],
@@ -692,5 +719,92 @@ class _YoureventsState extends State<Yourevents> {
     } else {
       return const Text("No Drafts Saved");
     }
+  }
+}
+
+class VideoPlayerScreennn extends StatefulWidget {
+  VideoPlayerScreennn({Key? key, required this.url}) : super(key: key);
+  late String url;
+
+  @override
+  _VideoPlayerScreennnState createState() => _VideoPlayerScreennnState();
+}
+
+class _VideoPlayerScreennnState extends State<VideoPlayerScreennn> {
+  late VideoPlayerController _controller;
+  late Future<void> _initializeVideoPlayerFuture;
+  String MainUrl = "https://theeventspotter.com/";
+  @override
+  void initState() {
+    // Create and store the VideoPlayerController. The VideoPlayerController
+    // offers several different constructors to play videos from assets, files,
+    // or the internet.
+    _controller = VideoPlayerController.network(widget.url);
+    print(widget.url);
+
+    // Initialize the controller and store the Future for later use.
+    _initializeVideoPlayerFuture = _controller.initialize();
+
+    // Use the controller to loop the video.
+    _controller.setLooping(true);
+    _controller.setVolume(0.0);
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // Ensure disposing of the VideoPlayerController to free up resources.
+    _controller.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Column(
+      children: [
+        FutureBuilder(
+          future: _initializeVideoPlayerFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              _controller.play();
+
+              // If the VideoPlayerController has finished initialization, use
+              // the data it provides to limit the aspect ratio of the video.
+              return Container(
+                height: size.height * 0.17,
+                width: size.width * 0.3,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: VideoPlayer(_controller)),
+              );
+            } else {
+              // If the VideoPlayerController is still initializing, show a
+              // loading spinner.
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
+        // ElevatedButton(
+        //     onPressed: () {
+        //       // If the video is playing, pause it.
+        //       if (_controller.value.isPlaying) {
+        //         _controller.pause();
+        //       } else {
+        //         // If the video is paused, play it.
+        //         _controller.play();
+        //       }
+        //       setState(() {});
+        //     },
+        //     child: Text('PLAY'))
+      ],
+    );
   }
 }

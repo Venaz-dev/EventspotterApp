@@ -42,7 +42,7 @@ class More extends StatelessWidget {
                       Containers(background: Colors.white ,icon: FontAwesomeIcons.userPlus ,name: "Followers",onPresses: (){Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const Following()));},),
                     Containers(background: Colors.white ,icon: FontAwesomeIcons.userCheck, name: "Following", onPresses: (){Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const   Followers()));
                     }),
-                     Containers(background: Colors.white , icon: FontAwesomeIcons.calendarCheck, name: "Events you attended",onPresses: (){Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const Eventsattended()));},),
+                    // Containers(background: Colors.white , icon: FontAwesomeIcons.calendarCheck, name: "Events you attended",onPresses: (){Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const Eventsattended()));},),
                   ],
                 ),
               ),

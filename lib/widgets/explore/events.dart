@@ -3,12 +3,15 @@ import 'package:dio/dio.dart';
 import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/event_details_page.dart';
 import 'package:event_spotter/pages/explore.dart';
+import 'package:event_spotter/pages/timeago.dart';
 import 'package:event_spotter/pages/userprofile.dart';
+import 'package:event_spotter/widgets/explore/comment.dart';
 import 'package:event_spotter/widgets/explore/livefeed.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:like_button/like_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:video_player/video_player.dart';
 
 class Eventss extends StatefulWidget {
   const Eventss({Key? key}) : super(key: key);
@@ -100,26 +103,41 @@ class _EventssState extends State<Eventss> {
                               ),
                               width: size.width * double.infinity,
                               child: Stack(children: [
-                                Container(
-                                  height: size.height * 0.25,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(15),
-                                    child: CachedNetworkImage(
-                                      imageUrl: MainUrl +
-                                          _eventsModel.data[index].events
-                                              .eventPictures[0].imagePath,
-                                      fit: BoxFit.cover,
-                                      placeholder: (context, url) {
-                                        return const Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ),
+                                _eventsModel.data[index].events.eventPictures[0]
+                                            .imagePath
+                                            .toString()
+                                            .contains('.mp4') ||
+                                        _eventsModel.data[index].events
+                                            .eventPictures[0].imagePath
+                                            .toString()
+                                            .contains('.mov')
+                                    ? VideoPlayerScreenn(
+                                        url: MainUrl +
+                                            _eventsModel.data[index].events
+                                                .eventPictures[0].imagePath)
+                                    : Container(
+                                        height: size.height * 0.25,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          child: CachedNetworkImage(
+                                            imageUrl: MainUrl +
+                                                _eventsModel.data[index].events
+                                                    .eventPictures[0].imagePath,
+                                            fit: BoxFit.cover,
+                                            placeholder: (context, url) {
+                                              return const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ),
                                 Positioned(
                                   right: 10,
                                   top: size.height * 0.02,
@@ -169,9 +187,12 @@ class _EventssState extends State<Eventss> {
                                             Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                         Eventposterprofile(
-                                                         id: _eventsModel.data[index].events.user.id,
-                                                          
+                                                        Eventposterprofile(
+                                                          id: _eventsModel
+                                                              .data[index]
+                                                              .events
+                                                              .user
+                                                              .id,
                                                         )));
                                           },
                                           title: _eventsModel.data[index].events
@@ -261,40 +282,47 @@ class _EventssState extends State<Eventss> {
                                     bottom: 0,
                                     right: size.width * 0.01,
                                     left: size.width * 0.01,
-                                    child: Row(
-                                      children: [
-                                        IntrinsicHeight(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              extras(
-                                                  FontAwesomeIcons.thumbsUp,
-                                                  _eventsModel
-                                                      .data[index].isLiked
-                                                      .toString(),
-                                                  size),
-                                              divider(),
-                                              extras(
-                                                  Icons.comment,
-                                                  _eventsModel.data[index]
-                                                      .events.comment.length
-                                                      .toString(),
-                                                  size),
-                                              divider(),
-                                              // extras(MdiIcons.share,
-                                              //     posts[1]['share'], size),
-                                              // divider(),                           //no inculded
-                                              extras(
-                                                  Icons.live_tv,
-                                                  _eventsModel.data[index]
-                                                      .events.liveFeed.length
-                                                      .toString(),
-                                                  size),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
+                                    child: IntrinsicHeight(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          extras(
+                                              FontAwesomeIcons.thumbsUp,
+                                              _eventsModel.data[index].isLiked
+                                                  .toString(),
+                                              size,
+                                              () {}),
+                                          divider(),
+                                          extras(
+                                              Icons.comment,
+                                              _eventsModel.data[index].events
+                                                  .comment.length
+                                                  .toString(),
+                                              size, () {
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        Commentofuser(
+                                                          eventsModel:
+                                                              _eventsModel,
+                                                          index: index,
+                                                        )));
+                                          }),
+                                          divider(),
+
+                                          // extras(MdiIcons.share,
+                                          //     posts[1]['share'], size),
+                                          // divider(),                           //no inculded
+                                          extras(
+                                              Icons.live_tv,
+                                              _eventsModel.data[index].events
+                                                  .liveFeed.length
+                                                  .toString(),
+                                              size,
+                                              () {}),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -320,16 +348,15 @@ class _EventssState extends State<Eventss> {
     );
   }
 
-  extras(IconData icon, String totalcount, Size size) {
+  extras(IconData icon, String totalcount, Size size, VoidCallback onpress) {
     return Row(
       children: [
         IconButton(
-          icon: Icon(
-            icon,
-            size: 16,
-          ),
-          onPressed: () {},
-        ),
+            icon: Icon(
+              icon,
+              size: 16,
+            ),
+            onPressed: onpress),
         Text(totalcount),
       ],
     );
@@ -460,7 +487,12 @@ class _EventssState extends State<Eventss> {
 
     if (_eventsModel.data[index].events.user.id.toString() != id) {
       return ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => Eventposterprofile(
+                    id: _eventsModel.data[index].events.user.id,
+                  )));
+        },
         style: ElevatedButton.styleFrom(
           primary: const Color(0XFF38888E),
         ),
@@ -470,4 +502,93 @@ class _EventssState extends State<Eventss> {
       return const SizedBox();
     }
   }
+  
+}
+
+class VideoPlayerScreenn extends StatefulWidget {
+  VideoPlayerScreenn({Key? key, required this.url}) : super(key: key);
+  late String url;
+
+  @override
+  _VideoPlayerScreennState createState() => _VideoPlayerScreennState();
+}
+
+class _VideoPlayerScreennState extends State<VideoPlayerScreenn> {
+  late VideoPlayerController _controller;
+  late Future<void> _initializeVideoPlayerFuture;
+  String MainUrl = "https://theeventspotter.com/";
+  @override
+  void initState() {
+    // Create and store the VideoPlayerController. The VideoPlayerController
+    // offers several different constructors to play videos from assets, files,
+    // or the internet.
+    _controller = VideoPlayerController.network(widget.url);
+    print(widget.url);
+
+    // Initialize the controller and store the Future for later use.
+    _initializeVideoPlayerFuture = _controller.initialize();
+
+    // Use the controller to loop the video.
+    _controller.setLooping(true);
+    _controller.setVolume(0.0);
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // Ensure disposing of the VideoPlayerController to free up resources.
+    _controller.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Column(
+      children: [
+        FutureBuilder(
+          future: _initializeVideoPlayerFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              _controller.play();
+
+              // If the VideoPlayerController has finished initialization, use
+              // the data it provides to limit the aspect ratio of the video.
+              return Container(
+                height: size.height * 0.25,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: VideoPlayer(_controller)),
+              );
+            } else {
+              // If the VideoPlayerController is still initializing, show a
+              // loading spinner.
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
+        // ElevatedButton(
+        //     onPressed: () {
+        //       // If the video is playing, pause it.
+        //       if (_controller.value.isPlaying) {
+        //         _controller.pause();
+        //       } else {
+        //         // If the video is paused, play it.
+        //         _controller.play();
+        //       }
+        //       setState(() {});
+        //     },
+        //     child: Text('PLAY'))
+      ],
+    );
+  }
+  
 }

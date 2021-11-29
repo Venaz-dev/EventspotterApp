@@ -96,19 +96,19 @@ class _ExploreState extends State<Explore> {
                            SizedBox(
                             width: size.width*0.01,
                           ),
-                         Smallbutton(
+                        //  Smallbutton(
                              
 
                               
-                              icon: FontAwesomeIcons.slidersH,
+                        //       icon: FontAwesomeIcons.slidersH,
 
-                              onpressed: () {
-                                setState(() {
-                                  swap = screens.filter;
-                                });
-                              },
+                        //       onpressed: () {
+                        //         setState(() {
+                        //           swap = screens.filter;
+                        //         });
+                        //       },
                             
-                          ),
+                        //   ),
                         ],
                       ),
                    ),
