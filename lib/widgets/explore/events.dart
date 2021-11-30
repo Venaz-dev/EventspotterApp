@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
+import 'package:event_spotter/models/eventTypeModel.dart';
 import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/event_details_page.dart';
 import 'package:event_spotter/pages/explore.dart';
@@ -33,17 +34,20 @@ class _EventssState extends State<Eventss> {
   bool active = false;
   String isFollow = "follow";
   late String id;
+  late EventTypeModel _eventTypeModel;
   String urlEvent = "https://theeventspotter.com/api/getEvents";
   String Favourite = "https://theeventspotter.com/api/favrouite";
   String UnFavourite = "https://theeventspotter.com/api/unfavrouit";
   String MainUrl = "https://theeventspotter.com/";
   String PostlikeUrl = "https://theeventspotter.com/api/like";
+  
   @override
   void initState() {
     super.initState();
     getEvetns().whenComplete(() {
       setState(() {});
     });
+   
   }
 
   @override
@@ -381,14 +385,16 @@ class _EventssState extends State<Eventss> {
             size: 16,
           ),
           onPressed: () async {
-           vv= await postThumbs(_eventsModel.data[index].events.id);
             setState(() {
+              print("insde setstate");
               likecount = vv;
             });
-           
+            print('asdf');
+            vv = await postThumbs(_eventsModel.data[index].events.id);
+            print('HELLO G $vv');
           },
         ),
-         Text(likecount),
+        Text(likecount),
       ],
     );
   }
@@ -535,26 +541,25 @@ class _EventssState extends State<Eventss> {
     }
   }
 
-  postThumbs(int id) async {
+  Future<String> postThumbs(int id) async {
     String count = "0";
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
-    FormData formData = new FormData.fromMap({
+    FormData formData = FormData.fromMap({
       "event_id": id,
     });
     _dio.options.headers["Authorization"] = "Bearer ${_token}";
-    _dio.post(PostlikeUrl, data: formData).then((value) {
-      if (value.data['success'] == true) {
-        print("///////////////??????????????????");
-        setState(() {
-          count = value.data['totalLikes'].toString();
-        });
-      } else {
-        count = "0";
-      }
-    });
+    Response response = await _dio.post(PostlikeUrl, data: formData);
+    if (response.data['success']) {
+      count = response.data['totalLikes'].toString();
+      print('Hasdf');
+    } else {
+      print('ERROR');
+    }
     return count;
   }
+
+
 }
 
 class VideoPlayerScreenn extends StatefulWidget {

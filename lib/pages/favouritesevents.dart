@@ -207,16 +207,18 @@ class _FeventsState extends State<Fevents> {
         print("inside has data past events");
         _favouriteUpcomingEventsModel =
             FavouriteUpcomingEventsModel.fromJson(response.data);
+        test1 = true;
       } else {
         print('Empty nahi ha hai');
-        setState(() {
-          test1 = true;
-        });
+        test1 = false;
       }
     } catch (e) {
       print(e.toString());
     } finally {
       _isLoading = false;
+      setState(() {
+        
+      });
     }
   }
 
@@ -233,16 +235,20 @@ class _FeventsState extends State<Fevents> {
         print("inside has data past events");
         _favouritePastEventsModel =
             FavouritePastEventsModel.fromJson(response.data);
+        test2 = true;
       } else {
-        setState(() {
-          test2 = true;
-        });
+        test2 = false;
+
         print('Empty nahi ha hai');
       }
     } catch (e) {
       print(e.toString());
     } finally {
+      
       _isLoading = false;
+      setState(() {
+        
+      });
     }
   }
 

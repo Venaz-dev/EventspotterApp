@@ -23,6 +23,7 @@ class _ExploreState extends State<Explore> {
   String? Lat;
   String? _name;
   String? _email1;
+  
   String? _token;
   late Response response;
   final TextEditingController _search = TextEditingController();
