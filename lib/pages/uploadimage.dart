@@ -194,9 +194,9 @@ class _UploadimageState extends State<Uploadimage> {
                       width: double.infinity,
                       coloring: const Color(0xFF304747),
                       onpressed: () async {
-                        setState(() {
-                          _isloading = true;
-                        });
+                        // setState(() {
+                        //   _isloading = true;
+                        // });
                         await UploadLiveFeed();
                         Navigator.pop(context);
                       }),
@@ -261,6 +261,7 @@ class _UploadimageState extends State<Uploadimage> {
   }
 
   UploadLiveFeed() async {
+    _isloading = true;
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
     String fileName = imagePath!.path.split('/').last;
@@ -274,7 +275,7 @@ class _UploadimageState extends State<Uploadimage> {
       "path": file
     });
     response = await _dio.post(uploadLiveFeeds, data: formData);
-    print('lj');
+    print(response.data);
     try {
       if (response.data["success"] == true) {
         print(response.data);

@@ -4,7 +4,6 @@ import 'package:event_spotter/models/eventTypeModel.dart';
 import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/event_details_page.dart';
 import 'package:event_spotter/pages/explore.dart';
-import 'package:event_spotter/pages/timeago.dart';
 import 'package:event_spotter/pages/userprofile.dart';
 import 'package:event_spotter/widgets/explore/comment.dart';
 import 'package:event_spotter/widgets/explore/livefeed.dart';
@@ -40,14 +39,13 @@ class _EventssState extends State<Eventss> {
   String UnFavourite = "https://theeventspotter.com/api/unfavrouit";
   String MainUrl = "https://theeventspotter.com/";
   String PostlikeUrl = "https://theeventspotter.com/api/like";
-  
+
   @override
   void initState() {
     super.initState();
     getEvetns().whenComplete(() {
       setState(() {});
     });
-   
   }
 
   @override
@@ -86,7 +84,6 @@ class _EventssState extends State<Eventss> {
                               builder: (context) => Eventdetailing(
                                     model: _eventsModel,
                                     indexs: index,
-                                   
                                   )));
                         },
                         child: Container(
@@ -165,6 +162,7 @@ class _EventssState extends State<Eventss> {
                                       if (active == isLiked) {
                                         setState(() {
                                           active = !active;
+                                          print(active);
                                         });
                                         return PostLike(index,
                                             _eventsModel.data[index].events.id);
@@ -559,8 +557,6 @@ class _EventssState extends State<Eventss> {
     }
     return count;
   }
-
-
 }
 
 class VideoPlayerScreenn extends StatefulWidget {

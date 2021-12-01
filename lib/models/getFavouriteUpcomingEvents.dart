@@ -58,13 +58,13 @@ class Events {
     required this.location,
     required this.lat,
     required this.lng,
-    required this.conditions,
+   // required this.conditions,
     required this.userId,
     required this.isPublic,
     required this.createdAt,
     required this.updatedAt,
     required this.isDrafted,
-     this.ticketLink,
+    required this.ticketLink,
     required this.eventPictures,
     required this.user,
     required this.comment,
@@ -79,39 +79,39 @@ class Events {
   late final String location;
   late final String lat;
   late final String lng;
-  late final List<String> conditions;
+ // late final List<String> conditions;
   late final String userId;
   late final String isPublic;
   late final String createdAt;
   late final String updatedAt;
   late final String isDrafted;
-  late final Null ticketLink;
+  late final String ticketLink;
   late final List<EventPictures> eventPictures;
   late final User user;
-  late final List<dynamic> comment;
-  late final List<dynamic> like;
+  late final List<Comment> comment;
+  late final List<Like> like;
   late final List<dynamic> livefeed;
   
   Events.fromJson(Map<String, dynamic> json){
     id = json['id'];
     eventName = json['event_name'];
     eventDescription = json['event_description'];
-    eventType = json['event_type'];
-    eventDate = json['event_date'];
-    location = json['location'];
+    eventType = json['event_type']??"";
+    eventDate = json['event_date']??"";
+    location = json['location']??"";
     lat = json['lat'];
     lng = json['lng'];
-    conditions = List.castFrom<dynamic, String>(json['conditions']);
+ //   conditions = List.castFrom<dynamic, String>(json['conditions']);
     userId = json['user_id'];
     isPublic = json['is_public'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     isDrafted = json['is_drafted'];
-    ticketLink = null;
+    ticketLink = json['ticket_link'];
     eventPictures = List.from(json['event_pictures']).map((e)=>EventPictures.fromJson(e)).toList();
     user = User.fromJson(json['user']);
-    comment = List.castFrom<dynamic, dynamic>(json['comment']);
-    like = List.castFrom<dynamic, dynamic>(json['like']);
+    comment = List.from(json['comment']).map((e)=>Comment.fromJson(e)).toList();
+    like = List.from(json['like']).map((e)=>Like.fromJson(e)).toList();
     livefeed = List.castFrom<dynamic, dynamic>(json['livefeed']);
   }
 
@@ -125,7 +125,7 @@ class Events {
     _data['location'] = location;
     _data['lat'] = lat;
     _data['lng'] = lng;
-    _data['conditions'] = conditions;
+  //  _data['conditions'] = conditions;
     _data['user_id'] = userId;
     _data['is_public'] = isPublic;
     _data['created_at'] = createdAt;
@@ -134,8 +134,8 @@ class Events {
     _data['ticket_link'] = ticketLink;
     _data['event_pictures'] = eventPictures.map((e)=>e.toJson()).toList();
     _data['user'] = user.toJson();
-    _data['comment'] = comment;
-    _data['like'] = like;
+    _data['comment'] = comment.map((e)=>e.toJson()).toList();
+    _data['like'] = like.map((e)=>e.toJson()).toList();
     _data['livefeed'] = livefeed;
     return _data;
   }
@@ -186,17 +186,18 @@ class User {
     required this.phoneNumber,
     required this.createdAt,
     required this.updatedAt,
-     this.profileImage,
-    required this.mobileIsPrivate,
     required this.avatar,
     required this.messengerColor,
     required this.darkMode,
     required this.activeStatus,
+     this.profileImage,
+    required this.mobileIsPrivate,
     required this.role,
      this.isBlock,
     required this.useLocation,
     required this.allowDirectMessage,
     required this.profilePrivate,
+    required this.lastSeen,
      this.profilePicture,
     required this.followers,
   });
@@ -210,19 +211,20 @@ class User {
   late final String phoneNumber;
   late final String createdAt;
   late final String updatedAt;
-  late final Null profileImage;
-  late final String mobileIsPrivate;
   late final String avatar;
   late final String messengerColor;
   late final String darkMode;
   late final String activeStatus;
+  late final Null profileImage;
+  late final String mobileIsPrivate;
   late final String role;
   late final Null isBlock;
   late final String useLocation;
   late final String allowDirectMessage;
   late final String profilePrivate;
-  ProfilePicture ? profilePicture;
-  late final List<dynamic> followers;
+  late final String lastSeen;
+   ProfilePicture? profilePicture;
+  late final List<Followers> followers;
   
   User.fromJson(Map<String, dynamic> json){
     id = json['id'];
@@ -235,18 +237,19 @@ class User {
     phoneNumber = json['phone_number'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    profileImage = null;
-    mobileIsPrivate = json['mobile_is_private'];
     avatar = json['avatar'];
     messengerColor = json['messenger_color'];
     darkMode = json['dark_mode'];
     activeStatus = json['active_status'];
+    profileImage = null;
+    mobileIsPrivate = json['mobile_is_private'];
     role = json['role'];
     isBlock = null;
     useLocation = json['use_location'];
     allowDirectMessage = json['allow_direct_message'];
     profilePrivate = json['profile_private'];
-     if (json['profile_picture'] != null) {
+    lastSeen = json['last_seen'];
+    if (json['profile_picture'] != null) {
       profilePicture = (ProfilePicture.fromJson(json['profile_picture']));
     } else {
       profilePicture = ProfilePicture(
@@ -256,7 +259,7 @@ class User {
           createdAt: "112",
           updatedAt: "12332");
     }
-    followers = List.castFrom<dynamic, dynamic>(json['followers']);
+    followers = List.from(json['followers']).map((e)=>Followers.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -271,19 +274,20 @@ class User {
     _data['phone_number'] = phoneNumber;
     _data['created_at'] = createdAt;
     _data['updated_at'] = updatedAt;
-    _data['profile_image'] = profileImage;
-    _data['mobile_is_private'] = mobileIsPrivate;
     _data['avatar'] = avatar;
     _data['messenger_color'] = messengerColor;
     _data['dark_mode'] = darkMode;
     _data['active_status'] = activeStatus;
+    _data['profile_image'] = profileImage;
+    _data['mobile_is_private'] = mobileIsPrivate;
     _data['role'] = role;
     _data['is_block'] = isBlock;
     _data['use_location'] = useLocation;
     _data['allow_direct_message'] = allowDirectMessage;
     _data['profile_private'] = profilePrivate;
+    _data['last_seen'] = lastSeen;
     _data['profile_picture'] = profilePicture;
-    _data['followers'] = followers;
+    _data['followers'] = followers.map((e)=>e.toJson()).toList();
     return _data;
   }
 }
@@ -314,6 +318,117 @@ class ProfilePicture {
     final _data = <String, dynamic>{};
     _data['id'] = id;
     _data['image'] = image;
+    _data['user_id'] = userId;
+    _data['created_at'] = createdAt;
+    _data['updated_at'] = updatedAt;
+    return _data;
+  }
+}
+
+class Followers {
+  Followers({
+    required this.id,
+    required this.userId,
+    required this.followerId,
+    required this.followingId,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+  late final int id;
+  late final String userId;
+  late final String followerId;
+  late final String followingId;
+  late final String createdAt;
+  late final String updatedAt;
+  
+  Followers.fromJson(Map<String, dynamic> json){
+    id = json['id'];
+    userId = json['user_id'];
+    followerId = json['follower_id'];
+    followingId = json['following_id'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['user_id'] = userId;
+    _data['follower_id'] = followerId;
+    _data['following_id'] = followingId;
+    _data['created_at'] = createdAt;
+    _data['updated_at'] = updatedAt;
+    return _data;
+  }
+}
+
+class Comment {
+  Comment({
+    required this.id,
+    required this.eventId,
+    required this.userId,
+     this.comment,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.user,
+  });
+  late final int id;
+  late final String eventId;
+  late final String userId;
+  late final String? comment;
+  late final String createdAt;
+  late final String updatedAt;
+  late final User user;
+  
+  Comment.fromJson(Map<String, dynamic> json){
+    id = json['id'];
+    eventId = json['event_id'];
+    userId = json['user_id'];
+    comment = json['comment']??"";
+    createdAt = json['created_at']??"";
+    updatedAt = json['updated_at']??"";
+    user = User.fromJson(json['user']);
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['event_id'] = eventId;
+    _data['user_id'] = userId;
+    _data['comment'] = comment;
+    _data['created_at'] = createdAt;
+    _data['updated_at'] = updatedAt;
+    _data['user'] = user.toJson();
+    return _data;
+  }
+}
+
+class Like {
+  Like({
+    required this.id,
+    required this.eventId,
+    required this.userId,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+  late final int id;
+  late final String eventId;
+  late final String userId;
+  late final String createdAt;
+  late final String updatedAt;
+  
+  Like.fromJson(Map<String, dynamic> json){
+    id = json['id'];
+    eventId = json['event_id'];
+    userId = json['user_id'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['event_id'] = eventId;
     _data['user_id'] = userId;
     _data['created_at'] = createdAt;
     _data['updated_at'] = updatedAt;
