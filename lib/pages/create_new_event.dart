@@ -1,8 +1,6 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:event_spotter/models/eventTypeModel.dart';
-import 'package:event_spotter/widgets/conditions.dart';
 import 'package:event_spotter/widgets/elevatedbutton.dart';
 import 'package:event_spotter/widgets/smallButton.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
@@ -31,8 +29,7 @@ class _CreateeventState extends State<Createevent> {
   late String _token;
   late EventTypeModel _eventTypeModel;
   String getEventTypesUrl = "https://theeventspotter.com/api/getEventTypes";
-  String createEventUrl = "https://theeventspotter.com/api/getEventTypes";
-
+  String createEventUrl = "https://theeventspotter.com/api/createEvent";
   late Response response;
   String? value;
   late String latt;
@@ -480,28 +477,29 @@ class _CreateeventState extends State<Createevent> {
                       const SizedBox(
                         height: 20,
                       ),
-                      const Elevatedbutton(
+                      Elevatedbutton(
                         text: "Create",
                         width: double.infinity,
                         coloring: Color(0xFF304747),
                         textColor: Color(0XFFFFFFFF),
+                        primary: Color(0xFF304747),
+                        onpressed: () {
+                          setState(() {
+                            _isloading = !_isloading;
+                          });
+
+                          postCreatEvent();
+                          // venue.clear();
+                          // link.clear();
+                          // eventDescription.clear();
+                          // eventname.clear();
+                        },
                       ),
                       const SizedBox(
                         height: 10,
                       ),
                       Elevatedbutton(
-                        onpressed: () {
-                           setState(() {
-                            _isloading = !_isloading;
-                          });
-                          
-                           postCreatEvent();
-                          // venue.clear();
-                          // link.clear();
-                          // eventDescription.clear();
-                          // eventname.clear();
-                         
-                        },
+                        onpressed: () {},
                         textColor: const Color(0XFF74ABB0),
                         coloring: Colors.white,
                         text: "Save as draft",
@@ -616,6 +614,8 @@ class _CreateeventState extends State<Createevent> {
   {
     String fileName = imagePath!.path.split('/').last;
 
+    print('condtions length ${conditions.length}');
+// return;
     var file =
         await MultipartFile.fromFile(imagePath!.path, filename: fileName);
     _sharedPreferences = await SharedPreferences.getInstance();
@@ -634,12 +634,13 @@ class _CreateeventState extends State<Createevent> {
       "conditions": conditions,
       'image': file,
     });
+
     response = await _dio.post(createEventUrl, data: formData);
+    print('lj');
     try {
       if (response.data["success"] == true) {
         print(response.data);
         print("Data Send");
-        _isloading = false;
         showToaster("Event Created");
       } else {
         print("event not created");
@@ -647,6 +648,7 @@ class _CreateeventState extends State<Createevent> {
     } catch (e) {
       print(e.toString());
     } finally {
+      _isloading = false;
       setState(() {});
     }
   }
@@ -761,7 +763,7 @@ class _VideoPlayerScree1State extends State<VideoPlayerScree1> {
               // If the VideoPlayerController has finished initialization, use
               // the data it provides to limit the aspect ratio of the video.
               return Container(
-                height: size.height * 0.25,
+                height: size.height * 0.2,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),

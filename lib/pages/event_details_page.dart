@@ -1,15 +1,20 @@
+import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/pages/explore.dart';
+import 'package:event_spotter/pages/uploadimage.dart';
 import 'package:event_spotter/widgets/elevatedbutton.dart';
 import 'package:event_spotter/widgets/map.dart';
 import 'package:event_spotter/widgets/smallbutton.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:like_button/like_button.dart';
 import 'package:video_player/video_player.dart';
+
+enum livefeed { details, livesnaps }
 
 class Eventdetailing extends StatefulWidget {
   EventsModel? model;
@@ -26,6 +31,7 @@ class Eventdetailing extends StatefulWidget {
 }
 
 class _EventdetailingState extends State<Eventdetailing> {
+  livefeed swapping = livefeed.details;
   @override
   void initState() {
     super.initState();
@@ -60,7 +66,6 @@ class _EventdetailingState extends State<Eventdetailing> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Smallbutton(
-                    //   size: size.height * 0.,
                     icon: FontAwesomeIcons.arrowLeft,
                     onpressed: () {
                       Navigator.of(context).pop();
@@ -68,17 +73,13 @@ class _EventdetailingState extends State<Eventdetailing> {
                   ),
                   ConstrainedBox(
                     constraints:
-                        BoxConstraints.tightFor(width: size.width * 0.5),
+                        BoxConstraints.tightFor(width: size.width * 0.7),
                     child: Textform(
                       controller: _search,
                       icon: Icons.search,
                       label: "Search",
                       color: const Color(0XFFECF2F3),
                     ),
-                  ),
-                  const Smallbutton(
-                    // size: size.height * 0.08,
-                    icon: FontAwesomeIcons.slidersH,
                   ),
                 ],
               ),
@@ -282,40 +283,44 @@ class _EventdetailingState extends State<Eventdetailing> {
                           bottom: 0,
                           right: size.width * 0.01,
                           left: size.width * 0.01,
-                          child: Row(
-                            children: [
-                              IntrinsicHeight(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    extras(
-                                        FontAwesomeIcons.thumbsUp,
-                                        widget
-                                            .model!.data[widget.indexs!].isLiked
-                                            .toString(),
-                                        size),
-                                    divider(),
-                                    extras(
-                                        Icons.comment,
-                                        widget.model!.data[widget.indexs!]
-                                            .events.comment.length
-                                            .toString(),
-                                        size),
-                                    // divider(),
-                                    // extras(MdiIcons.share, posts[1]['share'],
-                                    //     size),
-                                    divider(),
-                                    extras(
-                                        Icons.live_tv,
-                                        widget.model!.data[widget.indexs!]
-                                            .events.liveFeed.length
-                                            .toString(),
-                                        size),
-                                  ],
+                          child: IntrinsicHeight(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                extras(
+                                  FontAwesomeIcons.thumbsUp,
+                                  widget.model!.data[widget.indexs!].isLiked
+                                      .toString(),
+                                  size,
+                                  () {},
                                 ),
-                              ),
-                            ],
+                                divider(),
+                                extras(
+                                  Icons.comment,
+                                  widget.model!.data[widget.indexs!].events
+                                      .comment.length
+                                      .toString(),
+                                  size,
+                                  () {},
+                                ),
+                                // divider(),
+                                // extras(MdiIcons.share, posts[1]['share'],
+                                //     size),
+                                divider(),
+                                extras(
+                                  Icons.live_tv,
+                                  widget.model!.data[widget.indexs!].events
+                                      .liveFeed.length
+                                      .toString(),
+                                  size,
+                                  () {
+                                    setState(() {
+                                      swapping = livefeed.livesnaps;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -343,121 +348,181 @@ class _EventdetailingState extends State<Eventdetailing> {
                   ],
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Details",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        widget.model!.data[widget.indexs!].events
-                            .eventDescription,
-                        style: const TextStyle(
-                            color: Colors.black54, fontSize: 16),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Text(
-                        "Conditions",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Wrap(
-                          children: List.generate(
-                              widget.model!.data[widget.indexs!].events
-                                  .conditions.length, (index) {
-                        return widget.model!.data[widget.indexs!].events
-                                    .conditions[index] !=
-                                ''
-                            ? Padding(
-                                padding:
-                                    const EdgeInsets.only(right: 6.0, top: 10),
-                                child: Elevatedbuttons(
-                                  sidecolor: Colors.black,
-                                  coloring: Colors.white,
-                                  text: widget.model!.data[widget.indexs!]
-                                      .events.conditions[index]
-                                      .toString(),
-                                  textColor: Colors.black,
-                                  primary: Colors.white,
-                                  onpressed: () {},
-                                ),
-                              )
-                            : const SizedBox();
-                      })),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Text(
-                        "Location",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Container(
-                        height: size.height * 0.15,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black12,
-                              spreadRadius: 2,
-                              blurRadius: 2,
-                              offset: Offset(
-                                2,
-                                2,
-                              ),
-                            )
-                          ],
-                        ),
-                        child: Map(
-                          lat: widget.model!.data[widget.indexs!].events.lat
-                              .toString(),
-                          long: widget.model!.data[widget.indexs!].events.lng
-                              .toString(),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        widget.model!.data[widget.indexs!].events.location
-                            .toString(),
-                        style: const TextStyle(
-                            color: Colors.black54, fontSize: 16),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      // const Elevatedbutton(
-                      //   text: "Create",
-                      //   width: double.infinity,
-                      //   coloring: Color(0xFF304747),
-                      //   textColor: Color(0XFFFFFFFF),
-                      // ),
-                    ],
-                  ),
-                ),
               ),
+              calloflivesnaps(size),
             ],
           ),
         ),
       ),
     ));
+  }
+
+  Widget calloflivesnaps(Size size) {
+    switch (swapping) {
+      case livefeed.details:
+        return personaldetails(size);
+
+      case livefeed.livesnaps:
+        return livesnaps(size);
+    }
+  }
+
+  Widget personaldetails(Size size) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Details",
+            style: TextStyle(
+                color: Colors.black, fontSize: 17, fontWeight: FontWeight.w500),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Text(
+            widget.model!.data[widget.indexs!].events.eventDescription,
+            style: const TextStyle(color: Colors.black54, fontSize: 16),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const Text(
+            "Conditions",
+            style: TextStyle(
+                color: Colors.black, fontSize: 17, fontWeight: FontWeight.w500),
+          ),
+          Wrap(
+              children: List.generate(
+                  widget.model!.data[widget.indexs!].events.conditions.length,
+                  (index) {
+            return widget
+                        .model!.data[widget.indexs!].events.conditions[index] !=
+                    ''
+                ? Padding(
+                    padding: const EdgeInsets.only(right: 6.0, top: 10),
+                    child: Elevatedbuttons(
+                      sidecolor: Colors.black,
+                      coloring: Colors.white,
+                      text: widget
+                          .model!.data[widget.indexs!].events.conditions[index]
+                          .toString(),
+                      textColor: Colors.black,
+                      primary: Colors.white,
+                      onpressed: () {},
+                    ),
+                  )
+                : const SizedBox();
+          })),
+          const SizedBox(
+            height: 20,
+          ),
+          const Text(
+            "Location",
+            style: TextStyle(
+                color: Colors.black, fontSize: 12, fontWeight: FontWeight.w500),
+          ),
+          Container(
+            height: size.height * 0.15,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  spreadRadius: 2,
+                  blurRadius: 2,
+                  offset: Offset(
+                    2,
+                    2,
+                  ),
+                )
+              ],
+            ),
+            child: Map(
+              lat: widget.model!.data[widget.indexs!].events.lat.toString(),
+              long: widget.model!.data[widget.indexs!].events.lng.toString(),
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Text(
+            widget.model!.data[widget.indexs!].events.location.toString(),
+            style: const TextStyle(color: Colors.black54, fontSize: 16),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          // const Elevatedbutton(
+          //   text: "Create",
+          //   width: double.infinity,
+          //   coloring: Color(0xFF304747),
+          //   textColor: Color(0XFFFFFFFF),
+          // ),
+        ],
+      ),
+    );
+  }
+
+  Widget livesnaps(Size size) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: Colors.white,
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black12,
+            spreadRadius: 0.5,
+            blurRadius: 0.5,
+            offset: Offset(0, 0),
+          )
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Livefeed",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                    children: List.generate(2, (index) {
+                  return Container(
+                    height: size.height * 0.15,
+                    width: size.width * 0.25,
+                    decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(10)),
+                    // child: Image.file(
+                    //                 imagePath!,
+                    //),
+                  );
+                }))),
+            const SizedBox(
+              height: 20,
+            ),
+            Elevatedbutton(
+                primary: const Color(0xFF304747),
+                text: "Upload Picture/Video",
+                width: double.infinity,
+                coloring: const Color(0xFF304747),
+                onpressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const Uploadimage()));
+                }),
+          ],
+        ),
+      ),
+    );
   }
 
   flaggedOrLiked(Size size, IconData icon) {
@@ -472,7 +537,7 @@ class _EventdetailingState extends State<Eventdetailing> {
     );
   }
 
-  extras(IconData icon, String totalcount, Size size) {
+  extras(IconData icon, String totalcount, Size size, VoidCallback press) {
     return Row(
       children: [
         IconButton(
@@ -480,7 +545,7 @@ class _EventdetailingState extends State<Eventdetailing> {
             icon,
             size: 16,
           ),
-          onPressed: () {},
+          onPressed: press,
         ),
         Text(totalcount),
       ],
@@ -497,220 +562,6 @@ class _EventdetailingState extends State<Eventdetailing> {
   }
 }
 
-// body: Padding(
-//   padding: const EdgeInsets.only(right : 30.0 , left : 30),
-//   child: Column(
-//     children: [
-//       Row(
-//       //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [
-
-//           Smallbutton(
-//         size: size.height * 0.06, icon :  FontAwesomeIcons.arrowLeft , onpressed: (){
-//           Navigator.of(context).pop();
-//         },
-//   ),
-
-//  const  SizedBox(width: 5,),
-//            ConstrainedBox(
-//                     constraints:
-//                         BoxConstraints.tightFor(width: size.width * 0.5),
-//                     child: Textform(
-//                       controller: _search,
-//                       icon: Icons.search,
-//                       label: "Search",
-//                       color: const Color(0XFFECF2F3),
-//                     ),
-//                   ),
-//                 const SizedBox(width: 5,),
-//                   Expanded(
-//                     child: Smallbutton(size:size.height*0.08  , icon: FontAwesomeIcons.slidersH,),
-//                   ),
-//         ],
-//       ),
-
-//       Container(
-//             height: size.height * 0.38,
-//             width: size.width * double.infinity,
-//             decoration: BoxDecoration(
-//               color: const Color(0XFFFFFFFF),
-//               borderRadius: BorderRadius.circular(15),
-//             ),
-//             child: Column(children: [
-//               Container(
-//                 height: size.height * 0.25,
-//                 width: size.width * double.infinity,
-//                 decoration: BoxDecoration(
-//                     borderRadius: BorderRadius.circular(15),
-//                     image: DecorationImage(
-//                         image: NetworkImage(widget.networkImage!),
-//                         fit: BoxFit.cover)),
-//                 child: Stack(children: [
-//                   Positioned(
-//                     right: 20,
-//                     top: 10,
-//                     child: Container(
-//                       height: size.height * 0.04,
-//                       width: size.width * 0.25,
-//                       // decoration: const BoxDecoration(color: Color(0XFF38888E)),
-//                       child: ElevatedButton(
-//                           onPressed: () {},
-//                           style: ElevatedButton.styleFrom(
-//                             primary: const Color(0XFF38888E),
-//                           ),
-//                           child: Row(
-//                             children: [
-//                               const Icon(
-//                                 FontAwesomeIcons.userPlus,
-//                                 size: 10,
-//                               ),
-//                               const SizedBox(
-//                                 width: 10,
-//                               ),
-//                               Text(widget.isfollow!),
-//                             ],
-//                           )),
-//                     ),
-//                   ),
-//                   Positioned(
-//                     top: 70,
-//                     right: 20,
-//                     child: Column(children: [
-//                       flaggedOrLiked(size, FontAwesomeIcons.heart),
-//                       const SizedBox(
-//                         height: 10,
-//                       ),
-//                       flaggedOrLiked(size, FontAwesomeIcons.flag),
-//                     ]),
-//                   ),
-//                   Column(
-//                     mainAxisAlignment: MainAxisAlignment.end,
-//                     children: [
-//                       Padding(
-//                         padding: const EdgeInsets.only(
-//                             right: 10.0, left: 10, bottom: 10),
-//                         child: Row(
-//                           mainAxisAlignment:
-//                               MainAxisAlignment.spaceBetween,
-//                           children: [
-//                             Button(
-//                                 title: widget.uploaderName!,
-//                                 radiusofbutton:
-//                                     BorderRadius.circular(10),
-//                                 profileImage: widget.uploaderimage!),
-//                             const SizedBox(
-//                               width: 10,
-//                             ),
-//                             Button(
-//                               radiusofbutton: BorderRadius.circular(10),
-//                               icon: FontAwesomeIcons.userPlus,
-//                               title:widget.followers!,
-//                             )
-//                           ],
-//                         ),
-//                       ),
-//                     ],
-//                   )
-//                 ]),
-//               ),
-//               Container(
-//                 height: size.height * 0.12,
-//                 width: double.infinity,
-//                 decoration: const BoxDecoration(),
-//                 child: Stack(
-//                   children: [
-//                     Positioned(
-//                       top: 10,
-//                       right: 10,
-//                       child: Row(
-//                         mainAxisAlignment: MainAxisAlignment.end,
-//                         children: [
-//                           const Icon(
-//                             FontAwesomeIcons.calendar,
-//                             size: 15,
-//                             color: Colors.black54,
-//                           ),
-//                           Text(
-//                            widget.takingplace!,
-//                             style:
-//                                 const TextStyle(color: Colors.black87),
-//                           ),
-//                           const SizedBox(
-//                             width: 20,
-//                           ),
-//                           const Icon(
-//                             FontAwesomeIcons.mapMarkerAlt,
-//                             size: 15,
-//                             color: Colors.black54,
-//                           ),
-//                           Text(widget.distance!,
-//                               style: const TextStyle(
-//                                   color: Colors.black87)),
-//                         ],
-//                       ),
-//                     ),
-//                     Positioned(
-//                         top: 40,
-//                         child: Padding(
-//                           padding: const EdgeInsets.only(left: 20.0),
-//                           child: Text(
-//                             widget.description,
-//                             style: const TextStyle(
-//                                 fontSize: 20,
-//                                 color: Colors.black,
-//                                 fontWeight: FontWeight.w400),
-//                           ),
-//                         )),
-//                     const SizedBox(
-//                       height: 10,
-//                     ),
-//                     Column(
-//                       mainAxisAlignment: MainAxisAlignment.end,
-//                       children: [
-//                         Padding(
-//                           padding: const EdgeInsets.only(
-//                               left: 20.0, right: 50),
-//                           child: Row(
-//                             mainAxisAlignment:
-//                                 MainAxisAlignment.spaceBetween,
-//                             children: [
-//                               extras(FontAwesomeIcons.thumbsUp,
-//                                  widget.like!, size),
-//                               Container(
-//                                 height: size.height * 0.02,
-//                                 width: size.width * 0.003,
-//                                 color: Colors.black26,
-//                               ),
-//                               extras(FontAwesomeIcons.commentAlt,
-//                                  widget.comment!, size),
-//                               Container(
-//                                 height: size.height * 0.02,
-//                                 width: size.width * 0.003,
-//                                 color: Colors.black26,
-//                               ),
-//                               extras(FontAwesomeIcons.share,
-//                                  widget.share!, size),
-//                               Container(
-//                                 height: size.height * 0.02,
-//                                 width: size.width * 0.003,
-//                                 color: Colors.black26,
-//                               ),
-//                               extras(FontAwesomeIcons.tv,
-//                                   widget.views!, size),
-//                             ],
-//                           ),
-//                         ),
-//                       ],
-//                     )
-//                   ],
-//                 ),
-//               )
-//             ]),
-//           ),
-//     ],
-//   ),
-// ),
-// ),
 class VideoPlayerScreem extends StatefulWidget {
   VideoPlayerScreem({Key? key, required this.url}) : super(key: key);
   late String url;

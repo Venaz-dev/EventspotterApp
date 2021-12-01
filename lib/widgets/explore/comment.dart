@@ -483,9 +483,13 @@ class _CommentbypersonState extends State<Commentbyperson> {
                         primary: const Color(0xFF3BACEC),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
-                    onPressed: ()async {
-                       await PostComment(widget.eventId);
-                      clearText();
+                    onPressed: () async {
+                      if (_comment.text.isEmpty) {
+                        showToaster("please write the comment");
+                      } else {
+                        await PostComment(widget.eventId);
+                        clearText();
+                      }
                     },
                     child: const Text('Comment')),
               ],

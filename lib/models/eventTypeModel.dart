@@ -40,9 +40,9 @@ class Data {
   Data.fromJson(Map<String, dynamic> json){
     id = json['id'];
     type = json['type'];
-    isActive = json['is_active'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+    isActive = json['is_active']??"";
+    createdAt = json['created_at']??"";
+    updatedAt = json['updated_at']??"";
   }
 
   Map<String, dynamic> toJson() {

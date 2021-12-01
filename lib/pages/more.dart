@@ -1,4 +1,3 @@
-import 'package:event_spotter/pages/eventsattended.dart';
 import 'package:event_spotter/pages/favouritesevents.dart';
 import 'package:event_spotter/pages/followers.dart';
 import 'package:event_spotter/pages/following.dart';
@@ -39,8 +38,8 @@ class More extends StatelessWidget {
                     children:   [
                       Containers(background: Colors.white , icon: FontAwesomeIcons.calendarTimes ,name: "Your events",onPresses: (){Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const Yevents()));},),
                      Containers(background: Colors.white ,icon: FontAwesomeIcons.heart ,name: "Favorite events",onPresses: (){Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const Fevents()));},),
-                      Containers(background: Colors.white ,icon: FontAwesomeIcons.userPlus ,name: "Followers",onPresses: (){Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const Following()));},),
-                    Containers(background: Colors.white ,icon: FontAwesomeIcons.userCheck, name: "Following", onPresses: (){Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const   Followers()));
+                      Containers(background: Colors.white ,icon: FontAwesomeIcons.userPlus ,name: "Follower",onPresses: (){Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const Following()));},),
+                    Containers(background: Colors.white ,icon: FontAwesomeIcons.userCheck, name: "Following", onPresses: (){Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const   Follower()));
                     }),
                     // Containers(background: Colors.white , icon: FontAwesomeIcons.calendarCheck, name: "Events you attended",onPresses: (){Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const Eventsattended()));},),
                   ],

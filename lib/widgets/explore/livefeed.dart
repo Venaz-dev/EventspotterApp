@@ -22,7 +22,7 @@ class _LivefeedsState extends State<Livefeeds> {
   void initState() {
     super.initState();
     lenght = widget.eventsLiveFeeds.length;
-    print(widget.eventsLiveFeeds[0]);
+   // print(widget.eventsLiveFeeds[0]);
     // print('hello g $lenght');
     //lenght = lenght - 1;
     // print(lenght);

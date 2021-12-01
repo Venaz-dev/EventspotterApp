@@ -216,9 +216,7 @@ class _FeventsState extends State<Fevents> {
       print(e.toString());
     } finally {
       _isLoading = false;
-      setState(() {
-        
-      });
+      setState(() {});
     }
   }
 
@@ -244,185 +242,190 @@ class _FeventsState extends State<Fevents> {
     } catch (e) {
       print(e.toString());
     } finally {
-      
       _isLoading = false;
-      setState(() {
-        
-      });
+      setState(() {});
     }
   }
 
   upcoming(Size size) {
     if (test1 == true) {
-      Padding(
-        padding: EdgeInsets.only(right: size.width * 0.05),
-        child: Column(
-          children:
-              List.generate(_favouriteUpcomingEventsModel.data.length, (index) {
-            return Padding(
-              padding: EdgeInsets.only(top: size.height * .01),
-              child: Container(
-                height: size.height * 0.3,
-                width: size.width,
-                decoration: BoxDecoration(
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black12,
-                        spreadRadius: 0.5,
-                        blurRadius: 0.5,
-                        // offset: Offset(2, 2)
-                      )
-                    ],
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      top: size.height * 0.02,
-                      right: size.width * 0.02,
-                      bottom: size.height * 0.02,
-                      left: size.width * 0.02),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        right: 0,
-                        top: 0,
-                        child: likebutton(),
-                      ),
-                      _favouriteUpcomingEventsModel
-                                  .data[index].events.eventPictures[0].imagePath
-                                  .toString()
-                                  .contains('.mp4') ||
-                              _favouriteUpcomingEventsModel
-                                  .data[index].events.eventPictures[0].imagePath
-                                  .toString()
-                                  .contains('.mov')
-                          ? VideoPlayerScreemm(
-                              url: MainUrl +
-                                  _favouriteUpcomingEventsModel.data[index]
-                                      .events.eventPictures[0].imagePath)
-                          : SizedBox(
-                              height: size.height * 0.17,
-                              width: size.width * 0.3,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: CachedNetworkImage(
-                                  imageUrl: MainUrl +
-                                      _favouriteUpcomingEventsModel.data[index]
-                                          .events.eventPictures[0].imagePath,
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  },
+      if (_favouriteUpcomingEventsModel.data.length > 0) {
+        Padding(
+          padding: EdgeInsets.only(right: size.width * 0.05),
+          child: Column(
+            children: List.generate(_favouriteUpcomingEventsModel.data.length,
+                (index) {
+              return Padding(
+                padding: EdgeInsets.only(top: size.height * .01),
+                child: Container(
+                  height: size.height * 0.3,
+                  width: size.width,
+                  decoration: BoxDecoration(
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black12,
+                          spreadRadius: 0.5,
+                          blurRadius: 0.5,
+                          // offset: Offset(2, 2)
+                        )
+                      ],
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        top: size.height * 0.02,
+                        right: size.width * 0.02,
+                        bottom: size.height * 0.02,
+                        left: size.width * 0.02),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          right: 0,
+                          top: 0,
+                          child: likebutton(),
+                        ),
+                        _favouriteUpcomingEventsModel.data[index].events
+                                    .eventPictures[0].imagePath
+                                    .toString()
+                                    .contains('.mp4') ||
+                                _favouriteUpcomingEventsModel.data[index].events
+                                    .eventPictures[0].imagePath
+                                    .toString()
+                                    .contains('.mov')
+                            ? VideoPlayerScreemm(
+                                url: MainUrl +
+                                    _favouriteUpcomingEventsModel.data[index]
+                                        .events.eventPictures[0].imagePath)
+                            : SizedBox(
+                                height: size.height * 0.17,
+                                width: size.width * 0.3,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: CachedNetworkImage(
+                                    imageUrl: MainUrl +
+                                        _favouriteUpcomingEventsModel
+                                            .data[index]
+                                            .events
+                                            .eventPictures[0]
+                                            .imagePath,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
-                            ),
-                      Positioned(
-                        right: 20,
-                        left: size.width * 0.33,
-                        top: size.height * 0.02,
-                        child: Text(
-                          _favouriteUpcomingEventsModel
-                              .data[index].events.eventName,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 17),
+                        Positioned(
+                          right: 20,
+                          left: size.width * 0.33,
+                          top: size.height * 0.02,
+                          child: Text(
+                            _favouriteUpcomingEventsModel
+                                .data[index].events.eventName,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w400, fontSize: 17),
+                          ),
                         ),
-                      ),
-                      Positioned(
-                        top: size.height * 0.14,
-                        left: size.width * 0.33,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            const Icon(
-                              MdiIcons.calendarRange,
-                              size: 15,
-                              color: Colors.black54,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              _favouriteUpcomingEventsModel
-                                  .data[index].events.location,
-                              style: const TextStyle(color: Colors.black87),
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            const Icon(
-                              FontAwesomeIcons.mapMarkerAlt,
-                              size: 15,
-                              color: Colors.black54,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                                _favouriteUpcomingEventsModel.data[index].km +
-                                    " " +
-                                    " " +
-                                    "away",
-                                style: const TextStyle(color: Colors.black87)),
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        top: size.height * 0.18,
-                        child: Row(
-                          children: [
-                            const Icon(
-                              LineAwesomeIcons.user_plus,
-                              size: 20,
-                              color: Colors.black54,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text(_favouriteUpcomingEventsModel
-                                .data[index].events.user.followers.length
-                                .toString()),
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        child: Row(
-                          children: [
-                            IntrinsicHeight(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  extras(
-                                      FontAwesomeIcons.thumbsUp,
-                                      _favouriteUpcomingEventsModel
-                                          .data[index].km,
-                                      size),
-                                  divider(),
-                                  extras(
-                                      Icons.comment, posts[1]['comment'], size),
-                                  divider(),
-                                  extras(
-                                      MdiIcons.share, posts[1]['share'], size),
-                                  divider(),
-                                  extras(
-                                      Icons.live_tv, posts[1]['viewers'], size),
-                                ],
+                        Positioned(
+                          top: size.height * 0.14,
+                          left: size.width * 0.33,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              const Icon(
+                                MdiIcons.calendarRange,
+                                size: 15,
+                                color: Colors.black54,
                               ),
-                            ),
-                          ],
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                _favouriteUpcomingEventsModel
+                                    .data[index].events.location,
+                                style: const TextStyle(color: Colors.black87),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              const Icon(
+                                FontAwesomeIcons.mapMarkerAlt,
+                                size: 15,
+                                color: Colors.black54,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                  _favouriteUpcomingEventsModel.data[index].km +
+                                      " " +
+                                      " " +
+                                      "away",
+                                  style:
+                                      const TextStyle(color: Colors.black87)),
+                            ],
+                          ),
                         ),
-                      )
-                    ],
+                        Positioned(
+                          top: size.height * 0.18,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                LineAwesomeIcons.user_plus,
+                                size: 20,
+                                color: Colors.black54,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(_favouriteUpcomingEventsModel
+                                  .data[index].events.user.followers.length
+                                  .toString()),
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          child: Row(
+                            children: [
+                              IntrinsicHeight(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    extras(
+                                        FontAwesomeIcons.thumbsUp,
+                                        _favouriteUpcomingEventsModel
+                                            .data[index].km,
+                                        size),
+                                    divider(),
+                                    extras(Icons.comment, posts[1]['comment'],
+                                        size),
+                                    divider(),
+                                    extras(MdiIcons.share, posts[1]['share'],
+                                        size),
+                                    divider(),
+                                    extras(Icons.live_tv, posts[1]['viewers'],
+                                        size),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          }),
-        ),
-      );
+              );
+            }),
+          ),
+        );
+      } else {
+        return const Center(child: Text("No Past Events"));
+      }
     } else {
       return const Center(child: Text("No Past Events"));
     }
@@ -430,174 +433,180 @@ class _FeventsState extends State<Fevents> {
 
   past(Size size) {
     if (test2 == true) {
-      Padding(
-        padding: EdgeInsets.only(right: size.width * 0.05),
-        child: Column(
-          children:
-              List.generate(_favouriteUpcomingEventsModel.data.length, (index) {
-            return Padding(
-              padding: EdgeInsets.only(top: size.height * .01),
-              child: Container(
-                height: size.height * 0.3,
-                width: size.width,
-                decoration: BoxDecoration(
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black12,
-                        spreadRadius: 0.5,
-                        blurRadius: 0.5,
-                        // offset: Offset(2, 2)
-                      )
-                    ],
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      top: size.height * 0.02,
-                      right: size.width * 0.02,
-                      bottom: size.height * 0.02,
-                      left: size.width * 0.02),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        right: 0,
-                        top: 0,
-                        child: likebutton(),
-                      ),
-                      _favouritePastEventsModel
-                                  .data[index].events.eventPictures[0].imagePath
-                                  .toString()
-                                  .contains('.mp4') ||
-                              _favouritePastEventsModel
-                                  .data[index].events.eventPictures[0].imagePath
-                                  .toString()
-                                  .contains('.mov')
-                          ? VideoPlayerScreemm(
-                              url: MainUrl +
-                                  _favouritePastEventsModel.data[index].events
-                                      .eventPictures[0].imagePath)
-                          : SizedBox(
-                              height: size.height * 0.17,
-                              width: size.width * 0.3,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: CachedNetworkImage(
-                                  imageUrl: MainUrl +
-                                      _favouritePastEventsModel.data[index]
-                                          .events.eventPictures[0].imagePath,
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  },
+      if (_favouritePastEventsModel.data.length > 0) {
+        Padding(
+          padding: EdgeInsets.only(right: size.width * 0.05),
+          child: Column(
+            children: List.generate(_favouriteUpcomingEventsModel.data.length,
+                (index) {
+              return Padding(
+                padding: EdgeInsets.only(top: size.height * .01),
+                child: Container(
+                  height: size.height * 0.3,
+                  width: size.width,
+                  decoration: BoxDecoration(
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black12,
+                          spreadRadius: 0.5,
+                          blurRadius: 0.5,
+                          // offset: Offset(2, 2)
+                        )
+                      ],
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        top: size.height * 0.02,
+                        right: size.width * 0.02,
+                        bottom: size.height * 0.02,
+                        left: size.width * 0.02),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          right: 0,
+                          top: 0,
+                          child: likebutton(),
+                        ),
+                        _favouritePastEventsModel.data[index].events
+                                    .eventPictures[0].imagePath
+                                    .toString()
+                                    .contains('.mp4') ||
+                                _favouritePastEventsModel.data[index].events
+                                    .eventPictures[0].imagePath
+                                    .toString()
+                                    .contains('.mov')
+                            ? VideoPlayerScreemm(
+                                url: MainUrl +
+                                    _favouritePastEventsModel.data[index].events
+                                        .eventPictures[0].imagePath)
+                            : SizedBox(
+                                height: size.height * 0.17,
+                                width: size.width * 0.3,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: CachedNetworkImage(
+                                    imageUrl: MainUrl +
+                                        _favouritePastEventsModel.data[index]
+                                            .events.eventPictures[0].imagePath,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
-                            ),
-                      Positioned(
-                        right: 20,
-                        left: size.width * 0.33,
-                        top: size.height * 0.02,
-                        child: Text(
-                          _favouritePastEventsModel
-                              .data[index].events.eventName,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 17),
+                        Positioned(
+                          right: 20,
+                          left: size.width * 0.33,
+                          top: size.height * 0.02,
+                          child: Text(
+                            _favouritePastEventsModel
+                                .data[index].events.eventName,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w400, fontSize: 17),
+                          ),
                         ),
-                      ),
-                      Positioned(
-                        top: size.height * 0.14,
-                        left: size.width * 0.33,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            const Icon(
-                              MdiIcons.calendarRange,
-                              size: 15,
-                              color: Colors.black54,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              _favouritePastEventsModel
-                                  .data[index].events.location,
-                              style: const TextStyle(color: Colors.black87),
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            const Icon(
-                              FontAwesomeIcons.mapMarkerAlt,
-                              size: 15,
-                              color: Colors.black54,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                                _favouritePastEventsModel.data[index].km +
-                                    " " +
-                                    " " +
-                                    "away",
-                                style: const TextStyle(color: Colors.black87)),
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        top: size.height * 0.18,
-                        child: Row(
-                          children: [
-                            const Icon(
-                              LineAwesomeIcons.user_plus,
-                              size: 20,
-                              color: Colors.black54,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text(_favouritePastEventsModel
-                                .data[index].events.user.followers.length
-                                .toString()),
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        child: Row(
-                          children: [
-                            IntrinsicHeight(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  extras(
-                                      FontAwesomeIcons.thumbsUp,
-                                      _favouritePastEventsModel.data[index].km,
-                                      size),
-                                  divider(),
-                                  extras(
-                                      Icons.comment, posts[1]['comment'], size),
-                                  divider(),
-                                  extras(
-                                      MdiIcons.share, posts[1]['share'], size),
-                                  divider(),
-                                  extras(
-                                      Icons.live_tv, posts[1]['viewers'], size),
-                                ],
+                        Positioned(
+                          top: size.height * 0.14,
+                          left: size.width * 0.33,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              const Icon(
+                                MdiIcons.calendarRange,
+                                size: 15,
+                                color: Colors.black54,
                               ),
-                            ),
-                          ],
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                _favouritePastEventsModel
+                                    .data[index].events.location,
+                                style: const TextStyle(color: Colors.black87),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              const Icon(
+                                FontAwesomeIcons.mapMarkerAlt,
+                                size: 15,
+                                color: Colors.black54,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                  _favouritePastEventsModel.data[index].km +
+                                      " " +
+                                      " " +
+                                      "away",
+                                  style:
+                                      const TextStyle(color: Colors.black87)),
+                            ],
+                          ),
                         ),
-                      )
-                    ],
+                        Positioned(
+                          top: size.height * 0.18,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                LineAwesomeIcons.user_plus,
+                                size: 20,
+                                color: Colors.black54,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(_favouritePastEventsModel
+                                  .data[index].events.user.followers.length
+                                  .toString()),
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          child: Row(
+                            children: [
+                              IntrinsicHeight(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    extras(
+                                        FontAwesomeIcons.thumbsUp,
+                                        _favouritePastEventsModel
+                                            .data[index].km,
+                                        size),
+                                    divider(),
+                                    extras(Icons.comment, posts[1]['comment'],
+                                        size),
+                                    divider(),
+                                    extras(MdiIcons.share, posts[1]['share'],
+                                        size),
+                                    divider(),
+                                    extras(Icons.live_tv, posts[1]['viewers'],
+                                        size),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          }),
-        ),
-      );
+              );
+            }),
+          ),
+        );
+      }else{
+        return Center(child: Text("No Upcoming Events"));
+      }
     } else {
       return Center(child: Text("No Upcoming Events"));
     }

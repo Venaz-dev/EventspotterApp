@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:event_spotter/models/getProfile.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
@@ -7,8 +9,8 @@ import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:event_spotter/widgets/toaster.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 enum scrolling { personal, settings }
 
@@ -27,13 +29,19 @@ class _ProfileState extends State<Profile> {
   bool _isLoading = true;
   late Response response;
   late String _name;
+  File? imagePath;
+  final ImagePicker _picker = ImagePicker();
   late String _token;
   late String _email1;
+  var totalEvents;
   late GetProfile _getProfile;
 
   late int lenght;
   String url2 = "https://theeventspotter.com/api/logout";
   String getuser = "https://theeventspotter.com/api/profile";
+  String postProfilePicture =
+      "https://theeventspotter.com/api/update-profile-picture";
+
   String MainUrl = "https://theeventspotter.com/";
   final TextEditingController _email = TextEditingController();
   final TextEditingController _phonenumber = TextEditingController();
@@ -183,28 +191,88 @@ class _ProfileState extends State<Profile> {
                                     ),
                                   ),
 
-                                   SizedBox(
-                                    height:size.height * 0.006,
+                                  SizedBox(
+                                    height: size.height * 0.006,
                                   ),
 
                                   Row(
                                     children: [
-                                      Container(
-                                        height: size.height * 0.15,
-                                        width: size.width * 0.15,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            image: DecorationImage(
-                                                image:
-                                                    CachedNetworkImageProvider(
-                                                        profile_pic),
-                                                fit: BoxFit.cover)),
-                                      ),
+                                      imagePath == null
+                                          ? SizedBox(
+                                              height: size.height * 0.1,
+                                              width: size.width * 0.2,
+                                              child: Stack(children: [
+                                                Container(
+                                                  height: size.height * 0.1,
+                                                  width: size.width * 0.2,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle),
+                                                  child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              300.0),
+                                                      child: CachedNetworkImage(
+                                                        imageUrl: profile_pic,
+                                                        fit: BoxFit.cover,
+                                                      )),
+                                                ),
+                                                Positioned(
+                                                    top: size.height * 0.04,
+                                                    left: size.width * 0.11,
+                                                    child: IconButton(
+                                                        onPressed: () {
+                                                          _selectPhoto();
+                                                        },
+                                                        icon: const Icon(
+                                                          Icons.add_a_photo,
+                                                          color:
+                                                              Color(0XFF38888F),
+                                                        )))
+                                              ]),
+                                            )
+                                          : SizedBox(
+                                              height: size.height * 0.1,
+                                              width: size.width * 0.2,
+                                              child: Stack(children: [
+                                                Container(
+                                                  height: size.height * 0.1,
+                                                  width: size.width * 0.2,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle),
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            300.0),
+                                                    child: Image.file(
+                                                      imagePath!,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                    top: size.height * 0.04,
+                                                    left: size.width * 0.11,
+                                                    child: IconButton(
+                                                        onPressed: () {
+                                                          _selectPhoto();
+                                                        },
+                                                        icon: const Icon(
+                                                          Icons.add_a_photo,
+                                                          color:
+                                                              Color(0XFF38888F),
+                                                        )))
+                                              ]),
+                                            ),
                                       const SizedBox(
                                         width: 15,
                                       ),
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             _getProfile.data.name,
@@ -214,7 +282,8 @@ class _ProfileState extends State<Profile> {
                                           ),
                                           Text(
                                             _getProfile.data.email,
-                                            style: const TextStyle(fontSize: 15),
+                                            style:
+                                                const TextStyle(fontSize: 15),
                                           )
                                         ],
                                       )
@@ -233,7 +302,8 @@ class _ProfileState extends State<Profile> {
                                               size,
                                               _getProfile.data.following.length,
                                               'Following'),
-                                          container(size, 4, 'Events'),
+                                          container(
+                                              size, totalEvents, 'Events'),
                                         ],
                                       ),
                                     ),
@@ -263,6 +333,95 @@ class _ProfileState extends State<Profile> {
               ),
       ),
     );
+  }
+
+  Future _selectPhoto() async {
+    await showModalBottomSheet(
+        context: context,
+        builder: (context) => BottomSheet(
+              builder: (context) => Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                      leading: const Icon(Icons.camera),
+                      title: const Text('Camera'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        _pickImage(ImageSource.camera);
+                      }),
+                  ListTile(
+                      leading: const Icon(Icons.filter),
+                      title: const Text('Pick a file'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        _pickImage(ImageSource.gallery);
+                      }),
+                  // ListTile(
+                  //     leading: const Icon(Icons.camera),
+                  //     title: const Text('video'),
+                  //     onTap: () {
+                  //       Navigator.of(context).pop();
+                  //       _pickvideo(ImageSource.gallery);
+                  //     }),
+                ],
+              ),
+              onClosing: () {},
+            ));
+  }
+
+  PostProfilePicture() async {
+    String fileName = imagePath!.path.split('/').last;
+
+    var file =
+        await MultipartFile.fromFile(imagePath!.path, filename: fileName);
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _token = _sharedPreferences.getString('accessToken')!;
+    _dio.options.headers["Authorization"] = "Bearer ${_token}";
+    FormData formData = FormData.fromMap({
+      'image': file,
+    });
+    response = await _dio.post(postProfilePicture, data: formData);
+    try {
+      if (response.data["success"] == true) {
+        print(response.data);
+        print("Data Send");
+
+        showToaster("Profile Picture Updated");
+      } else {
+        print("Error while uploading picture");
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      setState(() {});
+    }
+  }
+
+  Future _pickvideo(ImageSource mediasource) async {
+    final pickedFile = await _picker.pickVideo(source: mediasource);
+    setState(() {
+      imagePath = File(pickedFile!.path);
+    });
+    if (pickedFile == null) {
+      return;
+    }
+  }
+
+  Future _pickImage(ImageSource source) async {
+    final pickedFile =
+        await _picker.pickImage(source: source, imageQuality: 50);
+    setState(() {
+      imagePath = File(pickedFile!.path);
+    });
+    print('object$imagePath');
+
+    if (pickedFile == null) {
+      print("null in picture");
+      return;
+    } else {
+      PostProfilePicture();
+      print("ssssssss");
+    }
   }
 
   DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
@@ -588,6 +747,11 @@ class _ProfileState extends State<Profile> {
     try {
       _dio.options.headers["Authorization"] = "Bearer ${_token}";
       Response response = await _dio.get(getuser);
+      if (response.data["data"]["events"].length > 0) {
+        totalEvents = response.data["data"]["events"].length;
+      } else {
+        totalEvents = 0;
+      }
       if (response.statusCode == 200) {
         _getProfile = GetProfile.fromJson(response.data);
 
@@ -601,7 +765,8 @@ class _ProfileState extends State<Profile> {
           address = "not available ";
         }
         if (response.data["data"]["profile_picture"] != null) {
-          profile_pic = MainUrl+response.data["data"]["profile_picture"]["image"];
+          profile_pic =
+              MainUrl + response.data["data"]["profile_picture"]["image"];
         } else {
           profile_pic =
               "https://imgr.search.brave.com/agcf_54hKLs35Jr3YaOMycn250z6b8N8p1HEYsRqi8Q/fit/980/980/ce/1/aHR0cDovL2Nkbi5v/bmxpbmV3ZWJmb250/cy5jb20vc3ZnL2lt/Z18yMTgwOTAucG5n";
