@@ -7,17 +7,17 @@ class AutoGenerate {
   late final bool success;
   late final List<Data> data;
   late final String Message;
-  
-  AutoGenerate.fromJson(Map<String, dynamic> json){
+
+  AutoGenerate.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    data = List.from(json['data']).map((e)=>Data.fromJson(e)).toList();
+    data = List.from(json['data']).map((e) => Data.fromJson(e)).toList();
     Message = json['Message'];
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['success'] = success;
-    _data['data'] = data.map((e)=>e.toJson()).toList();
+    _data['data'] = data.map((e) => e.toJson()).toList();
     _data['Message'] = Message;
     return _data;
   }
@@ -48,8 +48,8 @@ class Data {
   late final String notificationType;
   late final String routeName;
   late final User user;
-  
-  Data.fromJson(Map<String, dynamic> json){
+
+  Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     message = json['message'];
@@ -88,22 +88,22 @@ class User {
     required this.ipAddress,
     required this.latLng,
     required this.isOnline,
-     this.emailVerifiedAt,
+    this.emailVerifiedAt,
     required this.phoneNumber,
     required this.createdAt,
     required this.updatedAt,
-     this.profileImage,
+    this.profileImage,
     required this.mobileIsPrivate,
     required this.avatar,
     required this.messengerColor,
     required this.darkMode,
     required this.activeStatus,
     required this.role,
-     this.isBlock,
+    this.isBlock,
     required this.useLocation,
     required this.allowDirectMessage,
     required this.profilePrivate,
-    required this.profilePicture,
+    this.profilePicture,
   });
   late final int id;
   late final String name;
@@ -126,9 +126,9 @@ class User {
   late final String useLocation;
   late final String allowDirectMessage;
   late final String profilePrivate;
-  late final ProfilePicture profilePicture;
-  
-  User.fromJson(Map<String, dynamic> json){
+  ProfilePicture? profilePicture;
+
+  User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     email = json['email'];
@@ -150,7 +150,16 @@ class User {
     useLocation = json['use_location'];
     allowDirectMessage = json['allow_direct_message'];
     profilePrivate = json['profile_private'];
-    profilePicture = ProfilePicture.fromJson(json['profile_picture']);
+    if (json['profile_picture'] != null) {
+      profilePicture = (ProfilePicture.fromJson(json['profile_picture']));
+    } else {
+      profilePicture = ProfilePicture(
+          id: 0,
+          image: "images/user.jpeg",
+          userId: "0",
+          createdAt: "112",
+          updatedAt: "12332");
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -176,7 +185,7 @@ class User {
     _data['use_location'] = useLocation;
     _data['allow_direct_message'] = allowDirectMessage;
     _data['profile_private'] = profilePrivate;
-    _data['profile_picture'] = profilePicture.toJson();
+    _data['profile_picture'] = profilePicture;
     return _data;
   }
 }
@@ -194,8 +203,8 @@ class ProfilePicture {
   late final String userId;
   late final String createdAt;
   late final String updatedAt;
-  
-  ProfilePicture.fromJson(Map<String, dynamic> json){
+
+  ProfilePicture.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     image = json['image'];
     userId = json['user_id'];

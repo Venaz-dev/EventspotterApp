@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:event_spotter/constant/json/live_feed.dart';
 import 'package:event_spotter/constant/json/post.dart';
@@ -5,6 +6,7 @@ import 'package:event_spotter/models/userDraftEvents.dart';
 import 'package:event_spotter/models/userPastEvents.dart';
 import 'package:event_spotter/models/userUpcomingEvent.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
+import 'package:event_spotter/widgets/profile/yourevents.dart';
 import 'package:event_spotter/widgets/smallbutton.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +54,6 @@ class _YeventsState extends State<Yevents> {
   late GetUserUpcomingEvents _getUserUpcomingEvents;
   late GetUserDraftEvents _getUserDraftEvents;
   late UserPastEvents _userPastEvents;
-
   String getUpComingEventUrl =
       "https://theeventspotter.com/api/getUserUpcomingEvents";
   String getPastEventsUrl = "https://theeventspotter.com/api/getUserPastEvent";
@@ -60,27 +61,25 @@ class _YeventsState extends State<Yevents> {
   String MainUrl = "https://theeventspotter.com/";
   late SharedPreferences _sharedPreferences;
   Dio _dio = Dio();
-  var profile_pic;
-  var time;
-  var away;
-  var title;
   late String _token;
-  var profile_pic1;
-  var time1;
-  var away1;
-  var title1;
-  var profile_pic2;
-  var time2;
-  var away2;
-  var title2;
   bool test = false;
+  bool test1 = false;
+  bool test2 = false;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
 
-    getUpComingEvents();
-    //getPastEvents();
+    getUpComingEvents().whenComplete(() {
+      setState(() {});
+    });
+    getPastEvents().whenComplete(() {
+      setState(() {});
+    });
+    getDaftEvents().whenComplete(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -147,29 +146,76 @@ class _YeventsState extends State<Yevents> {
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
     print("Inside the Get upcomming function");
+
     try {
       _dio.options.headers["Authorization"] = "Bearer ${_token}";
       Response response = await _dio.get(getUpComingEventUrl);
-      if (response.statusCode == 200) {
-        print("ssssss");
-        if (response.data["data"].toString().isNotEmpty) {
-          _getUserUpcomingEvents =
-              GetUserUpcomingEvents.fromJson(response.data);
-          setState(() {
-            test = true;
-          });
-          print(test);
-        } else {
-          print(test);
-          print("heeee");
-        }
+      if (response.data["data"].length > 0) {
+        print(response.data);
+        print("inside has data");
+        _getUserUpcomingEvents = GetUserUpcomingEvents.fromJson(response.data);
+        setState(() {
+          test = true;
+        });
+      } else {
+        test = false;
+        print('Empty data nahi hai');
       }
     } catch (e) {
       print(e.toString());
     } finally {}
   }
 
-  getPastEvents() async {}
+  getPastEvents() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _token = _sharedPreferences.getString('accessToken')!;
+    print("Inside the Get upcomming function");
+
+    try {
+      _dio.options.headers["Authorization"] = "Bearer ${_token}";
+      Response response = await _dio.get(getPastEventsUrl);
+      if (response.data["data"].length > 0) {
+        print(response.data);
+        print("inside has data past events");
+        _userPastEvents = UserPastEvents.fromJson(response.data);
+        setState(() {
+          test1 = true;
+        });
+      } else {
+        test1 = false;
+        print('Empty nahi ha hai');
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      _isLoading = false;
+    }
+  }
+
+  getDaftEvents() async {
+    print("Inside the Get upcomming function");
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _token = _sharedPreferences.getString('accessToken')!;
+    try {
+      _dio.options.headers["Authorization"] = "Bearer ${_token}";
+      Response response = await _dio.get(getDraftUrl);
+      if (response.data["data"].length > 0) {
+        print(response.data);
+        print("inside has data Draft events");
+        _getUserDraftEvents = GetUserDraftEvents.fromJson(response.data);
+        setState(() {
+          test2 = true;
+        });
+      } else {
+        test2 = false;
+        print('Empty nahi ha hai in Draft');
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      _isLoading = false;
+    }
+  }
 
   Widget getwidgets(Size size) {
     switch (scroll) {
@@ -239,148 +285,181 @@ class _YeventsState extends State<Yevents> {
         const SizedBox(
           height: 20,
         ),
-        Column(
-          children: List.generate(feed.length, (index) {
-            return Padding(
-              padding: EdgeInsets.only(top: size.height * .01),
-              child: Container(
-                height: size.height * 0.3,
-                width: size.width,
-                decoration: BoxDecoration(
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black12,
-                        spreadRadius: 0.5,
-                        blurRadius: 0.5,
-                        // offset: Offset(2, 2)
-                      )
-                    ],
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      top: size.height * 0.02,
-                      right: size.width * 0.02,
-                      bottom: size.height * 0.02,
-                      left: size.width * 0.02),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        right: 0,
-                        top: 0,
-                        child: likebutton(),
-                      ),
-                      // SizedBox(
-                      //   height: size.height * 0.17,
-                      //   width: size.width * 0.3,
-                      //   child: ClipRRect(
-                      //     borderRadius: BorderRadius.circular(10),
-                      //     child: CachedNetworkImage(
-                      //       imageUrl: feed[index]['picture'],
-                      //       fit: BoxFit.cover,
-                      //       placeholder: (context, url) {
-                      //         return const Center(
-                      //           child: CircularProgressIndicator(),
-                      //         );
-                      //       },
-                      //     ),
-                      //   ),
-                      // ),
-                      // Positioned(
-                      //   right: 20,
-                      //   left: size.width * 0.33,
-                      //   top: size.height * 0.02,
-                      //   child: Text(
-                      //     _getUserUpcomingEvents.data[0].events.eventName,
-                      //     style: TextStyle(
-                      //         fontWeight: FontWeight.w400, fontSize: 17),
-                      //   ),
-                      // ),
-                      Positioned(
-                        top: size.height * 0.14,
-                        left: size.width * 0.33,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+        test
+            ? Column(
+                children:
+                    List.generate(_getUserUpcomingEvents.data.length, (index) {
+                  return Padding(
+                    padding: EdgeInsets.only(top: size.height * .01),
+                    child: Container(
+                      height: size.height * 0.3,
+                      width: size.width,
+                      decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black12,
+                              spreadRadius: 0.5,
+                              blurRadius: 0.5,
+                              // offset: Offset(2, 2)
+                            )
+                          ],
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: size.height * 0.02,
+                            right: size.width * 0.02,
+                            bottom: size.height * 0.02,
+                            left: size.width * 0.02),
+                        child: Stack(
                           children: [
-                            const Icon(
-                              MdiIcons.calendarRange,
-                              size: 15,
-                              color: Colors.black54,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            // Text(
-                            //   posts[1]['takingPlace'],
-                            //   style: const TextStyle(color: Colors.black87),
+                            // Positioned(
+                            //   right: 0,
+                            //   top: 0,
+                            //  // child: likebutton(),
                             // ),
-                            const SizedBox(
-                              width: 20,
+                            _getUserUpcomingEvents.data[index].events
+                                        .eventPictures[0].imagePath
+                                        .toString()
+                                        .contains('.mp4') ||
+                                    _getUserUpcomingEvents.data[index].events
+                                        .eventPictures[0].imagePath
+                                        .toString()
+                                        .contains('.mov')
+                                ? VideoPlayerScreennn(
+                                    url: MainUrl +
+                                        _getUserUpcomingEvents.data[index]
+                                            .events.eventPictures[0].imagePath)
+                                : SizedBox(
+                                    height: size.height * 0.17,
+                                    width: size.width * 0.3,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: CachedNetworkImage(
+                                        imageUrl: MainUrl +
+                                            _getUserUpcomingEvents
+                                                .data[index]
+                                                .events
+                                                .eventPictures[0]
+                                                .imagePath,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) {
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                            Positioned(
+                              right: 20,
+                              left: size.width * 0.33,
+                              top: size.height * 0.02,
+                              child: Text(
+                                _getUserUpcomingEvents.data[0].events.eventName,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 17),
+                              ),
                             ),
-                            const Icon(
-                              FontAwesomeIcons.mapMarkerAlt,
-                              size: 15,
-                              color: Colors.black54,
+                            Positioned(
+                              right: 20,
+                              left: size.width * 0.33,
+                              top: size.height * 0.05,
+                              child: Text(
+                                _getUserUpcomingEvents
+                                    .data[0].events.eventDescription,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 17),
+                              ),
                             ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text(posts[1]['distance'] + " " + " " + "away",
-                                style: const TextStyle(color: Colors.black87)),
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        top: size.height * 0.18,
-                        child: Row(
-                          children: const [
-                            Icon(
-                              LineAwesomeIcons.user_plus,
-                              size: 20,
-                              color: Colors.black54,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text('120 Followers'),
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        child: Row(
-                          children: [
-                            IntrinsicHeight(
+                            Positioned(
+                              top: size.height * 0.14,
+                              left: size.width * 0.33,
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  extras(FontAwesomeIcons.thumbsUp,
-                                      posts[1]['likes'], size),
-                                  divider(),
-                                  extras(
-                                      Icons.comment, posts[1]['comment'], size),
-                                  divider(),
-                                  extras(
-                                      MdiIcons.share, posts[1]['share'], size),
-                                  divider(),
-                                  extras(
-                                      Icons.live_tv, posts[1]['viewers'], size),
+                                  const Icon(
+                                    MdiIcons.calendarRange,
+                                    size: 15,
+                                    color: Colors.black54,
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                      _getUserUpcomingEvents
+                                          .data[index].events.location,
+                                      style: const TextStyle(
+                                          color: Colors.black87),
+                                      // ignore: deprecated_member_use
+                                      overflow: TextOverflow.ellipsis),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  const Icon(
+                                    FontAwesomeIcons.mapMarkerAlt,
+                                    size: 15,
+                                    color: Colors.black54,
+                                  ),
                                 ],
                               ),
                             ),
+
+                            // Positioned(
+                            //   top: size.height * 0.18,
+                            //   child: Row(
+                            //     children: const [
+                            //       Icon(
+                            //         LineAwesomeIcons.user_plus,
+                            //         size: 20,
+                            //         color: Colors.black54,
+                            //       ),
+                            //       SizedBox(
+                            //         width: 5,
+                            //       ),
+                            //       Text(_getUserUpcomingEvents.data[index].events.f),
+                            //     ],
+                            //   ),
+                            // ),
+
+                            // Positioned(
+                            //   bottom: 0,
+                            //   child: Row(
+                            //     children: [
+                            //       IntrinsicHeight(
+                            //         child: Row(
+                            //           mainAxisAlignment:
+                            //               MainAxisAlignment.spaceAround,
+                            //           children: [
+                            //             extras(FontAwesomeIcons.thumbsUp,
+                            //                 _getUserUpcomingEvents.data[index], size),
+                            //             divider(),
+                            //             extras(
+                            //                 Icons.comment, posts[1]['comment'], size),
+                            //             divider(),
+                            //             extras(
+                            //                 MdiIcons.share, posts[1]['share'], size),
+                            //             divider(),
+                            //             extras(
+                            //                 Icons.live_tv, posts[1]['viewers'], size),
+                            //           ],
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // )
                           ],
                         ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }),
-        ),
+                      ),
+                    ),
+                  );
+                }),
+              )
+            : const Center(
+                child: Text("No Upcoming Events"),
+              )
       ],
-    );
+    ); ////
   }
 
   Widget past(Size size) {
@@ -435,9 +514,174 @@ class _YeventsState extends State<Yevents> {
             ],
           ),
         ),
-        const Center(
-          child: Text("No past eventsss"),
-        ),
+        test1
+            ? Column(
+                children: List.generate(_userPastEvents.data.length, (index) {
+                  return Padding(
+                    padding: EdgeInsets.only(top: size.height * .01),
+                    child: Container(
+                      height: size.height * 0.3,
+                      width: size.width,
+                      decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black12,
+                              spreadRadius: 0.5,
+                              blurRadius: 0.5,
+                              // offset: Offset(2, 2)
+                            )
+                          ],
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: size.height * 0.02,
+                            right: size.width * 0.02,
+                            bottom: size.height * 0.02,
+                            left: size.width * 0.02),
+                        child: Stack(
+                          children: [
+                            // Positioned(
+                            //   right: 0,
+                            //   top: 0,
+                            //  // child: likebutton(),
+                            // ),
+                            _userPastEvents.data[index].events.eventPictures[0]
+                                        .imagePath
+                                        .toString()
+                                        .contains('.mp4') ||
+                                    _userPastEvents.data[index].events
+                                        .eventPictures[0].imagePath
+                                        .toString()
+                                        .contains('.mov')
+                                ? VideoPlayerScreennn(
+                                    url: MainUrl +
+                                        _userPastEvents.data[index].events
+                                            .eventPictures[0].imagePath)
+                                : SizedBox(
+                                    height: size.height * 0.17,
+                                    width: size.width * 0.3,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: CachedNetworkImage(
+                                        imageUrl: MainUrl +
+                                            _userPastEvents.data[index].events
+                                                .eventPictures[0].imagePath,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) {
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                            Positioned(
+                              right: 20,
+                              left: size.width * 0.33,
+                              top: size.height * 0.02,
+                              child: Text(
+                                _userPastEvents.data[0].events.eventName,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 17),
+                              ),
+                            ),
+                            Positioned(
+                              right: 20,
+                              left: size.width * 0.33,
+                              top: size.height * 0.05,
+                              child: Text(
+                                _userPastEvents.data[0].events.eventDescription,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 17),
+                              ),
+                            ),
+                            Positioned(
+                              top: size.height * 0.14,
+                              left: size.width * 0.33,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  const Icon(
+                                    MdiIcons.calendarRange,
+                                    size: 15,
+                                    color: Colors.black54,
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                      _userPastEvents
+                                          .data[index].events.location,
+                                      style: const TextStyle(
+                                          color: Colors.black87),
+                                      // ignore: deprecated_member_use
+                                      overflow: TextOverflow.ellipsis),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  const Icon(
+                                    FontAwesomeIcons.mapMarkerAlt,
+                                    size: 15,
+                                    color: Colors.black54,
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            // Positioned(
+                            //   top: size.height * 0.18,
+                            //   child: Row(
+                            //     children: const [
+                            //       Icon(
+                            //         LineAwesomeIcons.user_plus,
+                            //         size: 20,
+                            //         color: Colors.black54,
+                            //       ),
+                            //       SizedBox(
+                            //         width: 5,
+                            //       ),
+                            //       Text(_getUserUpcomingEvents.data[index].events.f),
+                            //     ],
+                            //   ),
+                            // ),
+
+                            // Positioned(
+                            //   bottom: 0,
+                            //   child: Row(
+                            //     children: [
+                            //       IntrinsicHeight(
+                            //         child: Row(
+                            //           mainAxisAlignment:
+                            //               MainAxisAlignment.spaceAround,
+                            //           children: [
+                            //             extras(FontAwesomeIcons.thumbsUp,
+                            //                 _getUserUpcomingEvents.data[index], size),
+                            //             divider(),
+                            //             extras(
+                            //                 Icons.comment, posts[1]['comment'], size),
+                            //             divider(),
+                            //             extras(
+                            //                 MdiIcons.share, posts[1]['share'], size),
+                            //             divider(),
+                            //             extras(
+                            //                 Icons.live_tv, posts[1]['viewers'], size),
+                            //           ],
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              )
+            : const Center(
+                child: Text("No Upcoming Events"),
+              )
       ],
     );
   }
@@ -494,9 +738,174 @@ class _YeventsState extends State<Yevents> {
             ],
           ),
         ),
-        const Center(
-          child: Text("No Drafts"),
-        )
+        test2
+            ? Column(
+                children: List.generate(_getUserDraftEvents.data.length, (index) {
+                  return Padding(
+                    padding: EdgeInsets.only(top: size.height * .01),
+                    child: Container(
+                      height: size.height * 0.3,
+                      width: size.width,
+                      decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black12,
+                              spreadRadius: 0.5,
+                              blurRadius: 0.5,
+                              // offset: Offset(2, 2)
+                            )
+                          ],
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: size.height * 0.02,
+                            right: size.width * 0.02,
+                            bottom: size.height * 0.02,
+                            left: size.width * 0.02),
+                        child: Stack(
+                          children: [
+                            // Positioned(
+                            //   right: 0,
+                            //   top: 0,
+                            //  // child: likebutton(),
+                            // ),
+                            _getUserDraftEvents.data[index].events.eventPictures[0]
+                                        .imagePath
+                                        .toString()
+                                        .contains('.mp4') ||
+                                    _getUserDraftEvents.data[index].events
+                                        .eventPictures[0].imagePath
+                                        .toString()
+                                        .contains('.mov')
+                                ? VideoPlayerScreennn(
+                                    url: MainUrl +
+                                        _getUserDraftEvents.data[index].events
+                                            .eventPictures[0].imagePath)
+                                : SizedBox(
+                                    height: size.height * 0.17,
+                                    width: size.width * 0.3,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: CachedNetworkImage(
+                                        imageUrl: MainUrl +
+                                            _getUserDraftEvents.data[index].events
+                                                .eventPictures[0].imagePath,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) {
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                            Positioned(
+                              right: 20,
+                              left: size.width * 0.33,
+                              top: size.height * 0.02,
+                              child: Text(
+                                _getUserDraftEvents.data[0].events.eventName,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 17),
+                              ),
+                            ),
+                            Positioned(
+                              right: 20,
+                              left: size.width * 0.33,
+                              top: size.height * 0.05,
+                              child: Text(
+                                _getUserDraftEvents.data[0].events.eventDescription,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 17),
+                              ),
+                            ),
+                            Positioned(
+                              top: size.height * 0.14,
+                              left: size.width * 0.33,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  const Icon(
+                                    MdiIcons.calendarRange,
+                                    size: 15,
+                                    color: Colors.black54,
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                      _getUserDraftEvents
+                                          .data[index].events.location,
+                                      style: const TextStyle(
+                                          color: Colors.black87),
+                                      // ignore: deprecated_member_use
+                                      overflow: TextOverflow.ellipsis),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  const Icon(
+                                    FontAwesomeIcons.mapMarkerAlt,
+                                    size: 15,
+                                    color: Colors.black54,
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            // Positioned(
+                            //   top: size.height * 0.18,
+                            //   child: Row(
+                            //     children: const [
+                            //       Icon(
+                            //         LineAwesomeIcons.user_plus,
+                            //         size: 20,
+                            //         color: Colors.black54,
+                            //       ),
+                            //       SizedBox(
+                            //         width: 5,
+                            //       ),
+                            //       Text(_getUserUpcomingEvents.data[index].events.f),
+                            //     ],
+                            //   ),
+                            // ),
+
+                            // Positioned(
+                            //   bottom: 0,
+                            //   child: Row(
+                            //     children: [
+                            //       IntrinsicHeight(
+                            //         child: Row(
+                            //           mainAxisAlignment:
+                            //               MainAxisAlignment.spaceAround,
+                            //           children: [
+                            //             extras(FontAwesomeIcons.thumbsUp,
+                            //                 _getUserUpcomingEvents.data[index], size),
+                            //             divider(),
+                            //             extras(
+                            //                 Icons.comment, posts[1]['comment'], size),
+                            //             divider(),
+                            //             extras(
+                            //                 MdiIcons.share, posts[1]['share'], size),
+                            //             divider(),
+                            //             extras(
+                            //                 Icons.live_tv, posts[1]['viewers'], size),
+                            //           ],
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              )
+            : const Center(
+                child: Text("No Upcoming Events"),
+              )
       ],
     );
   }

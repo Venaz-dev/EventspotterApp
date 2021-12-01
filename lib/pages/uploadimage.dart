@@ -1,16 +1,20 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/widgets/elevatedbutton.dart';
 import 'package:event_spotter/widgets/smallButton.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
+import 'package:event_spotter/widgets/toaster.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Uploadimage extends StatefulWidget {
-  const Uploadimage({Key? key}) : super(key: key);
+  final int eventId;
+  Uploadimage({Key? key, required this.eventId}) : super(key: key);
 
   @override
   State<Uploadimage> createState() => _UploadimageState();
@@ -19,14 +23,15 @@ class Uploadimage extends StatefulWidget {
 class _UploadimageState extends State<Uploadimage> {
   final ImagePicker _picker = ImagePicker();
   File? imagePath;
-    String uploadLiveFeeds = "https://theeventspotter.com/api/uploadEventSnap";
-
-
+  late Response response;
+  bool _isloading = false;
+  final Dio _dio = Dio();
+  late SharedPreferences _sharedPreferences;
+  late String _token;
+  String uploadLiveFeeds = "https://theeventspotter.com/api/uploadEventSnap";
+  TextEditingController _snapdescription = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    TextEditingController _snapdescription = TextEditingController();
-    TextEditingController _names = TextEditingController();
-
     Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
@@ -181,12 +186,20 @@ class _UploadimageState extends State<Uploadimage> {
               const SizedBox(
                 height: 20,
               ),
-              Elevatedbutton(
-                  primary: const Color(0xFF304747),
-                  text: "Upload",
-                  width: double.infinity,
-                  coloring: const Color(0xFF304747),
-                  onpressed: () {}),
+              _isloading
+                  ? const Center(child: CircularProgressIndicator())
+                  : Elevatedbutton(
+                      primary: const Color(0xFF304747),
+                      text: "Upload",
+                      width: double.infinity,
+                      coloring: const Color(0xFF304747),
+                      onpressed: () async {
+                        setState(() {
+                          _isloading = true;
+                        });
+                        await UploadLiveFeed();
+                        Navigator.pop(context);
+                      }),
             ]),
           ),
         ),
@@ -244,6 +257,38 @@ class _UploadimageState extends State<Uploadimage> {
     });
     if (pickedFile == null) {
       return;
+    }
+  }
+
+  UploadLiveFeed() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _token = _sharedPreferences.getString('accessToken')!;
+    String fileName = imagePath!.path.split('/').last;
+    var file =
+        await MultipartFile.fromFile(imagePath!.path, filename: fileName);
+    print(file.filename);
+    print(_snapdescription.text);
+    FormData formData = new FormData.fromMap({
+      "event_id": widget.eventId,
+      "description": _snapdescription.text,
+      "path": file
+    });
+    response = await _dio.post(uploadLiveFeeds, data: formData);
+    print('lj');
+    try {
+      if (response.data["success"] == true) {
+        print(response.data);
+        print("Data Send");
+        showToaster("Snap Uploaded");
+      } else {
+        print("Snap not Uploaded Error");
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      _isloading = false;
+
+      setState(() {});
     }
   }
 }

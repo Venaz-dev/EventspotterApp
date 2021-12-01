@@ -86,6 +86,7 @@ class _EventssState extends State<Eventss> {
                               builder: (context) => Eventdetailing(
                                     model: _eventsModel,
                                     indexs: index,
+                                   
                                   )));
                         },
                         child: Container(

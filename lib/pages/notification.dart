@@ -110,7 +110,7 @@ class _NotiState extends State<Noti> {
                                                     _notificationModel
                                                         .data[index]
                                                         .user
-                                                        .profilePicture
+                                                        .profilePicture!
                                                         .image)
                                                 : const AssetImage(
                                                         'Assets/images/user.png')

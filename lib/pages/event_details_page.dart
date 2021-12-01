@@ -1,16 +1,15 @@
-import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/pages/explore.dart';
 import 'package:event_spotter/pages/uploadimage.dart';
 import 'package:event_spotter/widgets/elevatedbutton.dart';
+import 'package:event_spotter/widgets/explore/livefeed.dart';
 import 'package:event_spotter/widgets/map.dart';
 import 'package:event_spotter/widgets/smallbutton.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:like_button/like_button.dart';
 import 'package:video_player/video_player.dart';
 
@@ -32,9 +31,14 @@ class Eventdetailing extends StatefulWidget {
 
 class _EventdetailingState extends State<Eventdetailing> {
   livefeed swapping = livefeed.details;
+  late List Live = [];
+  bool test1 = false;
+    String MainUrl = "https://theeventspotter.com/";
+
   @override
   void initState() {
     super.initState();
+    livefeedList();
   }
 
   String MainUrl1 = "https://theeventspotter.com/";
@@ -492,21 +496,69 @@ class _EventdetailingState extends State<Eventdetailing> {
             const SizedBox(
               height: 20,
             ),
-            SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                    children: List.generate(2, (index) {
-                  return Container(
-                    height: size.height * 0.15,
-                    width: size.width * 0.25,
-                    decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(10)),
-                    // child: Image.file(
-                    //                 imagePath!,
-                    //),
-                  );
-                }))),
+           Live.isEmpty
+              ? const Center(child:Text("No Live Feeds"))
+              : SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                      children:
+                          List.generate(Live.length, (index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                        right: 10.0,
+                      ),
+                      child: Container(
+                        height: size.height * 0.23,
+                        width: size.width * 0.3,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          //  color: Colors.red,
+                        ),
+                        child: Stack(
+                          children: [
+                            Live[index]
+                                         //////////////////////////
+                                    .toString()
+                                    .contains('.mp4')||
+                                    Live[index]
+                                         //////////////////////////
+                                    .toString()
+                                    .contains('.mov')
+                                ? VideoPlayerScreen(
+                                    url: MainUrl +
+                                        Live[index])
+                                : Container(
+                                    height: size.height * 0.2,
+                                    width: size.width * 0.3,
+                                    decoration: BoxDecoration(
+                                      // color: Colors.red,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: buildimage(index)),
+                                  ),
+                            Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Text(
+                                  widget.model!.data[widget.indexs!].km +
+                                      " " +
+                                      "miles",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 17),
+                                )),
+                          ],
+                        ),
+                      ),
+                    );
+
+                    // } else {
+                    //   //index = index + 1;
+                    //   return const SizedBox();
+                    // }
+                  })),
+                ),
             const SizedBox(
               height: 20,
             ),
@@ -517,7 +569,9 @@ class _EventdetailingState extends State<Eventdetailing> {
                 coloring: const Color(0xFF304747),
                 onpressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const Uploadimage()));
+                      builder: (context) =>  Uploadimage(
+                        eventId: widget.model!.data[widget.indexs!].events.id,
+                      )));
                 }),
           ],
         ),
@@ -536,7 +590,7 @@ class _EventdetailingState extends State<Eventdetailing> {
       ),
     );
   }
-
+ 
   extras(IconData icon, String totalcount, Size size, VoidCallback press) {
     return Row(
       children: [
@@ -560,7 +614,31 @@ class _EventdetailingState extends State<Eventdetailing> {
       endIndent: 13,
     );
   }
+  livefeedList(){
+    if( widget.model!.data[widget.indexs!].events.liveFeed.length>0){
+    for(int i=0 ;  widget.model!.data[widget.indexs!].events.liveFeed.length > i ;i++){
+      var tt = widget.model!.data[widget.indexs!].events.liveFeed[i].path;
+      Live.add(tt);
+    }
+    test1=true;
+    }else{
+      test1=false;
+    }
+  }
+  Widget buildimage(int index) {
+    return CachedNetworkImage(
+      imageUrl: MainUrl + Live[index],
+      fit: BoxFit.cover,
+      placeholder: (context, url) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
 }
+
+
 
 class VideoPlayerScreem extends StatefulWidget {
   VideoPlayerScreem({Key? key, required this.url}) : super(key: key);
