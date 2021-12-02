@@ -1,7 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
-import 'package:event_spotter/constant/json/live_feed.dart';
-import 'package:event_spotter/constant/json/post.dart';
 import 'package:event_spotter/models/userDraftEvents.dart';
 import 'package:event_spotter/models/userPastEvents.dart';
 import 'package:event_spotter/models/userUpcomingEvent.dart';
@@ -101,34 +99,6 @@ class _YeventsState extends State<Yevents> {
                 scrollDirection: Axis.vertical,
                 child: Column(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: size.height * 0.02),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            //height: size.height*0.1,
-                            width: size.width * 0.8,
-                            child: Textform(
-                              controller: _search,
-                              icon: Icons.search,
-                              label: "Search",
-                              color: const Color(0XFFECF2F3),
-                            ),
-                          ),
-                          SizedBox(
-                            width: size.width * 0.01,
-                          ),
-                          Smallbutton(
-                            icon: FontAwesomeIcons.slidersH,
-                            onpressed: () {
-                              setState(() {
-                                // swap = screens.filter;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
                     const SizedBox(height: 30),
                     Padding(
                       padding: EdgeInsets.only(right: size.width * 0.05),
@@ -740,7 +710,8 @@ class _YeventsState extends State<Yevents> {
         ),
         test2
             ? Column(
-                children: List.generate(_getUserDraftEvents.data.length, (index) {
+                children:
+                    List.generate(_getUserDraftEvents.data.length, (index) {
                   return Padding(
                     padding: EdgeInsets.only(top: size.height * .01),
                     child: Container(
@@ -770,8 +741,8 @@ class _YeventsState extends State<Yevents> {
                             //   top: 0,
                             //  // child: likebutton(),
                             // ),
-                            _getUserDraftEvents.data[index].events.eventPictures[0]
-                                        .imagePath
+                            _getUserDraftEvents.data[index].events
+                                        .eventPictures[0].imagePath
                                         .toString()
                                         .contains('.mp4') ||
                                     _getUserDraftEvents.data[index].events
@@ -789,8 +760,11 @@ class _YeventsState extends State<Yevents> {
                                       borderRadius: BorderRadius.circular(10),
                                       child: CachedNetworkImage(
                                         imageUrl: MainUrl +
-                                            _getUserDraftEvents.data[index].events
-                                                .eventPictures[0].imagePath,
+                                            _getUserDraftEvents
+                                                .data[index]
+                                                .events
+                                                .eventPictures[0]
+                                                .imagePath,
                                         fit: BoxFit.cover,
                                         placeholder: (context, url) {
                                           return const Center(
@@ -815,7 +789,8 @@ class _YeventsState extends State<Yevents> {
                               left: size.width * 0.33,
                               top: size.height * 0.05,
                               child: Text(
-                                _getUserDraftEvents.data[0].events.eventDescription,
+                                _getUserDraftEvents
+                                    .data[0].events.eventDescription,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w400, fontSize: 17),
                               ),

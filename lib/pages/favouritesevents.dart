@@ -78,36 +78,36 @@ class _FeventsState extends State<Fevents> {
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: size.height * 0.02,
-                    ),
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          //height: size.height*0.1,
-                          width: size.width * 0.8,
-                          child: Textform(
-                            controller: _search,
-                            icon: Icons.search,
-                            label: "Search",
-                            color: const Color(0XFFECF2F3),
-                          ),
-                        ),
-                        SizedBox(
-                          width: size.width * 0.01,
-                        ),
-                        Smallbutton(
-                          icon: FontAwesomeIcons.slidersH,
-                          onpressed: () {
-                            setState(() {
-                              //swap = screens.filter;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: EdgeInsets.only(
+                  //     top: size.height * 0.02,
+                  //   ),
+                  //   child: Row(
+                  //     children: [
+                  //       SizedBox(
+                  //         //height: size.height*0.1,
+                  //         width: size.width * 0.8,
+                  //         child: Textform(
+                  //           controller: _search,
+                  //           icon: Icons.search,
+                  //           label: "Search",
+                  //           color: const Color(0XFFECF2F3),
+                  //         ),
+                  //       ),
+                  //       SizedBox(
+                  //         width: size.width * 0.01,
+                  //       ),
+                  //       Smallbutton(
+                  //         icon: FontAwesomeIcons.slidersH,
+                  //         onpressed: () {
+                  //           setState(() {
+                  //             //swap = screens.filter;
+                  //           });
+                  //         },
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   const SizedBox(height: 30),
                   Row(
                     children: [

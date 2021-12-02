@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/widgets/elevatedbutton.dart';
@@ -274,6 +273,7 @@ class _UploadimageState extends State<Uploadimage> {
       "description": _snapdescription.text,
       "path": file
     });
+     _dio.options.headers["Authorization"] = "Bearer ${_token}";
     response = await _dio.post(uploadLiveFeeds, data: formData);
     print(response.data);
     try {

@@ -424,13 +424,6 @@ class _ProfileState extends State<Profile> {
     }
   }
 
-  DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
-      value: item,
-      child: Text(
-        item,
-        style: const TextStyle(color: Color(0XFF74AAB0), fontSize: 16),
-      ));
-
   Settings(bool isSwitched, String text) {
     return Container(
       child: Row(
@@ -679,44 +672,11 @@ class _ProfileState extends State<Profile> {
                 height: 20,
               ),
               Settings(true, 'Recieve push notification'),
-              Settings(true, 'Use your location'),
-              Settings(true, 'Recieve email notification'),
               Settings(true, 'Allow direct messages'),
               Settings(false, 'Make your profile private'),
               const SizedBox(
                 height: 10,
               ),
-              const Text(
-                "Change language",
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Center(
-                child: Container(
-                  //  margin:  EdgeInsets.all(10),
-                  height: MediaQuery.of(context).size.height * 0.06,
-                  //width: size.width*0.5,
-                  decoration: BoxDecoration(
-                    color: const Color(0XFFECF2F2),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 10.0, left: 10),
-                      child: DropdownButton<String>(
-                          isExpanded: true,
-                          value: value,
-                          items: languages.map(buildMenuItem).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              this.value = value;
-                            });
-                          }),
-                    ),
-                  ),
-                ),
-              )
             ],
           ),
         ));

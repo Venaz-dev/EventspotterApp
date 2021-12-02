@@ -280,13 +280,13 @@ class _CommentofuserState extends State<Commentofuser> {
                                   // extras(MdiIcons.share, posts[1]['share'],
                                   //     size),
                                   divider(),
-                                  // extras(
-                                  //     Icons.live_tv,
-                                  //     "fafa",
-                                  //     // widget.model!.data[widget.indexs!]
-                                  //     //     .events.liveFeed.length
-                                  //     //     .toString(),
-                                  //     size),
+                                  extras(
+                                      Icons.live_tv,
+                                      "0",
+                                      // widget.model!.data[widget.indexs!]
+                                      //     .events.liveFeed.length
+                                      //     .toString(),
+                                      size),
                                 ],
                               ),
                             ),
@@ -319,15 +319,29 @@ class _CommentofuserState extends State<Commentofuser> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.eventsModel.data[widget.index].events.comment
-                              .length
-                              .toString(),
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 19,
-                              fontWeight: FontWeight.w500),
-                        ),
+                        widget.eventsModel.data[widget.index].events.comment
+                                .isNotEmpty
+                            ? Text(
+                                widget.eventsModel.data[widget.index].events
+                                        .comment.isEmpty
+                                    ? "Comment"
+                                    : "Comments" +
+                                        " " +
+                                        widget.eventsModel.data[widget.index]
+                                            .events.comment.length
+                                            .toString(),
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.w500),
+                              )
+                            : const Text(
+                                "No comments",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.w500),
+                              ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -401,6 +415,12 @@ class _CommentbypersonState extends State<Commentbyperson> {
   String postCommenturl = "https://theeventspotter.com/api/storeComment";
   late List listcomments = [];
   late List createdAt = [];
+  late List listprofilepic = [];
+  late List username = [];
+  late String _picture;
+  late String _name;
+
+  String MainUrl = "https://theeventspotter.com/";
 
   @override
   void initState() {
@@ -432,18 +452,19 @@ class _CommentbypersonState extends State<Commentbyperson> {
                         Container(
                           height: 50,
                           width: 50,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                  image: CachedNetworkImageProvider(
-                                      'https://www.lancasterbrewery.co.uk/files/images/christmasparty.jpg'),
+                                  image: CachedNetworkImageProvider(MainUrl +
+                                      listcomments[index]['img']),
                                   fit: BoxFit.cover)),
                         ),
                         const SizedBox(
                           width: 20,
                         ),
-                        const Text(
-                          "Awais",
+                        Text(
+                          listcomments[index]['name'],
+                              
                           style: TextStyle(fontSize: 18),
                         ),
                         const Spacer(),
@@ -453,7 +474,7 @@ class _CommentbypersonState extends State<Commentbyperson> {
                     Padding(
                         padding: EdgeInsets.only(
                             right: 40.0, left: 40, top: 5, bottom: 5),
-                        child: Text(listcomments[index]))
+                        child: Text(listcomments[index]['comment']))
                   ],
                 ),
               ),
@@ -489,6 +510,7 @@ class _CommentbypersonState extends State<Commentbyperson> {
                       } else {
                         await PostComment(widget.eventId);
                         clearText();
+                       // Navigator.pop(context);
                       }
                     },
                     child: const Text('Comment')),
@@ -506,12 +528,16 @@ class _CommentbypersonState extends State<Commentbyperson> {
           i < widget.eventsModel.data[index].events.comment.length;
           i++) {
         {
-          var comment =
-              widget.eventsModel.data[index].events.comment[i].comment;
-          listcomments.add(comment);
-          var created =
-              widget.eventsModel.data[index].events.comment[i].createdAt;
-          createdAt.add(created);
+          var js = {
+            'img': widget.eventsModel.data[index].events.comment[i].user
+                .profilePicture!.image,
+            'name': widget.eventsModel.data[index].events.comment[i].user.name,
+            'createdAt':
+                widget.eventsModel.data[index].events.comment[i].createdAt,
+            'comment': widget.eventsModel.data[index].events.comment[i].comment,
+          };
+
+          listcomments.add(js);
         }
       }
     }
@@ -523,7 +549,7 @@ class _CommentbypersonState extends State<Commentbyperson> {
       child: Align(
         alignment: Alignment.bottomRight,
         child: Text(
-          TimeAgo.displayTimeAgoFromTimestamp(createdAt[index]),
+          TimeAgo.displayTimeAgoFromTimestamp(listcomments[index]['createdAt']),
           style: const TextStyle(fontSize: 15, color: Colors.black45),
         ),
       ),
@@ -534,29 +560,45 @@ class _CommentbypersonState extends State<Commentbyperson> {
     /////////////////////////
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
+    _picture = _sharedPreferences.getString('profilePicture')!;
+    _name = _sharedPreferences.getString('name')!;
     FormData formData = new FormData.fromMap({
       "event_id": id,
       "comment": _comment.text,
     });
     _dio.options.headers["Authorization"] = "Bearer ${_token}";
+    try{
     await _dio.post(postCommenturl, data: formData).then((value) {
+      print(value.data.toString());
       if (value.data['success'] == true) {
         print(value.data);
         showToaster("Comment Sent");
-        setState(() {
-          var text = value.data["data"]["comment"];
-          var text1 = value.data["data"]["created_at"];
-          // print(text);
-          // print(created);
-          print("////////////");
-          listcomments.add(text);
-          createdAt.add(text1);
-        });
+
+        var text = value.data["data"]["comment"];
+        var text1 = value.data["data"]["created_at"];
+        // print(text);
+        // print(created);
+        var js = {
+          'name': _name,
+          'img': _picture,
+          'comment': _comment.text,
+          'createdAt': text1
+        };
+        listcomments.add(js);
+        setState(() {});
+        print("////////////");
+        // listcomments.add(text);
+        createdAt.add(text1);
       } else {
         showToaster("error");
         //text = " ";
       }
-    });
+    }
+   
+    );
+     }catch(e){
+      print(e.toString());
+    }
     //  print(text);
   }
 

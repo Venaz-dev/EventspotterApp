@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 enum yourevent { upcoming, pastevents, drafts }
 
@@ -379,9 +380,7 @@ class _YoureventsState extends State<Yourevents> {
             padding: const EdgeInsets.only(top: 20.0),
             child: FittedBox(
               child: Container(
-                // width: double.infinity,
                 decoration: BoxDecoration(
-                    color: Colors.white,
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: const [
                       BoxShadow(
@@ -390,8 +389,8 @@ class _YoureventsState extends State<Yourevents> {
                           spreadRadius: 2)
                     ]),
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 20.0, right: 15, left: 15, bottom: 15),
+                  padding:
+                      const EdgeInsets.only(top: 20.0, left: 15, bottom: 15),
                   child: Row(
                     children: [
                       _getUserUpcomingEvents
@@ -447,10 +446,11 @@ class _YoureventsState extends State<Yourevents> {
                                   size: 15,
                                   color: Colors.black54,
                                 ),
-                                Text(
+                                AutoSizeText(
                                   _getUserUpcomingEvents
                                       .data[index].events.location,
                                   style: const TextStyle(color: Colors.black87),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ],
                             ),

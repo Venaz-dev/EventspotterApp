@@ -33,7 +33,7 @@ class _EventdetailingState extends State<Eventdetailing> {
   livefeed swapping = livefeed.details;
   late List Live = [];
   bool test1 = false;
-    String MainUrl = "https://theeventspotter.com/";
+  String MainUrl = "https://theeventspotter.com/";
 
   @override
   void initState() {
@@ -496,83 +496,86 @@ class _EventdetailingState extends State<Eventdetailing> {
             const SizedBox(
               height: 20,
             ),
-           Live.isEmpty
-              ? const Center(child:Text("No Live Feeds"))
-              : SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                      children:
-                          List.generate(Live.length, (index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(
-                        right: 10.0,
-                      ),
-                      child: Container(
-                        height: size.height * 0.23,
-                        width: size.width * 0.3,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          //  color: Colors.red,
+            Live.isEmpty
+                ? const Center(child: Text("No Live Feeds"))
+                : SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                        children: List.generate(Live.length, (index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                          right: 10.0,
                         ),
-                        child: Stack(
-                          children: [
-                            Live[index]
-                                         //////////////////////////
-                                    .toString()
-                                    .contains('.mp4')||
-                                    Live[index]
-                                         //////////////////////////
-                                    .toString()
-                                    .contains('.mov')
-                                ? VideoPlayerScreen(
-                                    url: MainUrl +
-                                        Live[index])
-                                : Container(
-                                    height: size.height * 0.2,
-                                    width: size.width * 0.3,
-                                    decoration: BoxDecoration(
-                                      // color: Colors.red,
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: ClipRRect(
+                        child: Container(
+                          height: size.height * 0.23,
+                          width: size.width * 0.3,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            //  color: Colors.red,
+                          ),
+                          child: Stack(
+                            children: [
+                              Live[index]
+                                          //////////////////////////
+                                          .toString()
+                                          .contains('.mp4') ||
+                                      Live[index]
+                                          //////////////////////////
+                                          .toString()
+                                          .contains('.mov')
+                                  ? VideoPlayerScreen(
+                                      url: MainUrl + Live[index])
+                                  : Container(
+                                      height: size.height * 0.2,
+                                      width: size.width * 0.3,
+                                      decoration: BoxDecoration(
+                                        // color: Colors.red,
                                         borderRadius: BorderRadius.circular(20),
-                                        child: buildimage(index)),
-                                  ),
-                            Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Text(
-                                  widget.model!.data[widget.indexs!].km +
-                                      " " +
-                                      "miles",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 17),
-                                )),
-                          ],
+                                      ),
+                                      child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: buildimage(index)),
+                                    ),
+                              Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Text(
+                                    widget.model!.data[widget.indexs!].km +
+                                        " " +
+                                        "miles",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 17),
+                                  )),
+                            ],
+                          ),
                         ),
-                      ),
-                    );
+                      );
 
-                    // } else {
-                    //   //index = index + 1;
-                    //   return const SizedBox();
-                    // }
-                  })),
-                ),
+                      // } else {
+                      //   //index = index + 1;
+                      //   return const SizedBox();
+                      // }
+                    })),
+                  ),
             const SizedBox(
               height: 20,
             ),
-            Elevatedbutton(
-                primary: const Color(0xFF304747),
-                text: "Upload Picture/Video",
-                width: double.infinity,
-                coloring: const Color(0xFF304747),
-                onpressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>  Uploadimage(
-                        eventId: widget.model!.data[widget.indexs!].events.id,
-                      )));
-                }),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: Elevatedbutton(
+                  primary: const Color(0xFF304747),
+                  text: "Upload Picture/Video",
+                  width: double.infinity,
+                  coloring: const Color(0xFF304747),
+                  onpressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => Uploadimage(
+                              eventId:
+                                  widget.model!.data[widget.indexs!].events.id,
+                            )));
+                  }),
+            ),
           ],
         ),
       ),
@@ -590,7 +593,7 @@ class _EventdetailingState extends State<Eventdetailing> {
       ),
     );
   }
- 
+
   extras(IconData icon, String totalcount, Size size, VoidCallback press) {
     return Row(
       children: [
@@ -614,17 +617,21 @@ class _EventdetailingState extends State<Eventdetailing> {
       endIndent: 13,
     );
   }
-  livefeedList(){
-    if( widget.model!.data[widget.indexs!].events.liveFeed.length>0){
-    for(int i=0 ;  widget.model!.data[widget.indexs!].events.liveFeed.length > i ;i++){
-      var tt = widget.model!.data[widget.indexs!].events.liveFeed[i].path;
-      Live.add(tt);
-    }
-    test1=true;
-    }else{
-      test1=false;
+
+  livefeedList() {
+    if (widget.model!.data[widget.indexs!].events.liveFeed.length > 0) {
+      for (int i = 0;
+          widget.model!.data[widget.indexs!].events.liveFeed.length > i;
+          i++) {
+        var tt = widget.model!.data[widget.indexs!].events.liveFeed[i].path;
+        Live.add(tt);
+      }
+      test1 = true;
+    } else {
+      test1 = false;
     }
   }
+
   Widget buildimage(int index) {
     return CachedNetworkImage(
       imageUrl: MainUrl + Live[index],
@@ -637,8 +644,6 @@ class _EventdetailingState extends State<Eventdetailing> {
     );
   }
 }
-
-
 
 class VideoPlayerScreem extends StatefulWidget {
   VideoPlayerScreem({Key? key, required this.url}) : super(key: key);

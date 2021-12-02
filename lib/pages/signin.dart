@@ -285,8 +285,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
         getInitializedSharedPref();
         await _sharedPreferences.setString('name', _loginResponse.user.name);
-        await _sharedPreferences.setString('id', _loginResponse.user.id.toString());
+        await _sharedPreferences.setString(
+            'id', _loginResponse.user.id.toString());
         await _sharedPreferences.setString('email', _loginResponse.user.email);
+        await _sharedPreferences.setString(
+            'profilePicture', _loginResponse.user.profilePicture!.image);
         await _sharedPreferences.setString('accessToken', _loginResponse.token);
         // await _sharedPreferences.setString(
         //     'Profile_picture', _loginResponse.user.profilePicture.image);

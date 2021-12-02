@@ -39,6 +39,7 @@ class _EventssState extends State<Eventss> {
   String UnFavourite = "https://theeventspotter.com/api/unfavrouit";
   String MainUrl = "https://theeventspotter.com/";
   String PostlikeUrl = "https://theeventspotter.com/api/like";
+   late List<int> favourite=[];
 
   @override
   void initState() {
@@ -46,6 +47,7 @@ class _EventssState extends State<Eventss> {
     getEvetns().whenComplete(() {
       setState(() {});
     });
+    
   }
 
   @override
@@ -157,9 +159,8 @@ class _EventssState extends State<Eventss> {
                                   child: LikeButton(
                                     size: 20,
                                     onTap: (isLiked) {
-                                      print("hello");
-
-                                      if (active == isLiked) {
+                                      // ignore: unrelated_type_equality_checks
+                                      if (favourite[index] == isLiked) {
                                         setState(() {
                                           active = !active;
                                           print(active);
@@ -409,7 +410,7 @@ class _EventssState extends State<Eventss> {
       //print(response.data);
       if (response.statusCode == 200) {
         _eventsModel = EventsModel.fromJson(response.data);
-
+       
         lenght = _eventsModel.data.length;
         for (int i = 0; i < _eventsModel.data.length; i++) {
           var km = _eventsModel.data[i].km;
@@ -434,6 +435,7 @@ class _EventssState extends State<Eventss> {
     } catch (e) {
       print(e.toString() + "Catch");
     } finally {
+       listFav();
       _isLoading = false;
     }
     setState(() {});
@@ -537,6 +539,17 @@ class _EventssState extends State<Eventss> {
       );
     } else {
       return const SizedBox();
+    }
+  }
+
+  listFav() {
+    if (_eventsModel.data.length > 0) {
+      for (int i = 0; i < _eventsModel.data.length; i++) {
+        var value = _eventsModel.data[i].isFavroute;
+        favourite.add(value);
+      }
+    } else {
+      favourite.add(0);
     }
   }
 

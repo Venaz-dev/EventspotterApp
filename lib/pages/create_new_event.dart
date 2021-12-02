@@ -6,7 +6,7 @@ import 'package:event_spotter/widgets/smallButton.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:event_spotter/widgets/toaster.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+//import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:image_picker/image_picker.dart';
@@ -277,46 +277,46 @@ class _CreateeventState extends State<Createevent> {
                       const SizedBox(
                         height: 10,
                       ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.06,
-                        width: MediaQuery.of(context).size.width,
-                        child: ElevatedButton(
-                          child: Row(
-                            children: [
-                              const Icon(FontAwesomeIcons.calendar),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Text(
-                                formatted,
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 18),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                            primary: const Color(0XFF368890),
-                          ),
-                          onPressed: () {
-                            DatePicker.showDatePicker(
-                              context,
-                              showTitleActions: true,
-                              minTime: DateTime(2021, 1, 1),
-                              maxTime: DateTime(2025, 6, 7),
-                              onConfirm: (date) {
-                                print('confirm $date');
-                                newValue = newValues.format(date);
-                                formatted = newValue;
-                                setState(() {});
-                              },
-                            );
-                          },
-                        ),
-                      ),
+                      // SizedBox(
+                      //   height: MediaQuery.of(context).size.height * 0.06,
+                      //   width: MediaQuery.of(context).size.width,
+                      //   child: ElevatedButton(
+                      //     child: Row(
+                      //       children: [
+                      //         const Icon(FontAwesomeIcons.calendar),
+                      //         const SizedBox(
+                      //           width: 20,
+                      //         ),
+                      //         Text(
+                      //           formatted,
+                      //           style: const TextStyle(
+                      //               color: Colors.white, fontSize: 18),
+                      //           textAlign: TextAlign.center,
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     style: ElevatedButton.styleFrom(
+                      //       shape: const RoundedRectangleBorder(
+                      //           borderRadius:
+                      //               BorderRadius.all(Radius.circular(10))),
+                      //       primary: const Color(0XFF368890),
+                      //     ),
+                      //     onPressed: () {
+                      //       DatePicker.showDatePicker(
+                      //         context,
+                      //         showTitleActions: true,
+                      //         minTime: DateTime(2021, 1, 1),
+                      //         maxTime: DateTime(2025, 6, 7),
+                      //         onConfirm: (date) {
+                      //           print('confirm $date');
+                      //           newValue = newValues.format(date);
+                      //           formatted = newValue;
+                      //           setState(() {});
+                      //         },
+                      //       );
+                      //     },
+                      //   ),
+                      // ),
                       const SizedBox(
                         height: 10,
                       ),
@@ -381,9 +381,15 @@ class _CreateeventState extends State<Createevent> {
                                   alignment: Alignment.center,
                                   child: IconButton(
                                       onPressed: () {
-                                        addConditionsList();
-                                        conditionss.clear();
-                                        setState(() {});
+                                        if (conditionss.text=="") {
+                                          setState(() {
+                                            showToaster("Add Conditions");
+                                          });
+                                        } else {
+                                          addConditionsList();
+                                          conditionss.clear();
+                                          setState(() {});
+                                        }
                                       },
                                       icon: const Icon(
                                         Icons.add,

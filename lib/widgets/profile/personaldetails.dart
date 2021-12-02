@@ -10,7 +10,12 @@ class Personaldetails extends StatelessWidget {
     required TextEditingController address,
     required TextEditingController city,
     required TextEditingController country,
-  }) : _email = email, _phonenumber = phonenumber, _address = address, _city = city, _country = country, super(key: key);
+  })  : _email = email,
+        _phonenumber = phonenumber,
+        _address = address,
+        _city = city,
+        _country = country,
+        super(key: key);
 
   final TextEditingController _email;
   final TextEditingController _phonenumber;
@@ -21,9 +26,7 @@ class Personaldetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
-       
-      ],
+      children: [],
     );
   }
 }
