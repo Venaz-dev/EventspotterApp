@@ -10,8 +10,11 @@ import 'package:event_spotter/widgets/explore/livefeed.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:like_button/like_button.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
+
+import '../toaster.dart';
 
 class Eventss extends StatefulWidget {
   const Eventss({Key? key}) : super(key: key);
@@ -33,13 +36,15 @@ class _EventssState extends State<Eventss> {
   bool active = false;
   String isFollow = "follow";
   late String id;
+  late int bb;
+  late int totalcount;
   late EventTypeModel _eventTypeModel;
   String urlEvent = "https://theeventspotter.com/api/getEvents";
   String Favourite = "https://theeventspotter.com/api/favrouite";
   String UnFavourite = "https://theeventspotter.com/api/unfavrouit";
   String MainUrl = "https://theeventspotter.com/";
   String PostlikeUrl = "https://theeventspotter.com/api/like";
-   late List<int> favourite=[];
+  late List<int> favourite = [];
 
   @override
   void initState() {
@@ -47,7 +52,6 @@ class _EventssState extends State<Eventss> {
     getEvetns().whenComplete(() {
       setState(() {});
     });
-    
   }
 
   @override
@@ -154,32 +158,53 @@ class _EventssState extends State<Eventss> {
                                       child: followingcheck(index)),
                                 ),
                                 Positioned(
-                                  top: size.height * 0.07,
-                                  right: 20,
-                                  child: LikeButton(
-                                    size: 20,
-                                    onTap: (isLiked) {
-                                      // ignore: unrelated_type_equality_checks
-                                      if (favourite[index] == isLiked) {
-                                        setState(() {
-                                          active = !active;
-                                          print(active);
-                                        });
-                                        return PostLike(index,
-                                            _eventsModel.data[index].events.id);
-                                      } else {
-                                        return PostDislike(index,
-                                            _eventsModel.data[index].events.id);
-                                      }
-                                    },
-                                    likeBuilder: (isLiked) {
-                                      final color =
-                                          active ? Colors.red : Colors.grey;
-                                      return Icon(Icons.favorite,
-                                          color: color, size: 20);
-                                    },
-                                  ),
-                                ),
+                                    top: size.height * 0.07,
+                                    right: 20,
+                                    child: IconButton(
+                                        onPressed: () {
+                                          if (favourite[index] == 1) {
+                                            favourite[index] = 0;
+                                            PostDislike(
+                                                index,
+                                                _eventsModel
+                                                    .data[index].events.id);
+                                          } else {
+                                            favourite[index] = 1;
+                                            PostLike(
+                                                index,
+                                                _eventsModel
+                                                    .data[index].events.id);
+                                          }
+                                          setState(() {});
+                                        },
+                                        icon: Icon(MdiIcons.heart,
+                                            color: favourite[index] == 0
+                                                ? Colors.grey
+                                                : Colors.red))
+                                    // child: LikeButton(
+                                    //   size: 20,
+                                    //   onTap: (isLiked) {
+                                    //     // ignore: unrelated_type_equality_checks
+                                    //     if (favourite[index] == isLiked) {
+                                    //       setState(() {
+                                    //         active = !active;
+                                    //         print(active);
+                                    //       });
+                                    //       return PostLike(index,
+                                    //           _eventsModel.data[index].events.id);
+                                    //     } else {
+                                    //       return PostDislike(index,
+                                    //           _eventsModel.data[index].events.id);
+                                    //     }
+                                    //   },
+                                    //   likeBuilder: (isLiked) {
+                                    //     final color =
+                                    //         active ? Colors.red : Colors.grey;
+                                    //     return Icon(Icons.favorite,
+                                    //         color: color, size: 20);
+                                    //   },
+                                    // ),
+                                    ),
                                 Positioned(
                                   bottom: 0,
                                   right: size.width * 0.02,
@@ -373,28 +398,31 @@ class _EventssState extends State<Eventss> {
   }
 
   likefunction(int index, IconData icon) {
-    print(_eventsModel.data[index].totalLikes.toString());
+    //print(_eventsModel.data[index].totalLikes.toString());
     String likecount = _eventsModel.data[index].totalLikes.toString();
     String vv = "0";
+    bb = _eventsModel.data[index].isLiked;
+    totalcount = _eventsModel.data[index].totalLikes;
 
     return Row(
       children: [
         IconButton(
-          icon: Icon(
-            icon,
-            size: 16,
-          ),
+          icon:
+              Icon(icon, size: 16, color: bb == 1 ? Colors.blue : Colors.grey),
           onPressed: () async {
-            setState(() {
-              print("insde setstate");
-              likecount = vv;
-            });
-            print('asdf');
-            vv = await postThumbs(_eventsModel.data[index].events.id);
-            print('HELLO G $vv');
+            
+            if (bb == 0) {
+              bb = 1;
+              
+            } else {
+              bb == 0;
+              
+            }
+            totalcount = await postThumbs(_eventsModel.data[index].events.id);
+            setState(() {});
           },
         ),
-        Text(likecount),
+        Text(totalcount.toString()),
       ],
     );
   }
@@ -410,7 +438,7 @@ class _EventssState extends State<Eventss> {
       //print(response.data);
       if (response.statusCode == 200) {
         _eventsModel = EventsModel.fromJson(response.data);
-       
+
         lenght = _eventsModel.data.length;
         for (int i = 0; i < _eventsModel.data.length; i++) {
           var km = _eventsModel.data[i].km;
@@ -435,7 +463,7 @@ class _EventssState extends State<Eventss> {
     } catch (e) {
       print(e.toString() + "Catch");
     } finally {
-       listFav();
+      listFav();
       _isLoading = false;
     }
     setState(() {});
@@ -458,38 +486,27 @@ class _EventssState extends State<Eventss> {
 //     }
 //   }
 
-  Future<bool> PostDislike(int index, int eventId) async {
-    print("inside postlike");
+  PostDislike(int index, int eventId) async {
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
     FormData formData = new FormData.fromMap({
       "event_id": eventId,
     });
-    // try {
-    _dio.options.headers["Authorization"] = "Bearer ${_token}";
-    await _dio.post(UnFavourite, data: formData).then((value) {
-      print(value.data.toString());
-      if (value.data['success'] == true) {
+    try {
+      _dio.options.headers["Authorization"] = "Bearer ${_token}";
+      await _dio.post(UnFavourite, data: formData).then((value) {
         print(value.data.toString());
-        setState(() {
-          active = false;
-        });
-      }
-    });
-    return Future.value(active);
-    //     } else {
-    //       print("error while getting favouites");
-    //     }
-    //   });
-    // } catch (e) {
-    //   print(e.toString());
-    // } finally {
-    //   return Future.value(false);
-    // }
+        if (value.data['success'] == true) {
+          // showToaster("UnFavourite");
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+    } finally {}
   }
 
-  Future<bool> PostLike(int index, int eventId) async {
-    print("inside postlike");
+  PostLike(int index, int eventId) async {
+    // print("inside postlike");
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
     FormData formData = new FormData.fromMap({
@@ -497,33 +514,21 @@ class _EventssState extends State<Eventss> {
     });
     // try {
     _dio.options.headers["Authorization"] = "Bearer ${_token}";
+    try {
+      await _dio.post(Favourite, data: formData).then((value) {
+        print(value.toString());
+        if (value.data['status'] == true) {
+          print(value.data.toString());
 
-    await _dio.post(Favourite, data: formData).then((value) {
-      print(value.toString());
-      if (value.data['status'] == true) {
-        print(value.data.toString());
-        setState(() {
-          active = true;
-        });
-      }
-    });
-    return Future.value(active);
-    //     } else {
-
-    //       print("error while getting favouites");
-
-    //     }
-    //   });
-    // } catch (e) {
-    //   print(e.toString());
-    // } finally {
-    //   return Future.value(false);
-    // }
+          // showToaster("Favourite");
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+    } finally {}
   }
 
   followingcheck(int index) {
-    print("inside followingcheck");
-
     if (_eventsModel.data[index].events.user.id.toString() != id) {
       return ElevatedButton(
         onPressed: () {
@@ -553,22 +558,28 @@ class _EventssState extends State<Eventss> {
     }
   }
 
-  Future<String> postThumbs(int id) async {
-    String count = "0";
+  Future<int> postThumbs(int id) async {
+    int count = 0;
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
     FormData formData = FormData.fromMap({
       "event_id": id,
     });
-    _dio.options.headers["Authorization"] = "Bearer ${_token}";
-    Response response = await _dio.post(PostlikeUrl, data: formData);
-    if (response.data['success']) {
-      count = response.data['totalLikes'].toString();
-      print('Hasdf');
-    } else {
-      print('ERROR');
+    try {
+      _dio.options.headers["Authorization"] = "Bearer ${_token}";
+      Response response = await _dio.post(PostlikeUrl, data: formData);
+      if (response.data['success']) {
+        count = response.data['totalLikes'];
+        print('Hasdf');
+      } else {
+        print('ERROR');
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      setState(() {});
+      return  count;
     }
-    return count;
   }
 }
 
