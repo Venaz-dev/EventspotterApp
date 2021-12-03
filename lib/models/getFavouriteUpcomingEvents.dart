@@ -638,7 +638,7 @@ class User {
     required this.allowDirectMessage,
     required this.profilePrivate,
     required this.lastSeen,
-    required this.profilePicture,
+     this.profilePicture,
     required this.followers,
   });
   late final int id;
@@ -663,7 +663,7 @@ class User {
   late final String allowDirectMessage;
   late final String profilePrivate;
   late final String lastSeen;
-  late final ProfilePicture profilePicture;
+   ProfilePicture? profilePicture;
   late final List<Followers> followers;
   
   User.fromJson(Map<String, dynamic> json){
@@ -689,7 +689,16 @@ class User {
     allowDirectMessage = json['allow_direct_message'];
     profilePrivate = json['profile_private'];
     lastSeen = json['last_seen'];
-    profilePicture = ProfilePicture.fromJson(json['profile_picture']);
+    if (json['profile_picture'] != null) {
+      profilePicture = (ProfilePicture.fromJson(json['profile_picture']));
+    } else {
+      profilePicture = ProfilePicture(
+          id: 0,
+          image: "images/user.jpeg",
+          userId: "0",
+          createdAt: "112",
+          updatedAt: "12332");
+    }
     followers = List.from(json['followers']).map((e)=>Followers.fromJson(e)).toList();
   }
 
@@ -717,7 +726,7 @@ class User {
     _data['allow_direct_message'] = allowDirectMessage;
     _data['profile_private'] = profilePrivate;
     _data['last_seen'] = lastSeen;
-    _data['profile_picture'] = profilePicture.toJson();
+    _data['profile_picture'] = profilePicture;
     _data['followers'] = followers.map((e)=>e.toJson()).toList();
     return _data;
   }
@@ -806,18 +815,18 @@ class Comment {
   late final int id;
   late final String eventId;
   late final String userId;
-  late final String comment;
-  late final String createdAt;
-  late final String updatedAt;
+  late final String? comment;
+  late final String? createdAt;
+  late final String? updatedAt;
   late final User user;
   
   Comment.fromJson(Map<String, dynamic> json){
-    id = json['id'];
-    eventId = json['event_id'];
-    userId = json['user_id'];
-    comment = json['comment'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+   id = json['id'];
+    eventId = json['event_id']??"";
+    userId = json['user_id']??"";
+    comment = json['comment']??"";
+    createdAt = json['created_at']??"";
+    updatedAt = json['updated_at']??"";
     user = User.fromJson(json['user']);
   }
 
@@ -892,8 +901,8 @@ class Livefeed {
     eventId = json['event_id'];
     userId = json['user_id'];
     path = json['path'];
-    description = null;
-    tagPeople = null;
+   // description = null;
+   // tagPeople = null;
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }

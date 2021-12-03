@@ -3,6 +3,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:event_spotter/models/getProfile.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
+import 'package:event_spotter/pages/followers.dart';
+import 'package:event_spotter/pages/following.dart';
 import 'package:event_spotter/pages/signin.dart';
 import 'package:event_spotter/widgets/profile/yourevents.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
@@ -297,13 +299,23 @@ class _ProfileState extends State<Profile> {
                                           container(
                                               size,
                                               _getProfile.data.followers.length,
-                                              'Followers'),
+                                              'Followers', () {
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const Following()));
+                                          }),
                                           container(
                                               size,
                                               _getProfile.data.following.length,
-                                              'Following'),
-                                          container(
-                                              size, totalEvents, 'Events'),
+                                              'Following', () {
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const Follower()));
+                                          }),
+                                          container(size, totalEvents, 'Events',
+                                              () {}),
                                         ],
                                       ),
                                     ),
@@ -444,32 +456,35 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  container(Size size, int count, String textType) {
+  container(Size size, int count, String textType, VoidCallback ontap) {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10.0),
-      child: Container(
-        height: size.height * 0.06,
-        //width: size.width*0.3,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: const Color(0XFFECF2F3),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 10.0, right: 10),
-          child: FittedBox(
-            fit: BoxFit.contain,
-            child: Column(
-              children: [
-                AutoSizeText(
-                  count.toString(),
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.w400),
-                ),
-                AutoSizeText(
-                  textType,
-                  style: const TextStyle(color: Colors.black54, fontSize: 15),
-                )
-              ],
+      child: GestureDetector(
+        onTap: ontap,
+        child: Container(
+          height: size.height * 0.06,
+          //width: size.width*0.3,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: const Color(0XFFECF2F3),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10.0, right: 10),
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: Column(
+                children: [
+                  AutoSizeText(
+                    count.toString(),
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.w400),
+                  ),
+                  AutoSizeText(
+                    textType,
+                    style: const TextStyle(color: Colors.black54, fontSize: 15),
+                  )
+                ],
+              ),
             ),
           ),
         ),

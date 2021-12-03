@@ -145,7 +145,7 @@ class _FollowerlistState extends State<Followerlist> {
     _token = _sharedPreferences.getString('accessToken')!;
 
     _dio.options.headers["Authorization"] = "Bearer ${_token}";
-    FormData formData = new FormData.fromMap({
+    FormData formData =  FormData.fromMap({
       "id": widget.followerListModel.data[index].id,
     });
     await _dio.post(unFollow, data: formData).then((value) {

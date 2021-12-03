@@ -6,7 +6,7 @@ import 'package:event_spotter/widgets/smallButton.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:event_spotter/widgets/toaster.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:image_picker/image_picker.dart';
@@ -42,7 +42,7 @@ class _CreateeventState extends State<Createevent> {
   DateFormat formatter = DateFormat('yyyy-MM-dd');
   DateFormat newValues = DateFormat('yyyy-MM-dd');
   late String formatted;
-  int public = 0;
+  int public = 1;
   bool isprivate = false;
   final ImagePicker _picker = ImagePicker();
   TextEditingController eventname = TextEditingController();
@@ -228,7 +228,6 @@ class _CreateeventState extends State<Createevent> {
                       ),
                       Textform(
                         controller: eventname,
-                        maxlines: 1,
                         label: "Event name",
                         color: const Color(0XFFEBF2F2),
                         isSecure: false,
@@ -277,46 +276,46 @@ class _CreateeventState extends State<Createevent> {
                       const SizedBox(
                         height: 10,
                       ),
-                      // SizedBox(
-                      //   height: MediaQuery.of(context).size.height * 0.06,
-                      //   width: MediaQuery.of(context).size.width,
-                      //   child: ElevatedButton(
-                      //     child: Row(
-                      //       children: [
-                      //         const Icon(FontAwesomeIcons.calendar),
-                      //         const SizedBox(
-                      //           width: 20,
-                      //         ),
-                      //         Text(
-                      //           formatted,
-                      //           style: const TextStyle(
-                      //               color: Colors.white, fontSize: 18),
-                      //           textAlign: TextAlign.center,
-                      //         ),
-                      //       ],
-                      //     ),
-                      //     style: ElevatedButton.styleFrom(
-                      //       shape: const RoundedRectangleBorder(
-                      //           borderRadius:
-                      //               BorderRadius.all(Radius.circular(10))),
-                      //       primary: const Color(0XFF368890),
-                      //     ),
-                      //     onPressed: () {
-                      //       DatePicker.showDatePicker(
-                      //         context,
-                      //         showTitleActions: true,
-                      //         minTime: DateTime(2021, 1, 1),
-                      //         maxTime: DateTime(2025, 6, 7),
-                      //         onConfirm: (date) {
-                      //           print('confirm $date');
-                      //           newValue = newValues.format(date);
-                      //           formatted = newValue;
-                      //           setState(() {});
-                      //         },
-                      //       );
-                      //     },
-                      //   ),
-                      // ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        width: MediaQuery.of(context).size.width,
+                        child: ElevatedButton(
+                          child: Row(
+                            children: [
+                              const Icon(FontAwesomeIcons.calendar),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                formatted,
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                            primary: const Color(0XFF368890),
+                          ),
+                          onPressed: () {
+                            DatePicker.showDatePicker(
+                              context,
+                              showTitleActions: true,
+                              minTime: DateTime(2021, 1, 1),
+                              maxTime: DateTime(2025, 6, 7),
+                              onConfirm: (date) {
+                                print('confirm $date');
+                                newValue = newValues.format(date);
+                                formatted = newValue;
+                                setState(() {});
+                              },
+                            );
+                          },
+                        ),
+                      ),
                       const SizedBox(
                         height: 10,
                       ),
@@ -381,7 +380,7 @@ class _CreateeventState extends State<Createevent> {
                                   alignment: Alignment.center,
                                   child: IconButton(
                                       onPressed: () {
-                                        if (conditionss.text=="") {
+                                        if (conditionss.text == "") {
                                           setState(() {
                                             showToaster("Add Conditions");
                                           });
@@ -448,8 +447,6 @@ class _CreateeventState extends State<Createevent> {
                             width: size.width * double.infinity,
                             primary: const Color(0XFF368890),
                             onpressed: () {
-                              public = 1;
-
                               setState(() {});
                             },
                           ),
@@ -619,7 +616,7 @@ class _CreateeventState extends State<Createevent> {
   postCreatEvent() async ///////////////////////////////////////
   {
     String fileName = imagePath!.path.split('/').last;
-
+    print("events near you $formatted");
     print('condtions length ${conditions.length}');
 // return;
     var file =

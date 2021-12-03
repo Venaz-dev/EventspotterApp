@@ -22,7 +22,8 @@ class Eventss extends StatefulWidget {
       {Key? key,
       required this.favourite,
       required this.eventsLiveFeed,
-      required this.eventsModel,required this.id})
+      required this.eventsModel,
+      required this.id})
       : super(key: key);
 
   @override
@@ -296,7 +297,7 @@ class _EventssState extends State<Eventss> {
                                   padding: const EdgeInsets.only(left: 20.0),
                                   child: Text(
                                     widget.eventsModel.data[index].events
-                                        .eventDescription,
+                                        .eventName,
                                     style: const TextStyle(
                                         fontSize: 20,
                                         color: Colors.black,

@@ -7,7 +7,6 @@ import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:event_spotter/widgets/toaster.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -43,7 +42,7 @@ class _UploadimageState extends State<Uploadimage> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text(
-            "Create a new event",
+            "Upload a live snap",
             style: TextStyle(
                 fontWeight: FontWeight.w500,
                 color: Colors.black87,
@@ -161,6 +160,7 @@ class _UploadimageState extends State<Uploadimage> {
                 height: 20,
               ),
               Textform(
+                isSecure: false,
                 label: "Snap Description",
                 controller: _snapdescription,
                 color: const Color(0XFFEBF2F2),
@@ -185,19 +185,31 @@ class _UploadimageState extends State<Uploadimage> {
               const SizedBox(
                 height: 20,
               ),
-              _isloading
-                  ? const Center(child: CircularProgressIndicator())
-                  : Elevatedbutton(
+            _isloading == true ? 
+           const  SizedBox(
+             child: Center(
+               child: CircularProgressIndicator(
+                 color: Color(0XFF368890),
+               ),
+             ),
+           ):
+             Elevatedbutton(
                       primary: const Color(0xFF304747),
                       text: "Upload",
                       width: double.infinity,
                       coloring: const Color(0xFF304747),
                       onpressed: () async {
-                        // setState(() {
-                        //   _isloading = true;
-                        // });
+                        if(imagePath == null)
+                        {
+                          showToaster("Please upload a snap");
+                        }
+                        else{
+                            setState(() {
+                              _isloading =!_isloading;
+                            });
                         await UploadLiveFeed();
                         Navigator.pop(context);
+                        }
                       }),
             ]),
           ),
@@ -220,12 +232,26 @@ class _UploadimageState extends State<Uploadimage> {
                         Navigator.of(context).pop();
                         _pickImage(ImageSource.gallery);
                       }),
+                        ListTile(
+                      leading: const Icon(Icons.camera_alt),
+                      title: const Text('Snap image from camera'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        _pickImage(ImageSource.camera);
+                      }),
                   ListTile(
                       leading: const Icon(Icons.camera),
                       title: const Text('Pick a video'),
                       onTap: () {
                         Navigator.of(context).pop();
                         _pickvideo(ImageSource.gallery);
+                      }),
+                       ListTile(
+                      leading: const Icon(Icons.photo_camera_front,),
+                      title: const Text('Record a video from the camera'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        _pickvideo(ImageSource.camera);
                       }),
                 ],
               ),
@@ -260,7 +286,6 @@ class _UploadimageState extends State<Uploadimage> {
   }
 
   UploadLiveFeed() async {
-    _isloading = true;
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
     String fileName = imagePath!.path.split('/').last;
