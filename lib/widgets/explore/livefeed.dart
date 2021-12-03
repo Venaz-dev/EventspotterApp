@@ -22,7 +22,8 @@ class _LivefeedsState extends State<Livefeeds> {
   void initState() {
     super.initState();
     lenght = widget.eventsLiveFeeds.length;
-   // print(widget.eventsLiveFeeds[0]);
+    print("Live feeds lenght=$lenght");
+    // print(widget.eventsLiveFeeds[0]);
     // print('hello g $lenght');
     //lenght = lenght - 1;
     // print(lenght);
@@ -40,7 +41,7 @@ class _LivefeedsState extends State<Livefeeds> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    if (widget.test == true) {
+    if (lenght > 0) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,13 +74,13 @@ class _LivefeedsState extends State<Livefeeds> {
                         child: Stack(
                           children: [
                             widget.eventsLiveFeeds[index]
-                                        ['img'] //////////////////////////
-                                    .toString()
-                                    .contains('.mp4')||
+                                            ['img'] //////////////////////////
+                                        .toString()
+                                        .contains('.mp4') ||
                                     widget.eventsLiveFeeds[index]
-                                        ['img'] //////////////////////////
-                                    .toString()
-                                    .contains('.mov')
+                                            ['img'] //////////////////////////
+                                        .toString()
+                                        .contains('.mov')
                                 ? VideoPlayerScreen(
                                     url: MainUrl +
                                         widget.eventsLiveFeeds[index]['img'])

@@ -6,7 +6,6 @@ import 'package:event_spotter/pallets.dart';
 import 'package:event_spotter/widgets/downdecoration.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:event_spotter/widgets/toaster.dart';
-
 import 'package:event_spotter/widgets/updecoration.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -24,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _email = TextEditingController();
 
   final TextEditingController _password = TextEditingController();
-  Dio _dio = Dio();
+  final Dio _dio = Dio();
   late Response response;
   late SharedPreferences _sharedPreferences;
   bool _isEmailValid = true;
@@ -225,8 +224,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             primary: Colors.white,
                           ),
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const Singup()));
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => const Singup()));
                           },
                         ),
                       ),
@@ -243,47 +243,39 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   login() async {
-    if (!RegExp(r'\S+@\S+\.\S+').hasMatch(_email.text)) {
-      setState(() {
-        _isEmailValid = false;
-      });
-    } else if (_email.text.isEmpty) {
-      setState(() {
-        _isEmailValid = false;
-      });
+    if (_email.text.isEmpty && !RegExp(r'\S+@\S+\.\S+').hasMatch(_email.text)) {
+      _isEmailValid = false;
+      setState(() {});
     } else {
-      setState(() {
-        _isEmailValid = true;
-      });
+      _isEmailValid = true;
     }
     if (_password.text.isEmpty) {
-      setState(() {
-        _isPasswordValid = false;
-      });
+      _isPasswordValid = false;
+      setState(() {});
       return;
     } else {
-      setState(() {
-        _isPasswordValid = true;
-      });
+      _isPasswordValid = true;
     }
     setState(() {
       _isLoading = true;
     });
-    // ignore: unnecessary_new
-    FormData formData = new FormData.fromMap({
+    FormData formData = FormData.fromMap({
       "email": _email.text,
       "password": _password.text,
     });
     try {
       await _dio.post(url, data: formData).then((value) {
-        if (value.data['status'] == false) _isEverythingValid = false;
-        _loginResponse = LoginModel.fromJson(value.data);
+        if (value.statusCode == 500) {
+          _isEverythingValid = false;
+          return;
+        } else
+          _loginResponse = LoginModel.fromJson(value.data);
       });
 
       if (_isEverythingValid) {
         showToaster('Welcome  ${_loginResponse.user.name}');
 
-        getInitializedSharedPref();
+        await getInitializedSharedPref();
         await _sharedPreferences.setString('name', _loginResponse.user.name);
         await _sharedPreferences.setString(
             'id', _loginResponse.user.id.toString());
@@ -296,13 +288,10 @@ class _LoginScreenState extends State<LoginScreen> {
         await _sharedPreferences.setString(
             'phone', _loginResponse.user.phoneNumber);
 
-        _dio.options.headers["Authorization"] =
-            "Bearer ${_loginResponse.token}";
-        response = await _dio.get(url2);
-        //print(response.data.toString());
-        print(response.data);
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const Dashboard()));
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const Dashboard()));
+      } else {
+        showToaster('Invalid Credentials');
       }
     } catch (error) {
       print(error);
@@ -316,8 +305,8 @@ class _LoginScreenState extends State<LoginScreen> {
   getInitializedSharedPref() async {
     _sharedPreferences = await SharedPreferences.getInstance();
     if (_sharedPreferences.containsKey('email')) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => const Dashboard()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const Dashboard()));
     }
   }
 }

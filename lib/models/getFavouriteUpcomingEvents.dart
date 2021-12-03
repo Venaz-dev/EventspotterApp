@@ -375,7 +375,7 @@ class Comment {
   late final int id;
   late final String eventId;
   late final String userId;
-  late final String? comment;
+       String? comment;
   late final String createdAt;
   late final String updatedAt;
   late final User user;

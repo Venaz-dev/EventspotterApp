@@ -4,6 +4,7 @@ import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/pages/explore.dart';
 import 'package:event_spotter/pages/uploadimage.dart';
 import 'package:event_spotter/widgets/elevatedbutton.dart';
+import 'package:event_spotter/widgets/explore/events.dart';
 import 'package:event_spotter/widgets/explore/livefeed.dart';
 import 'package:event_spotter/widgets/map.dart';
 import 'package:event_spotter/widgets/smallbutton.dart';
@@ -183,18 +184,18 @@ class _EventdetailingState extends State<Eventdetailing> {
                           const SizedBox(
                             height: 10,
                           ),
-                          LikeButton(
-                              size: 20,
-                              isLiked: active,
-                              likeBuilder: (isliked) {
-                                final color =
-                                    isliked ? Colors.green : Colors.grey;
-                                return Icon(Icons.flag, color: color, size: 20);
-                              },
-                              countBuilder: (count, isliked, text) {
-                                final color =
-                                    isliked ? Colors.green : Colors.grey;
-                              }),
+                          // LikeButton(
+                          //     size: 20,
+                          //     isLiked: active,
+                          //     likeBuilder: (isliked) {
+                          //       final color =
+                          //           isliked ? Colors.green : Colors.grey;
+                          //       return Icon(Icons.flag, color: color, size: 20);
+                          //     },
+                          //     countBuilder: (count, isliked, text) {
+                          //       final color =
+                          //           isliked ? Colors.green : Colors.grey;
+                          //     }),
                         ]),
                       ),
                       Positioned(
@@ -670,7 +671,7 @@ class _VideoPlayerScreemState extends State<VideoPlayerScreem> {
 
     // Use the controller to loop the video.
     _controller.setLooping(true);
-    _controller.setVolume(0.0);
+    _controller.setVolume(100);
 
     super.initState();
   }
@@ -701,9 +702,14 @@ class _VideoPlayerScreemState extends State<VideoPlayerScreem> {
                 width: double.infinity,
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: VideoPlayer(_controller)),
+                 child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: <Widget>[
+                    VideoPlayer(_controller),
+                    ControlsOverlay(controller: _controller),
+                    VideoProgressIndicator(_controller, allowScrubbing: true),
+                  ],
+                ),
               );
             } else {
               // If the VideoPlayerController is still initializing, show a

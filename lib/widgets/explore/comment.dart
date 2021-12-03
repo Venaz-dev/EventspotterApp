@@ -156,7 +156,7 @@ class _CommentofuserState extends State<Commentofuser> {
                                 radiusofbutton: BorderRadius.circular(20),
                                 profileImage: MainUrl +
                                     widget.eventsModel.data[widget.index].events
-                                        .user.profilePicture!.image!,
+                                        .user.profilePicture!.image,
                                 //mainurl +
                                 // widget.
                                 // model!.data[widget.indexs!].events

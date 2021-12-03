@@ -2,12 +2,14 @@ import 'package:event_spotter/pages/signin.dart';
 import 'package:event_spotter/widgets/downdecoration.dart';
 import 'package:event_spotter/widgets/elevatedbutton.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
+import 'package:event_spotter/widgets/toaster.dart';
 import 'package:event_spotter/widgets/updecoration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Singup extends StatefulWidget {
   const Singup({Key? key}) : super(key: key);
@@ -214,7 +216,8 @@ class _SingupState extends State<Singup> {
                                   if (!form.validate()) {
                                     return;
                                   }
-                                  createAccount();
+
+                                  acceptancenote(context, size);
                                 },
                               ),
                               const SizedBox(
@@ -238,7 +241,7 @@ class _SingupState extends State<Singup> {
                                     primary: Colors.white,
                                   ),
                                   onPressed: () {
-                                    Navigator.of(context).push(
+                                    Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 const LoginScreen()));
@@ -263,7 +266,122 @@ class _SingupState extends State<Singup> {
     );
   }
 
+  Future<dynamic> acceptancenote(BuildContext context, Size size) {
+    return showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+              height: size.height * 0.35,
+              width: double.infinity,
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(10)),
+              child: Padding(
+                padding: const EdgeInsets.all(5),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Terms and Conditions",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text("By singin up or logging in, i accept the",
+                        style: TextStyle(color: Colors.black, fontSize: 17)),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        termsandcondtions();
+                      },
+                      child: Container(
+                          decoration: const BoxDecoration(
+                              border: Border(
+                                  bottom:
+                                      BorderSide(color: Color(0XFF368890)))),
+                          child: const Text(
+                            "EventSpotter Term of Services "
+                            " ",
+                            style: TextStyle(
+                                color: Color(0XFF368890), fontSize: 17),
+                          )),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(" and have read the ",
+                        style: TextStyle(fontSize: 17)),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        privacypoilicy();
+                      },
+                      child: Container(
+                          decoration: const BoxDecoration(
+                              border: Border(
+                                  bottom:
+                                      BorderSide(color: Color(0XFF368890)))),
+                          child: const Text("Privacy Policy",
+                              style: TextStyle(
+                                color: Color(0XFF368890),
+                                fontSize: 17,
+                              ))),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        createAccount();
+                      },
+                      child: const Text("Accept"),
+                      style: ElevatedButton.styleFrom(
+                          primary: const Color(0XFF368890)),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(color: Colors.black38),
+                      ),
+                    )
+                  ],
+                ),
+              ));
+        });
+  }
+
+  privacypoilicy() async {
+    const url = 'https://theeventspotter.com/privacy_policy';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  termsandcondtions() async {
+    const url = 'https://theeventspotter.com/terms_of_service';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   createAccount() async {
+    Navigator.pop(context);
+
     _sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
       _isLoading = true;
@@ -280,12 +398,13 @@ class _SingupState extends State<Singup> {
     if (response.data['access_token'].toString().isEmpty) {
     } else {
       print("hello g");
+      showToaster('Account created successfully');
     }
     setState(() {
       _isLoading = false;
     });
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const LoginScreen()));
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   dynamic doesntReturn() {

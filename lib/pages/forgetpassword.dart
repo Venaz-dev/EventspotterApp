@@ -4,6 +4,7 @@ import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:event_spotter/widgets/updecoration.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Forgetpassword extends StatelessWidget {
   const Forgetpassword({Key? key}) : super(key: key);
@@ -42,15 +43,15 @@ class Forgetpassword extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                Textform(
-                  controller: _forgetPassword,
-                  isSecure: false,
-                  keyboard: TextInputType.emailAddress,
-                  icon: Icons.email,
-                  color: const Color(0XFFEBF2F2),
-                  label: "Email",
-                  width: size.width * 0.06,
-                ),
+                // Textform(
+                //   controller: _forgetPassword,
+                //   isSecure: false,
+                //   keyboard: TextInputType.emailAddress,
+                //   icon: Icons.email,
+                //   color: const Color(0XFFEBF2F2),
+                //   label: "Email",
+                //   width: size.width * 0.06,
+                // ),
                 const SizedBox(
                   height: 30,
                 ),
@@ -61,7 +62,7 @@ class Forgetpassword extends StatelessWidget {
                   coloring: const Color(0xFF304747),
                   primary: const Color(0xFF304747),
                   onpressed: () {
-    //dialoguebox( "re" , context);
+                     forget();
                   },
                 ),
                 const SizedBox(
@@ -86,7 +87,16 @@ class Forgetpassword extends StatelessWidget {
       ),
     );
   }
-
+forget()async{
+ 
+    const url = 'https://theeventspotter.com/forgot';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+ 
+}
   //  dialoguebox(String text , BuildContext context)
   // {
   //    AlertDialog(

@@ -80,8 +80,15 @@ class User {
     useLocation = json['use_location'] ?? '1';
     allowDirectMessage = json['allow_direct_message'] ?? '1';
     profilePrivate = json['profile_private'] ?? '1';
-    if (json['profile_picture']!=null) {
+    if (json['profile_picture'] != null) {
       profilePicture = (ProfilePicture.fromJson(json['profile_picture']));
+    } else {
+      profilePicture = ProfilePicture(
+          id: 0,
+          image: "images/user.jpeg",
+          userId: "0",
+          createdAt: "112",
+          updatedAt: "12332");
     }
   }
 
@@ -106,6 +113,7 @@ class User {
     _data['use_location'] = useLocation;
     _data['allow_direct_message'] = allowDirectMessage;
     _data['profile_private'] = profilePrivate;
+     _data['profile_picture'] = profilePicture;
     return _data;
   }
 }

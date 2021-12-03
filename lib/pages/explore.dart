@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/widgets/conditions.dart';
 import 'package:event_spotter/widgets/explore/events.dart';
-import 'package:event_spotter/widgets/smallButton.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -23,7 +23,14 @@ class _ExploreState extends State<Explore> {
   String? Lat;
   String? _name;
   String? _email1;
-  
+  late int lenght;
+  late String id;
+  bool _isLoading = true;
+  late EventsModel eventsModel;
+  String urlEvent = "https://theeventspotter.com/api/getEvents";
+  late List eventsLiveFeed = [];
+  late List<int> favourite = [];
+
   String? _token;
   late Response response;
   final TextEditingController _search = TextEditingController();
@@ -44,8 +51,11 @@ class _ExploreState extends State<Explore> {
   @override
   void initState() {
     super.initState();
-    getInitializedSharedPref();
-    getLocation();
+    // getInitializedSharedPref();
+
+    getEvetns().whenComplete(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -59,70 +69,72 @@ class _ExploreState extends State<Explore> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return SafeArea(
-        child: Scaffold(
-      backgroundColor: Colors.white,
-      body: GestureDetector(
-        onTap: () {
-          FocusScopeNode currentfocus = FocusScope.of(context);
+    return RefreshIndicator(
+      onRefresh: () {
+      return   getEvetns();
+       
+      },
+      child: SafeArea(
+          child: Scaffold(
+        backgroundColor: Colors.white,
+        body: GestureDetector(
+          onTap: () {
+            FocusScopeNode currentfocus = FocusScope.of(context);
 
-          if (!currentfocus.hasPrimaryFocus) {
-            currentfocus.unfocus();
-          }
-        },
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Padding(
-            padding:  EdgeInsets.only(top: size.height*0.02 , left: size.width*0.05),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                   Padding(
-                     padding:  EdgeInsets.only(top : size.height * 0.02 ),
-                     child: Row(
+            if (!currentfocus.hasPrimaryFocus) {
+              currentfocus.unfocus();
+            }
+          },
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: size.height * 0.02, left: size.width * 0.05),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: size.height * 0.02),
+                      child: Row(
                         children: [
-                           SizedBox(
-                             //height: size.height*0.1,
-                             width: size.width*0.8 ,
-                             child: Textform(
-                                controller: _search,
-                                icon: Icons.search,
-                                label: "Search",
-                                color: const Color(0XFFECF2F3),
-                              
+                          SizedBox(
+                            //height: size.height*0.1,
+                            width: size.width * 0.8,
+                            child: Textform(
+                              controller: _search,
+                              icon: Icons.search,
+                              label: "Search",
+                              color: const Color(0XFFECF2F3),
+                            ),
                           ),
-                           ),
-                           SizedBox(
-                            width: size.width*0.01,
+                          SizedBox(
+                            width: size.width * 0.01,
                           ),
-                        //  Smallbutton(
-                             
+                          //  Smallbutton(
 
-                              
-                        //       icon: FontAwesomeIcons.slidersH,
+                          //       icon: FontAwesomeIcons.slidersH,
 
-                        //       onpressed: () {
-                        //         setState(() {
-                        //           swap = screens.filter;
-                        //         });
-                        //       },
-                            
-                        //   ),
+                          //       onpressed: () {
+                          //         setState(() {
+                          //           swap = screens.filter;
+                          //         });
+                          //       },
+
+                          //   ),
                         ],
                       ),
-                   ),
-                  
-                 
-                  getpages(size),
-                ],
+                    ),
+                    getpages(size),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
-    ));
+      )),
+    );
   }
 
   Widget getpages(Size size) {
@@ -139,7 +151,8 @@ class _ExploreState extends State<Explore> {
     return Column(
       children: [
         Padding(
-          padding:  EdgeInsets.only(right: size.width*0.05 , top: size.height*0.03),
+          padding: EdgeInsets.only(
+              right: size.width * 0.05, top: size.height * 0.03),
           child: InkWell(
             onTap: () {
               Navigator.of(context).push(
@@ -182,7 +195,14 @@ class _ExploreState extends State<Explore> {
         const SizedBox(
           height: 20,
         ),
-        const Eventss(),
+        _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : Eventss(
+                eventsModel: eventsModel,
+                favourite: favourite,
+                eventsLiveFeed: eventsLiveFeed,
+                id: id,
+              ),
       ],
     );
   }
@@ -194,8 +214,8 @@ class _ExploreState extends State<Explore> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding:
-                EdgeInsets.only(right: size.width * 0.08, top: size.height * 0.04),
+            padding: EdgeInsets.only(
+                right: size.width * 0.08, top: size.height * 0.04),
             child: Container(
               width: size.width,
               decoration: BoxDecoration(
@@ -240,7 +260,7 @@ class _ExploreState extends State<Explore> {
                       height: size.height * 0.02,
                     ),
                     Padding(
-                      padding:  EdgeInsets.only(right : size.width*0.16),
+                      padding: EdgeInsets.only(right: size.width * 0.16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -248,7 +268,6 @@ class _ExploreState extends State<Explore> {
                             "Sort by",
                             style: TextStyle(color: Colors.black38),
                           ),
-                          
                           Container(
                             //  margin:  EdgeInsets.all(10),
                             height: MediaQuery.of(context).size.height * 0.06,
@@ -259,7 +278,8 @@ class _ExploreState extends State<Explore> {
                             ),
                             child: DropdownButtonHideUnderline(
                               child: Padding(
-                                padding: const EdgeInsets.only(right: 10.0, left: 10),
+                                padding: const EdgeInsets.only(
+                                    right: 10.0, left: 10),
                                 child: DropdownButton<String>(
                                     isExpanded: true,
                                     value: value,
@@ -275,109 +295,109 @@ class _ExploreState extends State<Explore> {
                         ],
                       ),
                     ),
-                  
-                  SizedBox(height: size.height*0.02,),
-    
-                  Padding(
-                    padding:  EdgeInsets.only(right: size.width * 0.16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                    SizedBox(
+                      height: size.height * 0.02,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: size.width * 0.16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
                           const Text(
                             "Distance",
                             style: TextStyle(color: Colors.black38),
                           ),
-                         
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.06,
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.06,
                             width: size.width * 0.35,
-                            decoration : BoxDecoration(
-                               color: const Color(0XFFECF2F2),
-                               borderRadius: BorderRadius.circular(10),
+                            decoration: BoxDecoration(
+                              color: const Color(0XFFECF2F2),
+                              borderRadius: BorderRadius.circular(10),
                               //border: Border.all(color : Colors.black38),
                             ),
-                          child: Flexible(
-                            child: TextFormField(
+                            child: Flexible(
+                              child: TextFormField(
                                 decoration: const InputDecoration(
-                                  border: OutlineInputBorder(borderSide: BorderSide.none)
-                                ),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide.none)),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: size.height * 0.02,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: size.width * 0.16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "From",
+                            style: TextStyle(color: Colors.black38),
+                          ),
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.06,
+                            width: size.width * 0.35,
+                            decoration: BoxDecoration(
+                              color: const Color(0XFFECF2F2),
+                              borderRadius: BorderRadius.circular(10),
+                              //border: Border.all(color : Colors.black38),
                             ),
                           ),
-                        )
-                      ],
-                    ),
-                  ),
-    
-                  SizedBox(height: size.height*0.02,),
-    
-                  Padding(
-                    padding:  EdgeInsets.only(right : size.width*0.16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                         
-                      
-                            const Text(
-                              "From",
-                              style: TextStyle(color: Colors.black38),
-                            ),
-                            Container(
-                            height: MediaQuery.of(context).size.height * 0.06,
-                              width: size.width * 0.35,
-                              decoration : BoxDecoration(
-                                 color: const Color(0XFFECF2F2),
-                                 borderRadius: BorderRadius.circular(10),
-                                //border: Border.all(color : Colors.black38),
-                              ),
-                            ),
-                      ],
-                    ),
-                  ),
-    SizedBox(height: size.height*0.02,),
-                   Padding(
-                    padding:  EdgeInsets.only(right : size.width*0.16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                         
-                      
-                            const Text(
-                              "To",
-                              style: TextStyle(color: Colors.black38),
-                            ),
-                            Container(
-                            height: MediaQuery.of(context).size.height * 0.06,
-                              width: size.width * 0.35,
-                              decoration : BoxDecoration(
-                                 color: const Color(0XFFECF2F2),
-                                 borderRadius: BorderRadius.circular(10),
-                                //border: Border.all(color : Colors.black38),
-                              ),
-                            ),
-                      ],
-                    ),
-                  ),
-          SizedBox(height: size.height*0.02,),
-               Container(
-                 alignment: Alignment.centerLeft,
-                 child: const  Text('Conditions'
-                  ,
-                   style: TextStyle(color: Colors.black87),
-                  ),
-               ),
-                   Wrap(
-                      children: List.generate(eventconditions.length, (index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 6.0, top: 10),
-                      child: Elevatedbuttons(
-                        sidecolor: Colors.white,
-                        width: size.width * 0.4,
-                        coloring: const Color(0XFF368890),
-                        text: eventconditions[index]['consitions'],
-                        textColor: const Color(0XFFFFFFFF),
+                        ],
                       ),
-                    );
-                  })),
+                    ),
+                    SizedBox(
+                      height: size.height * 0.02,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: size.width * 0.16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "To",
+                            style: TextStyle(color: Colors.black38),
+                          ),
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.06,
+                            width: size.width * 0.35,
+                            decoration: BoxDecoration(
+                              color: const Color(0XFFECF2F2),
+                              borderRadius: BorderRadius.circular(10),
+                              //border: Border.all(color : Colors.black38),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: size.height * 0.02,
+                    ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: const Text(
+                        'Conditions',
+                        style: TextStyle(color: Colors.black87),
+                      ),
+                    ),
+                    Wrap(
+                        children:
+                            List.generate(eventconditions.length, (index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 6.0, top: 10),
+                        child: Elevatedbuttons(
+                          sidecolor: Colors.white,
+                          width: size.width * 0.4,
+                          coloring: const Color(0XFF368890),
+                          text: eventconditions[index]['consitions'],
+                          textColor: const Color(0XFFFFFFFF),
+                        ),
+                      );
+                    })),
                   ],
                 ),
               ),
@@ -412,10 +432,64 @@ class _ExploreState extends State<Explore> {
     _name = _sharedPreferences.getString('name')!;
     _email1 = _sharedPreferences.getString('email')!;
 
-    setState(() {
-      _token = _sharedPreferences.getString('accessToken')!;
-    });
+    _token = _sharedPreferences.getString('accessToken')!;
+
     print(_token);
+  } ////////////////////////////////////////////////////////////////////////
+
+  Future getEvetns() async {
+    getLocation();
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _token = _sharedPreferences.getString('accessToken')!;
+    id = _sharedPreferences.getString('id')!;
+    print("Inside the Get Event function");
+    try {
+      _dio.options.headers["Authorization"] = "Bearer ${_token}";
+      Response response = await _dio.get(urlEvent);
+      //print(response.data);
+      if (response.statusCode == 200) {
+        eventsModel = EventsModel.fromJson(response.data);
+
+        lenght = eventsModel.data.length;
+        for (int i = 0; i < eventsModel.data.length; i++) {
+          var km = eventsModel.data[i].km;
+          if (eventsModel.data[i].events.liveFeed.isNotEmpty) {
+            for (int j = 0;
+                j < eventsModel.data[i].events.liveFeed.length;
+                j++) {
+              var js = {
+                'img': eventsModel.data[i].events.liveFeed[j].path,
+                'km': km,
+              };
+
+              eventsLiveFeed.add(js);
+            }
+            // test = true;
+          } else {
+            //test = false;
+          }
+        }
+        print(lenght);
+        // print(MainUrl + _eventsModel.data[0].events.user.profilePicture.image);
+      }
+    } catch (e) {
+      print(e.toString() + "Catch");
+    } finally {
+      listFav();
+      _isLoading = false;
+      setState(() {});
+    }
+  }
+
+  listFav() {
+    if (eventsModel.data.length > 0) {
+      for (int i = 0; i < eventsModel.data.length; i++) {
+        var value = eventsModel.data[i].isFavroute;
+        favourite.add(value);
+      }
+    } else {
+      favourite.add(0);
+    }
   }
 
   locationpost() async {
@@ -447,7 +521,7 @@ class Button extends StatelessWidget {
   final BorderRadiusGeometry? radiusofbutton;
   final String? profileImage;
   final String title;
-  final VoidCallback ? onpressed;
+  final VoidCallback? onpressed;
 
   @override
   Widget build(BuildContext context) {

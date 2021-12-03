@@ -9,15 +9,21 @@ import 'package:event_spotter/widgets/explore/comment.dart';
 import 'package:event_spotter/widgets/explore/livefeed.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 
-import '../toaster.dart';
-
 class Eventss extends StatefulWidget {
-  const Eventss({Key? key}) : super(key: key);
+  List<int> favourite = [];
+  List eventsLiveFeed = [];
+  late String id;
+  EventsModel eventsModel;
+  Eventss(
+      {Key? key,
+      required this.favourite,
+      required this.eventsLiveFeed,
+      required this.eventsModel,required this.id})
+      : super(key: key);
 
   @override
   State<Eventss> createState() => _EventssState();
@@ -27,31 +33,31 @@ class _EventssState extends State<Eventss> {
   final Dio _dio = Dio();
   late SharedPreferences _sharedPreferences;
   late String _token;
-  late int lenght;
+  // late int lenght;
   late String valuee;
-  bool _isLoading = true;
-  late EventsModel _eventsModel;
-  late List eventsLiveFeed = [];
+  //bool _isLoading = true;
+  // late EventsModel _eventsModel;
+  //late List eventsLiveFeed = [];
   bool test = false;
   bool active = false;
   String isFollow = "follow";
-  late String id;
+//late String id;
   late int bb;
   late int totalcount;
   late EventTypeModel _eventTypeModel;
-  String urlEvent = "https://theeventspotter.com/api/getEvents";
+  // String urlEvent = "https://theeventspotter.com/api/getEvents";
   String Favourite = "https://theeventspotter.com/api/favrouite";
   String UnFavourite = "https://theeventspotter.com/api/unfavrouit";
   String MainUrl = "https://theeventspotter.com/";
   String PostlikeUrl = "https://theeventspotter.com/api/like";
-  late List<int> favourite = [];
+  //late List<int> favourite = [];
 
   @override
   void initState() {
     super.initState();
-    getEvetns().whenComplete(() {
-      setState(() {});
-    });
+    // getEvetns().whenComplete(() {
+    //   setState(() {});
+    // });
   }
 
   @override
@@ -60,318 +66,309 @@ class _EventssState extends State<Eventss> {
 
     // String description = "new year party at local park";
 
-    return _isLoading
-        ? const Center(child: CircularProgressIndicator())
-        : Column(
-            children: [
-              Livefeeds(eventsLiveFeeds: eventsLiveFeed, test: test),
-              const SizedBox(
-                height: 20,
-              ),
-              const SizedBox(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Events near you",
-                    style: TextStyle(color: Colors.black, fontSize: 15),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 20.0),
-                child: Column(
-                  children:
-                      List.generate(lenght = _eventsModel.data.length, (index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => Eventdetailing(
-                                    model: _eventsModel,
-                                    indexs: index,
-                                  )));
-                        },
-                        child: Container(
-                          height: size.height * 0.38,
-                          width: size.width * double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: const [
-                              BoxShadow(
-                                  spreadRadius: 1,
-                                  blurRadius: 10,
-                                  color: Colors.black12)
-                            ],
+    return Column(
+      children: [
+        Livefeeds(eventsLiveFeeds: widget.eventsLiveFeed, test: test),
+        const SizedBox(
+          height: 20,
+        ),
+        const SizedBox(
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Events near you",
+              style: TextStyle(color: Colors.black, fontSize: 15),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 20.0),
+          child: Column(
+            children: List.generate(widget.eventsModel.data.length, (index) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => Eventdetailing(
+                              model: widget.eventsModel,
+                              indexs: index,
+                            )));
+                  },
+                  child: Container(
+                    height: size.height * 0.38,
+                    width: size.width * double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: const [
+                        BoxShadow(
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            color: Colors.black12)
+                      ],
+                    ),
+                    child: Column(children: [
+                      Container(
+                        height: size.height * 0.25,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        width: size.width * double.infinity,
+                        child: Stack(children: [
+                          widget.eventsModel.data[index].events.eventPictures[0]
+                                      .imagePath
+                                      .toString()
+                                      .contains('.mp4') ||
+                                  widget.eventsModel.data[index].events
+                                      .eventPictures[0].imagePath
+                                      .toString()
+                                      .contains('.mov')
+                              ? VideoPlayerScreenn(
+                                  url: MainUrl +
+                                      widget.eventsModel.data[index].events
+                                          .eventPictures[0].imagePath)
+                              : Container(
+                                  height: size.height * 0.25,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: CachedNetworkImage(
+                                      imageUrl: MainUrl +
+                                          widget.eventsModel.data[index].events
+                                              .eventPictures[0].imagePath,
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                          Positioned(
+                            right: 10,
+                            top: size.height * 0.02,
+                            child: SizedBox(
+                                height: size.height * 0.04,
+                                width: size.width * 0.25,
+                                // decoration: const BoxDecoration(color: Color(0XFF38888E)),
+                                child: followingcheck(index)),
                           ),
-                          child: Column(children: [
-                            Container(
-                              height: size.height * 0.25,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
+                          Positioned(
+                              top: size.height * 0.07,
+                              right: 20,
+                              child: IconButton(
+                                  onPressed: () {
+                                    if (widget.favourite[index] == 1) {
+                                      widget.favourite[index] = 0;
+                                      PostDislike(
+                                          index,
+                                          widget.eventsModel.data[index].events
+                                              .id);
+                                    } else {
+                                      widget.favourite[index] = 1;
+                                      PostLike(
+                                          index,
+                                          widget.eventsModel.data[index].events
+                                              .id);
+                                    }
+                                    setState(() {});
+                                  },
+                                  icon: Icon(MdiIcons.heart,
+                                      color: widget.favourite[index] == 0
+                                          ? Colors.grey
+                                          : Colors.red))
+                              // child: LikeButton(
+                              //   size: 20,
+                              //   onTap: (isLiked) {
+                              //     // ignore: unrelated_type_equality_checks
+                              //     if (favourite[index] == isLiked) {
+                              //       setState(() {
+                              //         active = !active;
+                              //         print(active);
+                              //       });
+                              //       return PostLike(index,
+                              //           _eventsModel.data[index].events.id);
+                              //     } else {
+                              //       return PostDislike(index,
+                              //           _eventsModel.data[index].events.id);
+                              //     }
+                              //   },
+                              //   likeBuilder: (isLiked) {
+                              //     final color =
+                              //         active ? Colors.red : Colors.grey;
+                              //     return Icon(Icons.favorite,
+                              //         color: color, size: 20);
+                              //   },
+                              // ),
                               ),
-                              width: size.width * double.infinity,
-                              child: Stack(children: [
-                                _eventsModel.data[index].events.eventPictures[0]
-                                            .imagePath
-                                            .toString()
-                                            .contains('.mp4') ||
-                                        _eventsModel.data[index].events
-                                            .eventPictures[0].imagePath
-                                            .toString()
-                                            .contains('.mov')
-                                    ? VideoPlayerScreenn(
-                                        url: MainUrl +
-                                            _eventsModel.data[index].events
-                                                .eventPictures[0].imagePath)
-                                    : Container(
-                                        height: size.height * 0.25,
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(20)),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          child: CachedNetworkImage(
-                                            imageUrl: MainUrl +
-                                                _eventsModel.data[index].events
-                                                    .eventPictures[0].imagePath,
-                                            fit: BoxFit.cover,
-                                            placeholder: (context, url) {
-                                              return const Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                Positioned(
-                                  right: 10,
-                                  top: size.height * 0.02,
-                                  child: SizedBox(
-                                      height: size.height * 0.04,
-                                      width: size.width * 0.25,
-                                      // decoration: const BoxDecoration(color: Color(0XFF38888E)),
-                                      child: followingcheck(index)),
+                          Positioned(
+                            bottom: 0,
+                            right: size.width * 0.02,
+                            left: size.width * 0.02,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Button(
+                                    onpressed: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  Eventposterprofile(
+                                                    id: widget
+                                                        .eventsModel
+                                                        .data[index]
+                                                        .events
+                                                        .user
+                                                        .id,
+                                                  )));
+                                    },
+                                    title: widget.eventsModel.data[index].events
+                                        .user.name, //new
+                                    radiusofbutton: BorderRadius.circular(20),
+                                    profileImage: MainUrl +
+                                        widget.eventsModel.data[index].events
+                                            .user.profilePicture!.image),
+                                const SizedBox(
+                                  width: 10,
                                 ),
-                                Positioned(
-                                    top: size.height * 0.07,
-                                    right: 20,
-                                    child: IconButton(
-                                        onPressed: () {
-                                          if (favourite[index] == 1) {
-                                            favourite[index] = 0;
-                                            PostDislike(
-                                                index,
-                                                _eventsModel
-                                                    .data[index].events.id);
-                                          } else {
-                                            favourite[index] = 1;
-                                            PostLike(
-                                                index,
-                                                _eventsModel
-                                                    .data[index].events.id);
-                                          }
-                                          setState(() {});
-                                        },
-                                        icon: Icon(MdiIcons.heart,
-                                            color: favourite[index] == 0
-                                                ? Colors.grey
-                                                : Colors.red))
-                                    // child: LikeButton(
-                                    //   size: 20,
-                                    //   onTap: (isLiked) {
-                                    //     // ignore: unrelated_type_equality_checks
-                                    //     if (favourite[index] == isLiked) {
-                                    //       setState(() {
-                                    //         active = !active;
-                                    //         print(active);
-                                    //       });
-                                    //       return PostLike(index,
-                                    //           _eventsModel.data[index].events.id);
-                                    //     } else {
-                                    //       return PostDislike(index,
-                                    //           _eventsModel.data[index].events.id);
-                                    //     }
-                                    //   },
-                                    //   likeBuilder: (isLiked) {
-                                    //     final color =
-                                    //         active ? Colors.red : Colors.grey;
-                                    //     return Icon(Icons.favorite,
-                                    //         color: color, size: 20);
-                                    //   },
-                                    // ),
-                                    ),
-                                Positioned(
-                                  bottom: 0,
-                                  right: size.width * 0.02,
-                                  left: size.width * 0.02,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Button(
-                                          onpressed: () {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Eventposterprofile(
-                                                          id: _eventsModel
-                                                              .data[index]
-                                                              .events
-                                                              .user
-                                                              .id,
-                                                        )));
-                                          },
-                                          title: _eventsModel.data[index].events
-                                              .user.name, //new
-                                          radiusofbutton:
-                                              BorderRadius.circular(20),
-                                          profileImage: MainUrl +
-                                              _eventsModel.data[index].events
-                                                  .user.profilePicture!.image!),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Buttonicon(
-                                        radiusofbutton:
-                                            BorderRadius.circular(20),
-                                        icon: FontAwesomeIcons.userPlus,
-                                        title: _eventsModel.data[index].events
-                                                .user.followers.length
-                                                .toString() +
-                                            " " "Followers",
-                                      ),
-                                    ],
-                                  ),
+                                Buttonicon(
+                                  radiusofbutton: BorderRadius.circular(20),
+                                  icon: FontAwesomeIcons.userPlus,
+                                  title: widget.eventsModel.data[index].events
+                                          .user.followers.length
+                                          .toString() +
+                                      " " "Followers",
                                 ),
-                              ]),
+                              ],
                             ),
-                            Container(
-                              height: size.height * 0.12,
-                              width: double.infinity,
-                              decoration: const BoxDecoration(),
-                              child: Stack(
+                          ),
+                        ]),
+                      ),
+                      Container(
+                        height: size.height * 0.12,
+                        width: double.infinity,
+                        decoration: const BoxDecoration(),
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              top: size.height * 0.008,
+                              right: size.width * 0.020,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Positioned(
-                                    top: size.height * 0.008,
-                                    right: size.width * 0.020,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        const Icon(
-                                          FontAwesomeIcons.calendar,
-                                          size: 15,
-                                          color: Colors.black54,
-                                        ),
-                                        Text(
-                                          _eventsModel
-                                              .data[index].events.eventDate
-                                              .toString(),
-                                          style: const TextStyle(
-                                              color: Colors.black87),
-                                        ),
-                                        const SizedBox(
-                                          width: 20,
-                                        ),
-                                        const Icon(
-                                          FontAwesomeIcons.mapMarkerAlt,
-                                          size: 15,
-                                          color: Colors.black54,
-                                        ),
-                                        Text(
-                                            _eventsModel.data[index].km
-                                                    .toString() +
-                                                " " +
-                                                "away",
-                                            style: const TextStyle(
-                                                color: Colors.black87)),
-                                      ],
-                                    ),
+                                  const Icon(
+                                    FontAwesomeIcons.calendar,
+                                    size: 15,
+                                    color: Colors.black54,
                                   ),
-                                  Positioned(
-                                      top: size.height * 0.04,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 20.0),
-                                        child: Text(
-                                          _eventsModel.data[index].events
-                                              .eventDescription,
-                                          style: const TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      )),
+                                  Text(
+                                    widget.eventsModel.data[index].events
+                                        .eventDate
+                                        .toString(),
+                                    style:
+                                        const TextStyle(color: Colors.black87),
+                                  ),
                                   const SizedBox(
-                                    height: 10,
+                                    width: 20,
                                   ),
-                                  Positioned(
-                                    bottom: 0,
-                                    right: size.width * 0.01,
-                                    left: size.width * 0.01,
-                                    child: IntrinsicHeight(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          // extras(
-                                          //     FontAwesomeIcons.thumbsUp,
-                                          //     _eventsModel.data[index].isLiked
-                                          //         .toString(),
-                                          //     size, () {
-                                          //   postThumbs(_eventsModel
-                                          //       .data[index].events.id);
-                                          // }),
-                                          likefunction(
-                                              index, FontAwesomeIcons.thumbsUp),
-                                          divider(),
-                                          extras(
-                                              Icons.comment,
-                                              _eventsModel.data[index].events
-                                                  .comment.length
-                                                  .toString(),
-                                              size, () {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Commentofuser(
-                                                          eventsModel:
-                                                              _eventsModel,
-                                                          index: index,
-                                                        )));
-                                          }),
-                                          divider(),
-
-                                          // extras(MdiIcons.share,
-                                          //     posts[1]['share'], size),
-                                          // divider(),                           //no inculded
-                                          extras(
-                                              Icons.live_tv,
-                                              _eventsModel.data[index].events
-                                                  .liveFeed.length
-                                                  .toString(),
-                                              size,
-                                              () {}),
-                                        ],
-                                      ),
-                                    ),
+                                  const Icon(
+                                    FontAwesomeIcons.mapMarkerAlt,
+                                    size: 15,
+                                    color: Colors.black54,
                                   ),
+                                  Text(
+                                      widget.eventsModel.data[index].km
+                                              .toString() +
+                                          " " +
+                                          "away",
+                                      style: const TextStyle(
+                                          color: Colors.black87)),
                                 ],
                               ),
-                            )
-                          ]),
+                            ),
+                            Positioned(
+                                top: size.height * 0.04,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 20.0),
+                                  child: Text(
+                                    widget.eventsModel.data[index].events
+                                        .eventDescription,
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                )),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              right: size.width * 0.01,
+                              left: size.width * 0.01,
+                              child: IntrinsicHeight(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    // extras(
+                                    //     FontAwesomeIcons.thumbsUp,
+                                    //     _eventsModel.data[index].isLiked
+                                    //         .toString(),
+                                    //     size, () {
+                                    //   postThumbs(_eventsModel
+                                    //       .data[index].events.id);
+                                    // }),
+                                    likefunction(
+                                        index, FontAwesomeIcons.thumbsUp),
+                                    divider(),
+                                    extras(
+                                        Icons.comment,
+                                        widget.eventsModel.data[index].events
+                                            .comment.length
+                                            .toString(),
+                                        size, () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  Commentofuser(
+                                                    eventsModel:
+                                                        widget.eventsModel,
+                                                    index: index,
+                                                  )));
+                                    }),
+                                    divider(),
+
+                                    // extras(MdiIcons.share,
+                                    //     posts[1]['share'], size),
+                                    // divider(),                           //no inculded
+                                    extras(
+                                        Icons.live_tv,
+                                        widget.eventsModel.data[index].events
+                                            .liveFeed.length
+                                            .toString(),
+                                        size,
+                                        () {}),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    );
-                  }),
+                      )
+                    ]),
+                  ),
                 ),
-              ),
-            ],
-          );
+              );
+            }),
+          ),
+        ),
+      ],
+    );
   }
 
   VerticalDivider divider() {
@@ -399,10 +396,10 @@ class _EventssState extends State<Eventss> {
 
   likefunction(int index, IconData icon) {
     //print(_eventsModel.data[index].totalLikes.toString());
-    String likecount = _eventsModel.data[index].totalLikes.toString();
+    String likecount = widget.eventsModel.data[index].totalLikes.toString();
     String vv = "0";
-    bb = _eventsModel.data[index].isLiked;
-    totalcount = _eventsModel.data[index].totalLikes;
+    bb = widget.eventsModel.data[index].isLiked;
+    totalcount = widget.eventsModel.data[index].totalLikes;
 
     return Row(
       children: [
@@ -410,15 +407,13 @@ class _EventssState extends State<Eventss> {
           icon:
               Icon(icon, size: 16, color: bb == 1 ? Colors.blue : Colors.grey),
           onPressed: () async {
-            
             if (bb == 0) {
               bb = 1;
-              
             } else {
               bb == 0;
-              
             }
-            totalcount = await postThumbs(_eventsModel.data[index].events.id);
+            totalcount =
+                await postThumbs(widget.eventsModel.data[index].events.id);
             setState(() {});
           },
         ),
@@ -427,47 +422,48 @@ class _EventssState extends State<Eventss> {
     );
   }
 
-  Future getEvetns() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
-    _token = _sharedPreferences.getString('accessToken')!;
-    id = _sharedPreferences.getString('id')!;
-    print("Inside the Get Event function");
-    try {
-      _dio.options.headers["Authorization"] = "Bearer ${_token}";
-      Response response = await _dio.get(urlEvent);
-      //print(response.data);
-      if (response.statusCode == 200) {
-        _eventsModel = EventsModel.fromJson(response.data);
+  // Future getEvetns() async {
+  //   _sharedPreferences = await SharedPreferences.getInstance();
+  //   _token = _sharedPreferences.getString('accessToken')!;
+  //   id = _sharedPreferences.getString('id')!;
+  //   print("Inside the Get Event function");
+  //   try {
+  //     _dio.options.headers["Authorization"] = "Bearer ${_token}";
+  //     Response response = await _dio.get(urlEvent);
+  //     //print(response.data);
+  //     if (response.statusCode == 200) {
+  //       _eventsModel = EventsModel.fromJson(response.data);
 
-        lenght = _eventsModel.data.length;
-        for (int i = 0; i < _eventsModel.data.length; i++) {
-          var km = _eventsModel.data[i].km;
-          if (_eventsModel.data[i].events.liveFeed.isNotEmpty) {
-            for (int j = 0;
-                j < _eventsModel.data[i].events.liveFeed.length;
-                j++) {
-              var js = {
-                'img': _eventsModel.data[i].events.liveFeed[j].path,
-                'km': km,
-              };
-              test = true;
-              eventsLiveFeed.add(js);
-            }
-          } else {
-            test = false;
-          }
-        }
-        print(lenght);
-        // print(MainUrl + _eventsModel.data[0].events.user.profilePicture.image);
-      }
-    } catch (e) {
-      print(e.toString() + "Catch");
-    } finally {
-      listFav();
-      _isLoading = false;
-    }
-    setState(() {});
-  }
+  //       lenght = _eventsModel.data.length;
+  //       for (int i = 0; i < _eventsModel.data.length; i++) {
+  //         var km = _eventsModel.data[i].km;
+  //         if (_eventsModel.data[i].events.liveFeed.isNotEmpty) {
+  //           for (int j = 0;
+  //               j < _eventsModel.data[i].events.liveFeed.length;
+  //               j++) {
+  //             var js = {
+  //               'img': _eventsModel.data[i].events.liveFeed[j].path,
+  //               'km': km,
+  //             };
+
+  //             eventsLiveFeed.add(js);
+  //           }
+  //           test = true;
+  //         } else {
+  //           test = false;
+  //         }
+  //       }
+  //       print(lenght);
+  //       // print(MainUrl + _eventsModel.data[0].events.user.profilePicture.image);
+  //     }
+  //   } catch (e) {
+  //     print(e.toString() + "Catch");
+  //   } finally {
+  //     listFav();
+  //     _isLoading = false;
+  //     setState(() {});
+  //   }
+  // }
 
 //   isliked(bool like, int index) {
 //     print(_eventsModel.data[index].isFavroute.toInt());
@@ -529,12 +525,12 @@ class _EventssState extends State<Eventss> {
   }
 
   followingcheck(int index) {
-    if (_eventsModel.data[index].events.user.id.toString() != id) {
+    if (widget.eventsModel.data[index].events.user.id.toString() != widget.id) {
       return ElevatedButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => Eventposterprofile(
-                    id: _eventsModel.data[index].events.user.id,
+                    id: widget.eventsModel.data[index].events.user.id,
                   )));
         },
         style: ElevatedButton.styleFrom(
@@ -547,16 +543,16 @@ class _EventssState extends State<Eventss> {
     }
   }
 
-  listFav() {
-    if (_eventsModel.data.length > 0) {
-      for (int i = 0; i < _eventsModel.data.length; i++) {
-        var value = _eventsModel.data[i].isFavroute;
-        favourite.add(value);
-      }
-    } else {
-      favourite.add(0);
-    }
-  }
+  // listFav() {
+  //   if (_eventsModel.data.length > 0) {
+  //     for (int i = 0; i < _eventsModel.data.length; i++) {
+  //       var value = _eventsModel.data[i].isFavroute;
+  //       favourite.add(value);
+  //     }
+  //   } else {
+  //     favourite.add(0);
+  //   }
+  // }
 
   Future<int> postThumbs(int id) async {
     int count = 0;
@@ -578,7 +574,7 @@ class _EventssState extends State<Eventss> {
       print(e.toString());
     } finally {
       setState(() {});
-      return  count;
+      return count;
     }
   }
 }
@@ -608,7 +604,7 @@ class _VideoPlayerScreennState extends State<VideoPlayerScreenn> {
 
     // Use the controller to loop the video.
     _controller.setLooping(true);
-    _controller.setVolume(0.0);
+    _controller.setVolume(100);
 
     super.initState();
   }
@@ -630,8 +626,6 @@ class _VideoPlayerScreennState extends State<VideoPlayerScreenn> {
           future: _initializeVideoPlayerFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              _controller.play();
-
               // If the VideoPlayerController has finished initialization, use
               // the data it provides to limit the aspect ratio of the video.
               return Container(
@@ -640,9 +634,17 @@ class _VideoPlayerScreennState extends State<VideoPlayerScreenn> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: VideoPlayer(_controller)),
+
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: <Widget>[
+                    VideoPlayer(_controller),
+                    ControlsOverlay(controller: _controller),
+                    VideoProgressIndicator(_controller, allowScrubbing: true),
+                  ],
+                ),
+                //borderRadius: BorderRadius.circular(20),
+                //    child: VideoPlayer(_controller),
               );
             } else {
               // If the VideoPlayerController is still initializing, show a
@@ -665,6 +667,90 @@ class _VideoPlayerScreennState extends State<VideoPlayerScreenn> {
         //       setState(() {});
         //     },
         //     child: Text('PLAY'))
+      ],
+    );
+  }
+}
+
+class ControlsOverlay extends StatefulWidget {
+  ControlsOverlay({Key? key, required this.controller}) : super(key: key);
+
+  static const _examplePlaybackRates = [
+    0.25,
+    0.5,
+    1.0,
+    1.5,
+    2.0,
+    3.0,
+    5.0,
+    10.0,
+  ];
+
+  VideoPlayerController controller;
+
+  @override
+  State<ControlsOverlay> createState() => ControlsOverlayState();
+}
+
+class ControlsOverlayState extends State<ControlsOverlay> {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        AnimatedSwitcher(
+          duration: Duration(milliseconds: 50),
+          reverseDuration: Duration(milliseconds: 200),
+          child: widget.controller.value.isPlaying
+              ? SizedBox.shrink()
+              : Container(
+                  color: Colors.black26,
+                  child: const Center(
+                    child: Icon(
+                      Icons.play_arrow,
+                      color: Colors.white,
+                      size: 50.0,
+                      semanticLabel: 'Play',
+                    ),
+                  ),
+                ),
+        ),
+        GestureDetector(
+          onTap: () {
+            widget.controller.value.isPlaying
+                ? widget.controller.pause()
+                : widget.controller.play();
+            setState(() {});
+          },
+        ),
+        Align(
+          alignment: Alignment.topRight,
+          child: PopupMenuButton<double>(
+            initialValue: widget.controller.value.playbackSpeed,
+            tooltip: 'Playback speed',
+            onSelected: (speed) {
+              widget.controller.setPlaybackSpeed(speed);
+            },
+            itemBuilder: (context) {
+              return [
+                for (final speed in ControlsOverlay._examplePlaybackRates)
+                  PopupMenuItem(
+                    value: speed,
+                    child: Text('${speed}x'),
+                  )
+              ];
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                // Using less vertical padding as the text is also longer
+                // horizontally, so it feels like it would need more spacing
+                // horizontally (matching the aspect ratio of the video).
+                vertical: 12,
+                horizontal: 16,
+              ),
+              child: Text('${widget.controller.value.playbackSpeed}x'),
+            ),
+          ),
+        ),
       ],
     );
   }

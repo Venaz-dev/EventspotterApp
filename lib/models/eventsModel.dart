@@ -605,7 +605,7 @@ class Events {
   late final List<EventPictures> eventPictures;
   late final User user;
   late final List<Comment> comment;
-  late final List<dynamic> liveFeed;
+  late final List<LiveFeed> liveFeed;
   
   Events.fromJson(Map<String, dynamic> json){
     id = json['id'];
@@ -626,7 +626,8 @@ class Events {
     eventPictures = List.from(json['event_pictures']).map((e)=>EventPictures.fromJson(e)).toList();
     user = User.fromJson(json['user']);
     comment = List.from(json['comment']).map((e)=>Comment.fromJson(e)).toList();
-    liveFeed = List.castFrom<dynamic, dynamic>(json['live_feed']);
+   liveFeed =
+   List.from(json['live_feed']).map((e) => LiveFeed.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -649,7 +650,7 @@ class Events {
     _data['event_pictures'] = eventPictures.map((e)=>e.toJson()).toList();
     _data['user'] = user.toJson();
     _data['comment'] = comment.map((e)=>e.toJson()).toList();
-    _data['live_feed'] = liveFeed;
+     _data['live_feed'] = liveFeed.map((e) => e.toJson()).toList();
     return _data;
   }
 }
@@ -912,6 +913,50 @@ class Comment {
     _data['created_at'] = createdAt;
     _data['updated_at'] = updatedAt;
     _data['user'] = user.toJson();
+    return _data;
+  }
+}
+class LiveFeed {
+  LiveFeed({
+    required this.id,
+    required this.eventId,
+    required this.userId,
+    required this.path,
+    this.description,
+    this.tagPeople,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+  late final int id;
+  late final String eventId;
+  late final String userId;
+  late final String path;
+  late final Null description;
+  late final Null tagPeople;
+  late final String createdAt;
+  late final String updatedAt;
+
+  LiveFeed.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    eventId = json['event_id'];
+    userId = json['user_id'];
+    path = json['path'];
+    // description = null;
+    /// tagPeople = null;
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['event_id'] = eventId;
+    _data['user_id'] = userId;
+    _data['path'] = path;
+    //_data['description'] = description;
+    //  _data['tag_people'] = tagPeople;
+    _data['created_at'] = createdAt;
+    _data['updated_at'] = updatedAt;
     return _data;
   }
 }

@@ -31,6 +31,8 @@ class _FeventsState extends State<Fevents> {
   late SharedPreferences _sharedPreferences;
   Dio _dio = Dio();
   bool _isLoading = true;
+  bool _isLoading2 = true;
+
   late String _token;
   bool test1 = false;
 
@@ -239,17 +241,16 @@ class _FeventsState extends State<Fevents> {
     } catch (e) {
       print(e.toString());
     } finally {
-      _isLoading = false;
+      _isLoading2 = false;
       setState(() {});
     }
   }
 
   upcoming(Size size) {
-    if (test1 == true) {
+    
+    
       if (_favouriteUpcomingEventsModel.data.length > 0) {
-     return   _isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : Padding(
+     return  Padding(
                 padding: EdgeInsets.only(right: size.width * 0.05),
                 child: Column(
                   children: List.generate(
@@ -408,13 +409,11 @@ class _FeventsState extends State<Fevents> {
       } else {
         return const Center(child: Text("No Past Events"));
       }
-    } else {
-      return const Center(child: Text("No Past Events"));
-    }
+    
   }
 
   past(Size size) {
-    if (test2 == true) {
+    
       if (_favouritePastEventsModel.data.length > 0) {
        return  _isLoading
             ? const Center(child: CircularProgressIndicator())
@@ -573,9 +572,7 @@ class _FeventsState extends State<Fevents> {
       } else {
         return Center(child: Text("No Upcoming Events"));
       }
-    } else {
-      return Center(child: Text("No Upcoming Events"));
-    }
+    
   }
 }
 
