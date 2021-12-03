@@ -211,7 +211,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                                 radiusofbutton: BorderRadius.circular(20),
                                 profileImage: MainUrl1 +
                                     widget.model!.data[widget.indexs!].events
-                                        .user.profilePicture!.image!),
+                                        .user.profilePicture!.image),
                             const SizedBox(
                               width: 10,
                             ),
