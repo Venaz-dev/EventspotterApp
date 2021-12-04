@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 
 class Textform extends StatefulWidget {
   const Textform({
@@ -14,7 +15,8 @@ class Textform extends StatefulWidget {
     this.color,
     this.onPressed,
     this.width = 0.0,
-    this.maxlines = 1, this.isreadonly = true, 
+    
+    this.maxlines = 1, this.isreadonly = true, this.onchange, 
    
   }) : super(key: key);
 
@@ -31,6 +33,7 @@ class Textform extends StatefulWidget {
   final double width;
   final int maxlines;
   final bool isreadonly ;
+  final ValueChanged ? onchange;
 
   @override
   State<Textform> createState() => _TextformState();
@@ -43,6 +46,7 @@ class _TextformState extends State<Textform> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return TextFormField(
+      onChanged: widget.onchange,
       readOnly: widget.isreadonly,
       enabled: widget.input,
       maxLines: widget.maxlines,

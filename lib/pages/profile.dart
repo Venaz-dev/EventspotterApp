@@ -789,9 +789,9 @@ class _ProfileState extends State<Profile> {
                     value: profileprivate,
                     onChanged: (value) {
                       if (profileprivate == true) {
-                        sendprofileprivate(1);
-                      } else {
                         sendprofileprivate(0);
+                      } else {
+                        sendprofileprivate(1);
                       }
                       setState(() {
                         profileprivate = value;
@@ -810,9 +810,9 @@ class _ProfileState extends State<Profile> {
                     value: phonenumber,
                     onChanged: (value) {
                       if (phonenumber == true) {
-                        phonenumberpost(1);
-                      } else {
                         phonenumberpost(0);
+                      } else {
+                        phonenumberpost(1);
                       }
                       setState(() {
                         phonenumber = value;

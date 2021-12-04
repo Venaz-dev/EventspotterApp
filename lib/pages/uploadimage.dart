@@ -160,7 +160,9 @@ class _UploadimageState extends State<Uploadimage> {
                 height: 20,
               ),
               Textform(
-                isSecure: false,
+                //   isSecure: false,
+                isreadonly: false,
+                input: true,
                 label: "Snap Description",
                 controller: _snapdescription,
                 color: const Color(0XFFEBF2F2),
@@ -185,30 +187,28 @@ class _UploadimageState extends State<Uploadimage> {
               const SizedBox(
                 height: 20,
               ),
-            _isloading == true ? 
-           const  SizedBox(
-             child: Center(
-               child: CircularProgressIndicator(
-                 color: Color(0XFF368890),
-               ),
-             ),
-           ):
-             Elevatedbutton(
+              _isloading == true
+                  ? const SizedBox(
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: Color(0XFF368890),
+                        ),
+                      ),
+                    )
+                  : Elevatedbutton(
                       primary: const Color(0xFF304747),
                       text: "Upload",
                       width: double.infinity,
                       coloring: const Color(0xFF304747),
                       onpressed: () async {
-                        if(imagePath == null)
-                        {
+                        if (imagePath == null) {
                           showToaster("Please upload a snap");
-                        }
-                        else{
-                            setState(() {
-                              _isloading =!_isloading;
-                            });
-                        await UploadLiveFeed();
-                        Navigator.pop(context);
+                        } else {
+                          setState(() {
+                            _isloading = !_isloading;
+                          });
+                          await UploadLiveFeed();
+                          Navigator.pop(context);
                         }
                       }),
             ]),
@@ -232,9 +232,9 @@ class _UploadimageState extends State<Uploadimage> {
                         Navigator.of(context).pop();
                         _pickImage(ImageSource.gallery);
                       }),
-                        ListTile(
+                  ListTile(
                       leading: const Icon(Icons.camera_alt),
-                      title: const Text('Snap image from camera'),
+                      title: const Text('camera'),
                       onTap: () {
                         Navigator.of(context).pop();
                         _pickImage(ImageSource.camera);
@@ -246,9 +246,11 @@ class _UploadimageState extends State<Uploadimage> {
                         Navigator.of(context).pop();
                         _pickvideo(ImageSource.gallery);
                       }),
-                       ListTile(
-                      leading: const Icon(Icons.photo_camera_front,),
-                      title: const Text('Record a video from the camera'),
+                  ListTile(
+                      leading: const Icon(
+                        Icons.photo_camera_front,
+                      ),
+                      title: const Text('video'),
                       onTap: () {
                         Navigator.of(context).pop();
                         _pickvideo(ImageSource.camera);
@@ -298,7 +300,7 @@ class _UploadimageState extends State<Uploadimage> {
       "description": _snapdescription.text,
       "path": file
     });
-     _dio.options.headers["Authorization"] = "Bearer ${_token}";
+    _dio.options.headers["Authorization"] = "Bearer ${_token}";
     response = await _dio.post(uploadLiveFeeds, data: formData);
     print(response.data);
     try {

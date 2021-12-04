@@ -55,6 +55,7 @@ class _EventdetailingState extends State<Eventdetailing> {
 
   String MainUrl1 = "https://theeventspotter.com/";
   String deleteEventUrl = "https://theeventspotter.com/api/delete-event";
+  String deletesnapUrl = "https://theeventspotter.com/api/deleteSnap";
 
   @override
   Widget build(BuildContext context) {
@@ -480,9 +481,12 @@ class _EventdetailingState extends State<Eventdetailing> {
                       width: double.infinity,
                       coloring: Colors.redAccent,
                       textColor: const Color(0XFFFFFFFF),
-                      onpressed: () {
+                      onpressed: () async {
                         _isLoading = true;
-                        deleteevent();
+                        setState(() {});
+
+                        await deleteevent();
+                        Navigator.pop(context);
                       },
                     )
                   : const SizedBox(),
@@ -582,16 +586,30 @@ class _EventdetailingState extends State<Eventdetailing> {
                                               BorderRadius.circular(20),
                                           child: buildimage(index)),
                                     ),
-                              Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: Text(
-                                    widget.model!.data[widget.indexs!].km +
-                                        " " +
-                                        "miles",
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 17),
-                                  )),
+                              widget.model!.data[widget.indexs!].events
+                                          .userId ==
+                                      widget.id
+                                  ? Align(
+                                      alignment: Alignment.topRight,
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          await showpopup(index);
+                                          //setState(() {});
+                                        },
+                                        icon: const Icon(Icons.delete,
+                                            size: 20, color: Color(0XFF368890)),
+                                      ),
+                                    )
+                                  : Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Text(
+                                        widget.model!.data[widget.indexs!].km +
+                                            " " +
+                                            "miles",
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 17),
+                                      )),
                             ],
                           ),
                         ),
@@ -668,8 +686,11 @@ class _EventdetailingState extends State<Eventdetailing> {
       for (int i = 0;
           widget.model!.data[widget.indexs!].events.liveFeed.length > i;
           i++) {
-        var tt = widget.model!.data[widget.indexs!].events.liveFeed[i].path;
-        Live.add(tt);
+        var js = {
+          'img': widget.model!.data[widget.indexs!].events.liveFeed[i].path,
+          'id': widget.model!.data[widget.indexs!].events.liveFeed[i].id,
+        };
+        Live.add(js);
       }
       test1 = true;
     } else {
@@ -679,7 +700,7 @@ class _EventdetailingState extends State<Eventdetailing> {
 
   Widget buildimage(int index) {
     return CachedNetworkImage(
-      imageUrl: MainUrl + Live[index],
+      imageUrl: MainUrl + Live[index]['img'],
       fit: BoxFit.cover,
       placeholder: (context, url) {
         return const Center(
@@ -687,6 +708,60 @@ class _EventdetailingState extends State<Eventdetailing> {
         );
       },
     );
+  }
+
+  showpopup(int index) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Delete the snap"),
+          content: const Text("Press confirm to delete snap"),
+          actions: [
+            MaterialButton(
+              child: const Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            MaterialButton(
+              child: const Text("Confirm"),
+              onPressed: ()async {
+               await deleteSnap(index);
+                setState(() {});
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  deleteSnap(int index) async {
+    print("inside delete snap");
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _token = _sharedPreferences.getString('accessToken')!;
+    _dio.options.headers["Authorization"] = "Bearer $_token";
+    FormData formData = FormData.fromMap({
+      "id": Live[index]["id"],
+    });
+    try {
+      await _dio.post(deletesnapUrl, data: formData).then((value) {
+        print(value.data);
+        if (value.statusCode == 200) {
+          Live.removeAt(index);
+          // print(Live[index]);
+          showToaster("Event Snap deleted");
+        } else {
+          print("error");
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+      _isLoading = false;
+      setState(() {});
+    }
   }
 }
 

@@ -47,6 +47,7 @@ class _CreateeventState extends State<Createevent> {
   DateFormat newValues = DateFormat('yyyy-MM-dd');
   late String formatted;
   int public = 1;
+  bool _ispublic = true;
   bool isprivate = false;
   final ImagePicker _picker = ImagePicker();
   TextEditingController eventname = TextEditingController();
@@ -129,7 +130,7 @@ class _CreateeventState extends State<Createevent> {
               children: [
                 imagePath == null
                     ? Container(
-                        height: size.height * 0.35,
+                        //height: size.height * 0.35,
                         width: size.width * double.infinity,
                         decoration: const BoxDecoration(
                           border: Border(
@@ -201,9 +202,12 @@ class _CreateeventState extends State<Createevent> {
                             ))
                         : Column(
                             children: [
-                              SizedBox(
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
                                 //color: Colors.red,
-                                //height: size.height * 0.3,
+                                height: size.height * 0.3,
                                 width: size.width * double.infinity,
                                 child: Image.file(
                                   imagePath!,
@@ -238,7 +242,6 @@ class _CreateeventState extends State<Createevent> {
                   height: 10,
                 ),
                 Textform(
-                  
                   controller: eventDescription,
                   maxlines: 4,
                   label: "Event Description",
@@ -341,6 +344,7 @@ class _CreateeventState extends State<Createevent> {
                 ),
                 Textform(
                   controller: link,
+                  isSecure: false,
                   icon: FontAwesomeIcons.link,
                   isreadonly: false,
                   label: "Ticket link",
@@ -389,9 +393,10 @@ class _CreateeventState extends State<Createevent> {
                                       showToaster("Add Conditions");
                                     });
                                   } else {
-                                    addConditionsList();
-                                    conditionss.clear();
-                                    setState(() {});
+                                    setState(() {
+                                      addConditionsList();
+                                      conditionss.clear();
+                                    });
                                   }
                                 },
                                 icon: const Icon(
@@ -405,8 +410,8 @@ class _CreateeventState extends State<Createevent> {
                 const SizedBox(
                   height: 20,
                 ),
-                conditions.length == 0
-                    ? Center(child: Text("No Conditions"))
+                conditions.isEmpty
+                    ? const Center(child: Text("No Conditions"))
                     : Wrap(
 
                         ////////////////////////////////////////////////////////////////////
@@ -443,13 +448,21 @@ class _CreateeventState extends State<Createevent> {
                   children: [
                     Elevatedbuttons(
                       sidecolor: Colors.white,
-                      textColor: const Color(0XFFFFFFFF),
+                      textColor:
+                          _ispublic ? const Color(0XFFFFFFFF) : Colors.black,
                       text: "Public",
-                      coloring: const Color(0XFF368890),
+                      coloring: _ispublic
+                          ? const Color(0XFF368890)
+                          : const Color(0XFFFFFFFF),
                       width: size.width * double.infinity,
-                      primary: const Color(0XFF368890),
+                      primary: _ispublic
+                          ? const Color(0XFF368890)
+                          : const Color(0XFFFFFFFF),
                       onpressed: () {
-                        setState(() {});
+                        setState(() {
+                          _ispublic = !_ispublic;
+                          publicevent();
+                        });
                       },
                     ),
                     const SizedBox(
@@ -458,27 +471,30 @@ class _CreateeventState extends State<Createevent> {
                     Elevatedbuttons(
                       onpressed: () {
                         public = 0;
-                        setState(() {});
+                        setState(() {
+                          _ispublic = !_ispublic;
+
+                          privateevent();
+                        });
                       },
-                      sidecolor: Colors.black,
-                      coloring: const Color(0XFFFFFFFF),
+                      sidecolor: Colors.white,
+                      coloring: !_ispublic
+                          ? const Color(0XFF368890)
+                          : const Color(0XFFFFFFFF),
                       width: size.width * double.infinity,
                       text: "Private",
-                      textColor: Colors.black,
-                      primary: const Color(0XFFFFFFFF),
+                      textColor:
+                          !_ispublic ? const Color(0XFFFFFFFF) : Colors.black,
+                      primary: !_ispublic
+                          ? const Color(0XFF368890)
+                          : const Color(0XFFFFFFFF),
                     ),
                   ],
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 15,
                 ),
-                const AutoSizeText(
-                  "This Event is public. Everyone on \n Event Spotter will be able to see this event \n details",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w300,
-                    fontSize: 16,
-                  ),
-                ),
+                !_ispublic ? privateevent() : publicevent(),
                 const SizedBox(
                   height: 20,
                 ),
@@ -487,9 +503,9 @@ class _CreateeventState extends State<Createevent> {
                     : Elevatedbutton(
                         text: "Create",
                         width: double.infinity,
-                        coloring: Color(0xFF304747),
-                        textColor: Color(0XFFFFFFFF),
-                        primary: Color(0xFF304747),
+                        coloring: const Color(0xFF304747),
+                        textColor: const Color(0XFFFFFFFF),
+                        primary: const Color(0xFF304747),
                         onpressed: () async {
                           if (eventname.text.isEmpty ||
                               eventDescription.text.isEmpty ||
@@ -508,34 +524,54 @@ class _CreateeventState extends State<Createevent> {
                 const SizedBox(
                   height: 10,
                 ),
-               _isloading1
+                _isloading1
                     ? const Center(child: CircularProgressIndicator())
                     : Elevatedbutton(
-                  onpressed: () async {
-                    if (eventname.text.isEmpty ||
-                        eventDescription.text.isEmpty ||
-                        venuee.contains("Not Selected") ||
-                        imagePath == null ||
-                        conditions.isEmpty) {
-                      showToaster("Please fill all the above fields");
-                    } else {
-                      setState(() {
-                        _isloading1 = !_isloading1;
-                      });
+                        onpressed: () async {
+                          if (eventname.text.isEmpty ||
+                              eventDescription.text.isEmpty ||
+                              venuee.contains("Not Selected") ||
+                              imagePath == null ||
+                              conditions.isEmpty) {
+                            showToaster("Please fill all the above fields");
+                          } else {
+                            setState(() {
+                              _isloading1 = !_isloading1;
+                            });
 
-                      await DraftEvent();
-                    }
-                  },
-                  textColor: const Color(0XFF74ABB0),
-                  coloring: Colors.white,
-                  text: "Save as draft",
-                  width: double.infinity,
-                  primary: Colors.white,
-                ),
+                            await DraftEvent();
+                          }
+                        },
+                        textColor: const Color(0XFF74ABB0),
+                        coloring: Colors.white,
+                        text: "Save as draft",
+                        width: double.infinity,
+                        primary: Colors.white,
+                      ),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  AutoSizeText privateevent() {
+    return const AutoSizeText(
+      "This Event is private.Only your followers will see this event details",
+      style: TextStyle(
+        fontWeight: FontWeight.w300,
+        fontSize: 15,
+      ),
+    );
+  }
+
+  AutoSizeText publicevent() {
+    return const AutoSizeText(
+      "This Event is public. Everyone on Event Spotter will be able to see this event details",
+      style: TextStyle(
+        fontWeight: FontWeight.w300,
+        fontSize: 15,
       ),
     );
   }
@@ -613,8 +649,9 @@ class _CreateeventState extends State<Createevent> {
 
   void showPlacePicker() async {
     LocationResult? result = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) =>
-            PlacePicker("AIzaSyCZTqBDEFeniyz9QukE0gu4yQ5g2mt7rm0")));
+        builder: (context) => PlacePicker(
+              "AIzaSyCZTqBDEFeniyz9QukE0gu4yQ5g2mt7rm0",
+            )));
 
     // Handle the result in your way
     print(result?.name);
@@ -641,25 +678,34 @@ class _CreateeventState extends State<Createevent> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ListTile(
-                      leading: const Icon(Icons.camera),
-                      title: const Text('Camera'),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        _pickImage(ImageSource.camera);
-                      }),
-                  ListTile(
                       leading: const Icon(Icons.filter),
-                      title: const Text('Pick a file'),
+                      title: const Text('Pick an image'),
                       onTap: () {
                         Navigator.of(context).pop();
                         _pickImage(ImageSource.gallery);
                       }),
                   ListTile(
+                      leading: const Icon(Icons.camera_alt),
+                      title: const Text('camera'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        _pickImage(ImageSource.camera);
+                      }),
+                  ListTile(
                       leading: const Icon(Icons.camera),
-                      title: const Text('video'),
+                      title: const Text('Pick a video'),
                       onTap: () {
                         Navigator.of(context).pop();
                         _pickvideo(ImageSource.gallery);
+                      }),
+                  ListTile(
+                      leading: const Icon(
+                        Icons.photo_camera_front,
+                      ),
+                      title: const Text('video'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        _pickvideo(ImageSource.camera);
                       }),
                 ],
               ),
@@ -815,7 +861,7 @@ class _VideoPlayerScree1State extends State<VideoPlayerScree1> {
 
     // Use the controller to loop the video.
     _controller.setLooping(true);
-    _controller.setVolume(0.0);
+    _controller.setVolume(5);
 
     super.initState();
   }
@@ -842,13 +888,13 @@ class _VideoPlayerScree1State extends State<VideoPlayerScree1> {
               // If the VideoPlayerController has finished initialization, use
               // the data it provides to limit the aspect ratio of the video.
               return Container(
-                height: size.height * 0.2,
+                height: size.height * 0.3,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(15),
                 ),
                 child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(15),
                     child: VideoPlayer(_controller)),
               );
             } else {

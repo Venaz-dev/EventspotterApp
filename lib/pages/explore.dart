@@ -28,10 +28,13 @@ class _ExploreState extends State<Explore> {
   bool _isLoading = true;
   late EventsModel eventsModel;
   String urlEvent = "https://theeventspotter.com/api/getEvents";
+  String searchUrl = "https://theeventspotter.com/api/search";
+
   late List eventsLiveFeed = [];
   late List<int> favourite = [];
   late List<int> like = [];
   late List<int> totalCount = [];
+  late List search = [];
 
   String? _token;
   late Response response;
@@ -40,6 +43,7 @@ class _ExploreState extends State<Explore> {
 
   screens swap = screens.explore;
   String? value;
+  bool ontao = false;
 
   final dropdown = ['interest', 'no interest'];
 
@@ -49,10 +53,61 @@ class _ExploreState extends State<Explore> {
   late String long;
   late SharedPreferences _sharedPreferences;
   Geolocator geolocator = Geolocator();
+  int index = 0;
+  double topbarheight = 50;
   //late Map<String, double> userLocation;
+  Widget searchnames() {
+    return Padding(
+      padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.05),
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.2,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.black54,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+              children: List.generate(100, (index) {
+            return Padding(
+              padding: const EdgeInsets.only(left: 15.0, top: 5, bottom: 10),
+              child: Container(
+                child: Row(
+                  children: [
+                    SizedBox(
+                      height: 30,
+                      width: 30,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(300),
+                        child: Image.network(
+                          'https://images.unsplash.com/photo-1638553507237-10ff908cda42?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    const Text("Awais",
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white))
+                  ],
+                ),
+              ),
+            );
+          })),
+        ),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
+    _search.addListener(searchnames);
     // getInitializedSharedPref();
 
     getEvetns().whenComplete(() {
@@ -72,70 +127,73 @@ class _ExploreState extends State<Explore> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return RefreshIndicator(
-      onRefresh: () {
-        return getEvetns();
-      },
-      child: SafeArea(
+        onRefresh: () {
+          return getEvetns();
+        },
+        child: SafeArea(
           child: Scaffold(
-        backgroundColor: Colors.white,
-        body: GestureDetector(
-          onTap: () {
-            FocusScopeNode currentfocus = FocusScope.of(context);
+            backgroundColor: Colors.white,
+            body: GestureDetector(
+              onTap: () {
+                FocusScopeNode currentfocus = FocusScope.of(context);
 
-            if (!currentfocus.hasPrimaryFocus) {
-              currentfocus.unfocus();
-            }
-          },
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Padding(
-              padding: EdgeInsets.only(
-                  top: size.height * 0.02, left: size.width * 0.05),
+                if (!currentfocus.hasPrimaryFocus) {
+                  currentfocus.unfocus();
+                }
+              },
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: size.height * 0.02),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            //height: size.height*0.1,
-                            width: size.width * 0.8,
-                            child: Textform(
-                              controller: _search,
-                              icon: Icons.search,
-                              label: "Search",
-                              color: const Color(0XFFECF2F3),
-                            ),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      top: size.height * 0.02, left: size.width * 0.05),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: size.height * 0.02),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: size.width * 0.9,
+                                child: Textform(
+                                  onchange: (listen) {
+                                    if (_search.text.length >= 3) {
+                                      searchApiCall();
+                                    }
+                                    setState(() {});
+                                  },
+                                  isreadonly: false,
+                                  isSecure: false,
+                                  controller: _search,
+                                  icon: Icons.search,
+                                  label: "Search",
+                                  color: const Color(0XFFECF2F3),
+                                ),
+                              ),
+                              SizedBox(
+                                width: size.width * 0.01,
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            width: size.width * 0.01,
-                          ),
-                          //  Smallbutton(
-
-                          //       icon: FontAwesomeIcons.slidersH,
-
-                          //       onpressed: () {
-                          //         setState(() {
-                          //           swap = screens.filter;
-                          //         });
-                          //       },
-
-                          //   ),
-                        ],
-                      ),
+                        ),
+                        Stack(
+                          children: [
+                            getpages(size),
+                            _search.text.length >= 3
+                                ? searchnames()
+                                : SizedBox(),
+                          ],
+                        ),
+                      ],
                     ),
-                    getpages(size),
-                  ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      )),
-    );
+        ));
   }
 
   Widget getpages(Size size) {
@@ -203,7 +261,7 @@ class _ExploreState extends State<Explore> {
                 favourite: favourite,
                 eventsLiveFeed: eventsLiveFeed,
                 like: like,
-                totalCount:totalCount,
+                totalCount: totalCount,
                 id: id,
               ),
       ],
@@ -516,6 +574,38 @@ class _ExploreState extends State<Explore> {
       data: {'lat_lng': latlong},
     );
     print(response.toString());
+  }
+
+  void searchApiCall() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _token = _sharedPreferences.getString('accessToken')!;
+    Map<String, String> qParams = {
+      'text': _search.text,
+    };
+    _dio.options.headers["Authorization"] = "Bearer ${_token}";
+try {
+    Response response = await _dio.get(urlEvent);
+    print(response.data);
+    
+      await _dio.get(searchUrl, queryParameters: qParams).then((value) {
+        // print(value.data);
+        if (value.statusCode == 200) {
+          print("inside");
+          print(response.data["id"][0]);
+
+          //   var js = {
+          //           'img': value.data[],
+          //           'km': km,
+          //         };
+
+          //
+        } else {
+          print("error");
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }
 
