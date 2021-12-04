@@ -11,9 +11,9 @@ import 'package:event_spotter/widgets/explore/livefeed.dart';
 import 'package:event_spotter/widgets/map.dart';
 import 'package:event_spotter/widgets/smallbutton.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
+import 'package:event_spotter/widgets/toaster.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:like_button/like_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -40,7 +40,8 @@ class _EventdetailingState extends State<Eventdetailing> {
   livefeed swapping = livefeed.details;
   late List Live = [];
   bool test1 = false;
-   final Dio _dio = Dio();
+  final Dio _dio = Dio();
+  bool _isLoading = false;
   late SharedPreferences _sharedPreferences;
   late String _token;
 
@@ -53,7 +54,7 @@ class _EventdetailingState extends State<Eventdetailing> {
   }
 
   String MainUrl1 = "https://theeventspotter.com/";
-    String deleteEventUrl = "https://theeventspotter.com/delete-event";
+  String deleteEventUrl = "https://theeventspotter.com/api/delete-event";
 
   @override
   Widget build(BuildContext context) {
@@ -471,30 +472,49 @@ class _EventdetailingState extends State<Eventdetailing> {
           const SizedBox(
             height: 20,
           ),
-          widget.model!.data[widget.indexs!].events.userId == widget.id
-              ? Elevatedbutton(
-                  text: "Delete",
-                  width: double.infinity,
-                  coloring: Colors.redAccent,
-                  textColor: const Color(0XFFFFFFFF),
-                  onpressed: () {
-                    //deleteevent();
-                  },
-                )
-              : const SizedBox(),
+          _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : widget.model!.data[widget.indexs!].events.userId == widget.id
+                  ? Elevatedbutton(
+                      text: "Delete",
+                      width: double.infinity,
+                      coloring: Colors.redAccent,
+                      textColor: const Color(0XFFFFFFFF),
+                      onpressed: () {
+                        _isLoading = true;
+                        deleteevent();
+                      },
+                    )
+                  : const SizedBox(),
         ],
       ),
     );
   }
-// deleteevent()async{
-//   _sharedPreferences = await SharedPreferences.getInstance();
-//     _token = _sharedPreferences.getString('accessToken')!;
-//     _dio.options.headers["Authorization"] = "Bearer ${_token}";
-//    FormData formData = FormData.fromMap({
-//       "email": _email.text,
-//       "password": _password.text,
-//     });
-// }
+
+  deleteevent() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _token = _sharedPreferences.getString('accessToken')!;
+    _dio.options.headers["Authorization"] = "Bearer $_token";
+    try {
+      await _dio
+          .get(deleteEventUrl +
+              "/" +
+              widget.model!.data[widget.indexs!].events.id.toString())
+          .then((value) {
+        print(value.data);
+        if (value.statusCode == 200) {
+          showToaster("Event Deleted");
+        } else {
+          print("error");
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+      _isLoading = false;
+      setState(() {});
+    }
+  }
+
   Widget livesnaps(Size size) {
     return Container(
       decoration: BoxDecoration(
