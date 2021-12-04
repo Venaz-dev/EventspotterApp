@@ -14,7 +14,8 @@ class Textform extends StatefulWidget {
     this.color,
     this.onPressed,
     this.width = 0.0,
-    this.maxlines = 1,
+    this.maxlines = 1, this.isreadonly = true, 
+   
   }) : super(key: key);
 
   final TextEditingController? controller;
@@ -29,6 +30,8 @@ class Textform extends StatefulWidget {
   final VoidCallback? onPressed;
   final double width;
   final int maxlines;
+  final bool isreadonly ;
+
   @override
   State<Textform> createState() => _TextformState();
 }
@@ -40,6 +43,7 @@ class _TextformState extends State<Textform> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return TextFormField(
+      readOnly: widget.isreadonly,
       enabled: widget.input,
       maxLines: widget.maxlines,
       obscureText: widget.isSecure,

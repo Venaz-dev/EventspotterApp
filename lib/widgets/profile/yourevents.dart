@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
-import 'package:event_spotter/constant/json/post.dart';
 import 'package:event_spotter/models/userDraftEvents.dart';
 import 'package:event_spotter/models/userPastEvents.dart';
 import 'package:event_spotter/models/userUpcomingEvent.dart';
@@ -16,11 +15,9 @@ enum yourevent { upcoming, pastevents, drafts }
 class Yourevents extends StatefulWidget {
   const Yourevents({
     Key? key,
-    required this.images,
     required this.size,
   }) : super(key: key);
 
-  final List images;
   final Size size;
 
   @override
@@ -35,7 +32,7 @@ class _YoureventsState extends State<Yourevents> {
   String getUpComingEventUrl =
       "https://theeventspotter.com/api/getUserUpcomingEvents";
   String getPastEventsUrl = "https://theeventspotter.com/api/getUserPastEvent";
-  String getDraftUrl = "https://theeventspotter.com/api/getUserDraftEvent";
+  String getDraftUrl = "https://theeventspotter.com/api/getUserDraft";
   String MainUrl = "https://theeventspotter.com/";
   late SharedPreferences _sharedPreferences;
   Dio _dio = Dio();
@@ -61,6 +58,7 @@ class _YoureventsState extends State<Yourevents> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return _isLoading
         ? const Center(child: CircularProgressIndicator())
         : Column(
@@ -90,7 +88,7 @@ class _YoureventsState extends State<Yourevents> {
                           style: TextStyle(fontSize: 20),
                         ),
                         const SizedBox(height: 10),
-                        eventstype(),
+                        eventstype(size),
                       ]),
                 ),
               ),
@@ -98,20 +96,20 @@ class _YoureventsState extends State<Yourevents> {
           );
   }
 
-  Widget eventstype() {
+  Widget eventstype(Size size) {
     switch (eventshuffling) {
       case yourevent.upcoming:
-        return upcoming();
+        return upcoming(size);
 
       case yourevent.pastevents:
-        return past();
+        return past(size);
 
       case yourevent.drafts:
-        return drafts();
+        return drafts(size);
     }
   }
 
-  Widget upcoming() {
+  Widget upcoming(Size size) {
     return Column(
       children: [
         FittedBox(
@@ -168,12 +166,12 @@ class _YoureventsState extends State<Yourevents> {
         const SizedBox(
           height: 20,
         ),
-        upcomingeventlist(), ////////////////////////////
+        upcomingeventlist(size), ////////////////////////////
       ],
     );
   }
 
-  Widget past() {
+  Widget past(Size size) {
     return Column(
       children: [
         FittedBox(
@@ -229,12 +227,12 @@ class _YoureventsState extends State<Yourevents> {
           height: 20,
         ),
 
-        pasEventslist(), //////////////////////////
+        pasEventslist(size), //////////////////////////
       ],
     );
   }
 
-  Widget drafts() {
+  Widget drafts(Size size) {
     return Column(
       children: [
         FittedBox(
@@ -292,7 +290,7 @@ class _YoureventsState extends State<Yourevents> {
           height: 20,
         ),
 
-        userDraftlist(), ///////////////////////
+        userDraftlist(size), ///////////////////////
       ],
     );
   }
@@ -372,126 +370,138 @@ class _YoureventsState extends State<Yourevents> {
     }
   }
 
-  upcomingeventlist() {
+  upcomingeventlist(Size size) {
     if (test) {
-      return Column(
-        children: List.generate(_getUserUpcomingEvents.data.length, (index) {
-          return Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: const [
-                    BoxShadow(
-                        color: Colors.black12, blurRadius: 10, spreadRadius: 2)
-                  ]),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20.0, left: 15, bottom: 15),
-                child: Row(
-                  children: [
-                    _getUserUpcomingEvents
-                                .data[index].events.eventPictures[0].imagePath
-                                .toString()
-                                .contains('.mp4') ||
-                            _getUserUpcomingEvents
-                                .data[index].events.eventPictures[0].imagePath
-                                .toString()
-                                .contains('.mov')
-                        ? VideoPlayerScreennn(
-                            url: MainUrl +
-                                _getUserUpcomingEvents.data[index].events
-                                    .eventPictures[0].imagePath)
-                        : SizedBox(
-                            height: widget.size.height * 0.17,
-                            width: widget.size.width * 0.3,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: CachedNetworkImage(
-                                imageUrl: MainUrl +
-                                    _getUserUpcomingEvents.data[index].events
-                                        .eventPictures[0].imagePath,
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                },
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: List.generate(_getUserUpcomingEvents.data.length, (index) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 20.0, left: 20),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 10,
+                          spreadRadius: 2)
+                    ]),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(top: 20.0, left: 15, bottom: 15),
+                  child: Row(
+                    children: [
+                      _getUserUpcomingEvents
+                                  .data[index].events.eventPictures[0].imagePath
+                                  .toString()
+                                  .contains('.mp4') ||
+                              _getUserUpcomingEvents
+                                  .data[index].events.eventPictures[0].imagePath
+                                  .toString()
+                                  .contains('.mov')
+                          ? VideoPlayerScreennn(
+                              url: MainUrl +
+                                  _getUserUpcomingEvents.data[index].events
+                                      .eventPictures[0].imagePath)
+                          : SizedBox(
+                              height: widget.size.height * 0.17,
+                              width: widget.size.width * 0.3,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: CachedNetworkImage(
+                                  imageUrl: MainUrl +
+                                      _getUserUpcomingEvents.data[index].events
+                                          .eventPictures[0].imagePath,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  },
+                                ),
                               ),
                             ),
-                          ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          FittedBox(
-                            child: Text(
-                              _getUserUpcomingEvents.data[index].events.eventName,
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 20),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              const Icon(
-                                FontAwesomeIcons.calendar,
-                                size: 15,
-                                color: Colors.black54,
-                              ),
-                              AutoSizeText(
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: size.width * 0.35,
+                              child: AutoSizeText(
                                 _getUserUpcomingEvents
-                                    .data[index].events.eventDate,
-                                style: const TextStyle(color: Colors.black87),
-                                overflow: TextOverflow.ellipsis,
+                                    .data[index].events.eventName,
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 18),
+                                maxFontSize: 16,
+                                minFontSize: 15,
+                                overflow: TextOverflow.fade,
                               ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              const Icon(
-                                FontAwesomeIcons.mapMarkerAlt,
-                                size: 15,
-                                color: Colors.black54,
-                              ),
-                              Text(
-                                  _getUserUpcomingEvents.data[index].km +
-                                      " " +
-                                      "away",
-                                  style:
-                                      const TextStyle(color: Colors.black87)),
-                            ],
-                          )
-                        ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  FontAwesomeIcons.calendar,
+                                  size: 15,
+                                  color: Colors.black54,
+                                ),
+                                AutoSizeText(
+                                  _getUserUpcomingEvents
+                                      .data[index].events.eventDate,
+                                  style: const TextStyle(color: Colors.black87),
+                                  //overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  FontAwesomeIcons.mapMarkerAlt,
+                                  size: 15,
+                                  color: Colors.black54,
+                                ),
+                                Text(
+                                    _getUserUpcomingEvents.data[index].km +
+                                        " " +
+                                        "away",
+                                    style:
+                                        const TextStyle(color: Colors.black87)),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       );
     } else {
       return const Text("No Upcoming Events");
     }
   }
 
-  pasEventslist() {
+  pasEventslist(Size size) {
     if (test1) {
-      return Column(
-        children: List.generate(_userPastEvents.data.length, (index) {
-          return Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: FittedBox(
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: List.generate(_userPastEvents.data.length, (index) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 20.0, left: 20),
               child: Container(
                 // width: double.infinity,
                 decoration: BoxDecoration(
@@ -543,12 +553,17 @@ class _YoureventsState extends State<Yourevents> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              _userPastEvents.data[index].events.eventName,
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 20),
+                            SizedBox(
+                              width: size.width * 0.35,
+                              child: AutoSizeText(
+                                _userPastEvents.data[index].events.eventName,
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 18),
+                                maxFontSize: 16,
+                                minFontSize: 15,
+                              ),
                             ),
                             const SizedBox(
                               height: 10,
@@ -561,7 +576,7 @@ class _YoureventsState extends State<Yourevents> {
                                   color: Colors.black54,
                                 ),
                                 Text(
-                                  _userPastEvents.data[index].events.location,
+                                  _userPastEvents.data[index].events.eventDate,
                                   style: const TextStyle(color: Colors.black87),
                                 ),
                               ],
@@ -591,9 +606,9 @@ class _YoureventsState extends State<Yourevents> {
                   ),
                 ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       );
     } else {
       return const Center(
@@ -602,13 +617,14 @@ class _YoureventsState extends State<Yourevents> {
     }
   }
 
-  userDraftlist() {
+  userDraftlist(Size size) {
     if (test2) {
-      return Column(
-        children: List.generate(_getUserDraftEvents.data.length, (index) {
-          return Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: FittedBox(
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: List.generate(_getUserDraftEvents.data.length, (index) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 20.0, left: 20),
               child: Container(
                 // width: double.infinity,
                 decoration: BoxDecoration(
@@ -625,18 +641,17 @@ class _YoureventsState extends State<Yourevents> {
                       top: 20.0, right: 15, left: 15, bottom: 15),
                   child: Row(
                     children: [
-                      _getUserDraftEvents
-                                  .data[index].events.eventPictures[0].imagePath
+                      _getUserDraftEvents.data[index].eventPictures[0].imagePath
                                   .toString()
                                   .contains('.mp4') ||
                               _getUserDraftEvents
-                                  .data[index].events.eventPictures[0].imagePath
+                                  .data[index].eventPictures[0].imagePath
                                   .toString()
                                   .contains('.mov')
                           ? VideoPlayerScreennn(
                               url: MainUrl +
-                                  _getUserDraftEvents.data[index].events
-                                      .eventPictures[0].imagePath)
+                                  _getUserDraftEvents
+                                      .data[index].eventPictures[0].imagePath)
                           : SizedBox(
                               height: widget.size.height * 0.17,
                               width: widget.size.width * 0.3,
@@ -644,7 +659,7 @@ class _YoureventsState extends State<Yourevents> {
                                 borderRadius: BorderRadius.circular(10),
                                 child: CachedNetworkImage(
                                   imageUrl: MainUrl +
-                                      _getUserDraftEvents.data[index].events
+                                      _getUserDraftEvents.data[index]
                                           .eventPictures[0].imagePath,
                                   fit: BoxFit.cover,
                                   placeholder: (context, url) {
@@ -660,12 +675,17 @@ class _YoureventsState extends State<Yourevents> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              _getUserDraftEvents.data[index].events.eventName,
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 20),
+                            SizedBox(
+                              width: size.width * 0.35,
+                              child: AutoSizeText(
+                                _getUserDraftEvents.data[index].eventName,
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 18),
+                                maxFontSize: 16,
+                                minFontSize: 15,
+                              ),
                             ),
                             const SizedBox(
                               height: 10,
@@ -678,8 +698,7 @@ class _YoureventsState extends State<Yourevents> {
                                   color: Colors.black54,
                                 ),
                                 Text(
-                                  _getUserDraftEvents
-                                      .data[index].events.location,
+                                  _getUserDraftEvents.data[index].eventDate,
                                   style: const TextStyle(color: Colors.black87),
                                 ),
                               ],
@@ -694,12 +713,12 @@ class _YoureventsState extends State<Yourevents> {
                                   size: 15,
                                   color: Colors.black54,
                                 ),
-                                Text(
-                                    _getUserDraftEvents.data[index].km +
-                                        " " +
-                                        "away",
-                                    style:
-                                        const TextStyle(color: Colors.black87)),
+                                // Text(
+                                //     _getUserDraftEvents.data[index]. +
+                                //         " " +
+                                //         "away",
+                                //     style:
+                                //         const TextStyle(color: Colors.black87)),
                               ],
                             )
                           ],
@@ -709,9 +728,9 @@ class _YoureventsState extends State<Yourevents> {
                   ),
                 ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       );
     } else {
       return const Text("No Drafts Saved");
@@ -744,7 +763,7 @@ class _VideoPlayerScreennnState extends State<VideoPlayerScreennn> {
 
     // Use the controller to loop the video.
     _controller.setLooping(true);
-    _controller.setVolume(0.0);
+    _controller.setVolume(100);
 
     super.initState();
   }
@@ -766,8 +785,6 @@ class _VideoPlayerScreennnState extends State<VideoPlayerScreennn> {
           future: _initializeVideoPlayerFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              _controller.play();
-
               // If the VideoPlayerController has finished initialization, use
               // the data it provides to limit the aspect ratio of the video.
               return Container(
@@ -776,9 +793,23 @@ class _VideoPlayerScreennnState extends State<VideoPlayerScreennn> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: ClipRRect(
+
+                child: SizedBox(
+                  child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: VideoPlayer(_controller)),
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: <Widget>[
+                        VideoPlayer(_controller),
+                        ControlsOverlay(controller: _controller),
+                        VideoProgressIndicator(_controller,
+                            allowScrubbing: true),
+                      ],
+                    ),
+                  ),
+                ),
+                //borderRadius: BorderRadius.circular(20),
+                //    child: VideoPlayer(_controller),
               );
             } else {
               // If the VideoPlayerController is still initializing, show a
@@ -801,6 +832,90 @@ class _VideoPlayerScreennnState extends State<VideoPlayerScreennn> {
         //       setState(() {});
         //     },
         //     child: Text('PLAY'))
+      ],
+    );
+  }
+}
+
+class ControlsOverlay extends StatefulWidget {
+  ControlsOverlay({Key? key, required this.controller}) : super(key: key);
+
+  static const _examplePlaybackRates = [
+    0.25,
+    0.5,
+    1.0,
+    1.5,
+    2.0,
+    3.0,
+    5.0,
+    10.0,
+  ];
+
+  VideoPlayerController controller;
+
+  @override
+  State<ControlsOverlay> createState() => ControlsOverlayState();
+}
+
+class ControlsOverlayState extends State<ControlsOverlay> {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 50),
+          reverseDuration: const Duration(milliseconds: 200),
+          child: widget.controller.value.isPlaying
+              ? const SizedBox.shrink()
+              : Container(
+                  color: Colors.black26,
+                  child: const Center(
+                    child: Icon(
+                      Icons.play_arrow,
+                      color: Colors.white,
+                      size: 50.0,
+                      semanticLabel: 'Play',
+                    ),
+                  ),
+                ),
+        ),
+        GestureDetector(
+          onTap: () {
+            widget.controller.value.isPlaying
+                ? widget.controller.pause()
+                : widget.controller.play();
+            setState(() {});
+          },
+        ),
+        Align(
+          alignment: Alignment.topRight,
+          child: PopupMenuButton<double>(
+            initialValue: widget.controller.value.playbackSpeed,
+            tooltip: 'Playback speed',
+            onSelected: (speed) {
+              widget.controller.setPlaybackSpeed(speed);
+            },
+            itemBuilder: (context) {
+              return [
+                for (final speed in ControlsOverlay._examplePlaybackRates)
+                  PopupMenuItem(
+                    value: speed,
+                    child: Text('${speed}x'),
+                  )
+              ];
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                // Using less vertical padding as the text is also longer
+                // horizontally, so it feels like it would need more spacing
+                // horizontally (matching the aspect ratio of the video).
+                vertical: 12,
+                horizontal: 16,
+              ),
+              child: Text('${widget.controller.value.playbackSpeed}x'),
+            ),
+          ),
+        ),
       ],
     );
   }

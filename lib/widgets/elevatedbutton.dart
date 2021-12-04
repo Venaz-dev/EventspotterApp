@@ -6,7 +6,7 @@ class Elevatedbutton extends StatelessWidget {
   final Color? textColor;
   final VoidCallback? onpressed;
   final double width;
-  final Color ? primary;
+  final Color? primary;
 
   const Elevatedbutton({
     required this.text,
@@ -29,13 +29,12 @@ class Elevatedbutton extends StatelessWidget {
       width: width,
       child: ElevatedButton(
         child: Text(
-          text, 
+          text,
           style: TextStyle(color: textColor, fontSize: 18),
-          
         ),
         style: ElevatedButton.styleFrom(
           primary: primary,
-          side: const BorderSide(color: Colors.black),
+          side: const BorderSide(color: Colors.white),
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10))),
         ),

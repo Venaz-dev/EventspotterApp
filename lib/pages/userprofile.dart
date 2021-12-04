@@ -123,7 +123,6 @@ class _EventposterprofileState extends State<Eventposterprofile> {
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
-
                                               image: CachedNetworkImageProvider(
                                                   MainUrl +
                                                       _getUserFollowingStatus
@@ -287,18 +286,26 @@ class _EventposterprofileState extends State<Eventposterprofile> {
             const SizedBox(
               height: 20,
             ),
-            const Text("Phone number"),
-            const SizedBox(height: 10),
-            Textform(
-              label: _getUserFollowingStatus.data.phoneNumber,
-              controller: _phonenumber,
-              isSecure: false,
-              color: const Color(0XFFEBF2F2),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Text("Address"),
+            _getUserFollowingStatus.data.mobileIsPrivate == "0"
+                ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text("Phone number"),
+                      const SizedBox(height: 10),
+                      Textform(
+                        label: _getUserFollowingStatus.data.phoneNumber,
+                        controller: _phonenumber,
+                        isSecure: false,
+                        color: const Color(0XFFEBF2F2),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  )
+                : SizedBox(),
+                
+                const Text("Address"),
             const SizedBox(height: 10),
             Textform(
               label: Address,
@@ -427,7 +434,7 @@ class _EventposterprofileState extends State<Eventposterprofile> {
               },
               style: ElevatedButton.styleFrom(
                   primary: isfollow ? Colors.blue : const Color(0XFF9CC4C6)),
-              child:  Text(gg)),
+              child: Text(gg)),
         );
       }
     } else {

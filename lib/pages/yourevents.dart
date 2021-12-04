@@ -5,14 +5,12 @@ import 'package:event_spotter/models/userPastEvents.dart';
 import 'package:event_spotter/models/userUpcomingEvent.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/widgets/profile/yourevents.dart';
-import 'package:event_spotter/widgets/smallbutton.dart';
-import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:like_button/like_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 enum yourevents { upcoming, past, draft }
 
@@ -93,6 +91,9 @@ class _YeventsState extends State<Yevents> {
           }
         },
         child: Scaffold(
+          backgroundColor: Colors.white,
+          // appBar: PreferredSize(
+          //  child: getAppBar(), preferredSize: Size.fromHeight(100)),
           body: Padding(
             padding: EdgeInsets.only(top: 20.0, left: size.width * 0.05),
             child: SingleChildScrollView(
@@ -111,6 +112,16 @@ class _YeventsState extends State<Yevents> {
       ),
     );
   }
+
+  // Widget getAppBar() {
+  //   return AppBar(
+  //     // elevation:,
+  //     backgroundColor: Colors.red,
+  //     actions : [
+
+  //     ]
+  //   );
+  // }
 
   getUpComingEvents() async {
     _sharedPreferences = await SharedPreferences.getInstance();
@@ -262,32 +273,20 @@ class _YeventsState extends State<Yevents> {
                   return Padding(
                     padding: EdgeInsets.only(top: size.height * .01),
                     child: Container(
-                      height: size.height * 0.3,
-                      width: size.width,
                       decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
                           boxShadow: const [
                             BoxShadow(
-                              color: Colors.black12,
-                              spreadRadius: 0.5,
-                              blurRadius: 0.5,
-                              // offset: Offset(2, 2)
-                            )
-                          ],
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white),
+                                color: Colors.black12,
+                                blurRadius: 10,
+                                spreadRadius: 2)
+                          ]),
                       child: Padding(
-                        padding: EdgeInsets.only(
-                            top: size.height * 0.02,
-                            right: size.width * 0.02,
-                            bottom: size.height * 0.02,
-                            left: size.width * 0.02),
-                        child: Stack(
+                        padding: const EdgeInsets.only(
+                            top: 20.0, left: 15, bottom: 15),
+                        child: Row(
                           children: [
-                            // Positioned(
-                            //   right: 0,
-                            //   top: 0,
-                            //  // child: likebutton(),
-                            // ),
                             _getUserUpcomingEvents.data[index].events
                                         .eventPictures[0].imagePath
                                         .toString()
@@ -321,103 +320,66 @@ class _YeventsState extends State<Yevents> {
                                       ),
                                     ),
                                   ),
-                            Positioned(
-                              right: 20,
-                              left: size.width * 0.33,
-                              top: size.height * 0.02,
-                              child: Text(
-                                _getUserUpcomingEvents.data[0].events.eventName,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w400, fontSize: 17),
-                              ),
-                            ),
-                            Positioned(
-                              right: 20,
-                              left: size.width * 0.33,
-                              top: size.height * 0.05,
-                              child: Text(
-                                _getUserUpcomingEvents
-                                    .data[0].events.eventDescription,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w400, fontSize: 17),
-                              ),
-                            ),
-                            Positioned(
-                              top: size.height * 0.14,
-                              left: size.width * 0.33,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Icon(
-                                    MdiIcons.calendarRange,
-                                    size: 15,
-                                    color: Colors.black54,
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
+                                  SizedBox(
+                                    width: size.width * 0.35,
+                                    child: AutoSizeText(
                                       _getUserUpcomingEvents
-                                          .data[index].events.location,
+                                          .data[index].events.eventName,
                                       style: const TextStyle(
-                                          color: Colors.black87),
-                                      // ignore: deprecated_member_use
-                                      overflow: TextOverflow.ellipsis),
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18),
+                                      maxFontSize: 16,
+                                      minFontSize: 15,
+                                      overflow: TextOverflow.fade,
+                                    ),
+                                  ),
                                   const SizedBox(
-                                    width: 20,
+                                    height: 10,
                                   ),
-                                  const Icon(
-                                    FontAwesomeIcons.mapMarkerAlt,
-                                    size: 15,
-                                    color: Colors.black54,
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        FontAwesomeIcons.calendar,
+                                        size: 15,
+                                        color: Colors.black54,
+                                      ),
+                                      AutoSizeText(
+                                        _getUserUpcomingEvents
+                                            .data[index].events.eventDate,
+                                        style: const TextStyle(
+                                            color: Colors.black87),
+                                        //overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
                                   ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        FontAwesomeIcons.mapMarkerAlt,
+                                        size: 15,
+                                        color: Colors.black54,
+                                      ),
+                                      Text(
+                                          _getUserUpcomingEvents
+                                                  .data[index].km +
+                                              " " +
+                                              "away",
+                                          style: const TextStyle(
+                                              color: Colors.black87)),
+                                    ],
+                                  )
                                 ],
                               ),
                             ),
-
-                            // Positioned(
-                            //   top: size.height * 0.18,
-                            //   child: Row(
-                            //     children: const [
-                            //       Icon(
-                            //         LineAwesomeIcons.user_plus,
-                            //         size: 20,
-                            //         color: Colors.black54,
-                            //       ),
-                            //       SizedBox(
-                            //         width: 5,
-                            //       ),
-                            //       Text(_getUserUpcomingEvents.data[index].events.f),
-                            //     ],
-                            //   ),
-                            // ),
-
-                            // Positioned(
-                            //   bottom: 0,
-                            //   child: Row(
-                            //     children: [
-                            //       IntrinsicHeight(
-                            //         child: Row(
-                            //           mainAxisAlignment:
-                            //               MainAxisAlignment.spaceAround,
-                            //           children: [
-                            //             extras(FontAwesomeIcons.thumbsUp,
-                            //                 _getUserUpcomingEvents.data[index], size),
-                            //             divider(),
-                            //             extras(
-                            //                 Icons.comment, posts[1]['comment'], size),
-                            //             divider(),
-                            //             extras(
-                            //                 MdiIcons.share, posts[1]['share'], size),
-                            //             divider(),
-                            //             extras(
-                            //                 Icons.live_tv, posts[1]['viewers'], size),
-                            //           ],
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // )
                           ],
                         ),
                       ),
@@ -425,9 +387,7 @@ class _YeventsState extends State<Yevents> {
                   );
                 }),
               )
-            : const Center(
-                child: Text("No Upcoming Events"),
-              )
+            : const Center(child: Text("No upcoming events")),
       ],
     ); ////
   }
@@ -490,32 +450,21 @@ class _YeventsState extends State<Yevents> {
                   return Padding(
                     padding: EdgeInsets.only(top: size.height * .01),
                     child: Container(
-                      height: size.height * 0.3,
-                      width: size.width,
+                      // width: double.infinity,
                       decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
                           boxShadow: const [
                             BoxShadow(
-                              color: Colors.black12,
-                              spreadRadius: 0.5,
-                              blurRadius: 0.5,
-                              // offset: Offset(2, 2)
-                            )
-                          ],
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white),
+                                color: Colors.black12,
+                                blurRadius: 10,
+                                spreadRadius: 2)
+                          ]),
                       child: Padding(
-                        padding: EdgeInsets.only(
-                            top: size.height * 0.02,
-                            right: size.width * 0.02,
-                            bottom: size.height * 0.02,
-                            left: size.width * 0.02),
-                        child: Stack(
+                        padding: const EdgeInsets.only(
+                            top: 20.0, right: 15, left: 15, bottom: 15),
+                        child: Row(
                           children: [
-                            // Positioned(
-                            //   right: 0,
-                            //   top: 0,
-                            //  // child: likebutton(),
-                            // ),
                             _userPastEvents.data[index].events.eventPictures[0]
                                         .imagePath
                                         .toString()
@@ -546,102 +495,63 @@ class _YeventsState extends State<Yevents> {
                                       ),
                                     ),
                                   ),
-                            Positioned(
-                              right: 20,
-                              left: size.width * 0.33,
-                              top: size.height * 0.02,
-                              child: Text(
-                                _userPastEvents.data[0].events.eventName,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w400, fontSize: 17),
-                              ),
-                            ),
-                            Positioned(
-                              right: 20,
-                              left: size.width * 0.33,
-                              top: size.height * 0.05,
-                              child: Text(
-                                _userPastEvents.data[0].events.eventDescription,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w400, fontSize: 17),
-                              ),
-                            ),
-                            Positioned(
-                              top: size.height * 0.14,
-                              left: size.width * 0.33,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Icon(
-                                    MdiIcons.calendarRange,
-                                    size: 15,
-                                    color: Colors.black54,
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
+                                  SizedBox(
+                                    width: size.width * 0.35,
+                                    child: AutoSizeText(
                                       _userPastEvents
-                                          .data[index].events.location,
+                                          .data[index].events.eventName,
                                       style: const TextStyle(
-                                          color: Colors.black87),
-                                      // ignore: deprecated_member_use
-                                      overflow: TextOverflow.ellipsis),
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18),
+                                      maxFontSize: 16,
+                                      minFontSize: 15,
+                                    ),
+                                  ),
                                   const SizedBox(
-                                    width: 20,
+                                    height: 10,
                                   ),
-                                  const Icon(
-                                    FontAwesomeIcons.mapMarkerAlt,
-                                    size: 15,
-                                    color: Colors.black54,
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        FontAwesomeIcons.calendar,
+                                        size: 15,
+                                        color: Colors.black54,
+                                      ),
+                                      Text(
+                                        _userPastEvents
+                                            .data[index].events.eventDate,
+                                        style: const TextStyle(
+                                            color: Colors.black87),
+                                      ),
+                                    ],
                                   ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        FontAwesomeIcons.mapMarkerAlt,
+                                        size: 15,
+                                        color: Colors.black54,
+                                      ),
+                                      Text(
+                                          _userPastEvents.data[index].km +
+                                              " " +
+                                              "away",
+                                          style: const TextStyle(
+                                              color: Colors.black87)),
+                                    ],
+                                  )
                                 ],
                               ),
                             ),
-
-                            // Positioned(
-                            //   top: size.height * 0.18,
-                            //   child: Row(
-                            //     children: const [
-                            //       Icon(
-                            //         LineAwesomeIcons.user_plus,
-                            //         size: 20,
-                            //         color: Colors.black54,
-                            //       ),
-                            //       SizedBox(
-                            //         width: 5,
-                            //       ),
-                            //       Text(_getUserUpcomingEvents.data[index].events.f),
-                            //     ],
-                            //   ),
-                            // ),
-
-                            // Positioned(
-                            //   bottom: 0,
-                            //   child: Row(
-                            //     children: [
-                            //       IntrinsicHeight(
-                            //         child: Row(
-                            //           mainAxisAlignment:
-                            //               MainAxisAlignment.spaceAround,
-                            //           children: [
-                            //             extras(FontAwesomeIcons.thumbsUp,
-                            //                 _getUserUpcomingEvents.data[index], size),
-                            //             divider(),
-                            //             extras(
-                            //                 Icons.comment, posts[1]['comment'], size),
-                            //             divider(),
-                            //             extras(
-                            //                 MdiIcons.share, posts[1]['share'], size),
-                            //             divider(),
-                            //             extras(
-                            //                 Icons.live_tv, posts[1]['viewers'], size),
-                            //           ],
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // )
                           ],
                         ),
                       ),
@@ -715,43 +625,32 @@ class _YeventsState extends State<Yevents> {
                   return Padding(
                     padding: EdgeInsets.only(top: size.height * .01),
                     child: Container(
-                      height: size.height * 0.3,
-                      width: size.width,
+                      // width: double.infinity,
                       decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
                           boxShadow: const [
                             BoxShadow(
-                              color: Colors.black12,
-                              spreadRadius: 0.5,
-                              blurRadius: 0.5,
-                              // offset: Offset(2, 2)
-                            )
-                          ],
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white),
+                                color: Colors.black12,
+                                blurRadius: 10,
+                                spreadRadius: 2)
+                          ]),
                       child: Padding(
-                        padding: EdgeInsets.only(
-                            top: size.height * 0.02,
-                            right: size.width * 0.02,
-                            bottom: size.height * 0.02,
-                            left: size.width * 0.02),
-                        child: Stack(
+                        padding: const EdgeInsets.only(
+                            top: 20.0, right: 15, left: 15, bottom: 15),
+                        child: Row(
                           children: [
-                            // Positioned(
-                            //   right: 0,
-                            //   top: 0,
-                            //  // child: likebutton(),
-                            // ),
-                            _getUserDraftEvents.data[index].events
-                                        .eventPictures[0].imagePath
+                            _getUserDraftEvents
+                                        .data[index].eventPictures[0].imagePath
                                         .toString()
                                         .contains('.mp4') ||
-                                    _getUserDraftEvents.data[index].events
-                                        .eventPictures[0].imagePath
+                                    _getUserDraftEvents
+                                        .data[index].eventPictures[0].imagePath
                                         .toString()
                                         .contains('.mov')
                                 ? VideoPlayerScreennn(
                                     url: MainUrl +
-                                        _getUserDraftEvents.data[index].events
+                                        _getUserDraftEvents.data[index]
                                             .eventPictures[0].imagePath)
                                 : SizedBox(
                                     height: size.height * 0.17,
@@ -760,11 +659,8 @@ class _YeventsState extends State<Yevents> {
                                       borderRadius: BorderRadius.circular(10),
                                       child: CachedNetworkImage(
                                         imageUrl: MainUrl +
-                                            _getUserDraftEvents
-                                                .data[index]
-                                                .events
-                                                .eventPictures[0]
-                                                .imagePath,
+                                            _getUserDraftEvents.data[index]
+                                                .eventPictures[0].imagePath,
                                         fit: BoxFit.cover,
                                         placeholder: (context, url) {
                                           return const Center(
@@ -774,103 +670,62 @@ class _YeventsState extends State<Yevents> {
                                       ),
                                     ),
                                   ),
-                            Positioned(
-                              right: 20,
-                              left: size.width * 0.33,
-                              top: size.height * 0.02,
-                              child: Text(
-                                _getUserDraftEvents.data[0].events.eventName,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w400, fontSize: 17),
-                              ),
-                            ),
-                            Positioned(
-                              right: 20,
-                              left: size.width * 0.33,
-                              top: size.height * 0.05,
-                              child: Text(
-                                _getUserDraftEvents
-                                    .data[0].events.eventDescription,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w400, fontSize: 17),
-                              ),
-                            ),
-                            Positioned(
-                              top: size.height * 0.14,
-                              left: size.width * 0.33,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Icon(
-                                    MdiIcons.calendarRange,
-                                    size: 15,
-                                    color: Colors.black54,
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                      _getUserDraftEvents
-                                          .data[index].events.location,
+                                  SizedBox(
+                                    width: size.width * 0.35,
+                                    child: AutoSizeText(
+                                      _getUserDraftEvents.data[index].eventName,
                                       style: const TextStyle(
-                                          color: Colors.black87),
-                                      // ignore: deprecated_member_use
-                                      overflow: TextOverflow.ellipsis),
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18),
+                                      maxFontSize: 16,
+                                      minFontSize: 15,
+                                    ),
+                                  ),
                                   const SizedBox(
-                                    width: 20,
+                                    height: 10,
                                   ),
-                                  const Icon(
-                                    FontAwesomeIcons.mapMarkerAlt,
-                                    size: 15,
-                                    color: Colors.black54,
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        FontAwesomeIcons.calendar,
+                                        size: 15,
+                                        color: Colors.black54,
+                                      ),
+                                      Text(
+                                        _getUserDraftEvents
+                                            .data[index].eventDate,
+                                        style: const TextStyle(
+                                            color: Colors.black87),
+                                      ),
+                                    ],
                                   ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        FontAwesomeIcons.mapMarkerAlt,
+                                        size: 15,
+                                        color: Colors.black54,
+                                      ),
+                                      // Text(
+                                      //     _getUserDraftEvents.data[index]. +
+                                      //         " " +
+                                      //         "away",
+                                      //     style:
+                                      //         const TextStyle(color: Colors.black87)),
+                                    ],
+                                  )
                                 ],
                               ),
                             ),
-
-                            // Positioned(
-                            //   top: size.height * 0.18,
-                            //   child: Row(
-                            //     children: const [
-                            //       Icon(
-                            //         LineAwesomeIcons.user_plus,
-                            //         size: 20,
-                            //         color: Colors.black54,
-                            //       ),
-                            //       SizedBox(
-                            //         width: 5,
-                            //       ),
-                            //       Text(_getUserUpcomingEvents.data[index].events.f),
-                            //     ],
-                            //   ),
-                            // ),
-
-                            // Positioned(
-                            //   bottom: 0,
-                            //   child: Row(
-                            //     children: [
-                            //       IntrinsicHeight(
-                            //         child: Row(
-                            //           mainAxisAlignment:
-                            //               MainAxisAlignment.spaceAround,
-                            //           children: [
-                            //             extras(FontAwesomeIcons.thumbsUp,
-                            //                 _getUserUpcomingEvents.data[index], size),
-                            //             divider(),
-                            //             extras(
-                            //                 Icons.comment, posts[1]['comment'], size),
-                            //             divider(),
-                            //             extras(
-                            //                 MdiIcons.share, posts[1]['share'], size),
-                            //             divider(),
-                            //             extras(
-                            //                 Icons.live_tv, posts[1]['viewers'], size),
-                            //           ],
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // )
                           ],
                         ),
                       ),

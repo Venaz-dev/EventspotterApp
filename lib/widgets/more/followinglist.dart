@@ -52,33 +52,17 @@ class _FollowinglistState extends State<Followinglist> {
                   Row(
                     children: [
                       const Spacer(),
-                      Container(
-                        height: 18,
-                        width: 18,
-                        decoration: const BoxDecoration(
-                          color: Color(0XFF6D6D6C),
-                          shape: BoxShape.circle,
-                        ),
-                        child: FittedBox(
-                            child: IconButton(
-                          padding: EdgeInsets.zero,
+                      IconButton(
+                          onPressed: () {},
                           icon: const Icon(
-                            Icons.minimize,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            unfollow(index);
-                          },
-                        )),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
+                            Icons.block,
+                          )),
                       const Text(
                         "UnFollow",
                         style: TextStyle(
-                          color: Colors.black54,
+                          color: Colors.black,
                           fontSize: 14,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],

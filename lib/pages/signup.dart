@@ -101,6 +101,7 @@ class _SingupState extends State<Singup> {
                                 height: 20,
                               ),
                               Textform(
+                                isreadonly: false,
                                 isSecure: false,
                                 label: 'Email',
                                 controller: _email,
@@ -118,6 +119,7 @@ class _SingupState extends State<Singup> {
                               ),
                               Textform(
                                 isSecure: _isPSecure,
+                                isreadonly: false,
                                 color: const Color(0XFFEBF2F2),
                                 label: 'Password',
                                 controller: _password,
@@ -149,6 +151,7 @@ class _SingupState extends State<Singup> {
                                 isSecure: _isCPSecure,
                                 color: const Color(0XFFEBF2F2),
                                 label: 'Confirm Password',
+                                isreadonly: false,
                                 controller: _confirmPassword,
                                 icon: Icons.lock,
                                 suffix: _isCPSecure == true
@@ -182,6 +185,7 @@ class _SingupState extends State<Singup> {
                                 color: const Color(0XFFEBF2F2),
                                 label: 'Phone Number',
                                 controller: _phoneNumber,
+                                isreadonly: false,
                                 icon: Icons.phone_android,
                                 isSecure: _isPHSecure,
                                 suffix: _isPHSecure == true

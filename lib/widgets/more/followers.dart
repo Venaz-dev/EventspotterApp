@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:event_spotter/models/followinglistmodel.dart';
@@ -63,14 +62,17 @@ class _FollowerlistState extends State<Followerlist> {
                           size: 15,
                         ),
                       ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      const Text(
-                        "Remove",
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 14,
+                      InkWell(
+                        onTap: () async {
+                          await remove(index);
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          "Remove",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
                         ),
                       ),
                     ],
@@ -145,7 +147,7 @@ class _FollowerlistState extends State<Followerlist> {
     _token = _sharedPreferences.getString('accessToken')!;
 
     _dio.options.headers["Authorization"] = "Bearer ${_token}";
-    FormData formData =  FormData.fromMap({
+    FormData formData = FormData.fromMap({
       "id": widget.followerListModel.data[index].id,
     });
     await _dio.post(unFollow, data: formData).then((value) {

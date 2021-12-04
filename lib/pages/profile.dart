@@ -24,57 +24,55 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  String? value;
+  bool iswitched = true;
   int index = 0;
   late SharedPreferences _sharedPreferences;
   Dio _dio = Dio();
   bool _isLoading = true;
   late Response response;
   late String _name;
+  bool _isdisabled = true;
+  final bool _emailinput = true;
   File? imagePath;
   final ImagePicker _picker = ImagePicker();
   late String _token;
   late String _email1;
+  bool _isReadonly = true;
+  late bool phonenumber;
+  late bool profileprivate;
   var totalEvents;
   late GetProfile _getProfile;
 
   late int lenght;
   String url2 = "https://theeventspotter.com/api/logout";
+  String profileprivateUrl =
+      "https://theeventspotter.com/api/makeProfilePrivate";
+
   String getuser = "https://theeventspotter.com/api/profile";
+  String editProfileUrl = "https://theeventspotter.com/api/edit-profile";
+  String phonenumberprivateUrl =
+      "https://theeventspotter.com/api/makeNoPrivate";
+
   String postProfilePicture =
       "https://theeventspotter.com/api/update-profile-picture";
 
   String MainUrl = "https://theeventspotter.com/";
+
   final TextEditingController _email = TextEditingController();
   final TextEditingController _phonenumber = TextEditingController();
-
   final TextEditingController _address = TextEditingController();
-
   final TextEditingController _city = TextEditingController();
   final TextEditingController _country = TextEditingController();
   var city;
   var country;
   var profile_pic;
+  var phone;
+  bool directMessage = true;
   // ignore: prefer_typing_uninitialized_variables
   var address;
   final languages = ["English", "Spanish"];
 
   //Text Controllers
-
-  List images = [
-    {
-      'eventimage':
-          'https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500',
-    },
-    {
-      'eventimage':
-          'https://images.pexels.com/photos/2263436/pexels-photo-2263436.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500',
-    },
-    {
-      'eventimage':
-          'https://images.pexels.com/photos/2747449/pexels-photo-2747449.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500',
-    },
-  ];
 
   scrolling widgetsscrolling = scrolling.personal;
 
@@ -83,6 +81,17 @@ class _ProfileState extends State<Profile> {
     getProfileDetails();
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _email.dispose();
+    _phonenumber.dispose();
+    _address.dispose();
+    _city.dispose();
+    _country.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -329,7 +338,7 @@ class _ProfileState extends State<Profile> {
                           const SizedBox(
                             height: 20,
                           ),
-                          Yourevents(images: images, size: size),
+                          Yourevents(size: size),
                           const SizedBox(
                             height: 30,
                           ),
@@ -437,22 +446,21 @@ class _ProfileState extends State<Profile> {
   }
 
   Settings(bool isSwitched, String text) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(text),
-          Switch(
-            value: isSwitched,
-            onChanged: (value) {
-              setState(() {
-                isSwitched = value;
-              });
-            },
-            activeColor: const Color(0xFF324748),
-          ),
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(text),
+        Switch(
+          value: isSwitched,
+          onChanged: (value) {
+            setState(() {
+              isSwitched = value;
+            });
+          },
+          activeColor: const Color(0xFF324748),
+          //inactiveTrackColor: Colors.white
+        ),
+      ],
     );
   }
 
@@ -560,6 +568,7 @@ class _ProfileState extends State<Profile> {
             const Text("Email"),
             const SizedBox(height: 10),
             Textform(
+              isreadonly: _emailinput,
               label: _getProfile.data.email,
               controller: _email,
               isSecure: false,
@@ -571,7 +580,8 @@ class _ProfileState extends State<Profile> {
             const Text("Phone number"),
             const SizedBox(height: 10),
             Textform(
-              label: _getProfile.data.phoneNumber,
+              isreadonly: _isReadonly,
+              label: phone,
               controller: _phonenumber,
               isSecure: false,
               color: const Color(0XFFEBF2F2),
@@ -582,6 +592,7 @@ class _ProfileState extends State<Profile> {
             const Text("Address"),
             const SizedBox(height: 10),
             Textform(
+              isreadonly: _isReadonly,
               label: address,
               controller: _address,
               isSecure: false,
@@ -593,6 +604,7 @@ class _ProfileState extends State<Profile> {
             const Text("City"),
             const SizedBox(height: 10),
             Textform(
+              isreadonly: _isReadonly,
               label: city,
               controller: _city,
               isSecure: false,
@@ -604,6 +616,7 @@ class _ProfileState extends State<Profile> {
             const Text("Country"),
             const SizedBox(height: 10),
             Textform(
+              isreadonly: _isReadonly,
               label: country,
               controller: _country,
               isSecure: false,
@@ -615,10 +628,22 @@ class _ProfileState extends State<Profile> {
             Center(
               child: Elevatedbuttons(
                 sidecolor: Colors.transparent,
-                text: "Edit Details",
+                text: _isReadonly ? "Edit Details" : "Save Changes",
                 textColor: Colors.white,
                 coloring: const Color(0XFF304747),
-                onpressed: () {},
+                onpressed: () {
+                  setState(() {
+                    _isdisabled = !_isdisabled;
+                    _isReadonly = !_isReadonly;
+                  });
+                  if (_isReadonly == true) {
+                    showToaster("Changes Saved");
+
+                    editProfile();
+                  } else {
+                    showToaster("You Can Now Edit Profile");
+                  }
+                },
                 primary: const Color(0XFF304747),
               ),
             ),
@@ -626,6 +651,39 @@ class _ProfileState extends State<Profile> {
         ),
       ),
     );
+  }
+
+  editProfile() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _token = _sharedPreferences.getString('accessToken')!;
+    _name = _sharedPreferences.getString('name')!;
+    _dio.options.headers["Authorization"] = "Bearer ${_token}";
+    FormData formData = FormData.fromMap({
+      "name": _name,
+      "phoneNumber": _phonenumber.text,
+      "email": _getProfile.data.email,
+      "address": _address.text,
+      "city": _city.text,
+      "country": _country.text
+    });
+    try {
+      response = await _dio.post(editProfileUrl, data: formData);
+      if (response.statusCode == 200) {
+        // ignore: avoid_print
+        print("Data saved ");
+        city = _city.text;
+        print(response.data);
+        country = _country.text;
+        address = _address.text;
+        phone = _phonenumber.text;
+      } else {
+        print(response.data);
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      setState(() {});
+    }
   }
 
   Widget settings() {
@@ -686,15 +744,121 @@ class _ProfileState extends State<Profile> {
               const SizedBox(
                 height: 20,
               ),
-              Settings(true, 'Recieve push notification'),
-              Settings(true, 'Allow direct messages'),
-              Settings(false, 'Make your profile private'),
+              // Settings(true, 'Recieve push notification'),
+              // Settings(true, 'Allow direct messages'),
+              //  Settings(false, 'Make your profile private'),
+              Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const Text("Recieve push notification"),
+                  const Spacer(),
+                  Switch(
+                    value: iswitched,
+                    onChanged: (value) {
+                      setState(() {
+                        iswitched = value;
+                      });
+                    },
+                    activeColor: const Color(0xFF324748),
+                  ),
+                ],
+              ),
+
+              Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const Text("Allow direct messages"),
+                  const Spacer(),
+                  Switch(
+                    value: directMessage,
+                    onChanged: (value) {
+                      setState(() {
+                        directMessage = value;
+                      });
+                    },
+                    activeColor: const Color(0xFF324748),
+                  ),
+                ],
+              ),
+              Row(
+                //  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const Text("Make your profile private"),
+                  const Spacer(),
+                  Switch(
+                    value: profileprivate,
+                    onChanged: (value) {
+                      if (profileprivate == true) {
+                        sendprofileprivate(1);
+                      } else {
+                        sendprofileprivate(0);
+                      }
+                      setState(() {
+                        profileprivate = value;
+                      });
+                    },
+                    activeColor: const Color(0xFF324748),
+                  ),
+                ],
+              ),
+              Row(
+                //  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const Text("Make your phone number private"),
+                  const Spacer(),
+                  Switch(
+                    value: phonenumber,
+                    onChanged: (value) {
+                      if (phonenumber == true) {
+                        phonenumberpost(1);
+                      } else {
+                        phonenumberpost(0);
+                      }
+                      setState(() {
+                        phonenumber = value;
+                      });
+                    },
+                    activeColor: const Color(0xFF324748),
+                  ),
+                ],
+              ),
               const SizedBox(
                 height: 10,
               ),
             ],
           ),
         ));
+  }
+
+  sendprofileprivate(int i) async {
+    _dio.options.headers["Authorization"] = "Bearer ${_token}";
+
+    FormData formData = FormData.fromMap({
+      "profile_private": i,
+    });
+
+    response = await _dio.post(profileprivateUrl, data: formData);
+    if (response.statusCode == 200) {
+      showToaster("Changes Saved");
+    } else {
+      print("Error");
+    }
+  }
+
+  phonenumberpost(int i) async {
+    _dio.options.headers["Authorization"] = "Bearer ${_token}";
+
+    FormData formData = FormData.fromMap({
+      "isPrivate": i,
+    });
+
+    response = await _dio.post(phonenumberprivateUrl, data: formData);
+    if (response.statusCode == 200) {
+      print(response.data);
+      showToaster("Changes Saved");
+    } else {
+      print("Error");
+    }
   }
 
   LogoutapiCall() async {
@@ -729,15 +893,31 @@ class _ProfileState extends State<Profile> {
       }
       if (response.statusCode == 200) {
         _getProfile = GetProfile.fromJson(response.data);
-
+        if (response.data['data']['mobile_is_private'].toString() == '0') {
+          phonenumber = false;
+        } else {
+          phonenumber = true;
+        }
+        if (response.data['data']['profile_private'].toString() == '0') {
+          profileprivate = false;
+        } else {
+          profileprivate = true;
+        }
         if (response.data["data"]["address"] != null) {
-          city = response.data["data"]["address"]["city"];
-          country = response.data["data"]["address"]["country"];
-          address = response.data["data"]["address"]["address"];
+          _city.text = city = response.data["data"]["address"]["city"] ?? '';
+          _country.text =
+              country = response.data["data"]["address"]["country"] ?? '';
+          _address.text =
+              address = response.data["data"]["address"]["address"] ?? '';
         } else {
           city = "not available ";
           country = "not available ";
           address = "not available ";
+        }
+        if (response.data["data"]['phone_number'] != null) {
+          _phonenumber.text = phone = response.data["data"]['phone_number'];
+        } else {
+          phone = "not available";
         }
         if (response.data["data"]["profile_picture"] != null) {
           profile_pic =

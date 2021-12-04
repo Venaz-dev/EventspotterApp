@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/pages/explore.dart';
 import 'package:event_spotter/pages/uploadimage.dart';
 import 'package:event_spotter/widgets/elevatedbutton.dart';
+import 'package:event_spotter/widgets/explore/comment.dart';
 import 'package:event_spotter/widgets/explore/events.dart';
 import 'package:event_spotter/widgets/explore/livefeed.dart';
 import 'package:event_spotter/widgets/map.dart';
@@ -12,17 +14,21 @@ import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:like_button/like_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 enum livefeed { details, livesnaps }
 
 class Eventdetailing extends StatefulWidget {
   EventsModel? model;
   final int? indexs;
+  String id;
   Eventdetailing({
     Key? key,
     //  this.networkImage, this.isfollow, this.uploaderName, this.uploaderimage, this.followers, this.takingplace, this.distance, required this.description, this.like, this.comment, this.share, this.views
     @required this.model,
+    required this.id,
     this.indexs,
   }) : super(key: key);
 
@@ -34,6 +40,10 @@ class _EventdetailingState extends State<Eventdetailing> {
   livefeed swapping = livefeed.details;
   late List Live = [];
   bool test1 = false;
+   final Dio _dio = Dio();
+  late SharedPreferences _sharedPreferences;
+  late String _token;
+
   String MainUrl = "https://theeventspotter.com/";
 
   @override
@@ -43,13 +53,14 @@ class _EventdetailingState extends State<Eventdetailing> {
   }
 
   String MainUrl1 = "https://theeventspotter.com/";
+    String deleteEventUrl = "https://theeventspotter.com/delete-event";
+
   @override
   Widget build(BuildContext context) {
     print(widget.model!.data[0].events.eventName.toString());
     bool active = false;
 
-    String description =
-        widget.model!.data[widget.indexs!].events.eventDescription;
+    String description = widget.model!.data[widget.indexs!].events.eventName;
     TextEditingController _search = TextEditingController();
     Size size = MediaQuery.of(context).size;
     return SafeArea(
@@ -92,7 +103,6 @@ class _EventdetailingState extends State<Eventdetailing> {
                 height: 30,
               ),
               Container(
-                height: size.height * 0.38,
                 width: size.width * double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -143,7 +153,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                         top: size.height * 0.02,
                         child: SizedBox(
                           height: size.height * 0.04,
-                          width: size.width * 0.25,
+
                           // decoration: const BoxDecoration(color: Color(0XFF38888E)),
                           child: ElevatedButton(
                               onPressed: () {},
@@ -164,40 +174,40 @@ class _EventdetailingState extends State<Eventdetailing> {
                               )),
                         ),
                       ),
-                      Positioned(
-                        top: size.height * 0.07,
-                        right: size.width * 0.02,
-                        child: Column(children: [
-                          LikeButton(
-                              size: 20,
-                              isLiked: active,
-                              likeBuilder: (isliked) {
-                                final color =
-                                    isliked ? Colors.red : Colors.grey;
-                                return Icon(Icons.favorite,
-                                    color: color, size: 20);
-                              },
-                              countBuilder: (count, isliked, text) {
-                                final color =
-                                    isliked ? Colors.red : Colors.grey;
-                              }),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          // LikeButton(
-                          //     size: 20,
-                          //     isLiked: active,
-                          //     likeBuilder: (isliked) {
-                          //       final color =
-                          //           isliked ? Colors.green : Colors.grey;
-                          //       return Icon(Icons.flag, color: color, size: 20);
-                          //     },
-                          //     countBuilder: (count, isliked, text) {
-                          //       final color =
-                          //           isliked ? Colors.green : Colors.grey;
-                          //     }),
-                        ]),
-                      ),
+                      // Positioned(
+                      //   top: size.height * 0.07,
+                      //   right: size.width * 0.02,
+                      //   child: Column(children: [
+                      //     LikeButton(
+                      //         size: 20,
+                      //         isLiked: active,
+                      //         likeBuilder: (isliked) {
+                      //           final color =
+                      //               isliked ? Colors.red : Colors.grey;
+                      //           return Icon(Icons.favorite,
+                      //               color: color, size: 20);
+                      //         },
+                      //         countBuilder: (count, isliked, text) {
+                      //           final color =
+                      //               isliked ? Colors.red : Colors.grey;
+                      //         }),
+                      //     const SizedBox(
+                      //       height: 10,
+                      //     ),
+                      //     // LikeButton(
+                      //     //     size: 20,
+                      //     //     isLiked: active,
+                      //     //     likeBuilder: (isliked) {
+                      //     //       final color =
+                      //     //           isliked ? Colors.green : Colors.grey;
+                      //     //       return Icon(Icons.flag, color: color, size: 20);
+                      //     //     },
+                      //     //     countBuilder: (count, isliked, text) {
+                      //     //       final color =
+                      //     //           isliked ? Colors.green : Colors.grey;
+                      //     //     }),
+                      //   ]),
+                      // ),
                       Positioned(
                         bottom: 0,
                         right: size.width * 0.02,
@@ -206,6 +216,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Button(
+                                onpressed: () {},
                                 title: widget.model!.data[widget.indexs!].events
                                     .user.name,
                                 radiusofbutton: BorderRadius.circular(20),
@@ -229,103 +240,103 @@ class _EventdetailingState extends State<Eventdetailing> {
                     ]),
                   ),
                   Container(
-                    height: size.height * 0.12,
                     width: double.infinity,
                     decoration: const BoxDecoration(),
-                    child: Stack(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Positioned(
-                          top: size.height * 0.008,
-                          right: size.width * 0.05,
-                          child: Row(
-                            children: [
-                              const Icon(
-                                FontAwesomeIcons.calendar,
-                                size: 15,
-                                color: Colors.black54,
-                              ),
-                              const SizedBox(
-                                width: 2,
-                              ),
-                              Text(
-                                widget.model!.data[widget.indexs!].events
-                                    .eventDate,
-                                style: const TextStyle(color: Colors.black87),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              const Icon(
-                                FontAwesomeIcons.mapMarkerAlt,
-                                size: 15,
-                                color: Colors.black54,
-                              ),
-                              Text(
-                                  widget.model!.data[widget.indexs!].km +
-                                      " " +
-                                      "away",
-                                  style:
-                                      const TextStyle(color: Colors.black87)),
-                            ],
-                          ),
+                        const SizedBox(
+                          height: 10,
                         ),
-                        Positioned(
-                            top: size.height * 0.04,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 20.0),
-                              child: Text(
-                                description,
-                                style: const TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400),
-                              ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            const Icon(
+                              FontAwesomeIcons.calendar,
+                              size: 15,
+                              color: Colors.black54,
+                            ),
+                            const SizedBox(
+                              width: 2,
+                            ),
+                            Text(
+                              widget
+                                  .model!.data[widget.indexs!].events.eventDate,
+                              style: const TextStyle(color: Colors.black87),
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            const Icon(
+                              FontAwesomeIcons.mapMarkerAlt,
+                              size: 15,
+                              color: Colors.black54,
+                            ),
+                            Text(
+                                widget.model!.data[widget.indexs!].km +
+                                    " " +
+                                    "away",
+                                style: const TextStyle(color: Colors.black87)),
+                          ],
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.only(
+                                left: 20.0, top: 10, right: 20),
+                            child: AutoSizeText(
+                              description,
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400),
+                              maxFontSize: 17,
+                              minFontSize: 15,
                             )),
                         const SizedBox(
                           height: 10,
                         ),
-                        Positioned(
-                          bottom: 0,
-                          right: size.width * 0.01,
-                          left: size.width * 0.01,
-                          child: IntrinsicHeight(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                extras(
-                                  FontAwesomeIcons.thumbsUp,
-                                  widget.model!.data[widget.indexs!].isLiked
-                                      .toString(),
-                                  size,
-                                  () {},
-                                ),
-                                divider(),
-                                extras(
-                                  Icons.comment,
-                                  widget.model!.data[widget.indexs!].events
-                                      .comment.length
-                                      .toString(),
-                                  size,
-                                  () {},
-                                ),
-                                // divider(),
-                                // extras(MdiIcons.share, posts[1]['share'],
-                                //     size),
-                                divider(),
-                                extras(
-                                  Icons.live_tv,
-                                  widget.model!.data[widget.indexs!].events
-                                      .liveFeed.length
-                                      .toString(),
-                                  size,
-                                  () {
-                                    setState(() {
-                                      swapping = livefeed.livesnaps;
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
+                        IntrinsicHeight(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              extras(
+                                FontAwesomeIcons.thumbsUp,
+                                widget.model!.data[widget.indexs!].isLiked
+                                    .toString(),
+                                size,
+                                () {},
+                              ),
+                              divider(),
+                              extras(
+                                Icons.comment,
+                                widget.model!.data[widget.indexs!].events
+                                    .comment.length
+                                    .toString(),
+                                size,
+                                () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => Commentofuser(
+                                            eventsModel: widget.model!,
+                                            index: widget.indexs!,
+                                          )));
+                                },
+                              ),
+                              // divider(),
+                              // extras(MdiIcons.share, posts[1]['share'],
+                              //     size),
+                              divider(),
+                              extras(
+                                Icons.live_tv,
+                                widget.model!.data[widget.indexs!].events
+                                    .liveFeed.length
+                                    .toString(),
+                                size,
+                                () {
+                                  setState(() {
+                                    swapping = livefeed.livesnaps;
+                                  });
+                                },
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -460,17 +471,30 @@ class _EventdetailingState extends State<Eventdetailing> {
           const SizedBox(
             height: 20,
           ),
-          // const Elevatedbutton(
-          //   text: "Create",
-          //   width: double.infinity,
-          //   coloring: Color(0xFF304747),
-          //   textColor: Color(0XFFFFFFFF),
-          // ),
+          widget.model!.data[widget.indexs!].events.userId == widget.id
+              ? Elevatedbutton(
+                  text: "Delete",
+                  width: double.infinity,
+                  coloring: Colors.redAccent,
+                  textColor: const Color(0XFFFFFFFF),
+                  onpressed: () {
+                    //deleteevent();
+                  },
+                )
+              : const SizedBox(),
         ],
       ),
     );
   }
-
+// deleteevent()async{
+//   _sharedPreferences = await SharedPreferences.getInstance();
+//     _token = _sharedPreferences.getString('accessToken')!;
+//     _dio.options.headers["Authorization"] = "Bearer ${_token}";
+//    FormData formData = FormData.fromMap({
+//       "email": _email.text,
+//       "password": _password.text,
+//     });
+// }
   Widget livesnaps(Size size) {
     return Container(
       decoration: BoxDecoration(
@@ -702,7 +726,7 @@ class _VideoPlayerScreemState extends State<VideoPlayerScreem> {
                 width: double.infinity,
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                 child: Stack(
+                child: Stack(
                   alignment: Alignment.bottomCenter,
                   children: <Widget>[
                     VideoPlayer(_controller),

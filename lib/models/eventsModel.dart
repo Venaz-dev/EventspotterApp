@@ -622,7 +622,7 @@ class Events {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     isDrafted = json['is_drafted'];
-    ticketLink = null;
+    ticketLink = json['ticket_link']??"";
     eventPictures = List.from(json['event_pictures']).map((e)=>EventPictures.fromJson(e)).toList();
     user = User.fromJson(json['user']);
     comment = List.from(json['comment']).map((e)=>Comment.fromJson(e)).toList();

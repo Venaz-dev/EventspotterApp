@@ -30,13 +30,17 @@ class _CreateeventState extends State<Createevent> {
   late EventTypeModel _eventTypeModel;
   String getEventTypesUrl = "https://theeventspotter.com/api/getEventTypes";
   String createEventUrl = "https://theeventspotter.com/api/createEvent";
+  String drafteventUrl = "https://theeventspotter.com/api/draftEvent";
+
   late Response response;
   String? value;
   late String latt;
   late String longg;
+  bool check = false;
   late List<String> conditions = [];
   File? imagePath;
   bool _isloading = false;
+  bool _isloading1 = false;
   String venuee = "Not Selected";
   DateTime now = DateTime.now();
   DateFormat formatter = DateFormat('yyyy-MM-dd');
@@ -79,140 +83,110 @@ class _CreateeventState extends State<Createevent> {
     String newValue;
 
     Size size = MediaQuery.of(context).size;
-    return _isloading
-        ? const Center(child: CircularProgressIndicator())
-        : GestureDetector(
-            onTap: () {
-              FocusScopeNode currentfocus = FocusScope.of(context);
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentfocus = FocusScope.of(context);
 
-              if (!currentfocus.hasPrimaryFocus) {
-                currentfocus.unfocus();
-              }
+        if (!currentfocus.hasPrimaryFocus) {
+          currentfocus.unfocus();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: const Text(
+            "Create a new event",
+            style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.black87,
+                fontSize: 20),
+          ),
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: Colors.white,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.info_outline_rounded),
+              onPressed: () {},
+              color: Colors.black38,
+            )
+          ],
+          leading: Smallbutton(
+            height: size.height * 0.06,
+            icon: FontAwesomeIcons.arrowLeft,
+            onpressed: () {
+              Navigator.of(context).pop();
             },
-            child: Scaffold(
-              backgroundColor: Colors.white,
-              appBar: AppBar(
-                title: const Text(
-                  "Create a new event",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black87,
-                      fontSize: 20),
-                ),
-                centerTitle: true,
-                elevation: 0,
-                backgroundColor: Colors.white,
-                actions: [
-                  IconButton(
-                    icon: const Icon(Icons.info_outline_rounded),
-                    onPressed: () {},
-                    color: Colors.black38,
-                  )
-                ],
-                leading: Smallbutton(
-                  height: size.height * 0.06,
-                  icon: FontAwesomeIcons.arrowLeft,
-                  onpressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ),
-              body: Padding(
-                padding: const EdgeInsets.only(
-                    right: 40.0, left: 40, top: 20, bottom: 20),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      imagePath == null
-                          ? Container(
-                              height: size.height * 0.35,
-                              width: size.width * double.infinity,
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                    top: BorderSide(color: Colors.black54),
-                                    left: BorderSide(color: Colors.black54),
-                                    right: BorderSide(color: Colors.black54),
-                                    bottom: BorderSide(color: Colors.black54)),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 20.0, left: 20),
-                                child: Column(children: [
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  SizedBox(
-                                      height: size.height * 0.2,
-                                      child: Image.asset(
-                                          'Assets/images/upload.jpeg')),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  const AutoSizeText(
-                                    "Upload a catchy event picture or a video",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w400),
-                                    maxLines: 1,
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Elevatedbutton(
-                                      primary: const Color(0xFF304747),
-                                      text: "Upload Picture/Video",
-                                      width: double.infinity,
-                                      coloring: const Color(0xFF304747),
-                                      onpressed: () {
-                                        _selectPhoto(); // Navigator.of(context).push(MaterialPageRoute(
-                                        //     builder: (context) => const Uploadimage()));
-                                      }),
-                                ]),
-                              ),
-                            )
-                          : (imagePath!.path.toString().contains('.mp4') ||
-                                  imagePath!.path.toString().contains('.mov'))
-                              ? SizedBox(
-                                  height: size.height * 0.3,
-                                  width: double.infinity,
-                                  child: Column(
-                                    children: [
-                                      VideoPlayerScree1(url: imagePath!),
-                                      Flexible(
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 10.0),
-                                          child: Elevatedbutton(
-                                              primary: const Color(0xFF304747),
-                                              text: "Upload Picture/Video",
-                                              width: double.infinity,
-                                              coloring: const Color(0xFF304747),
-                                              onpressed: () {
-                                                _selectPhoto(); // Navigator.of(context).push(MaterialPageRoute(
-                                                //     builder: (context) => const Uploadimage()));
-                                              }),
-                                        ),
-                                      )
-                                    ],
-                                  ))
-                              : Column(
-                                  children: [
-                                    SizedBox(
-                                      //color: Colors.red,
-                                      //height: size.height * 0.3,
-                                      width: size.width * double.infinity,
-                                      child: Image.file(
-                                        imagePath!,
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Elevatedbutton(
+          ),
+        ),
+        body: Padding(
+          padding:
+              const EdgeInsets.only(right: 40.0, left: 40, top: 20, bottom: 20),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                imagePath == null
+                    ? Container(
+                        height: size.height * 0.35,
+                        width: size.width * double.infinity,
+                        decoration: const BoxDecoration(
+                          border: Border(
+                              top: BorderSide(color: Colors.black54),
+                              left: BorderSide(color: Colors.black54),
+                              right: BorderSide(color: Colors.black54),
+                              bottom: BorderSide(color: Colors.black54)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 20.0, left: 20),
+                          child: Column(children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            SizedBox(
+                                height: size.height * 0.2,
+                                child:
+                                    Image.asset('Assets/images/upload.jpeg')),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const AutoSizeText(
+                              "Upload a catchy event picture or a video",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400),
+                              maxLines: 1,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Elevatedbutton(
+                                primary: const Color(0xFF304747),
+                                text: "Upload Picture/Video",
+                                width: double.infinity,
+                                coloring: const Color(0xFF304747),
+                                onpressed: () {
+                                  _selectPhoto(); // Navigator.of(context).push(MaterialPageRoute(
+                                  //     builder: (context) => const Uploadimage()));
+                                }),
+                          ]),
+                        ),
+                      )
+                    : (imagePath!.path.toString().contains('.mp4') ||
+                            imagePath!.path.toString().contains('.mov'))
+                        ? SizedBox(
+                            height: size.height * 0.3,
+                            width: double.infinity,
+                            child: Column(
+                              children: [
+                                VideoPlayerScree1(url: imagePath!),
+                                Flexible(
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 10.0),
+                                    child: Elevatedbutton(
                                         primary: const Color(0xFF304747),
                                         text: "Upload Picture/Video",
                                         width: double.infinity,
@@ -221,300 +195,396 @@ class _CreateeventState extends State<Createevent> {
                                           _selectPhoto(); // Navigator.of(context).push(MaterialPageRoute(
                                           //     builder: (context) => const Uploadimage()));
                                         }),
-                                  ],
-                                ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Textform(
-                        controller: eventname,
-                        label: "Event name",
-                        color: const Color(0XFFEBF2F2),
-                        isSecure: false,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Textform(
-                        controller: eventDescription,
-                        maxlines: 4,
-                        label: "Event Description",
-                        isSecure: false,
-                        color: const Color(0XFFEBF2F2),
-                        width: 30,
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Center(
-                        child: Container(
-                          //  margin:  EdgeInsets.all(10),
-                          height: MediaQuery.of(context).size.height * 0.06,
-                          //width: size.width*0.5,
-                          decoration: BoxDecoration(
-                            color: const Color(0XFFECF2F2),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(right: 10.0, left: 10),
-                              child: DropdownButton<String>(
-                                  isExpanded: true,
-                                  value: value,
-                                  items: eventtypes.map(buildMenuItem).toList(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      this.value = value;
-                                    });
-                                  }),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const Text("Event date"),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.06,
-                        width: MediaQuery.of(context).size.width,
-                        child: ElevatedButton(
-                          child: Row(
+                                  ),
+                                )
+                              ],
+                            ))
+                        : Column(
                             children: [
-                              const Icon(FontAwesomeIcons.calendar),
+                              SizedBox(
+                                //color: Colors.red,
+                                //height: size.height * 0.3,
+                                width: size.width * double.infinity,
+                                child: Image.file(
+                                  imagePath!,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
                               const SizedBox(
-                                width: 20,
+                                height: 10,
                               ),
-                              Text(
-                                formatted,
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 18),
-                                textAlign: TextAlign.center,
-                              ),
+                              Elevatedbutton(
+                                  primary: const Color(0xFF304747),
+                                  text: "Upload Picture/Video",
+                                  width: double.infinity,
+                                  coloring: const Color(0xFF304747),
+                                  onpressed: () {
+                                    _selectPhoto(); // Navigator.of(context).push(MaterialPageRoute(
+                                    //     builder: (context) => const Uploadimage()));
+                                  }),
                             ],
                           ),
-                          style: ElevatedButton.styleFrom(
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                            primary: const Color(0XFF368890),
-                          ),
-                          onPressed: () {
-                            DatePicker.showDatePicker(
-                              context,
-                              showTitleActions: true,
-                              minTime: DateTime(2021, 1, 1),
-                              maxTime: DateTime(2025, 6, 7),
-                              onConfirm: (date) {
-                                print('confirm $date');
-                                newValue = newValues.format(date);
-                                formatted = newValue;
-                                setState(() {});
-                              },
-                            );
-                          },
+                const SizedBox(
+                  height: 20,
+                ),
+                Textform(
+                  isreadonly: false,
+                  controller: eventname,
+                  label: "Event name",
+                  color: const Color(0XFFEBF2F2),
+                  isSecure: false,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Textform(
+                  
+                  controller: eventDescription,
+                  maxlines: 4,
+                  label: "Event Description",
+                  isSecure: false,
+                  isreadonly: false,
+                  color: const Color(0XFFEBF2F2),
+                  width: 30,
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Center(
+                  child: Container(
+                    //  margin:  EdgeInsets.all(10),
+                    height: MediaQuery.of(context).size.height * 0.06,
+                    //width: size.width*0.5,
+                    decoration: BoxDecoration(
+                      color: const Color(0XFFECF2F2),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 10.0, left: 10),
+                        child: DropdownButton<String>(
+                            isExpanded: true,
+                            value: value,
+                            items: eventtypes.map(buildMenuItem).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                this.value = value;
+                              });
+                            }),
+                      ),
+                    ),
+                  ),
+                ),
+                const Text("Event date"),
+                const SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.06,
+                  width: MediaQuery.of(context).size.width,
+                  child: ElevatedButton(
+                    child: Row(
+                      children: [
+                        const Icon(FontAwesomeIcons.calendar),
+                        const SizedBox(
+                          width: 20,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          showPlacePicker();
+                        Text(
+                          formatted,
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 18),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      primary: const Color(0XFF368890),
+                    ),
+                    onPressed: () {
+                      DatePicker.showDatePicker(
+                        context,
+                        showTitleActions: true,
+                        minTime: DateTime(2021, 1, 1),
+                        maxTime: DateTime(2025, 6, 7),
+                        onConfirm: (date) {
+                          print('confirm $date');
+                          newValue = newValues.format(date);
+                          formatted = newValue;
+                          setState(() {});
                         },
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    showPlacePicker();
+                  },
+                  child: Textform(
+                    input: false,
+                    isSecure: false,
+                    //isreadonly: false,
+                    controller: venue,
+                    suffix: FontAwesomeIcons.crosshairs,
+                    icon: FontAwesomeIcons.mapMarkerAlt,
+                    label: venuee,
+                    color: const Color(0XFFEBF2F2),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Textform(
+                  controller: link,
+                  icon: FontAwesomeIcons.link,
+                  isreadonly: false,
+                  label: "Ticket link",
+                  color: const Color(0XFFEBF2F2),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Text("Event Conditions"),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: size.height * 0.055,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    //color: const Color(0XFFEBF2F2),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        height: 100,
+                        width: size.width * 0.6,
                         child: Textform(
-                          input: false,
                           isSecure: false,
-                          controller: venue,
-                          suffix: FontAwesomeIcons.crosshairs,
-                          icon: FontAwesomeIcons.mapMarkerAlt,
-                          label: venuee,
+                          isreadonly: false,
+                          controller: conditionss,
+                          // icon: FontAwesomeIcons.,
+                          label: "Add Conditions",
                           color: const Color(0XFFEBF2F2),
                         ),
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Textform(
-                        controller: link,
-                        icon: FontAwesomeIcons.link,
-                        label: "Ticket link",
-                        color: const Color(0XFFEBF2F2),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Text("Event Conditions"),
-                      const SizedBox(
-                        height: 10,
-                      ),
                       Container(
-                        height: size.height * 0.055,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          //color: const Color(0XFFEBF2F2),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              height: 100,
-                              width: size.width * 0.6,
-                              child: Textform(
-                                isSecure: false,
-                                controller: conditionss,
-                                // icon: FontAwesomeIcons.,
-                                label: "Add Conditions",
-                                color: const Color(0XFFEBF2F2),
-                              ),
-                            ),
-                            Container(
-                                height: 50,
-                                width: 50,
-                                decoration: const BoxDecoration(
-                                    color: Color(0XFF368890),
-                                    shape: BoxShape.circle),
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: IconButton(
-                                      onPressed: () {
-                                        if (conditionss.text == "") {
-                                          setState(() {
-                                            showToaster("Add Conditions");
-                                          });
-                                        } else {
-                                          addConditionsList();
-                                          conditionss.clear();
-                                          setState(() {});
-                                        }
-                                      },
-                                      icon: const Icon(
-                                        Icons.add,
-                                        color: Colors.white,
-                                      )),
+                          height: 50,
+                          width: 50,
+                          decoration: const BoxDecoration(
+                              color: Color(0XFF368890), shape: BoxShape.circle),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: IconButton(
+                                onPressed: () {
+                                  if (conditionss.text == "") {
+                                    setState(() {
+                                      showToaster("Add Conditions");
+                                    });
+                                  } else {
+                                    addConditionsList();
+                                    conditionss.clear();
+                                    setState(() {});
+                                  }
+                                },
+                                icon: const Icon(
+                                  Icons.add,
+                                  color: Colors.white,
                                 )),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      conditions.length == 0
-                          ? Center(child: Text("No Conditions"))
-                          : Wrap(
+                          )),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                conditions.length == 0
+                    ? Center(child: Text("No Conditions"))
+                    : Wrap(
 
-                              ////////////////////////////////////////////////////////////////////
-                              ///
-                              ///
-                              children:
-                                  List.generate(conditions.length, (index) {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.only(right: 6.0, top: 10),
-                                child: Elevatedbuttons(
-                                  sidecolor: Colors.white,
-                                  width: size.width * 0.4,
-                                  coloring: const Color(0XFF368890),
-                                  text: conditions[index].toString(),
-                                  textColor: const Color(0XFFFFFFFF),
-                                ),
-                              );
-                            })),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: const [
-                          Icon(Icons.visibility),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          AutoSizeText("Event Privacy"),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        children: [
-                          Elevatedbuttons(
+                        ////////////////////////////////////////////////////////////////////
+                        ///
+                        ///
+                        children: List.generate(conditions.length, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 6.0, top: 10),
+                          child: Elevatedbuttons(
                             sidecolor: Colors.white,
-                            textColor: const Color(0XFFFFFFFF),
-                            text: "Public",
+                            width: size.width * 0.4,
                             coloring: const Color(0XFF368890),
-                            width: size.width * double.infinity,
-                            primary: const Color(0XFF368890),
-                            onpressed: () {
-                              setState(() {});
-                            },
+                            text: conditions[index].toString(),
+                            textColor: const Color(0XFFFFFFFF),
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Elevatedbuttons(
-                            onpressed: () {
-                              public = 0;
-                              setState(() {});
-                            },
-                            sidecolor: Colors.black,
-                            coloring: const Color(0XFFFFFFFF),
-                            width: size.width * double.infinity,
-                            text: "Private",
-                            textColor: Colors.black,
-                            primary: const Color(0XFFFFFFFF),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const AutoSizeText(
-                        "This Event is public. Everyone on \n Event Spotter will be able to see this event \n details",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w300,
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Elevatedbutton(
+                        );
+                      })),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: const [
+                    Icon(Icons.visibility),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    AutoSizeText("Event Privacy"),
+                  ],
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  children: [
+                    Elevatedbuttons(
+                      sidecolor: Colors.white,
+                      textColor: const Color(0XFFFFFFFF),
+                      text: "Public",
+                      coloring: const Color(0XFF368890),
+                      width: size.width * double.infinity,
+                      primary: const Color(0XFF368890),
+                      onpressed: () {
+                        setState(() {});
+                      },
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Elevatedbuttons(
+                      onpressed: () {
+                        public = 0;
+                        setState(() {});
+                      },
+                      sidecolor: Colors.black,
+                      coloring: const Color(0XFFFFFFFF),
+                      width: size.width * double.infinity,
+                      text: "Private",
+                      textColor: Colors.black,
+                      primary: const Color(0XFFFFFFFF),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const AutoSizeText(
+                  "This Event is public. Everyone on \n Event Spotter will be able to see this event \n details",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w300,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                _isloading
+                    ? const Center(child: CircularProgressIndicator())
+                    : Elevatedbutton(
                         text: "Create",
                         width: double.infinity,
                         coloring: Color(0xFF304747),
                         textColor: Color(0XFFFFFFFF),
                         primary: Color(0xFF304747),
-                        onpressed: () {
-                          setState(() {
-                            _isloading = !_isloading;
-                          });
+                        onpressed: () async {
+                          if (eventname.text.isEmpty ||
+                              eventDescription.text.isEmpty ||
+                              venuee.contains("Not Selected") ||
+                              imagePath == null ||
+                              conditions.isEmpty) {
+                            showToaster("Please fill all the above fields");
+                          } else {
+                            setState(() {
+                              _isloading = !_isloading;
+                            });
 
-                          postCreatEvent();
-                          // venue.clear();
-                          // link.clear();
-                          // eventDescription.clear();
-                          // eventname.clear();
-                        },
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Elevatedbutton(
-                        onpressed: () {},
-                        textColor: const Color(0XFF74ABB0),
-                        coloring: Colors.white,
-                        text: "Save as draft",
-                        width: double.infinity,
-                        primary: Colors.white,
-                      ),
-                    ],
-                  ),
+                            await postCreatEvent();
+                          }
+                        }),
+                const SizedBox(
+                  height: 10,
                 ),
-              ),
+               _isloading1
+                    ? const Center(child: CircularProgressIndicator())
+                    : Elevatedbutton(
+                  onpressed: () async {
+                    if (eventname.text.isEmpty ||
+                        eventDescription.text.isEmpty ||
+                        venuee.contains("Not Selected") ||
+                        imagePath == null ||
+                        conditions.isEmpty) {
+                      showToaster("Please fill all the above fields");
+                    } else {
+                      setState(() {
+                        _isloading1 = !_isloading1;
+                      });
+
+                      await DraftEvent();
+                    }
+                  },
+                  textColor: const Color(0XFF74ABB0),
+                  coloring: Colors.white,
+                  text: "Save as draft",
+                  width: double.infinity,
+                  primary: Colors.white,
+                ),
+              ],
             ),
-          );
+          ),
+        ),
+      ),
+    );
+  }
+
+  DraftEvent() async {
+    String fileName = imagePath!.path.split('/').last;
+    print("events near you $formatted");
+    print('condtions length ${conditions.length}');
+// return;
+    var file =
+        await MultipartFile.fromFile(imagePath!.path, filename: fileName);
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _token = _sharedPreferences.getString('accessToken')!;
+    _dio.options.headers["Authorization"] = "Bearer ${_token}";
+    FormData formData = FormData.fromMap({
+      "event_name": eventname.text,
+      "event_description": eventDescription.text,
+      "event_type": value,
+      "event_date": formatted,
+      "location": venuee,
+      "is_public": public,
+      "lat": latt,
+      "lng": longg,
+      "ticket_link": link.text,
+      "conditions": conditions,
+      'image': file,
+    });
+
+    response = await _dio.post(drafteventUrl, data: formData);
+
+    try {
+      if (response.statusCode == 200) {
+        print(response.data);
+        print("Data Send");
+        showToaster("Saved in Draft");
+        venue.clear();
+        link.clear();
+        eventDescription.clear();
+        eventname.clear();
+        Navigator.pop(context);
+      } else {
+        showToaster("Error");
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      _isloading1 = false;
+      setState(() {});
+    }
   }
 
   addConditionsList() {
@@ -552,6 +622,7 @@ class _CreateeventState extends State<Createevent> {
     latt = result!.latLng!.latitude.toString();
     longg = result.latLng!.longitude.toString();
     venuee = result.formattedAddress!;
+    check = true;
     setState(() {});
   }
 
@@ -639,14 +710,19 @@ class _CreateeventState extends State<Createevent> {
     });
 
     response = await _dio.post(createEventUrl, data: formData);
-    print('lj');
+
     try {
-      if (response.data["success"] == true) {
+      if (response.statusCode == 200) {
         print(response.data);
         print("Data Send");
         showToaster("Event Created");
+        venue.clear();
+        link.clear();
+        eventDescription.clear();
+        eventname.clear();
+        Navigator.pop(context);
       } else {
-        print("event not created");
+        showToaster("Error");
       }
     } catch (e) {
       print(e.toString());

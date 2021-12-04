@@ -7,17 +7,17 @@ class GetUserUpcomingEvents {
   late final bool success;
   late final List<Data> data;
   late final String message;
-  
-  GetUserUpcomingEvents.fromJson(Map<String, dynamic> json){
+
+  GetUserUpcomingEvents.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    data = List.from(json['data']).map((e)=>Data.fromJson(e)).toList();
+    data = List.from(json['data']).map((e) => Data.fromJson(e)).toList();
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['success'] = success;
-    _data['data'] = data.map((e)=>e.toJson()).toList();
+    _data['data'] = data.map((e) => e.toJson()).toList();
     _data['message'] = message;
     return _data;
   }
@@ -30,8 +30,8 @@ class Data {
   });
   late final Events events;
   late final String km;
-  
-  Data.fromJson(Map<String, dynamic> json){
+
+  Data.fromJson(Map<String, dynamic> json) {
     events = Events.fromJson(json['events']);
     km = json['km'];
   }
@@ -60,7 +60,7 @@ class Events {
     required this.createdAt,
     required this.updatedAt,
     required this.isDrafted,
-     this.ticketLink,
+    required this.ticketLink,
     required this.eventPictures,
   });
   late final int id;
@@ -77,10 +77,10 @@ class Events {
   late final String createdAt;
   late final String updatedAt;
   late final String isDrafted;
-  late final Null ticketLink;
+  late final String ticketLink;
   late final List<EventPictures> eventPictures;
-  
-  Events.fromJson(Map<String, dynamic> json){
+
+  Events.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     eventName = json['event_name'];
     eventDescription = json['event_description'];
@@ -95,8 +95,10 @@ class Events {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     isDrafted = json['is_drafted'];
-    ticketLink = json['ticket_link'];
-    eventPictures = List.from(json['event_pictures']).map((e)=>EventPictures.fromJson(e)).toList();
+    ticketLink = json['ticket_link'] ?? "";
+    eventPictures = List.from(json['event_pictures'])
+        .map((e) => EventPictures.fromJson(e))
+        .toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -116,7 +118,7 @@ class Events {
     _data['updated_at'] = updatedAt;
     _data['is_drafted'] = isDrafted;
     _data['ticket_link'] = ticketLink;
-    _data['event_pictures'] = eventPictures.map((e)=>e.toJson()).toList();
+    _data['event_pictures'] = eventPictures.map((e) => e.toJson()).toList();
     return _data;
   }
 }
@@ -134,8 +136,8 @@ class EventPictures {
   late final String imagePath;
   late final String createdAt;
   late final String updatedAt;
-  
-  EventPictures.fromJson(Map<String, dynamic> json){
+
+  EventPictures.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     eventId = json['event_id'];
     imagePath = json['image_path'];

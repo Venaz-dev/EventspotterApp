@@ -30,6 +30,8 @@ class _ExploreState extends State<Explore> {
   String urlEvent = "https://theeventspotter.com/api/getEvents";
   late List eventsLiveFeed = [];
   late List<int> favourite = [];
+  late List<int> like = [];
+  late List<int> totalCount = [];
 
   String? _token;
   late Response response;
@@ -71,8 +73,7 @@ class _ExploreState extends State<Explore> {
     Size size = MediaQuery.of(context).size;
     return RefreshIndicator(
       onRefresh: () {
-      return   getEvetns();
-       
+        return getEvetns();
       },
       child: SafeArea(
           child: Scaffold(
@@ -201,6 +202,8 @@ class _ExploreState extends State<Explore> {
                 eventsModel: eventsModel,
                 favourite: favourite,
                 eventsLiveFeed: eventsLiveFeed,
+                like: like,
+                totalCount:totalCount,
                 id: id,
               ),
       ],
@@ -476,6 +479,7 @@ class _ExploreState extends State<Explore> {
       print(e.toString() + "Catch");
     } finally {
       listFav();
+
       _isLoading = false;
       setState(() {});
     }
@@ -485,9 +489,15 @@ class _ExploreState extends State<Explore> {
     if (eventsModel.data.length > 0) {
       for (int i = 0; i < eventsModel.data.length; i++) {
         var value = eventsModel.data[i].isFavroute;
+        var value1 = eventsModel.data[i].isLiked;
+        var value2 = eventsModel.data[i].totalLikes;
+        like.add(value1);
+        totalCount.add(value2);
         favourite.add(value);
       }
     } else {
+      favourite.add(0);
+      totalCount.add(0);
       favourite.add(0);
     }
   }

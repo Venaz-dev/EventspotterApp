@@ -102,6 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Textform(
                       label: 'Email',
+                      isreadonly: false,
                       isSecure: false,
                       keyboard: TextInputType.emailAddress,
                       controller: _email,
@@ -122,6 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: 15,
                           ),
                     Textform(
+                      isreadonly: false,
                       isSecure: _issecure,
                       label: 'Password',
                       controller: _password,

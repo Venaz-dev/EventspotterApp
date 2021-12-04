@@ -25,27 +25,6 @@ class GetUserDraftEvents {
 
 class Data {
   Data({
-    required this.events,
-    required this.km,
-  });
-  late final Events events;
-  late final String km;
-  
-  Data.fromJson(Map<String, dynamic> json){
-    events = Events.fromJson(json['events']);
-    km = json['km'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['events'] = events.toJson();
-    _data['km'] = km;
-    return _data;
-  }
-}
-
-class Events {
-  Events({
     required this.id,
     required this.eventName,
     required this.eventDescription,
@@ -77,10 +56,10 @@ class Events {
   late final String createdAt;
   late final String updatedAt;
   late final String isDrafted;
-  late final Null ticketLink;
+  late final String? ticketLink;
   late final List<EventPictures> eventPictures;
   
-  Events.fromJson(Map<String, dynamic> json){
+  Data.fromJson(Map<String, dynamic> json){
     id = json['id'];
     eventName = json['event_name'];
     eventDescription = json['event_description'];
@@ -95,7 +74,7 @@ class Events {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     isDrafted = json['is_drafted'];
-    ticketLink = json['ticket_link'];
+    ticketLink = json['ticket_link']??"";
     eventPictures = List.from(json['event_pictures']).map((e)=>EventPictures.fromJson(e)).toList();
   }
 

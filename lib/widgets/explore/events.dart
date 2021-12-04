@@ -12,17 +12,23 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class Eventss extends StatefulWidget {
   List<int> favourite = [];
   List eventsLiveFeed = [];
+  List like = [];
+  List totalCount = [];
   late String id;
+
   EventsModel eventsModel;
   Eventss(
       {Key? key,
       required this.favourite,
       required this.eventsLiveFeed,
       required this.eventsModel,
+      required this.like,
+      required this.totalCount,
       required this.id})
       : super(key: key);
 
@@ -44,7 +50,7 @@ class _EventssState extends State<Eventss> {
   String isFollow = "follow";
 //late String id;
   late int bb;
-  late int totalcount;
+  //late int totalcount;
   late EventTypeModel _eventTypeModel;
   // String urlEvent = "https://theeventspotter.com/api/getEvents";
   String Favourite = "https://theeventspotter.com/api/favrouite";
@@ -94,10 +100,10 @@ class _EventssState extends State<Eventss> {
                         builder: (context) => Eventdetailing(
                               model: widget.eventsModel,
                               indexs: index,
+                              id: widget.id,
                             )));
                   },
                   child: Container(
-                    height: size.height * 0.38,
                     width: size.width * double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -250,112 +256,104 @@ class _EventssState extends State<Eventss> {
                         ]),
                       ),
                       Container(
-                        height: size.height * 0.12,
                         width: double.infinity,
                         decoration: const BoxDecoration(),
-                        child: Stack(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Positioned(
-                              top: size.height * 0.008,
-                              right: size.width * 0.020,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  const Icon(
-                                    FontAwesomeIcons.calendar,
-                                    size: 15,
-                                    color: Colors.black54,
-                                  ),
-                                  Text(
-                                    widget.eventsModel.data[index].events
-                                        .eventDate
-                                        .toString(),
-                                    style:
-                                        const TextStyle(color: Colors.black87),
-                                  ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  const Icon(
-                                    FontAwesomeIcons.mapMarkerAlt,
-                                    size: 15,
-                                    color: Colors.black54,
-                                  ),
-                                  Text(
-                                      widget.eventsModel.data[index].km
-                                              .toString() +
-                                          " " +
-                                          "away",
-                                      style: const TextStyle(
-                                          color: Colors.black87)),
-                                ],
-                              ),
-                            ),
-                            Positioned(
-                                top: size.height * 0.04,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 20.0),
-                                  child: Text(
-                                    widget.eventsModel.data[index].events
-                                        .eventName,
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                )),
                             const SizedBox(
                               height: 10,
                             ),
-                            Positioned(
-                              bottom: 0,
-                              right: size.width * 0.01,
-                              left: size.width * 0.01,
-                              child: IntrinsicHeight(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    // extras(
-                                    //     FontAwesomeIcons.thumbsUp,
-                                    //     _eventsModel.data[index].isLiked
-                                    //         .toString(),
-                                    //     size, () {
-                                    //   postThumbs(_eventsModel
-                                    //       .data[index].events.id);
-                                    // }),
-                                    likefunction(
-                                        index, FontAwesomeIcons.thumbsUp),
-                                    divider(),
-                                    extras(
-                                        Icons.comment,
-                                        widget.eventsModel.data[index].events
-                                            .comment.length
-                                            .toString(),
-                                        size, () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  Commentofuser(
-                                                    eventsModel:
-                                                        widget.eventsModel,
-                                                    index: index,
-                                                  )));
-                                    }),
-                                    divider(),
-
-                                    // extras(MdiIcons.share,
-                                    //     posts[1]['share'], size),
-                                    // divider(),                           //no inculded
-                                    extras(
-                                        Icons.live_tv,
-                                        widget.eventsModel.data[index].events
-                                            .liveFeed.length
-                                            .toString(),
-                                        size,
-                                        () {}),
-                                  ],
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                const Icon(
+                                  FontAwesomeIcons.calendar,
+                                  size: 15,
+                                  color: Colors.black54,
                                 ),
+                                Text(
+                                  widget
+                                      .eventsModel.data[index].events.eventDate
+                                      .toString(),
+                                  style: const TextStyle(color: Colors.black87),
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                const Icon(
+                                  FontAwesomeIcons.mapMarkerAlt,
+                                  size: 15,
+                                  color: Colors.black54,
+                                ),
+                                Text(
+                                    widget.eventsModel.data[index].km
+                                            .toString() +
+                                        " " +
+                                        "away",
+                                    style:
+                                        const TextStyle(color: Colors.black87)),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20.0, top: 10, right: 20),
+                              child: AutoSizeText(
+                                widget.eventsModel.data[index].events.eventName,
+                                style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w400),
+                                maxFontSize: 20,
+                                minFontSize: 15,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            IntrinsicHeight(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  // extras(
+                                  //     FontAwesomeIcons.thumbsUp,
+                                  //     _eventsModel.data[index].isLiked
+                                  //         .toString(),
+                                  //     size, () {
+                                  //   postThumbs(_eventsModel
+                                  //       .data[index].events.id);
+                                  // }),
+                                  likefunction(
+                                      index, FontAwesomeIcons.thumbsUp),
+                                  divider(),
+                                  extras(
+                                      Icons.comment,
+                                      widget.eventsModel.data[index].events
+                                          .comment.length
+                                          .toString(),
+                                      size, () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) => Commentofuser(
+                                                  eventsModel:
+                                                      widget.eventsModel,
+                                                  index: index,
+                                                )));
+                                  }),
+                                  divider(),
+
+                                  // extras(MdiIcons.share,
+                                  //     posts[1]['share'], size),
+                                  // divider(),                           //no inculded
+                                  extras(
+                                      Icons.live_tv,
+                                      widget.eventsModel.data[index].events
+                                          .liveFeed.length
+                                          .toString(),
+                                      size,
+                                      () {}),
+                                ],
                               ),
                             ),
                           ],
@@ -396,29 +394,25 @@ class _EventssState extends State<Eventss> {
   }
 
   likefunction(int index, IconData icon) {
-    //print(_eventsModel.data[index].totalLikes.toString());
-    String likecount = widget.eventsModel.data[index].totalLikes.toString();
-    String vv = "0";
-    bb = widget.eventsModel.data[index].isLiked;
-    totalcount = widget.eventsModel.data[index].totalLikes;
-
     return Row(
       children: [
         IconButton(
-          icon:
-              Icon(icon, size: 16, color: bb == 1 ? Colors.blue : Colors.grey),
+          icon: Icon(icon,
+              size: 16,
+              color: widget.like[index] == 1 ? Colors.blue : Colors.grey),
           onPressed: () async {
-            if (bb == 0) {
-              bb = 1;
+            if (widget.like[index] == 0) {
+              widget.like[index] = 1;
+              widget.totalCount[index]++;
             } else {
-              bb == 0;
+              widget.like[index] = 0;
+              widget.totalCount[index]--;
             }
-            totalcount =
-                await postThumbs(widget.eventsModel.data[index].events.id);
+            await postThumbs(widget.eventsModel.data[index].events.id);
             setState(() {});
           },
         ),
-        Text(totalcount.toString()),
+        Text(widget.totalCount[index].toString()),
       ],
     );
   }
@@ -555,7 +549,7 @@ class _EventssState extends State<Eventss> {
   //   }
   // }
 
-  Future<int> postThumbs(int id) async {
+  Future<void> postThumbs(int id) async {
     int count = 0;
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
@@ -565,9 +559,8 @@ class _EventssState extends State<Eventss> {
     try {
       _dio.options.headers["Authorization"] = "Bearer ${_token}";
       Response response = await _dio.post(PostlikeUrl, data: formData);
-      if (response.data['success']) {
-        count = response.data['totalLikes'];
-        print('Hasdf');
+      if (response.statusCode == 200) {
+        print('Like ');
       } else {
         print('ERROR');
       }
@@ -575,7 +568,6 @@ class _EventssState extends State<Eventss> {
       print(e.toString());
     } finally {
       setState(() {});
-      return count;
     }
   }
 }
@@ -636,13 +628,19 @@ class _VideoPlayerScreennState extends State<VideoPlayerScreenn> {
                   borderRadius: BorderRadius.circular(20),
                 ),
 
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: <Widget>[
-                    VideoPlayer(_controller),
-                    ControlsOverlay(controller: _controller),
-                    VideoProgressIndicator(_controller, allowScrubbing: true),
-                  ],
+                child: SizedBox(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: <Widget>[
+                        VideoPlayer(_controller),
+                        ControlsOverlay(controller: _controller),
+                        VideoProgressIndicator(_controller,
+                            allowScrubbing: true),
+                      ],
+                    ),
+                  ),
                 ),
                 //borderRadius: BorderRadius.circular(20),
                 //    child: VideoPlayer(_controller),
@@ -699,10 +697,10 @@ class ControlsOverlayState extends State<ControlsOverlay> {
     return Stack(
       children: <Widget>[
         AnimatedSwitcher(
-          duration: Duration(milliseconds: 50),
-          reverseDuration: Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 50),
+          reverseDuration: const Duration(milliseconds: 200),
           child: widget.controller.value.isPlaying
-              ? SizedBox.shrink()
+              ? const SizedBox.shrink()
               : Container(
                   color: Colors.black26,
                   child: const Center(
