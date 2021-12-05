@@ -75,34 +75,47 @@ class _EventdetailingState extends State<Eventdetailing> {
         }
       },
       child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: Padding(
+            padding: const EdgeInsets.only(left : 8.0 , top : 8),
+            child: Smallbutton(
+              icon: FontAwesomeIcons.arrowLeft,
+              onpressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+        ),
         body: Padding(
-          padding:
-              const EdgeInsets.only(right: 30.0, left: 30, top: 20, bottom: 30),
+          padding: const EdgeInsets.only(right: 30.0, left: 30, bottom: 30),
           child: ListView(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Smallbutton(
-                    icon: FontAwesomeIcons.arrowLeft,
-                    onpressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  ConstrainedBox(
-                    constraints:
-                        BoxConstraints.tightFor(width: size.width * 0.7),
-                    child: Textform(
-                      controller: _search,
-                      icon: Icons.search,
-                      label: "Search",
-                      color: const Color(0XFFECF2F3),
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Smallbutton(
+              //       icon: FontAwesomeIcons.arrowLeft,
+              //       onpressed: () {
+              //         Navigator.of(context).pop();
+              //       },
+              //     ),
+              //     ConstrainedBox(
+              //       constraints:
+              //           BoxConstraints.tightFor(width: size.width * 0.7),
+              //       child: Textform(
+              //         controller: _search,
+              //         icon: Icons.search,
+              //         label: "Search",
+              //         color: const Color(0XFFECF2F3),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               const SizedBox(
-                height: 30,
+                height: 10,
               ),
               Container(
                 width: size.width * double.infinity,
@@ -477,6 +490,7 @@ class _EventdetailingState extends State<Eventdetailing> {
               ? const Center(child: CircularProgressIndicator())
               : widget.model!.data[widget.indexs!].events.userId == widget.id
                   ? Elevatedbutton(
+                    primary: Colors.redAccent,
                       text: "Delete",
                       width: double.infinity,
                       coloring: Colors.redAccent,
@@ -726,8 +740,8 @@ class _EventdetailingState extends State<Eventdetailing> {
             ),
             MaterialButton(
               child: const Text("Confirm"),
-              onPressed: ()async {
-               await deleteSnap(index);
+              onPressed: () async {
+                await deleteSnap(index);
                 setState(() {});
                 Navigator.of(context).pop();
               },

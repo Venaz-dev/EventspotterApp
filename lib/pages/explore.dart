@@ -1,4 +1,9 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
+import 'package:event_spotter/models/ChatModel.dart';
 import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/pages/userprofile.dart';
@@ -8,7 +13,10 @@ import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:pusher_client/pusher_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'chatscreen.dart';
 
 enum screens { explore, filter }
 
@@ -20,6 +28,8 @@ class Explore extends StatefulWidget {
 }
 
 class _ExploreState extends State<Explore> {
+  
+
   String? latlong;
   String? Lat;
   String? _name;
@@ -39,6 +49,8 @@ class _ExploreState extends State<Explore> {
   late List search = [];
 
   String? _token;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   late Response response;
   final TextEditingController _search = TextEditingController();
   final TextEditingController _distance = TextEditingController();
@@ -65,7 +77,7 @@ class _ExploreState extends State<Explore> {
         height: MediaQuery.of(context).size.height * 0.2,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.black54,
+          color: Colors.white,
           borderRadius: BorderRadius.circular(10),
         ),
         child: SingleChildScrollView(
@@ -74,38 +86,36 @@ class _ExploreState extends State<Explore> {
               children: List.generate(search.length, (index) {
             return Padding(
               padding: const EdgeInsets.only(left: 15.0, top: 5, bottom: 10),
-              child: Container(
-                child: InkWell(
-                  onTap: (){
-                      Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) =>  Eventposterprofile(
-                    id: search[index]['id'],
-                  )));
-                  },
-                  child: Ink(
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          height: 30,
-                          width: 30,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(300),
-                            child: Image.network(
-                              MainUrl + search[index]["image"],
-                              fit: BoxFit.cover,
-                            ),
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Eventposterprofile(
+                            id: search[index]['id'],
+                          )));
+                },
+                child: Ink(
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(300),
+                          child: Image.network(
+                            MainUrl + search[index]["image"],
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Text(search[index]["name"],
-                            style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white))
-                      ],
-                    ),
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Text(search[index]["name"],
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black))
+                    ],
                   ),
                 ),
               ),
@@ -167,8 +177,9 @@ class _ExploreState extends State<Explore> {
   void initState() {
     super.initState();
     _search.addListener(searchnames);
-    // getInitializedSharedPref();
 
+    // getInitializedSharedPref();
+    // intiliaziePusher();
     getEvetns().whenComplete(() {
       setState(() {});
     });
@@ -182,6 +193,78 @@ class _ExploreState extends State<Explore> {
     super.dispose();
   }
 
+  // intiliaziePusher() {
+  //   pusher = PusherClient(
+  //     "d472b6d313e1bef33bb2",
+  //     PusherOptions(
+  //       host: 'https://theeventspotter.com',
+  //       encrypted: true,
+  //       cluster: 'ap2',
+  //     ),
+  //     enableLogging: true,
+  //   );
+  //   channel = pusher.subscribe("chat");
+
+  //   channel!.bind(
+  //     'send',
+  //     (event) {
+  //       // ignore: avoid_print
+  //       print('hgkjhkjhkljhkljhkjhkjh');
+  //       log("SEND Event" + event!.data.toString());
+  //       var ss = (jsonDecode(event.data!));
+  //       ChatModel _chatModel = ChatModel.fromJson(ss);
+
+  //       // ignore: avoid_print
+  //       //print('hjkhkljhkjhkh');
+  //       // ignore: avoid_print
+  //       // print(ss['data']['to_user_id']);
+  //       //  chatStream.sink.add(event.data);
+  //       if (ss['data']['to_user_id'] == id) {
+  //         print("Done inside //////////////////");
+  //         chatStream.sink.add(event.data);
+  //         //  showAlertDialog(context, _chatModel, chatStream);
+
+  //       }
+  //     },
+  //   );
+  // }
+
+  // showAlertDialog(BuildContext context, ChatModel chatModel, chatStream) {
+  //   // set up the button
+  //   Widget okButton = TextButton(
+  //     child: Text("Open Chat"),
+  //     onPressed: () {
+  //       Navigator.of(context).push(MaterialPageRoute(
+  //           builder: (context) => ChatScreen(
+  //                 id: chatModel.data.fromUserId,
+  //                 name: chatModel.data.fromUserName,
+  //                 channel: channel!,
+  //                 chatStream: chatStream,
+  //               )));
+  //     },
+  //   );
+  //   Widget Cancel = TextButton(
+  //     child: Text("Cancel "),
+  //     onPressed: () {
+  //       Navigator.of(context).pop();
+  //     },
+  //   );
+  //   // set up the AlertDialog
+  //   AlertDialog alert = AlertDialog(
+  //     title: Text("You have a message ${chatModel.data.fromUserName}"),
+  //     content: Text(chatModel.data.content),
+  //     actions: [okButton, Cancel],
+  //   );
+
+  //   // show the dialog
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return alert;
+  //     },
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -191,6 +274,7 @@ class _ExploreState extends State<Explore> {
         },
         child: SafeArea(
           child: Scaffold(
+            key: _scaffoldKey,
             backgroundColor: Colors.white,
             body: GestureDetector(
               onTap: () {

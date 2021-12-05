@@ -390,10 +390,10 @@ class _FeventsState extends State<Fevents> {
               }),
             ));
       } else {
-        return const Center(child: Text("No Upcoming Events"));
+        return const Center(child: Text("No favourite Upcoming Events"));
       }
     } else {
-      return const Center(child: Text("No Upcoming Events"));
+      return const Center(child: Text("No favourite Upcoming Events"));
     }
   }
 
@@ -536,10 +536,10 @@ class _FeventsState extends State<Fevents> {
               }),
             ));
       } else {
-        return const Center(child: Text("No Upcoming Events"));
+        return const Center(child: Text("No favourite past events"));
       }
     } else {
-      return const Center(child: Text("No Upcoming Events"));
+      return const Center(child: Text("No favourite past events"));
     }
   }
 }

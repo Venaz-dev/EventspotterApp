@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:event_spotter/models/notificationModel.dart';
+import 'package:event_spotter/pages/request.dart';
 import 'package:event_spotter/pages/timeago.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,89 +67,96 @@ class _NotiState extends State<Noti> {
                             return Padding(
                               padding:
                                   const EdgeInsets.only(top: 10.0, bottom: 10),
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  color: Color(0XFFFAFAFA),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 20,
-                                          left: 30,
-                                          right: 30.0,
-                                          bottom: 20),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          // Container(
-                                          //   height: 40,
-                                          //   width: 40,
-                                          //   decoration:
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (contexxt) =>
+                                          const Pendingrequests()));
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                    color: Color(0XFFFAFAFA),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 20,
+                                            left: 30,
+                                            right: 30.0,
+                                            bottom: 20),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            // Container(
+                                            //   height: 40,
+                                            //   width: 40,
+                                            //   decoration:
 
-                                          //   BoxDecoration(
-                                          //     shape: BoxShape.circle,
-                                          //     image: DecorationImage(
+                                            //   BoxDecoration(
+                                            //     shape: BoxShape.circle,
+                                            //     image: DecorationImage(
 
-                                          //         image: NetworkImage(imagepath),
-                                          //         fit: BoxFit.cover),
-                                          //   ),
+                                            //         image: NetworkImage(imagepath),
+                                            //         fit: BoxFit.cover),
+                                            //   ),
 
-                                          // ),
+                                            // ),
 
-                                          CircleAvatar(
-                                            backgroundColor: Colors.white,
-                                            radius: 25.0,
-                                            // ignore: unrelated_type_equality_checks
-                                            backgroundImage: _notificationModel
-                                                        .data[index]
-                                                        .user
-                                                        .profilePicture !=
-                                                    ""
-                                                ? NetworkImage(MainUrl +
-                                                    _notificationModel
-                                                        .data[index]
-                                                        .user
-                                                        .profilePicture!
-                                                        .image)
-                                                : const AssetImage(
-                                                        'Assets/images/user.png')
-                                                    as ImageProvider,
-                                          ),
-
-                                          const SizedBox(
-                                            width: 20,
-                                          ),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  _notificationModel
-                                                      .data[index].title,
-                                                  style: const TextStyle(
-                                                      fontSize: 17),
-                                                ),
-                                                const SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Text(
-                                                  _notificationModel
-                                                      .data[index].message,
-                                                  style: const TextStyle(
-                                                      fontSize: 16,
-                                                      color: Colors.black54),
-                                                ),
-                                              ],
+                                            CircleAvatar(
+                                              backgroundColor: Colors.white,
+                                              radius: 25.0,
+                                              // ignore: unrelated_type_equality_checks
+                                              backgroundImage: _notificationModel
+                                                          .data[index]
+                                                          .user
+                                                          .profilePicture !=
+                                                      ""
+                                                  ? NetworkImage(MainUrl +
+                                                      _notificationModel
+                                                          .data[index]
+                                                          .user
+                                                          .profilePicture!
+                                                          .image)
+                                                  : const AssetImage(
+                                                          'Assets/images/user.png')
+                                                      as ImageProvider,
                                             ),
-                                          ),
-                                        ],
+
+                                            const SizedBox(
+                                              width: 20,
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    _notificationModel
+                                                        .data[index].title,
+                                                    style: const TextStyle(
+                                                        fontSize: 17),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Text(
+                                                    _notificationModel
+                                                        .data[index].message,
+                                                    style: const TextStyle(
+                                                        fontSize: 16,
+                                                        color: Colors.black54),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    time(index),
-                                  ],
+                                      time(index),
+                                    ],
+                                  ),
                                 ),
                               ),
                             );

@@ -1,3 +1,8 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:event_spotter/models/ChatModel.dart';
 import 'package:event_spotter/pages/chat.dart';
 import 'package:event_spotter/pages/explore.dart';
 import 'package:event_spotter/pages/more.dart';
@@ -6,9 +11,10 @@ import 'package:event_spotter/pages/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:event_spotter/constant/colors.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pusher_client/pusher_client.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({Key? key}) : super(key: key);
+  Dashboard({Key? key}) : super(key: key);
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -16,10 +22,56 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int pageindex = 0;
+  bool hasMessaged = false;
+  late PusherClient pusher;
+  Channel? channel;
+  final chatStream = StreamController<dynamic>();
+  @override
+  void initState() {
+    intiliaziePusher();
+    // TODO: implement initState
+    // channel.bind('send', (event) {
+    //   //  if(event!.data!['data']['to_user_id'] == '3')
+    //   if (jsonDecode(event!.data!)['data']['to_user_id'] == '3') {
+    //     hasMessaged = true;
+    //     setState(() {});
+    //   }
+    // });
+    super.initState();
+  }
+
+  intiliaziePusher() {
+    pusher = PusherClient(
+      "d472b6d313e1bef33bb2",
+      PusherOptions(
+        host: 'https://theeventspotter.com',
+        encrypted: true,
+        cluster: 'ap2',
+      ),
+      enableLogging: true,
+    );
+    channel = pusher.subscribe("chat");
+
+    channel!.bind(
+      'send',
+      (event) {
+        // ignore: avoid_print
+        print('hgkjhkjhkljhkljhkjhkjh');
+        log("SEND Event" + event!.data.toString());
+        var ss = (jsonDecode(event.data!));
+        ChatModel _chatModel = ChatModel.fromJson(ss);
+        if (ss['data']['to_user_id'] == '3') {
+          hasMessaged = true;
+          setState(() {});
+          print("Done inside //////////////////");
+          chatStream.sink.add(event.data);
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    
-
     List bottomitems = [
       pageindex == 0
           ? Column(
@@ -40,19 +92,31 @@ class _DashboardState extends State<Dashboard> {
             ),
       pageindex == 1
           ? Column(
-              children: const [
-                Icon(FontAwesomeIcons.commentDots,
-                    color: Colors.white, size: 40),
+              children: [
+                Stack(children: [
+                  const Icon(FontAwesomeIcons.commentDots,
+                      color: Colors.white, size: 40),
+                ]),
                 Text("chat", style: TextStyle(color: bottom_navigationitems))
               ],
             )
           : Column(
-              children: const [
-                Icon(
-                  FontAwesomeIcons.commentDots,
-                  color: bottom_navigationitems,
-                  size: 30,
-                ),
+              children: [
+                Stack(children: [
+                  Icon(
+                    FontAwesomeIcons.commentDots,
+                    color: bottom_navigationitems,
+                    size: 30,
+                  ),
+                  hasMessaged
+                      ? Positioned(
+                          top: 0.0,
+                          right: 0.0,
+                          child: Icon(Icons.brightness_1,
+                              size: 8.0, color: Colors.redAccent),
+                        )
+                      : SizedBox(),
+                ]),
                 Text("chat", style: TextStyle(color: bottom_navigationitems))
               ],
             ),
@@ -114,10 +178,7 @@ class _DashboardState extends State<Dashboard> {
     return SafeArea(
       child: Scaffold(
         body: getbody(pageindex),
-        bottomNavigationBar: 
-        
-        
-        Container(
+        bottomNavigationBar: Container(
           height: size.height * 0.08,
           width: size.width * double.infinity,
           decoration: const BoxDecoration(
@@ -135,6 +196,7 @@ class _DashboardState extends State<Dashboard> {
                       onTap: () {
                         setState(() {
                           pageindex = index;
+                          if (pageindex == 1) hasMessaged = false;
                           print(pageindex);
                         });
                       },

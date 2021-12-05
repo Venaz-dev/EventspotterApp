@@ -82,7 +82,7 @@ class More extends StatelessWidget {
                     ),
                     Containers(
                         background: Colors.white,
-                        icon: FontAwesomeIcons.laptopCode,
+                        icon: FontAwesomeIcons.userFriends,
                         name: "Pending requests",
                         onPresses: () {
                           Navigator.of(context).push(MaterialPageRoute(
@@ -116,40 +116,32 @@ class Containers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return InkWell(
-      //hoverColor: Colors.black,
-      // highlightColor: Colors.red,
-      splashColor: Colors.red,
-      //focusColor: Colors.red,
-      onTap: onPresses,
-      child: Ink(
-        color: Colors.red,
-        child: Container(
-          height: size.height * 0.066,
-          width: size.width * 0.6,
-          decoration: BoxDecoration(
-            color: background,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Icon(
-                icon,
-                color: Colors.black,
-              ),
-              // const  Spacer(),
-              const SizedBox(
-                width: 30,
-              ),
-              Expanded(
-                  child: AutoSizeText(
-                name,
-                style:
-                    const TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
-                textAlign: TextAlign.start,
-              ))
-            ],
-          ),
+    return Container(
+      height: size.height * 0.066,
+      width: size.width * 0.6,
+      decoration: BoxDecoration(
+        color: background,
+      ),
+      child: MaterialButton(
+        onPressed: onPresses,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Icon(
+              icon,
+              color: Colors.black,
+            ),
+            // const  Spacer(),
+            const SizedBox(
+              width: 30,
+            ),
+            Expanded(
+                child: AutoSizeText(
+              name,
+              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+              textAlign: TextAlign.start,
+            ))
+          ],
         ),
       ),
     );

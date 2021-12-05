@@ -38,10 +38,10 @@ class _EventposterprofileState extends State<Eventposterprofile> {
   String GetUSerStatusUrl =
       "https://theeventspotter.com/api/getUserFollowingStatus";
   String FollowingUrl = "https://theeventspotter.com/api/following";
-  String unfollow = "http://theeventspotter.com/api/unfollow";
+  String unfollow = "https://theeventspotter.com/api/unfollow";
   late GetUserFollowingStatus _getUserFollowingStatus;
   late Response response;
-
+  late String _id1;
   final TextEditingController _email = TextEditingController();
   final TextEditingController _phonenumber = TextEditingController();
   final TextEditingController _address = TextEditingController();
@@ -288,7 +288,7 @@ class _EventposterprofileState extends State<Eventposterprofile> {
             ),
             _getUserFollowingStatus.data.mobileIsPrivate == "0"
                 ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text("Phone number"),
                       const SizedBox(height: 10),
@@ -304,8 +304,7 @@ class _EventposterprofileState extends State<Eventposterprofile> {
                     ],
                   )
                 : SizedBox(),
-                
-                const Text("Address"),
+            const Text("Address"),
             const SizedBox(height: 10),
             Textform(
               label: Address,
@@ -344,6 +343,7 @@ class _EventposterprofileState extends State<Eventposterprofile> {
   getUserFollowingStatus() async {
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
+    _id1 = _sharedPreferences.getString('id')!;
     FormData formData = new FormData.fromMap({
       "following_id": widget.id,
     });
@@ -467,11 +467,16 @@ class _EventposterprofileState extends State<Eventposterprofile> {
   }
 
   postUnfollow() async {
+    late String id2;
+    for (int i = 0; i < _getUserFollowingStatus.data.followers.length; i++) {
+      if (_id1 == _getUserFollowingStatus.data.followers[i].followerId) {
+        id2 = _getUserFollowingStatus.data.followers[i].followingId;
+      }
+    }
+    print(id2);
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
-    FormData formData = new FormData.fromMap({
-      "following_id": widget.id,
-    });
+    FormData formData = FormData.fromMap({"id": id2});
     try {
       _dio.options.headers["Authorization"] = "Bearer ${_token}";
       response = await _dio.post(unfollow, data: formData);

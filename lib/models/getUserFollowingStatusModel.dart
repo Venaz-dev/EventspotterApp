@@ -7,8 +7,8 @@ class GetUserFollowingStatus {
   late final bool success;
   late final Data data;
   late final String status;
-  
-  GetUserFollowingStatus.fromJson(Map<String, dynamic> json){
+
+  GetUserFollowingStatus.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     data = Data.fromJson(json['data']);
     status = json['status'];
@@ -31,22 +31,22 @@ class Data {
     required this.ipAddress,
     required this.latLng,
     required this.isOnline,
-     this.emailVerifiedAt,
+    this.emailVerifiedAt,
     required this.phoneNumber,
     required this.createdAt,
     required this.updatedAt,
-     this.profileImage,
+    this.profileImage,
     required this.mobileIsPrivate,
     required this.avatar,
     required this.messengerColor,
     required this.darkMode,
     required this.activeStatus,
     required this.role,
-     this.isBlock,
+    this.isBlock,
     required this.useLocation,
     required this.allowDirectMessage,
     required this.profilePrivate,
-   //required this.address,
+    //required this.address,
     required this.profilePicture,
     required this.followers,
     required this.following,
@@ -74,12 +74,12 @@ class Data {
   late final String allowDirectMessage;
   late final String profilePrivate;
   //late final Address address;
-   ProfilePicture? profilePicture;
-  late final List<dynamic> followers;
+  ProfilePicture? profilePicture;
+  late final List<Followers> followers;
   late final List<Following> following;
   late final List<dynamic> events;
-  
-  Data.fromJson(Map<String, dynamic> json){
+
+  Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     email = json['email'];
@@ -103,14 +103,20 @@ class Data {
     profilePrivate = json['profile_private'];
     //address = Address.fromJson(json['address']);
 
-     if (json['profile_picture'] != null) {
+    if (json['profile_picture'] != null) {
       profilePicture = (ProfilePicture.fromJson(json['profile_picture']));
     } else {
       profilePicture = ProfilePicture(
-          id: 0, image: "images/user.jpeg", userId: "0", createdAt: "112", updatedAt: "12332");
+          id: 0,
+          image: "images/user.jpeg",
+          userId: "0",
+          createdAt: "112",
+          updatedAt: "12332");
     }
-    followers = List.castFrom<dynamic, dynamic>(json['followers']);
-    following = List.from(json['following']).map((e)=>Following.fromJson(e)).toList();
+    followers =
+        List.from(json['followers']).map((e) => Followers.fromJson(e)).toList();
+    following =
+        List.from(json['following']).map((e) => Following.fromJson(e)).toList();
     events = List.castFrom<dynamic, dynamic>(json['events']);
   }
 
@@ -137,10 +143,10 @@ class Data {
     _data['use_location'] = useLocation;
     _data['allow_direct_message'] = allowDirectMessage;
     _data['profile_private'] = profilePrivate;
-   // _data['address'] = address.toJson();
+    // _data['address'] = address.toJson();
     _data['profile_picture'] = profilePicture;
     _data['followers'] = followers;
-    _data['following'] = following.map((e)=>e.toJson()).toList();
+    _data['following'] = following.map((e) => e.toJson()).toList();
     _data['events'] = events;
     return _data;
   }
@@ -151,7 +157,7 @@ class Address {
     required this.id,
     required this.address,
     required this.city,
-     this.zipCode,
+    this.zipCode,
     required this.country,
     required this.createdAt,
     required this.updatedAt,
@@ -165,8 +171,8 @@ class Address {
   late final String createdAt;
   late final String updatedAt;
   late final String userId;
-  
-  Address.fromJson(Map<String, dynamic> json){
+
+  Address.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     address = json['address'];
     city = json['city'];
@@ -204,8 +210,8 @@ class ProfilePicture {
   late final String userId;
   late final String createdAt;
   late final String updatedAt;
-  
-  ProfilePicture.fromJson(Map<String, dynamic> json){
+
+  ProfilePicture.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     image = json['image'];
     userId = json['user_id'];
@@ -239,8 +245,8 @@ class Following {
   late final String createdAt;
   late final String updatedAt;
   late final String isAccepted;
-  
-  Following.fromJson(Map<String, dynamic> json){
+
+  Following.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
     followingId = json['following_id'];
@@ -257,6 +263,43 @@ class Following {
     _data['created_at'] = createdAt;
     _data['updated_at'] = updatedAt;
     _data['is_accepted'] = isAccepted;
+    return _data;
+  }
+}
+
+class Followers {
+  Followers({
+    required this.id,
+    required this.userId,
+    required this.followerId,
+    required this.followingId,
+    required this.created_at,
+    required this.updated_at,
+  });
+  late final int id;
+  late final String userId;
+  late final String followerId;
+  late final String followingId;
+  late final String created_at;
+  late final String updated_at;
+
+  Followers.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    followerId = json['follower_id'];
+    followingId = json['following_id'];
+    created_at = json['created_at'];
+    updated_at = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['user_id'] = userId;
+    _data['following_id'] = followingId;
+    _data['following_id'] = followingId;
+    _data['created_at'] = created_at;
+    _data['updated_at'] = updated_at;
     return _data;
   }
 }

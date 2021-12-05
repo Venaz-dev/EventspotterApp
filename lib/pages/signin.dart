@@ -291,7 +291,7 @@ class _LoginScreenState extends State<LoginScreen> {
             'phone', _loginResponse.user.phoneNumber);
 
         Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const Dashboard()));
+            MaterialPageRoute(builder: (context) => Dashboard()));
       } else {
         showToaster('Invalid Credentials');
       }
@@ -308,7 +308,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _sharedPreferences = await SharedPreferences.getInstance();
     if (_sharedPreferences.containsKey('email')) {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const Dashboard()));
+          MaterialPageRoute(builder: (context) => Dashboard()));
     }
   }
 }
