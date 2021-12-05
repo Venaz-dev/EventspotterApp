@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
+import 'package:event_spotter/pages/userprofile.dart';
 import 'package:event_spotter/widgets/conditions.dart';
 import 'package:event_spotter/widgets/explore/events.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
@@ -29,6 +30,7 @@ class _ExploreState extends State<Explore> {
   late EventsModel eventsModel;
   String urlEvent = "https://theeventspotter.com/api/getEvents";
   String searchUrl = "https://theeventspotter.com/api/search";
+  String MainUrl = "https://theeventspotter.com/";
 
   late List eventsLiveFeed = [];
   late List<int> favourite = [];
@@ -55,7 +57,7 @@ class _ExploreState extends State<Explore> {
   Geolocator geolocator = Geolocator();
   int index = 0;
   double topbarheight = 50;
-  //late Map<String, double> userLocation;
+  late Map<String, double> userLocation;
   Widget searchnames() {
     return Padding(
       padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.05),
@@ -69,32 +71,42 @@ class _ExploreState extends State<Explore> {
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
-              children: List.generate(100, (index) {
+              children: List.generate(search.length, (index) {
             return Padding(
               padding: const EdgeInsets.only(left: 15.0, top: 5, bottom: 10),
               child: Container(
-                child: Row(
-                  children: [
-                    SizedBox(
-                      height: 30,
-                      width: 30,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(300),
-                        child: Image.network(
-                          'https://images.unsplash.com/photo-1638553507237-10ff908cda42?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60',
-                          fit: BoxFit.cover,
+                child: InkWell(
+                  onTap: (){
+                      Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) =>  Eventposterprofile(
+                    id: search[index]['id'],
+                  )));
+                  },
+                  child: Ink(
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          height: 30,
+                          width: 30,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(300),
+                            child: Image.network(
+                              MainUrl + search[index]["image"],
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
-                      ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Text(search[index]["name"],
+                            style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white))
+                      ],
                     ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    const Text("Awais",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white))
-                  ],
+                  ),
                 ),
               ),
             );
@@ -103,6 +115,53 @@ class _ExploreState extends State<Explore> {
       ),
     );
   }
+  // Widget searchnames() {
+  //   return Padding(
+  //     padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.05),
+  //     child: Container(
+  //       height: MediaQuery.of(context).size.height * 0.2,
+  //       width: double.infinity,
+  //       decoration: BoxDecoration(
+  //         color: Colors.black54,
+  //         borderRadius: BorderRadius.circular(10),
+  //       ),
+  //       child: SingleChildScrollView(
+  //         scrollDirection: Axis.vertical,
+  //         child: Column(
+  //             children: List.generate(100, (index) {
+  //           return Padding(
+  //             padding: const EdgeInsets.only(left: 15.0, top: 5, bottom: 10),
+  //             child: Container(
+  //               child: Row(
+  //                 children: [
+  //                   SizedBox(
+  //                     height: 30,
+  //                     width: 30,
+  //                     child: ClipRRect(
+  //                       borderRadius: BorderRadius.circular(300),
+  //                       child: Image.network(
+  //                         'https://images.unsplash.com/photo-1638553507237-10ff908cda42?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60',
+  //                         fit: BoxFit.cover,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   const SizedBox(
+  //                     width: 20,
+  //                   ),
+  //                   const Text("Awais",
+  //                       style: TextStyle(
+  //                           fontSize: 18,
+  //                           fontWeight: FontWeight.w400,
+  //                           color: Colors.white))
+  //                 ],
+  //               ),
+  //             ),
+  //           );
+  //         })),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   @override
   void initState() {
@@ -161,8 +220,12 @@ class _ExploreState extends State<Explore> {
                                   onchange: (listen) {
                                     if (_search.text.length >= 3) {
                                       searchApiCall();
+                                      if (_search.text.length == 0) {
+                                        search.clear();
+                                      }
+                                      setState(() {});
                                     }
-                                    setState(() {});
+                                    //setState(() {});
                                   },
                                   isreadonly: false,
                                   isSecure: false,
@@ -576,35 +639,46 @@ class _ExploreState extends State<Explore> {
     print(response.toString());
   }
 
-  void searchApiCall() async {
+  searchApiCall() async {
+    search.clear();
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
     Map<String, String> qParams = {
       'text': _search.text,
     };
-    _dio.options.headers["Authorization"] = "Bearer ${_token}";
-try {
-    Response response = await _dio.get(urlEvent);
-    print(response.data);
-    
+
+    try {
+      // Response response = await _dio.get(searchUrl);
+      // print(response.data);
+      _dio.options.headers["Authorization"] = "Bearer ${_token}";
       await _dio.get(searchUrl, queryParameters: qParams).then((value) {
-        // print(value.data);
-        if (value.statusCode == 200) {
-          print("inside");
-          print(response.data["id"][0]);
-
-          //   var js = {
-          //           'img': value.data[],
-          //           'km': km,
-          //         };
-
-          //
-        } else {
-          print("error");
+        print(value.data);
+        if (response.statusCode == 200) {
+          if (value.data.isNotEmpty) {
+            for (int i = 0; i < value.data.length; i++) {
+              if (value.data[i]['profile_picture'] != null) {
+                var js = {
+                  'id': value.data[i]['id'],
+                  'image': value.data[i]['profile_picture']['image'],
+                  'name': value.data[i]['name'],
+                };
+                search.add(js);
+              } else {
+                var js = {
+                  'id': value.data[i]['id'],
+                  'image': "images/user.jpeg",
+                  'name': value.data[i]['name'],
+                };
+                search.add(js);
+              }
+            }
+          }
         }
       });
     } catch (e) {
       print(e.toString());
+    } finally {
+      setState(() {});
     }
   }
 }

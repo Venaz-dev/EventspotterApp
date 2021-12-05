@@ -1,12 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
-import 'package:event_spotter/constant/json/live_feed.dart';
-import 'package:event_spotter/constant/json/post.dart';
 import 'package:event_spotter/models/getFavouitePastEventsModel.dart';
 import 'package:event_spotter/models/getFavouriteUpcomingEvents.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
-import 'package:event_spotter/widgets/smallbutton.dart';
-import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -14,6 +10,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:like_button/like_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class Fevents extends StatefulWidget {
   const Fevents({Key? key}) : super(key: key);
@@ -31,7 +28,6 @@ class _FeventsState extends State<Fevents> {
   late SharedPreferences _sharedPreferences;
   Dio _dio = Dio();
   bool _isLoading = true;
-  bool _isLoading1 = true;
 
   late String _token;
   bool test1 = false;
@@ -66,7 +62,6 @@ class _FeventsState extends State<Fevents> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _search = TextEditingController();
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: GestureDetector(
@@ -78,96 +73,100 @@ class _FeventsState extends State<Fevents> {
           }
         },
         child: Scaffold(
-          body: Padding(
-            padding: EdgeInsets.only(top: 20.0, left: size.width * 0.05),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                children: [
-                  // Padding(
-                  //   padding: EdgeInsets.only(
-                  //     top: size.height * 0.02,
-                  //   ),
-                  //   child: Row(
-                  //     children: [
-                  //       SizedBox(
-                  //         //height: size.height*0.1,
-                  //         width: size.width * 0.8,
-                  //         child: Textform(
-                  //           controller: _search,
-                  //           icon: Icons.search,
-                  //           label: "Search",
-                  //           color: const Color(0XFFECF2F3),
-                  //         ),
-                  //       ),
-                  //       SizedBox(
-                  //         width: size.width * 0.01,
-                  //       ),
-                  //       Smallbutton(
-                  //         icon: FontAwesomeIcons.slidersH,
-                  //         onpressed: () {
-                  //           setState(() {
-                  //             //swap = screens.filter;
-                  //           });
-                  //         },
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  const SizedBox(height: 30),
-                  Row(
-                    children: [
-                      Elevatedbuttons(
-                        sidecolor: isupcoming == true
-                            ? Colors.transparent
-                            : Colors.black,
-                        text: "Upcoming",
-                        textColor:
-                            isupcoming == true ? Colors.white : Colors.black,
-                        coloring: isupcoming == true
-                            ? const Color(0XFF38888F)
-                            : Colors.white,
-                        primary: isupcoming == true
-                            ? const Color(0XFF38888F)
-                            : Colors.white,
-                        onpressed: () {
-                          setState(() {
-                            isupcoming = true;
-                          });
-                        },
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Elevatedbuttons(
-                        sidecolor: isupcoming == false
-                            ? Colors.transparent
-                            : Colors.black,
-                        text: "Past Events",
-                        textColor:
-                            isupcoming == false ? Colors.white : Colors.black,
-                        coloring: isupcoming == false
-                            ? const Color(0XFF38888F)
-                            : Colors.white,
-                        onpressed: () {
-                          setState(() {
-                            isupcoming = false;
-                          });
-                        },
-                        primary: isupcoming == false
-                            ? const Color(0XFF38888F)
-                            : Colors.white,
-                      ),
-                    ],
+          body: _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Padding(
+                  padding: EdgeInsets.only(top: 20.0, left: size.width * 0.05),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Column(
+                      children: [
+                        // Padding(
+                        //   padding: EdgeInsets.only(
+                        //     top: size.height * 0.02,
+                        //   ),
+                        //   child: Row(
+                        //     children: [
+                        //       SizedBox(
+                        //         //height: size.height*0.1,
+                        //         width: size.width * 0.8,
+                        //         child: Textform(
+                        //           controller: _search,
+                        //           icon: Icons.search,
+                        //           label: "Search",
+                        //           color: const Color(0XFFECF2F3),
+                        //         ),
+                        //       ),
+                        //       SizedBox(
+                        //         width: size.width * 0.01,
+                        //       ),
+                        //       Smallbutton(
+                        //         icon: FontAwesomeIcons.slidersH,
+                        //         onpressed: () {
+                        //           setState(() {
+                        //             //swap = screens.filter;
+                        //           });
+                        //         },
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        const SizedBox(height: 30),
+                        Row(
+                          children: [
+                            Elevatedbuttons(
+                              sidecolor: isupcoming == true
+                                  ? Colors.transparent
+                                  : Colors.black,
+                              text: "Upcoming",
+                              textColor: isupcoming == true
+                                  ? Colors.white
+                                  : Colors.black,
+                              coloring: isupcoming == true
+                                  ? const Color(0XFF38888F)
+                                  : Colors.white,
+                              primary: isupcoming == true
+                                  ? const Color(0XFF38888F)
+                                  : Colors.white,
+                              onpressed: () {
+                                setState(() {
+                                  isupcoming = true;
+                                });
+                              },
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Elevatedbuttons(
+                              sidecolor: isupcoming == false
+                                  ? Colors.transparent
+                                  : Colors.black,
+                              text: "Past Events",
+                              textColor: isupcoming == false
+                                  ? Colors.white
+                                  : Colors.black,
+                              coloring: isupcoming == false
+                                  ? const Color(0XFF38888F)
+                                  : Colors.white,
+                              onpressed: () {
+                                setState(() {
+                                  isupcoming = false;
+                                });
+                              },
+                              primary: isupcoming == false
+                                  ? const Color(0XFF38888F)
+                                  : Colors.white,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        isupcoming ? upcoming(size) : past(size)
+                      ],
+                    ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  isupcoming ? upcoming(size) : past(size)
-                ],
-              ),
-            ),
-          ),
+                ),
         ),
       ),
     );
@@ -206,7 +205,7 @@ class _FeventsState extends State<Fevents> {
       _dio.options.headers["Authorization"] = "Bearer ${_token}";
       Response response = await _dio.get(upcomingUrl);
       print(response.data);
-      print(response.data["data"].length);
+      // print(response.data["data"].length);
       if (response.data["data"].length > 0) {
         print(response.data);
         print("inside has data past events");
@@ -247,315 +246,300 @@ class _FeventsState extends State<Fevents> {
     } catch (e) {
       print(e.toString());
     } finally {
-      _isLoading1 = false;
+      _isLoading = false;
       setState(() {});
     }
   }
 
   upcoming(Size size) {
     if (test1 == true) {
+      // ignore: prefer_is_empty
       if (_favouriteUpcomingEventsModel.data.length > 0) {
         return Padding(
-          padding: EdgeInsets.only(right: size.width * 0.05),
-          child: Column(
-            children: List.generate(_favouriteUpcomingEventsModel.data.length,
-                (index) {
-              return Padding(
-                padding: EdgeInsets.only(top: size.height * .01),
-                child: Container(
-                  height: size.height * 0.3,
-                  width: size.width,
-                  decoration: BoxDecoration(
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black12,
-                          spreadRadius: 0.5,
-                          blurRadius: 0.5,
-                          // offset: Offset(2, 2)
-                        )
-                      ],
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        top: size.height * 0.02,
-                        right: size.width * 0.02,
-                        bottom: size.height * 0.02,
-                        left: size.width * 0.02),
+            padding: EdgeInsets.only(right: size.width * 0.05),
+            child: Column(
+              children: List.generate(_favouriteUpcomingEventsModel.data.length,
+                  (index) {
+                return Padding(
+                  padding: EdgeInsets.only(top: size.height * .01),
+                  child: Container(
+                    // width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: const [
+                          BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 10,
+                              spreadRadius: 2)
+                        ]),
                     child: Stack(
                       children: [
                         Positioned(
-                          right: 0,
-                          top: 0,
+                          right: 10,
+                          top: 10,
                           child: likebutton(),
                         ),
-                        _favouriteUpcomingEventsModel.data[index].events
-                                    .eventPictures[0].imagePath
-                                    .toString()
-                                    .contains('.mp4') ||
-                                _favouriteUpcomingEventsModel.data[index].events
-                                    .eventPictures[0].imagePath
-                                    .toString()
-                                    .contains('.mov')
-                            ? VideoPlayerScreemm(
-                                url: MainUrl +
-                                    _favouriteUpcomingEventsModel.data[index]
-                                        .events.eventPictures[0].imagePath)
-                            : SizedBox(
-                                height: size.height * 0.17,
-                                width: size.width * 0.3,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: CachedNetworkImage(
-                                    imageUrl: MainUrl +
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 20.0, right: 15, left: 15, bottom: 15),
+                          child: Row(
+                            children: [
+                              _favouriteUpcomingEventsModel.data[index].events
+                                          .eventPictures[0].imagePath
+                                          .toString()
+                                          .contains('.mp4') ||
+                                      _favouriteUpcomingEventsModel.data[index]
+                                          .events.eventPictures[0].imagePath
+                                          .toString()
+                                          .contains('.mov')
+                                  ? VideoPlayerScreemm(
+                                      url: MainUrl +
+                                          _favouriteUpcomingEventsModel
+                                              .data[index]
+                                              .events
+                                              .eventPictures[0]
+                                              .imagePath)
+                                  : SizedBox(
+                                      height: size.height * 0.17,
+                                      width: size.width * 0.3,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: CachedNetworkImage(
+                                          imageUrl: MainUrl +
+                                              _favouriteUpcomingEventsModel
+                                                  .data[index]
+                                                  .events
+                                                  .eventPictures[0]
+                                                  .imagePath,
+                                          fit: BoxFit.cover,
+                                          placeholder: (context, url) {
+                                            return const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: size.width * 0.35,
+                                      child: AutoSizeText(
                                         _favouriteUpcomingEventsModel
-                                            .data[index]
-                                            .events
-                                            .eventPictures[0]
-                                            .imagePath,
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) {
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    },
-                                  ),
+                                            .data[index].events.eventName,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 18),
+                                        maxFontSize: 16,
+                                        minFontSize: 15,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          FontAwesomeIcons.calendar,
+                                          size: 15,
+                                          color: Colors.black54,
+                                        ),
+                                        Text(
+                                          _favouriteUpcomingEventsModel
+                                              .data[index].events.eventDate,
+                                          style: const TextStyle(
+                                              color: Colors.black87),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          FontAwesomeIcons.mapMarkerAlt,
+                                          size: 15,
+                                          color: Colors.black54,
+                                        ),
+                                        Text(
+                                            _favouriteUpcomingEventsModel
+                                                    .data[index].km +
+                                                " " +
+                                                "away",
+                                            style: const TextStyle(
+                                                color: Colors.black87)),
+                                      ],
+                                    )
+                                  ],
                                 ),
                               ),
-                        Positioned(
-                          right: 20,
-                          left: size.width * 0.33,
-                          top: size.height * 0.02,
-                          child: Text(
-                            _favouriteUpcomingEventsModel
-                                .data[index].events.eventName,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w400, fontSize: 17),
-                          ),
-                        ),
-                        Positioned(
-                          top: size.height * 0.14,
-                          left: size.width * 0.33,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              const Icon(
-                                MdiIcons.calendarRange,
-                                size: 15,
-                                color: Colors.black54,
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                _favouriteUpcomingEventsModel
-                                    .data[index].events.location,
-                                style: const TextStyle(color: Colors.black87),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              const Icon(
-                                FontAwesomeIcons.mapMarkerAlt,
-                                size: 15,
-                                color: Colors.black54,
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                  _favouriteUpcomingEventsModel.data[index].km +
-                                      " " +
-                                      " " +
-                                      "away",
-                                  style:
-                                      const TextStyle(color: Colors.black87)),
-                            ],
-                          ),
-                        ),
-                        Positioned(
-                          top: size.height * 0.18,
-                          child: Row(
-                            children: [
-                              const Icon(
-                                LineAwesomeIcons.user_plus,
-                                size: 20,
-                                color: Colors.black54,
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Text(_favouriteUpcomingEventsModel
-                                  .data[index].events.user.followers.length
-                                  .toString()),
                             ],
                           ),
                         ),
                       ],
                     ),
                   ),
-                ),
-              );
-            }),
-          ),
-        );
+                );
+              }),
+            ));
       } else {
-        return const Center(child: Text("No Past Events"));
+        return const Center(child: Text("No Upcoming Events"));
       }
     } else {
-      return const Center(child: Text("No Past Events"));
+      return const Center(child: Text("No Upcoming Events"));
     }
   }
 
   past(Size size) {
     if (test2 == true) {
-      if (_favouritePastEventsModel.data.isNotEmpty) {
+      // ignore: prefer_is_empty
+      if (_favouritePastEventsModel.data.length > 0) {
         return Padding(
-          padding: EdgeInsets.only(right: size.width * 0.05),
-          child: Column(
-            children: List.generate(_favouritePastEventsModel.data.length,
-                (index) {
-              return Padding(
-                padding: EdgeInsets.only(top: size.height * .01),
-                child: Container(
-                  height: size.height * 0.3,
-                  width: size.width,
-                  decoration: BoxDecoration(
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black12,
-                          spreadRadius: 0.5,
-                          blurRadius: 0.5,
-                          // offset: Offset(2, 2)
-                        )
-                      ],
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        top: size.height * 0.02,
-                        right: size.width * 0.02,
-                        bottom: size.height * 0.02,
-                        left: size.width * 0.02),
+            padding: EdgeInsets.only(right: size.width * 0.05),
+            child: Column(
+              children:
+                  List.generate(_favouritePastEventsModel.data.length, (index) {
+                return Padding(
+                  padding: EdgeInsets.only(top: size.height * .01),
+                  child: Container(
+                    // width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: const [
+                          BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 10,
+                              spreadRadius: 2)
+                        ]),
                     child: Stack(
                       children: [
                         Positioned(
-                          right: 0,
-                          top: 0,
+                          right: 10,
+                          top: 10,
                           child: likebutton(),
                         ),
-                        _favouritePastEventsModel.data[index].events
-                                    .eventPictures[0].imagePath
-                                    .toString()
-                                    .contains('.mp4') ||
-                                _favouritePastEventsModel.data[index].events
-                                    .eventPictures[0].imagePath
-                                    .toString()
-                                    .contains('.mov')
-                            ? VideoPlayerScreemm(
-                                url: MainUrl +
-                                    _favouritePastEventsModel.data[index].events
-                                        .eventPictures[0].imagePath)
-                            : SizedBox(
-                                height: size.height * 0.17,
-                                width: size.width * 0.3,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: CachedNetworkImage(
-                                    imageUrl: MainUrl +
-                                        _favouritePastEventsModel.data[index]
-                                            .events.eventPictures[0].imagePath,
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) {
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    },
-                                  ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 20.0, right: 15, left: 15, bottom: 15),
+                          child: Row(
+                            children: [
+                              _favouritePastEventsModel.data[index].events
+                                          .eventPictures[0].imagePath
+                                          .toString()
+                                          .contains('.mp4') ||
+                                      _favouritePastEventsModel.data[index]
+                                          .events.eventPictures[0].imagePath
+                                          .toString()
+                                          .contains('.mov')
+                                  ? VideoPlayerScreemm(
+                                      url: MainUrl +
+                                          _favouritePastEventsModel
+                                              .data[index]
+                                              .events
+                                              .eventPictures[0]
+                                              .imagePath)
+                                  : SizedBox(
+                                      height: size.height * 0.17,
+                                      width: size.width * 0.3,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: CachedNetworkImage(
+                                          imageUrl: MainUrl +
+                                              _favouritePastEventsModel
+                                                  .data[index]
+                                                  .events
+                                                  .eventPictures[0]
+                                                  .imagePath,
+                                          fit: BoxFit.cover,
+                                          placeholder: (context, url) {
+                                            return const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: size.width * 0.35,
+                                      child: AutoSizeText(
+                                        _favouritePastEventsModel
+                                            .data[index].events.eventName,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 18),
+                                        maxFontSize: 16,
+                                        minFontSize: 15,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          FontAwesomeIcons.calendar,
+                                          size: 15,
+                                          color: Colors.black54,
+                                        ),
+                                        Text(
+                                          _favouritePastEventsModel
+                                              .data[index].events.eventDate,
+                                          style: const TextStyle(
+                                              color: Colors.black87),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          FontAwesomeIcons.mapMarkerAlt,
+                                          size: 15,
+                                          color: Colors.black54,
+                                        ),
+                                        Text(
+                                            _favouritePastEventsModel
+                                                    .data[index].km +
+                                                " " +
+                                                "away",
+                                            style: const TextStyle(
+                                                color: Colors.black87)),
+                                      ],
+                                    )
+                                  ],
                                 ),
                               ),
-                        Positioned(
-                          right: 20,
-                          left: size.width * 0.33,
-                          top: size.height * 0.02,
-                          child: Text(
-                            _favouritePastEventsModel
-                                .data[index].events.eventName,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w400, fontSize: 17),
-                          ),
-                        ),
-                        Positioned(
-                          top: size.height * 0.14,
-                          left: size.width * 0.33,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              const Icon(
-                                MdiIcons.calendarRange,
-                                size: 15,
-                                color: Colors.black54,
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                _favouritePastEventsModel
-                                    .data[index].events.location,
-                                style: const TextStyle(color: Colors.black87),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              const Icon(
-                                FontAwesomeIcons.mapMarkerAlt,
-                                size: 15,
-                                color: Colors.black54,
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                  _favouritePastEventsModel.data[index].km +
-                                      " " +
-                                      " " +
-                                      "away",
-                                  style:
-                                      const TextStyle(color: Colors.black87)),
-                            ],
-                          ),
-                        ),
-                        Positioned(
-                          top: size.height * 0.18,
-                          child: Row(
-                            children: [
-                              const Icon(
-                                LineAwesomeIcons.user_plus,
-                                size: 20,
-                                color: Colors.black54,
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Text(_favouritePastEventsModel
-                                  .data[index].events.user.followers.length
-                                  .toString()),
                             ],
                           ),
                         ),
                       ],
                     ),
                   ),
-                ),
-              );
-            }),
-          ),
-        );
+                );
+              }),
+            ));
       } else {
-        return Center(child: Text("No Upcoming Events"));
+        return const Center(child: Text("No Upcoming Events"));
       }
     } else {
-      return Center(child: Text("No Upcoming Events"));
+      return const Center(child: Text("No Upcoming Events"));
     }
   }
 }
