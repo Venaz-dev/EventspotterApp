@@ -109,7 +109,7 @@ class _FollowerState extends State<Follower> {
                                 ),
                               )
                             : const Center(
-                                child: Text("No Followers"),
+                                child: Text("No Followings"),
                               )
                       ],
                     ),

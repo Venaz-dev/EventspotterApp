@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:event_spotter/pages/timeago.dart';
@@ -10,10 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'chatscreen.dart';
 
 class Notifications extends StatefulWidget {
-  Channel channel;
   Notifications({
     Key? key,
-    required this.channel,
   }) : super(key: key);
 
   @override
@@ -153,8 +150,6 @@ class _NotificationsState extends State<Notifications> {
                                                                     ["toId"]),
                                                             name: data[index]
                                                                 ["name"],
-                                                            channel:
-                                                                widget.channel,
                                                           )));
                                             },
                                             child: Row(
@@ -364,7 +359,6 @@ class _NotificationsState extends State<Notifications> {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => ChatScreen(
                             id: search[index]['id'],
-                            channel: widget.channel,
                             name: search[index]['name'],
                           )));
                 },

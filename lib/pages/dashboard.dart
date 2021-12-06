@@ -1,14 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:developer';
 
-import 'package:event_spotter/models/ChatModel.dart';
 import 'package:event_spotter/pages/chat.dart';
 import 'package:event_spotter/pages/explore.dart';
 import 'package:event_spotter/pages/more.dart';
 import 'package:event_spotter/pages/notification.dart';
 import 'package:event_spotter/pages/profile.dart';
-import 'package:event_spotter/widgets/toaster.dart';
 import 'package:flutter/material.dart';
 import 'package:event_spotter/constant/colors.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,10 +12,8 @@ import 'package:pusher_client/pusher_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget {
-   String id;
-  Dashboard({
-    Key? key,required this.id
-  }) : super(key: key);
+  String id;
+  Dashboard({Key? key, required this.id}) : super(key: key);
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -35,48 +29,7 @@ class _DashboardState extends State<Dashboard> {
   StreamController<dynamic> chatStream = StreamController<dynamic>.broadcast();
   @override
   void initState() {
-    intiliaziePusher();
-    // TODO: implement initState
-    // channel.bind('send', (event) {
-    //   //  if(event!.data!['data']['to_user_id'] == '3')
-    //   if (jsonDecode(event!.data!)['data']['to_user_id'] == '3') {
-    //     hasMessaged = true;
-    //     setState(() {});
-    //   }
-    // });
     super.initState();
-  }
-
-  intiliaziePusher() {
-    pusher = PusherClient(
-      "d472b6d313e1bef33bb2",
-      PusherOptions(
-        host: 'https://theeventspotter.com',
-        encrypted: true,
-        cluster: 'ap2',
-      ),
-      enableLogging: true,
-    );
-    channel = pusher.subscribe("chat");
-
-    // channel!.bind(
-    //   'send',
-    //   (event) {
-    //     // ignore: avoid_print
-    //     print('hgkjhkjhkljhkljhkjhkjh');
-    //     log("SEND Event" + event!.data.toString());
-    //     var ss = (jsonDecode(event.data!));
-    //     ChatModel _chatModel = ChatModel.fromJson(ss);
-    //     if (ss['data']['to_user_id'] == widget.id) {
-    //       hasMessaged = true;
-    //       setState(() {});
-    //       print("Done inside //////////////////");
-    //       chatStream.sink.add(event.data);
-
-    //       showToaster1("${_chatModel.data.fromUserName} Send Message");
-    //     }
-    //   },
-    // );
   }
 
   @override
@@ -186,7 +139,7 @@ class _DashboardState extends State<Dashboard> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        body: getbody(pageindex, channel!),
+        body: getbody(pageindex),
         bottomNavigationBar: Container(
           height: size.height * 0.08,
           width: size.width * double.infinity,
@@ -231,12 +184,12 @@ class _DashboardState extends State<Dashboard> {
 
 getbody(
   int pageindex,
-  Channel channel1,
+  
 ) {
   List<Widget> pages = [
     const Explore(),
     Notifications(
-      channel: channel1,
+     
     ),
     const Noti(),
     const Profile(),

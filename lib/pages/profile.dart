@@ -926,7 +926,7 @@ class _ProfileState extends State<Profile> {
           profile_pic =
               "https://imgr.search.brave.com/agcf_54hKLs35Jr3YaOMycn250z6b8N8p1HEYsRqi8Q/fit/980/980/ce/1/aHR0cDovL2Nkbi5v/bmxpbmV3ZWJmb250/cy5jb20vc3ZnL2lt/Z18yMTgwOTAucG5n";
         }
-        print(lenght);
+       
         // print(MainUrl + _eventsModel.data[0].events.user.profilePicture.image);
       }
     } catch (e) {

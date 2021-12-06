@@ -87,6 +87,7 @@ class _SingupState extends State<Singup> {
                             children: [
                               Textform(
                                 isSecure: false,
+                                isreadonly: false,
                                 label: 'Full Name',
                                 controller: _fullname,
                                 icon: Icons.person,

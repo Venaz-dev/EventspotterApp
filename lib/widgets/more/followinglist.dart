@@ -49,23 +49,28 @@ class _FollowinglistState extends State<Followinglist> {
               padding: const EdgeInsets.only(bottom: 20, top: 10),
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      const Spacer(),
-                      IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.block,
-                          )),
-                      const Text(
-                        "UnFollow",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                  InkWell(
+                    onTap: () {
+                      unfollow(index);
+                    },
+                    child: Row(
+                      children: [
+                        const Spacer(),
+                        IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.block,
+                            )),
+                        const Text(
+                          "UnFollow",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   Row(
                     children: [
@@ -129,16 +134,21 @@ class _FollowinglistState extends State<Followinglist> {
     _sharedPreferences = await SharedPreferences.getInstance();
 
     _token = _sharedPreferences.getString('accessToken')!;
-    FormData formData = new FormData.fromMap({
+    FormData formData = FormData.fromMap({
       "id": widget.followingListModel.data[index].id,
     });
-    _dio.options.headers["Authorization"] = "Bearer ${_token}";
-    await _dio.post(unFollow, data: formData).then((value) {
-      if (value.data["success"] == true) {
-        showToaster(value.data["message"]);
-      } else {
-        print("error");
-      }
-    });
+    try {
+      _dio.options.headers["Authorization"] = "Bearer ${_token}";
+      await _dio.post(unFollow, data: formData).then((value) {
+        if (value.data["success"] == true) {
+          showToaster(value.data["message"]);
+          Navigator.pop(context);
+        } else {
+          print("error");
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

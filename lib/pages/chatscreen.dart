@@ -1,23 +1,23 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:event_spotter/models/ChatModel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_bubble/chat_bubble.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_6.dart';
 import 'package:pusher_client/pusher_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_chat_bubble/bubble_type.dart';
 
 class ChatScreen extends StatefulWidget {
   String name;
   int id;
-  Channel channel;
   // StreamController<dynamic> chatStream;
   ChatScreen({
     Key? key,
     required this.name,
     required this.id,
-    required this.channel,
   }) : super(key: key);
 
   @override
@@ -26,6 +26,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   bool isMe = true;
+  late Channel channel;
   final TextEditingController _writemessage = TextEditingController();
   late List<Map<String, dynamic>> chatList = [];
   late SharedPreferences _sharedPreferences;
@@ -40,18 +41,24 @@ class _ChatScreenState extends State<ChatScreen> {
   late String _name;
   late String masseageId;
 
+  bool isMaddy = true;
+
   late PusherClient pusher;
-  Dio _dio = Dio();
+  final Dio _dio = Dio();
   _buildMessageComposer() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
       height: 70.0,
-      color: Colors.white,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        //  borderRadius: BorderRadius.only(
+        //    topLeft: Radius.circular(20) , topRight : Radius.circular(20)),
+      ),
       child: Row(
         children: <Widget>[
           Expanded(
             child: TextFormField(
-            
+              controller: _writemessage,
               textCapitalization: TextCapitalization.sentences,
               onChanged: (value) {},
               decoration: const InputDecoration.collapsed(
@@ -59,20 +66,34 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.send),
-            iconSize: 25.0,
-            color: const Color(0XFF368890),
-            onPressed: () {
-              Map<String, dynamic> ssq = {
-                'content': _writemessage.text,
-                'toUserId': widget.id.toString(),
-                'already': 'true',
-              };
-              chatStream1.sink.add(jsonEncode(ssq));
-              // chatList.add(ssq);
-              sendMessage(_writemessage.text);
-            },
+          Container(
+            height: 35,
+            width: 35,
+            decoration: const BoxDecoration(
+                color: Color(0XFF17796F), shape: BoxShape.circle),
+            child: Align(
+              alignment: Alignment.center,
+              child: IconButton(
+                icon: const Icon(
+                  Icons.send,
+                  color: Colors.white,
+                ),
+                iconSize: 20.0,
+                color: const Color(0XFF368890),
+                onPressed: () {
+                  Map<String, dynamic> ssq = {
+                    'content': _writemessage.text,
+                    'toUserId': widget.id.toString(),
+                    'already': 'true',
+                  };
+                  isMaddy = false;
+                  setState(() {});
+                  chatStream1.sink.add(jsonEncode(ssq));
+                  // chatList.add(ssq);
+                  sendMessage(_writemessage.text);
+                },
+              ),
+            ),
           ),
         ],
       ),
@@ -91,7 +112,7 @@ class _ChatScreenState extends State<ChatScreen> {
     // });
     chatList = [];
     getMessages();
-    
+
     // TODO: implement initState
     // widget.channel.bind('chat', (event) {
     // ChatModel _chat = ChatModel.fromJson(jsonDecode(event!.data!));
@@ -112,9 +133,9 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0XFF368890),
+      backgroundColor: const Color(0XFF17796F),
       appBar: AppBar(
-        backgroundColor: const Color(0XFF368890),
+        backgroundColor: const Color(0XFF17796F),
         title: Text(
           widget.name,
           style: const TextStyle(
@@ -122,123 +143,126 @@ class _ChatScreenState extends State<ChatScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        elevation: 0.0,
+        elevation: 0.3,
       ),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height * 0.8,
+                width: double.infinity,
                 decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30.0),
-                    topRight: Radius.circular(30.0),
-                  ),
-                ),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(30.0),
-                    topRight: Radius.circular(30.0),
-                  ),
-                  child: StreamBuilder<dynamic>(
-                      stream: chatStream1.stream,
-                      builder: (context, AsyncSnapshot snapshot) {
-                        if (snapshot.hasError)
-                          return Text('error');
-                        else if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const SizedBox();
-                        }
-
-                        if (!(jsonDecode((snapshot.data)))
-                            .containsKey('already')) {
-                          ChatModel ssa =
-                              ChatModel.fromJson(jsonDecode(snapshot.data));
-                          Map<String, dynamic> js = {
-                            'content': ssa.data.content,
-                            'toUserId': ssa.data.toUserId,
-                          };
-                          chatList.add(js);
-                        } else {
-                          chatList.add(jsonDecode(snapshot.data));
-                        }
-                        return ListView.builder(
-                            reverse: false,
-                            
-                            itemCount: chatList.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                margin: chatList[index]['toUserId'] == _id
-                                    ? const EdgeInsets.only(
-                                        top: 8.0,
-                                        left: 80,
-                                        bottom: 8.0,
-                                      )
-                                    : const EdgeInsets.only(
-                                        top: 8.0,
-                                        right: 80.0,
-                                      ),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 25.0, vertical: 15.0),
-                                width: MediaQuery.of(context).size.width * 0.75,
-                                decoration: BoxDecoration(
-                                  color: chatList[index]['toUserId'] == _id
-                                      ? Colors.grey[350]
-                                      : Colors.grey[200],
-                                  borderRadius: isMe
-                                      ? const BorderRadius.only(
-                                          topRight: Radius.circular(15.0),
-                                          bottomLeft: Radius.circular(15.0),
-                                        )
-                                      : const BorderRadius.only(
-                                          topLeft: Radius.circular(15.0),
-                                          bottomRight: Radius.circular(15.0),
-                                        ),
-                                ),
-                                child: Column(
-                                  children: [
-                                    chatList[index]['toUserId'] == _id
-                                        // ignore: prefer_const_constructors
-                                        ? SizedBox(
-                                            child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                chatList[index]['content']!,
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16.0,
-                                                  fontWeight: FontWeight.w600,
+                    image: DecorationImage(
+                        image: AssetImage('Assets/images/chat_background.jpeg'),
+                        fit: BoxFit.cover)),
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(30.0),
+                          topRight: Radius.circular(30.0),
+                        ),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: StreamBuilder<dynamic>(
+                              stream: chatStream1.stream,
+                              builder: (context, AsyncSnapshot snapshot) {
+                                if (snapshot.hasError) {
+                                  return const Text('error');
+                                } else if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const CircularProgressIndicator();
+                                }
+                                if (!(jsonDecode((snapshot.data)))
+                                    .containsKey('already')) {
+                                  ChatModel ssa = ChatModel.fromJson(
+                                      jsonDecode(snapshot.data));
+                                  Map<String, dynamic> js = {
+                                    'content': ssa.data.content,
+                                    'toUserId': ssa.data.toUserId,
+                                  };
+                                  chatList.add(js);
+                                } else {
+                                  chatList.add(jsonDecode(snapshot.data));
+                                }
+                                return Column(
+                                    children:
+                                      
+                                        List.generate(chatList.length, (index) {
+                                          
+                                  return ChatBubble(
+                                    clipper: ChatBubbleClipper6(
+                                      type: chatList[index]['toUserId'] == _id
+                                          ? BubbleType.receiverBubble
+                                          : BubbleType.sendBubble,
+                                    ),
+                                    alignment:
+                                        chatList[index]['toUserId'] == _id
+                                            ? Alignment.topLeft
+                                            : Alignment.topRight,
+                                    margin: const EdgeInsets.only(
+                                      top: 10,
+                                    ),
+                                    backGroundColor:
+                                        chatList[index]['toUserId'] == _id
+                                            ? Colors.white
+                                            : Colors.green,
+                                    child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.3,
+                                        margin:
+                                            chatList[index]['toUserId'] == _id
+                                                ? const EdgeInsets.only(
+                                                    top: 5.0,
+                                                    bottom: 5.0,
+                                                  )
+                                                : const EdgeInsets.only(
+                                                    top: 5,
+                                                    bottom: 5.0,
+                                                  ),
+                                        child: chatList[index]['toUserId'] ==
+                                                _id
+                                            // ignore: prefer_const_constructors
+                                            ? Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  chatList[index]['content']!,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 16.0,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                          )
-                                        : Container(
-                                            child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                chatList[index]['content']!,
-                                                style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16.0,
-                                                  fontWeight: FontWeight.w600,
+                                              )
+                                            : Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  chatList[index]['content']!,
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16.0,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                          )
-                                  ],
-                                ),
-                              );
-                            });
-
-                        //  return _buildMessage("adsad", true);
-                      }),
+                                              )),
+                                  );
+                                }));
+                                // return const SizedBox(child: Text('asdf'),);
+                              }),
+                        )),
+                  ],
                 ),
               ),
-            ),
-            _buildMessageComposer(),
-          ],
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.1,
+                width: double.infinity,
+                child: _buildMessageComposer(),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -252,8 +276,6 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   getMessages() async {
-    print(widget.id);
-
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
     Map<String, String> qParams = {
@@ -263,32 +285,29 @@ class _ChatScreenState extends State<ChatScreen> {
     try {
       await _dio.get(getMessagesUrl, queryParameters: qParams).then((value) {
         print(value.data.toString());
-        late Map<String, dynamic> ss;
+        late Map<String, dynamic> ss = {
+          'content': 'Hllo',
+          'toUserId': 'asdf',
+          'already': 'true',
+        };
         if (value.statusCode == 200) {
           if (value.data['data'].length > 0) {
             masseageId = value.data['data'][0]['id'].toString();
-            for (int i = 0; i < value.data['data'].length; i++) {
+            int gg =  value.data['data'].length;
+            for (int i =gg-1; i >= 0; i--) {
               print(value.data['data'].length);
-              if (value.data['data'][i]['to_user'] == widget.id.toString()) {
-                Map<String, dynamic> ssq = {
-                  'content': value.data['data'][i]['content'],
-                  'toUserId': value.data['data'][i]['to_user'],
-                  'already': 'true',
-                };
-                chatList.add(ssq);
-                ss = ssq;
-                //  chatStream1.sink.add(jsonEncode(ssq));
-              } else {
-                Map<String, dynamic> ssq = {
-                  'content': value.data['data'][i]['content'],
-                  'toUserId': value.data['data'][i]['to_user'],
-                };
-                chatList.add(ssq);
-                ss = ssq;
-              }
+              // if (value.data['data'][i]['to_user'] == widget.id.toString()) {
+              ss = {
+                'content': value.data['data'][i]['content'],
+                'toUserId': value.data['data'][i]['to_user'],
+                'already': 'true',
+              };
+              chatList.add(ss);
+              // }
             }
+            // setState(() {});
             chatStream1.sink.add(jsonEncode(ss));
-            setState(() {});
+            // setState(() {});
           }
         }
       });
@@ -298,8 +317,8 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void sendMessage(String value) async {
-    _writemessage.clear();
     if (value != "") {
+      //_writemessage.clear();
       _sharedPreferences = await SharedPreferences.getInstance();
       _token = _sharedPreferences.getString('accessToken')!;
       _dio.options.headers["Authorization"] = "Bearer ${_token}";
@@ -307,7 +326,9 @@ class _ChatScreenState extends State<ChatScreen> {
           FormData.fromMap({"to_user": widget.id, "message": value});
       Response response = await _dio.post(sendMessageUrl, data: formData);
       if (response.statusCode == 200) {
+        _writemessage.clear();
         print("Data Send");
+        print(response.data);
       }
     } else {
       print("nul ka bacha");
@@ -326,8 +347,8 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       enableLogging: true,
     );
-
-    widget.channel.bind(
+    channel = pusher.subscribe('chat');
+    channel.bind(
       'send',
       (event) {
         // ignore: avoid_print
@@ -335,10 +356,9 @@ class _ChatScreenState extends State<ChatScreen> {
         log("SEND Event" + event!.data.toString());
         var ss = (jsonDecode(event.data!));
         ChatModel _chatModel = ChatModel.fromJson(ss);
-        if (ss['data']['to_user_id'] == _id) {
+        if (ss['data']['to_user_id'] == _id &&
+            ss['data']['from_user_id'] == widget.id) {
           chatStream1.sink.add(event.data);
-
-          //showToaster1("${_chatModel.data.fromUserName} Send Message");
         }
       },
     );
@@ -381,9 +401,9 @@ class _ChatScreenState extends State<ChatScreen> {
                 ss = ssq;
               }
             }
-            setState(() {
-              chatStream1.sink.add(jsonEncode(ss));
-            });
+
+            setState(() {});
+            chatStream1.sink.add(jsonEncode(ss));
           }
         }
       });

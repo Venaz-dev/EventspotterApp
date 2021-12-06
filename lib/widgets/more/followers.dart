@@ -148,14 +148,18 @@ class _FollowerlistState extends State<Followerlist> {
 
     _dio.options.headers["Authorization"] = "Bearer ${_token}";
     FormData formData = FormData.fromMap({
-      "id": widget.followerListModel.data[index].userId,
+      "id": widget.followerListModel.data[index].followingId,
     });
-    await _dio.post(unFollow, data: formData).then((value) {
-      if (value.data["success"] == true) {
-        showToaster(value.data["message"]);
-      } else {
-        print("error");
-      }
-    });
+    try {
+      await _dio.post(unFollow, data: formData).then((value) {
+        if (value.data["success"] == true) {
+          showToaster(value.data["message"]);
+        } else {
+          print("error");
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

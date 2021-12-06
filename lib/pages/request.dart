@@ -16,10 +16,11 @@ class _PendingrequestsState extends State<Pendingrequests> {
   String MainUrl = "https://theeventspotter.com/";
   String acceptRequestUrl =
       "https://theeventspotter.com/api/acceptFollowingRequest";
-      String declineRequestUrl =
+  String declineRequestUrl =
       "https://theeventspotter.com/api/cancelPendingRequest";
   late List request = [];
   bool _isLoading = true;
+  bool data = true;
   late String _token;
   late SharedPreferences _sharedPreferences;
   Dio _dio = Dio();
@@ -46,7 +47,9 @@ class _PendingrequestsState extends State<Pendingrequests> {
         ),
         body: _isLoading
             ? const Center(child: CircularProgressIndicator())
-            : Padding(
+            : 
+            data?
+            Padding(
                 padding: const EdgeInsets.all(20),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
@@ -128,7 +131,7 @@ class _PendingrequestsState extends State<Pendingrequests> {
                     }),
                   ),
                 ),
-              ),
+              ):const Center(child: Text("No Pending Request"),)
       ),
     );
   }
@@ -141,6 +144,7 @@ class _PendingrequestsState extends State<Pendingrequests> {
       Response response = await _dio.get(pendingUrl);
       if (response.statusCode == 200) {
         if (response.data["data"].length > 0) {
+          data = true;
           for (int j = 0; j < response.data["data"].length; j++) {
             if (response.data["data"][j]["user"]["profile_picture"] != null) {
               var js = {
@@ -161,6 +165,8 @@ class _PendingrequestsState extends State<Pendingrequests> {
               request.add(js);
             }
           }
+        } else {
+          data = false;
         }
       }
     } catch (e) {
