@@ -49,6 +49,7 @@ dependencies:
   #flutter_local_notifications: ^9.1.4
   image_picker: ^0.8.4+4
   shared_preferences: ^2.0.8
+  
   video_player: ^2.2.7
   pusher_client:
     git:
@@ -59,6 +60,7 @@ dependencies:
       ref: nullsafety
 dev_dependencies:
   auto_size_text: ^3.0.0-nullsafety.0
+  change_app_package_name: ^1.0.0
   
 
   # The "flutter_lints" package below contains a set of recommended lints to

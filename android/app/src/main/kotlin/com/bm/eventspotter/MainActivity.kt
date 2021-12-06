@@ -1,4 +1,4 @@
-package com.example.event_spotter
+package com.bm.eventspotter
 
 import io.flutter.embedding.android.FlutterActivity
 

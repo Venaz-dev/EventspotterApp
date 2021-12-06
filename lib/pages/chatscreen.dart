@@ -86,10 +86,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     'toUserId': widget.id.toString(),
                     'already': 'true',
                   };
-                  isMaddy = false;
-                  setState(() {});
                   chatStream1.sink.add(jsonEncode(ssq));
-                  // chatList.add(ssq);
                   sendMessage(_writemessage.text);
                 },
               ),
@@ -127,6 +124,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void dispose() {
     _writemessage.dispose();
     chatStream1.close();
+    
     super.dispose();
   }
 
