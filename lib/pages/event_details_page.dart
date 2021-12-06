@@ -4,6 +4,7 @@ import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/pages/explore.dart';
 import 'package:event_spotter/pages/uploadimage.dart';
+import 'package:event_spotter/pages/userprofile.dart';
 import 'package:event_spotter/widgets/elevatedbutton.dart';
 import 'package:event_spotter/widgets/explore/comment.dart';
 import 'package:event_spotter/widgets/explore/events.dart';
@@ -231,7 +232,19 @@ class _EventdetailingState extends State<Eventdetailing> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Button(
-                                onpressed: () {},
+                                onpressed: () {
+                                  Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  Eventposterprofile(
+                                                    id: widget
+                                                        .model!
+                                                        .data[widget.indexs!]
+                                                        .events
+                                                        .user
+                                                        .id,
+                                                  )));
+                                },
                                 title: widget.model!.data[widget.indexs!].events
                                     .user.name,
                                 radiusofbutton: BorderRadius.circular(20),
@@ -587,7 +600,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                                           .toString()
                                           .contains('.mov')
                                   ? VideoPlayerScreen(
-                                      url: MainUrl + Live[index])
+                                      url: MainUrl + Live[index].toString())
                                   : Container(
                                       height: size.height * 0.2,
                                       width: size.width * 0.3,

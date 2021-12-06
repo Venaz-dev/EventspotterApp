@@ -289,9 +289,9 @@ class _LoginScreenState extends State<LoginScreen> {
         //     'Profile_picture', _loginResponse.user.profilePicture.image);
         await _sharedPreferences.setString(
             'phone', _loginResponse.user.phoneNumber);
-
+        String _id = _sharedPreferences.getString('id')!;
         Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => Dashboard()));
+            MaterialPageRoute(builder: (context) => Dashboard(id: _id,)));
       } else {
         showToaster('Invalid Credentials');
       }
@@ -306,9 +306,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   getInitializedSharedPref() async {
     _sharedPreferences = await SharedPreferences.getInstance();
+   
     if (_sharedPreferences.containsKey('email')) {
+       String? _id = _sharedPreferences.getString('id');
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => Dashboard()));
+          MaterialPageRoute(builder: (context) => Dashboard(id: _id!,)));
     }
   }
 }

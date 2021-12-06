@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:event_spotter/models/ChatModel.dart';
@@ -11,14 +12,13 @@ class ChatScreen extends StatefulWidget {
   String name;
   int id;
   Channel channel;
-  StreamController<dynamic> chatStream;
-  ChatScreen(
-      {Key? key,
-      required this.name,
-      required this.id,
-      required this.channel,
-      required this.chatStream})
-      : super(key: key);
+  // StreamController<dynamic> chatStream;
+  ChatScreen({
+    Key? key,
+    required this.name,
+    required this.id,
+    required this.channel,
+  }) : super(key: key);
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -29,11 +29,18 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _writemessage = TextEditingController();
   late List<Map<String, dynamic>> chatList = [];
   late SharedPreferences _sharedPreferences;
+  StreamController<dynamic> chatStream1 = StreamController<dynamic>.broadcast();
   late String _token;
   String sendMessageUrl = "https://theeventspotter.com/api/send";
+  String getMessagesUrl =
+      "https://theeventspotter.com/api/load-latest-messages";
   late String _id;
+  String getMessageUrl = "https://theeventspotter.com/api/fetch-old-messages";
   late String _id1;
   late String _name;
+  late String masseageId;
+
+  late PusherClient pusher;
   Dio _dio = Dio();
   _buildMessageComposer() {
     return Container(
@@ -44,7 +51,7 @@ class _ChatScreenState extends State<ChatScreen> {
         children: <Widget>[
           Expanded(
             child: TextFormField(
-              controller: _writemessage,
+            
               textCapitalization: TextCapitalization.sentences,
               onChanged: (value) {},
               decoration: const InputDecoration.collapsed(
@@ -62,7 +69,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 'toUserId': widget.id.toString(),
                 'already': 'true',
               };
-              widget.chatStream.sink.add(jsonEncode(ssq));
+              chatStream1.sink.add(jsonEncode(ssq));
               // chatList.add(ssq);
               sendMessage(_writemessage.text);
             },
@@ -74,10 +81,17 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
+    intiliaziePusher();
     getSharepref();
-
-    getMessages();
+    // _scrollController.addListener(() {
+    //   if (_scrollController.position.pixels ==
+    //       _scrollController.position.minScrollExtent) {
+    //     getMoreMessages();
+    //   }
+    // });
     chatList = [];
+    getMessages();
+    
     // TODO: implement initState
     // widget.channel.bind('chat', (event) {
     // ChatModel _chat = ChatModel.fromJson(jsonDecode(event!.data!));
@@ -90,9 +104,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _writemessage.dispose();
-    widget.chatStream.isClosed;
+    chatStream1.close();
     super.dispose();
   }
 
@@ -130,12 +143,14 @@ class _ChatScreenState extends State<ChatScreen> {
                     topRight: Radius.circular(30.0),
                   ),
                   child: StreamBuilder<dynamic>(
-                      stream: widget.chatStream.stream,
+                      stream: chatStream1.stream,
                       builder: (context, AsyncSnapshot snapshot) {
                         if (snapshot.hasError)
                           return Text('error');
                         else if (snapshot.connectionState ==
-                            ConnectionState.waiting) return Text('waiting');
+                            ConnectionState.waiting) {
+                          return const SizedBox();
+                        }
 
                         if (!(jsonDecode((snapshot.data)))
                             .containsKey('already')) {
@@ -151,6 +166,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         }
                         return ListView.builder(
                             reverse: false,
+                            
                             itemCount: chatList.length,
                             itemBuilder: (context, index) {
                               return Container(
@@ -169,8 +185,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                 width: MediaQuery.of(context).size.width * 0.75,
                                 decoration: BoxDecoration(
                                   color: chatList[index]['toUserId'] == _id
-                                      ? Colors.red
-                                      : Colors.lightBlue,
+                                      ? Colors.grey[350]
+                                      : Colors.grey[200],
                                   borderRadius: isMe
                                       ? const BorderRadius.only(
                                           topRight: Radius.circular(15.0),
@@ -183,14 +199,14 @@ class _ChatScreenState extends State<ChatScreen> {
                                 ),
                                 child: Column(
                                   children: [
-                                    chatList[index]['toUserId'] == '1'
+                                    chatList[index]['toUserId'] == _id
                                         // ignore: prefer_const_constructors
                                         ? SizedBox(
-                                            child: const Align(
+                                            child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Text(
-                                                "Awais , my name is Awais, what is your name",
-                                                style: TextStyle(
+                                                chatList[index]['content']!,
+                                                style: const TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 16.0,
                                                   fontWeight: FontWeight.w600,
@@ -235,18 +251,144 @@ class _ChatScreenState extends State<ChatScreen> {
     _name = _sharedPreferences.getString('name')!;
   }
 
-  void getMessages() async {}
+  getMessages() async {
+    print(widget.id);
+
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _token = _sharedPreferences.getString('accessToken')!;
+    Map<String, String> qParams = {
+      'user_id': widget.id.toString(),
+    };
+    _dio.options.headers["Authorization"] = "Bearer $_token";
+    try {
+      await _dio.get(getMessagesUrl, queryParameters: qParams).then((value) {
+        print(value.data.toString());
+        late Map<String, dynamic> ss;
+        if (value.statusCode == 200) {
+          if (value.data['data'].length > 0) {
+            masseageId = value.data['data'][0]['id'].toString();
+            for (int i = 0; i < value.data['data'].length; i++) {
+              print(value.data['data'].length);
+              if (value.data['data'][i]['to_user'] == widget.id.toString()) {
+                Map<String, dynamic> ssq = {
+                  'content': value.data['data'][i]['content'],
+                  'toUserId': value.data['data'][i]['to_user'],
+                  'already': 'true',
+                };
+                chatList.add(ssq);
+                ss = ssq;
+                //  chatStream1.sink.add(jsonEncode(ssq));
+              } else {
+                Map<String, dynamic> ssq = {
+                  'content': value.data['data'][i]['content'],
+                  'toUserId': value.data['data'][i]['to_user'],
+                };
+                chatList.add(ssq);
+                ss = ssq;
+              }
+            }
+            chatStream1.sink.add(jsonEncode(ss));
+            setState(() {});
+          }
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   void sendMessage(String value) async {
     _writemessage.clear();
+    if (value != "") {
+      _sharedPreferences = await SharedPreferences.getInstance();
+      _token = _sharedPreferences.getString('accessToken')!;
+      _dio.options.headers["Authorization"] = "Bearer ${_token}";
+      FormData formData =
+          FormData.fromMap({"to_user": widget.id, "message": value});
+      Response response = await _dio.post(sendMessageUrl, data: formData);
+      if (response.statusCode == 200) {
+        print("Data Send");
+      }
+    } else {
+      print("nul ka bacha");
+    }
+  }
+
+  intiliaziePusher() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _id = _sharedPreferences.getString('id')!;
+    pusher = PusherClient(
+      "d472b6d313e1bef33bb2",
+      PusherOptions(
+        host: 'https://theeventspotter.com',
+        encrypted: true,
+        cluster: 'ap2',
+      ),
+      enableLogging: true,
+    );
+
+    widget.channel.bind(
+      'send',
+      (event) {
+        // ignore: avoid_print
+        print('hgkjhkjhkljhkljhkjhkjh');
+        log("SEND Event" + event!.data.toString());
+        var ss = (jsonDecode(event.data!));
+        ChatModel _chatModel = ChatModel.fromJson(ss);
+        if (ss['data']['to_user_id'] == _id) {
+          chatStream1.sink.add(event.data);
+
+          //showToaster1("${_chatModel.data.fromUserName} Send Message");
+        }
+      },
+    );
+  }
+
+  void getMoreMessages() async {
+    print(widget.id);
+
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
-    _dio.options.headers["Authorization"] = "Bearer ${_token}";
-    FormData formData =
-        FormData.fromMap({"to_user": widget.id, "message": value});
-    Response response = await _dio.post(sendMessageUrl, data: formData);
-    if (response.statusCode == 200) {
-      print("Data Send");
+    Map<String, String> qParams = {
+      'old_message_id': masseageId,
+      'to_user': widget.id.toString(),
+    };
+    _dio.options.headers["Authorization"] = "Bearer $_token";
+    try {
+      await _dio.get(getMessageUrl, queryParameters: qParams).then((value) {
+        print(value.data.toString());
+        late Map<String, dynamic> ss;
+        if (value.statusCode == 200) {
+          masseageId = value.data['data'][0]['id'].toString();
+          if (value.data['data'].length > 0) {
+            for (int i = 0; i < value.data['data'].length; i++) {
+              print(value.data['data'].length);
+              if (value.data['data'][i]['to_user'] == widget.id.toString()) {
+                Map<String, dynamic> ssq = {
+                  'content': value.data['data'][i]['content'],
+                  'toUserId': value.data['data'][i]['to_user'],
+                  'already': 'true',
+                };
+                chatList.add(ssq);
+                ss = ssq;
+                //  chatStream1.sink.add(jsonEncode(ssq));
+              } else {
+                Map<String, dynamic> ssq = {
+                  'content': value.data['data'][i]['content'],
+                  'toUserId': value.data['data'][i]['to_user'],
+                };
+                chatList.add(ssq);
+                ss = ssq;
+              }
+            }
+            setState(() {
+              chatStream1.sink.add(jsonEncode(ss));
+            });
+          }
+        }
+      });
+    } catch (e) {
+      print(e.toString());
     }
   }
 }

@@ -112,39 +112,32 @@ class FromUser {
   late final String allowDirectMessage;
   late final String profilePrivate;
   late final String lastSeen;
-   ProfilePicture? profilePicture;
+  late final ProfilePicture profilePicture;
   
   FromUser.fromJson(Map<String, dynamic> json){
     id = json['id'];
-    name = json['name']??"";
-    email = json['email']??"";
-    ipAddress = json['ip_address']??"";
-    latLng = json['lat_lng']??"";
-    isOnline = json['is_online']??"";
-    phoneNumber = json['phone_number']??"";
-    createdAt = json['created_at']??"";
-    updatedAt = json['updated_at']??"";
-    avatar = json['avatar']??"";
-    messengerColor = json['messenger_color']??"";
-    darkMode = json['dark_mode']??"";
-    activeStatus = json['active_status']??"";
-    mobileIsPrivate = json['mobile_is_private']??"";
-    role = json['role']??"";
+    name = json['name'];
+    email = json['email'];
+    ipAddress = json['ip_address'];
+    latLng = json['lat_lng'];
+    isOnline = json['is_online'];
+    emailVerifiedAt = null;
+    phoneNumber = json['phone_number'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    avatar = json['avatar'];
+    messengerColor = json['messenger_color'];
+    darkMode = json['dark_mode'];
+    activeStatus = json['active_status'];
+    profileImage = null;
+    mobileIsPrivate = json['mobile_is_private'];
+    role = json['role'];
+    isBlock = null;
     useLocation = json['use_location'];
-    allowDirectMessage = json['allow_direct_message']??"";
-    profilePrivate = json['profile_private']??"";
-    lastSeen = json['last_seen']??"";
-
-    if (json['profile_picture'] != null) {
-      profilePicture = (ProfilePicture.fromJson(json['profile_picture']));
-    } else {
-      profilePicture = ProfilePicture(
-          id: 0,
-          image: "images/user.jpeg",
-          userId: "0",
-          createdAt: "112",
-          updatedAt: "12332");
-    }
+    allowDirectMessage = json['allow_direct_message'];
+    profilePrivate = json['profile_private'];
+    lastSeen = json['last_seen'];
+    profilePicture = ProfilePicture.fromJson(json['profile_picture']);
   }
 
   Map<String, dynamic> toJson() {
@@ -171,7 +164,7 @@ class FromUser {
     _data['allow_direct_message'] = allowDirectMessage;
     _data['profile_private'] = profilePrivate;
     _data['last_seen'] = lastSeen;
-    _data['profile_picture'] = profilePicture;
+    _data['profile_picture'] = profilePicture.toJson();
     return _data;
   }
 }
@@ -193,9 +186,9 @@ class ProfilePicture {
   ProfilePicture.fromJson(Map<String, dynamic> json){
     id = json['id'];
     image = json['image'];
-    userId = json['user_id']??"";
-    createdAt = json['created_at']??"";
-    updatedAt = json['updated_at']??"";
+    userId = json['user_id'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {
@@ -233,7 +226,7 @@ class ToUser {
     required this.allowDirectMessage,
     required this.profilePrivate,
     required this.lastSeen,
-     this.profilePicture,
+    required this.profilePicture,
   });
   late final int id;
   late final String name;
@@ -257,7 +250,7 @@ class ToUser {
   late final String allowDirectMessage;
   late final String profilePrivate;
   late final String lastSeen;
-  late final ProfilePicture? profilePicture;
+  late final ProfilePicture profilePicture;
   
   ToUser.fromJson(Map<String, dynamic> json){
     id = json['id'];
@@ -282,7 +275,7 @@ class ToUser {
     allowDirectMessage = json['allow_direct_message'];
     profilePrivate = json['profile_private'];
     lastSeen = json['last_seen'];
-    profilePicture = null;
+    profilePicture = ProfilePicture.fromJson(json['profile_picture']);
   }
 
   Map<String, dynamic> toJson() {
@@ -309,7 +302,7 @@ class ToUser {
     _data['allow_direct_message'] = allowDirectMessage;
     _data['profile_private'] = profilePrivate;
     _data['last_seen'] = lastSeen;
-    _data['profile_picture'] = profilePicture;
+    _data['profile_picture'] = profilePicture.toJson();
     return _data;
   }
 }

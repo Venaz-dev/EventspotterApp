@@ -32,7 +32,7 @@ class Data {
   });
   late final FromUser fromUser;
   late final ToUser toUser;
-  late final String content;
+   String ?content;
   late final String updatedAt;
   late final String createdAt;
   late final int id;
@@ -46,7 +46,7 @@ class Data {
   Data.fromJson(Map<String, dynamic> json) {
     fromUser = FromUser.fromJson(json['from_user']);
     toUser = ToUser.fromJson(json['to_user']);
-    content = json['content'];
+    content = json['content']??"No";
     updatedAt = json['updated_at'];
     createdAt = json['created_at'];
     id = json['id'];
