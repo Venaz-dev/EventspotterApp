@@ -617,7 +617,7 @@ class _ExploreState extends State<Explore> {
         item,
         style: const TextStyle(color: Colors.black, fontSize: 16),
       ));
-  void getLocation() async {
+   getLocation() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     print(position);
@@ -627,7 +627,7 @@ class _ExploreState extends State<Explore> {
       latlong = Lat! + "," + long;
     });
     print(latlong);
-    await locationpost();
+     locationpost();
   }
 
   void getInitializedSharedPref() async {

@@ -84,7 +84,6 @@ class _ChatScreenState extends State<ChatScreen> {
                   Map<String, dynamic> ssq = {
                     'content': _writemessage.text,
                     'toUserId': widget.id.toString(),
-                    'already': 'true',
                   };
                   chatStream1.sink.add(jsonEncode(ssq));
                   sendMessage(_writemessage.text);
@@ -109,7 +108,9 @@ class _ChatScreenState extends State<ChatScreen> {
     // });
     chatList = [];
     getMessages();
-
+    chatStream1.stream.listen((event) {
+      chatList.add(jsonDecode(event));
+    });
     // TODO: implement initState
     // widget.channel.bind('chat', (event) {
     // ChatModel _chat = ChatModel.fromJson(jsonDecode(event!.data!));
@@ -124,7 +125,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void dispose() {
     _writemessage.dispose();
     chatStream1.close();
-    
+
     super.dispose();
   }
 
@@ -173,23 +174,10 @@ class _ChatScreenState extends State<ChatScreen> {
                                     ConnectionState.waiting) {
                                   return const CircularProgressIndicator();
                                 }
-                                if (!(jsonDecode((snapshot.data)))
-                                    .containsKey('already')) {
-                                  ChatModel ssa = ChatModel.fromJson(
-                                      jsonDecode(snapshot.data));
-                                  Map<String, dynamic> js = {
-                                    'content': ssa.data.content,
-                                    'toUserId': ssa.data.toUserId,
-                                  };
-                                  chatList.add(js);
-                                } else {
-                                  chatList.add(jsonDecode(snapshot.data));
-                                }
+
                                 return Column(
                                     children:
-                                      
                                         List.generate(chatList.length, (index) {
-                                          
                                   return ChatBubble(
                                     clipper: ChatBubbleClipper6(
                                       type: chatList[index]['toUserId'] == _id
@@ -291,20 +279,20 @@ class _ChatScreenState extends State<ChatScreen> {
         if (value.statusCode == 200) {
           if (value.data['data'].length > 0) {
             masseageId = value.data['data'][0]['id'].toString();
-            int gg =  value.data['data'].length;
-            for (int i =gg-1; i >= 0; i--) {
+            int gg = value.data['data'].length;
+            for (int i = gg - 1; i >= 0; i--) {
               print(value.data['data'].length);
               // if (value.data['data'][i]['to_user'] == widget.id.toString()) {
               ss = {
                 'content': value.data['data'][i]['content'],
                 'toUserId': value.data['data'][i]['to_user'],
-                'already': 'true',
               };
-              chatList.add(ss);
+              chatStream1.sink.add(jsonEncode(ss));
+
+              // chatList.add(ss);
               // }
             }
             // setState(() {});
-            chatStream1.sink.add(jsonEncode(ss));
             // setState(() {});
           }
         }
@@ -353,63 +341,19 @@ class _ChatScreenState extends State<ChatScreen> {
         print('hgkjhkjhkljhkljhkjhkjh');
         log("SEND Event" + event!.data.toString());
         var ss = (jsonDecode(event.data!));
-        ChatModel _chatModel = ChatModel.fromJson(ss);
         if (ss['data']['to_user_id'] == _id &&
             ss['data']['from_user_id'] == widget.id) {
-          chatStream1.sink.add(event.data);
+          Map<String, dynamic> ssq = {
+            'content': ss['data']['content'],
+            'toUserId': _id,
+          };
+          chatStream1.sink.add(jsonEncode(ssq));
         }
       },
     );
   }
-
-  void getMoreMessages() async {
-    print(widget.id);
-
-    _sharedPreferences = await SharedPreferences.getInstance();
-    _token = _sharedPreferences.getString('accessToken')!;
-    Map<String, String> qParams = {
-      'old_message_id': masseageId,
-      'to_user': widget.id.toString(),
-    };
-    _dio.options.headers["Authorization"] = "Bearer $_token";
-    try {
-      await _dio.get(getMessageUrl, queryParameters: qParams).then((value) {
-        print(value.data.toString());
-        late Map<String, dynamic> ss;
-        if (value.statusCode == 200) {
-          masseageId = value.data['data'][0]['id'].toString();
-          if (value.data['data'].length > 0) {
-            for (int i = 0; i < value.data['data'].length; i++) {
-              print(value.data['data'].length);
-              if (value.data['data'][i]['to_user'] == widget.id.toString()) {
-                Map<String, dynamic> ssq = {
-                  'content': value.data['data'][i]['content'],
-                  'toUserId': value.data['data'][i]['to_user'],
-                  'already': 'true',
-                };
-                chatList.add(ssq);
-                ss = ssq;
-                //  chatStream1.sink.add(jsonEncode(ssq));
-              } else {
-                Map<String, dynamic> ssq = {
-                  'content': value.data['data'][i]['content'],
-                  'toUserId': value.data['data'][i]['to_user'],
-                };
-                chatList.add(ssq);
-                ss = ssq;
-              }
-            }
-
-            setState(() {});
-            chatStream1.sink.add(jsonEncode(ss));
-          }
-        }
-      });
-    } catch (e) {
-      print(e.toString());
-    }
-  }
 }
+
 
 // import 'dart:convert';
 // import 'package:file_picker/file_picker.dart';

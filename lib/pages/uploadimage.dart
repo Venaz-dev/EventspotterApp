@@ -160,7 +160,7 @@ class _UploadimageState extends State<Uploadimage> {
                 height: 20,
               ),
               Textform(
-                //   isSecure: false,
+                  isSecure: false,
                 isreadonly: false,
                 input: true,
                 label: "Snap Description",

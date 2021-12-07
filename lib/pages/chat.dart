@@ -73,9 +73,9 @@ class _NotificationsState extends State<Notifications> {
             ? const Center(child: CircularProgressIndicator())
             : Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(
+                child: RefreshIndicator(
+                  onRefresh: () => getMessageHistory(),
+                  child: ListView(
                     children: [
                       SizedBox(
                         width: size.width * 0.9,
@@ -261,15 +261,16 @@ class _NotificationsState extends State<Notifications> {
         if (response.data['data'].length > 0) {
           for (int i = 0; i < response.data['data'].length; i++) {
             if (response.data['data'][i]['to_user']['profile_picture']
-                    ['image'] !=
+                   !=
                 null) {
               var js = {
                 'img': response.data['data'][i]['to_user']['profile_picture']
                     ['image'],
                 'userId': response.data['data'][i]['to_user']['name'],
-                'message': "hello",
+                'message': response.data['data'][i]['content'],
                 'toId': response.data['data'][i]['to_user']['id'].toString(),
                 'createdAt': response.data['data'][i]['created_at'],
+                
                 'name': response.data['data'][i]['to_user']['name']
               };
               data.add(js);
@@ -285,6 +286,8 @@ class _NotificationsState extends State<Notifications> {
               data.add(js);
             }
           }
+        } else {
+          print("no data");
         }
       }
     } catch (e) {

@@ -88,7 +88,7 @@ class _SingupState extends State<Singup> {
                               Textform(
                                 isSecure: false,
                                 isreadonly: false,
-                                label: 'Full Name',
+                                label: 'User Name',
                                 controller: _fullname,
                                 icon: Icons.person,
                                 color: const Color(0XFFEBF2F2),

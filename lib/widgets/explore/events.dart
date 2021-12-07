@@ -146,7 +146,7 @@ class _EventssState extends State<Eventss> {
                                       imageUrl: MainUrl +
                                           widget.eventsModel.data[index].events
                                               .eventPictures[0].imagePath,
-                                      fit: BoxFit.cover,
+                                      fit: BoxFit.fill,
                                       placeholder: (context, url) {
                                         return const Center(
                                           child: CircularProgressIndicator(),

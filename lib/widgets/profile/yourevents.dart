@@ -4,6 +4,7 @@ import 'package:event_spotter/models/userDraftEvents.dart';
 import 'package:event_spotter/models/userPastEvents.dart';
 import 'package:event_spotter/models/userUpcomingEvent.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
+import 'package:event_spotter/pages/draft.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -623,108 +624,133 @@ class _YoureventsState extends State<Yourevents> {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: List.generate(_getUserDraftEvents.data.length, (index) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 20.0, left: 20),
-              child: Container(
-                // width: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: const [
-                      BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 10,
-                          spreadRadius: 2)
-                    ]),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 20.0, right: 15, left: 15, bottom: 15),
-                  child: Row(
-                    children: [
-                      _getUserDraftEvents.data[index].eventPictures[0].imagePath
-                                  .toString()
-                                  .contains('.mp4') ||
-                              _getUserDraftEvents
-                                  .data[index].eventPictures[0].imagePath
-                                  .toString()
-                                  .contains('.mov')
-                          ? VideoPlayerScreennn(
-                              url: MainUrl +
-                                  _getUserDraftEvents
-                                      .data[index].eventPictures[0].imagePath)
-                          : SizedBox(
-                              height: widget.size.height * 0.17,
-                              width: widget.size.width * 0.3,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: CachedNetworkImage(
-                                  imageUrl: MainUrl +
-                                      _getUserDraftEvents.data[index]
-                                          .eventPictures[0].imagePath,
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  },
+            return InkWell(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => Draftsedit(
+                               eventname:
+                                    _getUserDraftEvents.data[index].eventName,
+                                date: _getUserDraftEvents.data[index].eventDate,
+                                placename:
+                                    _getUserDraftEvents.data[index].location,
+                                imagepath: _getUserDraftEvents
+                                    .data[index].eventPictures[0].imagePath,
+                                videopath: _getUserDraftEvents
+                                    .data[index].eventPictures[0].imagePath,
+                                eventdescription: _getUserDraftEvents
+                                    .data[index].eventDescription,
+                                conditions:
+                                    _getUserDraftEvents.data[index].conditions,
+                                eventprivaacy:
+                                    _getUserDraftEvents.data[index].isPublic,
+                                    lat: _getUserDraftEvents.data[index].lat,
+                                    log: _getUserDraftEvents.data[index].lng,
+                                    type: _getUserDraftEvents.data[index].eventType,
+                                    ticketlink: _getUserDraftEvents.data[index].ticketLink,)));
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20.0, left: 20),
+                child: Container(
+                  // width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: const [
+                        BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 10,
+                            spreadRadius: 2)
+                      ]),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 20.0, right: 15, left: 15, bottom: 15),
+                    child: Row(
+                      children: [
+                        _getUserDraftEvents.data[index].eventPictures[0].imagePath
+                                    .toString()
+                                    .contains('.mp4') ||
+                                _getUserDraftEvents
+                                    .data[index].eventPictures[0].imagePath
+                                    .toString()
+                                    .contains('.mov')
+                            ? VideoPlayerScreennn(
+                                url: MainUrl +
+                                    _getUserDraftEvents
+                                        .data[index].eventPictures[0].imagePath)
+                            : SizedBox(
+                                height: widget.size.height * 0.17,
+                                width: widget.size.width * 0.3,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: CachedNetworkImage(
+                                    imageUrl: MainUrl +
+                                        _getUserDraftEvents.data[index]
+                                            .eventPictures[0].imagePath,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
-                            ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: size.width * 0.35,
-                              child: AutoSizeText(
-                                _getUserDraftEvents.data[index].eventName,
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 18),
-                                maxFontSize: 16,
-                                minFontSize: 15,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: size.width * 0.35,
+                                child: AutoSizeText(
+                                  _getUserDraftEvents.data[index].eventName,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 18),
+                                  maxFontSize: 16,
+                                  minFontSize: 15,
+                                ),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              children: [
-                                const Icon(
-                                  FontAwesomeIcons.calendar,
-                                  size: 15,
-                                  color: Colors.black54,
-                                ),
-                                Text(
-                                  _getUserDraftEvents.data[index].eventDate,
-                                  style: const TextStyle(color: Colors.black87),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              children: [
-                                const Icon(
-                                  FontAwesomeIcons.mapMarkerAlt,
-                                  size: 15,
-                                  color: Colors.black54,
-                                ),
-                                // Text(
-                                //     _getUserDraftEvents.data[index]. +
-                                //         " " +
-                                //         "away",
-                                //     style:
-                                //         const TextStyle(color: Colors.black87)),
-                              ],
-                            )
-                          ],
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    FontAwesomeIcons.calendar,
+                                    size: 15,
+                                    color: Colors.black54,
+                                  ),
+                                  Text(
+                                    _getUserDraftEvents.data[index].eventDate,
+                                    style: const TextStyle(color: Colors.black87),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    FontAwesomeIcons.mapMarkerAlt,
+                                    size: 15,
+                                    color: Colors.black54,
+                                  ),
+                                  // Text(
+                                  //     _getUserDraftEvents.data[index]. +
+                                  //         " " +
+                                  //         "away",
+                                  //     style:
+                                  //         const TextStyle(color: Colors.black87)),
+                                ],
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
