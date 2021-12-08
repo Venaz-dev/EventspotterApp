@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:event_spotter/pages/timeago.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
-import 'package:pusher_client/pusher_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'chatscreen.dart';
@@ -74,7 +73,11 @@ class _NotificationsState extends State<Notifications> {
             : Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: RefreshIndicator(
-                  onRefresh: () => getMessageHistory(),
+                  onRefresh: () {
+                    data.clear();
+                    setState(() {});
+                    return getMessageHistory();
+                  },
                   child: ListView(
                     children: [
                       SizedBox(
@@ -82,7 +85,9 @@ class _NotificationsState extends State<Notifications> {
                         child: Textform(
                           onchange: (listen) {
                             if (_search.text.length >= 3) {
+                              search.clear();
                               searchApiCall();
+                              setState(() {});
                               if (_search.text.length == 0) {
                                 search.clear();
                               }
@@ -260,8 +265,7 @@ class _NotificationsState extends State<Notifications> {
       if (response.statusCode == 200) {
         if (response.data['data'].length > 0) {
           for (int i = 0; i < response.data['data'].length; i++) {
-            if (response.data['data'][i]['to_user']['profile_picture']
-                   !=
+            if (response.data['data'][i]['to_user']['profile_picture'] !=
                 null) {
               var js = {
                 'img': response.data['data'][i]['to_user']['profile_picture']
@@ -270,7 +274,6 @@ class _NotificationsState extends State<Notifications> {
                 'message': response.data['data'][i]['content'],
                 'toId': response.data['data'][i]['to_user']['id'].toString(),
                 'createdAt': response.data['data'][i]['created_at'],
-                
                 'name': response.data['data'][i]['to_user']['name']
               };
               data.add(js);
@@ -313,6 +316,7 @@ class _NotificationsState extends State<Notifications> {
       await _dio.get(searchUrl, queryParameters: qParams).then((value) {
         print(value.data);
         if (value.statusCode == 200) {
+          search.clear();
           if (value.data.isNotEmpty) {
             for (int i = 0; i < value.data.length; i++) {
               if (value.data[i]['profile_picture'] != null) {

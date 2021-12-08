@@ -870,9 +870,9 @@ class _ProfileState extends State<Profile> {
     print(response.data.toString());
     if (response.data["success"] == true) {
       showToaster('Logged out');
-      setState(() {
+  
         _isLoading = false;
-      });
+      
     } else {
       print("error with logout");
       showToaster('Error!');

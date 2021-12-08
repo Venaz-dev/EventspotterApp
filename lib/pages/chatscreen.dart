@@ -114,23 +114,12 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     intiliaziePusher();
     getSharepref();
-    // _scrollController.addListener(() {
-    //   if (_scrollController.position.pixels ==
-    //       _scrollController.position.minScrollExtent) {
-    //     getMoreMessages();
-    //   }
-    // });
-    chatList = [];
+    chatList.clear();
+
     getMessages();
     chatStream1.stream.listen((event) {
       chatList.add(jsonDecode(event));
     });
-    // TODO: implement initState
-    // widget.channel.bind('chat', (event) {
-    // ChatModel _chat = ChatModel.fromJson(jsonDecode(event!.data!));
-    // chatList.add(_chat);
-    // widget.chatStream.sink.add(event!.data!);
-    // });
 
     super.initState();
   }
@@ -138,7 +127,9 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void dispose() {
     _writemessage.dispose();
+    channel.unbind('send');
     isLoading.close();
+    chatStream1.sink.close();
     chatStream1.close();
 
     super.dispose();
@@ -303,9 +294,6 @@ class _ChatScreenState extends State<ChatScreen> {
                 'toUserId': value.data['data'][i]['to_user'],
               };
               chatStream1.sink.add(jsonEncode(ss));
-
-              // chatList.add(ss);
-              // }
             }
             // setState(() {});
             // setState(() {});

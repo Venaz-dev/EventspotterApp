@@ -12,7 +12,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 enum screens { explore, filter }
 
 class Explore extends StatefulWidget {
@@ -23,8 +22,6 @@ class Explore extends StatefulWidget {
 }
 
 class _ExploreState extends State<Explore> {
-  
-
   String? latlong;
   String? Lat;
   String? _name;
@@ -617,7 +614,7 @@ class _ExploreState extends State<Explore> {
         item,
         style: const TextStyle(color: Colors.black, fontSize: 16),
       ));
-   getLocation() async {
+  getLocation() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     print(position);
@@ -627,7 +624,7 @@ class _ExploreState extends State<Explore> {
       latlong = Lat! + "," + long;
     });
     print(latlong);
-     locationpost();
+    locationpost();
   }
 
   void getInitializedSharedPref() async {
@@ -706,14 +703,16 @@ class _ExploreState extends State<Explore> {
     // ignore: avoid_print
     print("Location section ");
     print(_token);
-    // FormData formData = new FormData.fromMap({
-    //   "lat_lng": latlong,
-    // });
+    FormData formData = FormData.fromMap({
+      "lat_lng": latlong,
+    });
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _token = _sharedPreferences.getString('accessToken')!;
     _dio.options.headers["Authorization"] = "Bearer ${_token}";
 
     response = await _dio.post(
       urlLocation,
-      data: {'lat_lng': latlong},
+      data: formData,
     );
     print(response.toString());
   }
@@ -733,6 +732,8 @@ class _ExploreState extends State<Explore> {
       await _dio.get(searchUrl, queryParameters: qParams).then((value) {
         print(value.data);
         if (response.statusCode == 200) {
+          search.clear();
+
           if (value.data.isNotEmpty) {
             for (int i = 0; i < value.data.length; i++) {
               if (value.data[i]['profile_picture'] != null) {

@@ -74,6 +74,7 @@ class _EventssState extends State<Eventss> {
     // String description = "new year party at local park";
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Livefeeds(eventsLiveFeeds: widget.eventsLiveFeed, test: test),
         const SizedBox(
