@@ -98,7 +98,7 @@ class _DraftseditState extends State<Draftsedit> {
     eventDescription.dispose();
     venue.dispose();
     conditionss.dispose();
-    public = int.parse(widget.eventprivaacy);
+    
     link.dispose();
     super.dispose();
   }
@@ -111,11 +111,13 @@ class _DraftseditState extends State<Draftsedit> {
     imagePath = File(widget.imagepath);
     latt = widget.lat;
     longg = widget.log;
+    public = int.parse(widget.eventprivaacy);
     link = TextEditingController(text: widget.ticketlink);;
-    value = widget.type;
+    //value = widget.type;
     conditions = widget.conditions;
-
+    getEventTypes();
     passingString();
+    formatted = formatter.format(now);
   }
 
   @override
@@ -174,7 +176,7 @@ class _DraftseditState extends State<Draftsedit> {
                         width: double.infinity,
                         child: Column(
                           children: [
-                            VideoPlayerScree1(url: widget.videopath),
+                            VideoPlayerScree1(url: MainUrl+imagePath!.path),
                             Flexible(
                               child: Padding(
                                 padding: const EdgeInsets.only(bottom: 10.0),
@@ -281,7 +283,7 @@ class _DraftseditState extends State<Draftsedit> {
                           width: 20,
                         ),
                         Text(
-                          widget.date,
+                          formatted,
                           style: const TextStyle(
                               color: Colors.white, fontSize: 18),
                           textAlign: TextAlign.center,
@@ -487,7 +489,7 @@ class _DraftseditState extends State<Draftsedit> {
                         onpressed: () async {
                           if (eventname.text.isEmpty ||
                               eventDescription.text.isEmpty ||
-                              venuee.contains("Not Selected") ||
+                              
                               imagePath == null ||
                               conditions.isEmpty) {
                             showToaster("Please fill all the above fields");

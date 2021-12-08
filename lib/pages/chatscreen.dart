@@ -27,6 +27,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   bool isMe = true;
   late Channel channel;
+  final StreamController<bool> isLoading = StreamController<bool>();
   final TextEditingController _writemessage = TextEditingController();
   late List<Map<String, dynamic>> chatList = [];
   late SharedPreferences _sharedPreferences;
@@ -73,22 +74,35 @@ class _ChatScreenState extends State<ChatScreen> {
                 color: Color(0XFF17796F), shape: BoxShape.circle),
             child: Align(
               alignment: Alignment.center,
-              child: IconButton(
-                icon: const Icon(
-                  Icons.send,
-                  color: Colors.white,
-                ),
-                iconSize: 20.0,
-                color: const Color(0XFF368890),
-                onPressed: () {
-                  Map<String, dynamic> ssq = {
-                    'content': _writemessage.text,
-                    'toUserId': widget.id.toString(),
-                  };
-                  chatStream1.sink.add(jsonEncode(ssq));
-                  sendMessage(_writemessage.text);
-                },
-              ),
+              child: StreamBuilder<bool>(
+                  stream: isLoading.stream,
+                  initialData: false,
+                  builder: (context, AsyncSnapshot<bool> snapshot) {
+                    if (snapshot.hasData) {
+                      return IconButton(
+                        icon: snapshot.data!
+                            ? const Center(child: CircularProgressIndicator())
+                            : const Icon(
+                                Icons.send,
+                                color: Colors.white,
+                              ),
+                        iconSize: 20.0,
+                        color: const Color(0XFF368890),
+                        onPressed: () {
+                          Map<String, dynamic> ssq = {
+                            'content': _writemessage.text,
+                            'toUserId': widget.id.toString(),
+                          };
+                          chatStream1.sink.add(jsonEncode(ssq));
+                          isLoading.sink.add(true);
+                          // setState(() {});
+                          sendMessage(_writemessage.text);
+                        },
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  }),
             ),
           ),
         ],
@@ -124,6 +138,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void dispose() {
     _writemessage.dispose();
+    isLoading.close();
     chatStream1.close();
 
     super.dispose();
@@ -318,7 +333,9 @@ class _ChatScreenState extends State<ChatScreen> {
       }
     } else {
       print("nul ka bacha");
+      // setState(() {});
     }
+    isLoading.sink.add(false);
   }
 
   intiliaziePusher() async {
