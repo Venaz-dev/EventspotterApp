@@ -285,8 +285,7 @@ class _ExploreState extends State<Explore> {
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Padding(
-                  padding: EdgeInsets.only(
-                      top: size.height * 0.02,left : 5),
+                  padding: EdgeInsets.only(top: size.height * 0.02, left: 5),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Column(
@@ -666,6 +665,7 @@ class _ExploreState extends State<Explore> {
               var js = {
                 'img': eventsModel.data[i].events.liveFeed[j].path,
                 'km': km,
+                'eventId': eventsModel.data[i].events.liveFeed[j].eventId
               };
 
               eventsLiveFeed.add(js);
@@ -799,7 +799,6 @@ class Button extends StatelessWidget {
             height: 30,
             width: 30,
             decoration: BoxDecoration(
-              
               shape: BoxShape.circle,
               image: DecorationImage(
                   image: NetworkImage(profileImage!), fit: BoxFit.cover),

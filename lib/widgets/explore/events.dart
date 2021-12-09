@@ -80,7 +80,9 @@ class _EventssState extends State<Eventss> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Livefeeds(eventsLiveFeeds: widget.eventsLiveFeed, test: test),
+        Livefeeds(eventsLiveFeeds: widget.eventsLiveFeed, test: test,
+        eventsModel: widget.eventsModel,
+        ),
         const SizedBox(
           height: 20,
         ),

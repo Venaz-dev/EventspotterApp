@@ -2,17 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
-import 'package:event_spotter/pages/explore.dart';
 import 'package:event_spotter/pages/timeago.dart';
 import 'package:event_spotter/pages/uploadimage.dart';
-import 'package:event_spotter/pages/userprofile.dart';
 import 'package:event_spotter/widgets/elevatedbutton.dart';
 import 'package:event_spotter/widgets/explore/comment.dart';
 import 'package:event_spotter/widgets/explore/events.dart';
 import 'package:event_spotter/widgets/explore/livefeed.dart';
 import 'package:event_spotter/widgets/map.dart';
 import 'package:event_spotter/widgets/smallbutton.dart';
-import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:event_spotter/widgets/toaster.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -26,12 +23,14 @@ enum livefeed { details, livesnaps }
 class Eventdetailing extends StatefulWidget {
   EventsModel? model;
   final int? indexs;
+   int? eventId;
   String id;
   Eventdetailing({
     Key? key,
     //  this.networkImage, this.isfollow, this.uploaderName, this.uploaderimage, this.followers, this.takingplace, this.distance, required this.description, this.like, this.comment, this.share, this.views
     @required this.model,
     required this.id,
+    this.eventId,
     this.indexs,
   }) : super(key: key);
 
@@ -590,13 +589,17 @@ class _EventdetailingState extends State<Eventdetailing> {
                               height: 40,
                               child: time1(widget.indexs!, index),
                             ),
+                             widget.model!.data[widget.indexs!].events
+                                          .userId ==
+                                      widget.id
+                                  ? 
                             IconButton(
                               onPressed: () async {
                                 await showpopup(index);
                               },
                               icon: const Icon(Icons.delete,
                                   size: 20, color: Color(0XFF368890)),
-                            ),
+                            ):const SizedBox(),
                           ],
                         ),
                       ),

@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:event_spotter/models/eventsModel.dart';
+import 'package:event_spotter/pages/event_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class Livefeeds extends StatefulWidget {
-  Livefeeds({Key? key, required this.eventsLiveFeeds, required this.test})
+  Livefeeds({Key? key, required this.eventsLiveFeeds, required this.test,required this.eventsModel})
       : super(key: key);
   bool test;
+  EventsModel eventsModel;
   late List eventsLiveFeeds;
 
   @override
@@ -23,19 +26,6 @@ class _LivefeedsState extends State<Livefeeds> {
     super.initState();
     lenght = widget.eventsLiveFeeds.length;
     print("Live feeds lenght=$lenght");
-    // print(widget.eventsLiveFeeds[0]);
-    // print('hello g $lenght');
-    //lenght = lenght - 1;
-    // print(lenght);
-    // _controller = VideoPlayerController.network(
-    //     MainUrl + widget.eventsLiveFeeds[1]['img']);
-
-    // _controller.addListener(() {
-    //   setState(() {});
-    // });
-    // _controller.setLooping(true);
-    // controller.initialize().then(() => setState(() {}));
-    // _controller.play();
   }
 
   @override
@@ -71,41 +61,52 @@ class _LivefeedsState extends State<Livefeeds> {
                           borderRadius: BorderRadius.circular(15),
                           //  color: Colors.red,
                         ),
-                        child: Stack(
-                          children: [
-                            widget.eventsLiveFeeds[index]
-                                            ['img'] //////////////////////////
-                                        .toString()
-                                        .contains('.mp4') ||
-                                    widget.eventsLiveFeeds[index]
-                                            ['img'] //////////////////////////
-                                        .toString()
-                                        .contains('.mov')
-                                ? VideoPlayerScreen(
-                                    url: MainUrl +
-                                        widget.eventsLiveFeeds[index]['img'])
-                                : Container(
-                                    height: size.height * 0.2,
-                                    width: size.width * 0.3,
-                                    decoration: BoxDecoration(
-                                      // color: Colors.red,
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: ClipRRect(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => Eventdetailing(
+                                      model: widget.eventsModel,
+                                      indexs: index,
+                                      id: widget.eventsLiveFeeds[index]['eventId'],
+                                    )));
+                          },
+                          child: Stack(
+                            children: [
+                              widget.eventsLiveFeeds[index]
+                                              ['img'] //////////////////////////
+                                          .toString()
+                                          .contains('.mp4') ||
+                                      widget.eventsLiveFeeds[index]
+                                              ['img'] //////////////////////////
+                                          .toString()
+                                          .contains('.mov')
+                                  ? VideoPlayerScreen(
+                                      url: MainUrl +
+                                          widget.eventsLiveFeeds[index]['img'])
+                                  : Container(
+                                      height: size.height * 0.2,
+                                      width: size.width * 0.3,
+                                      decoration: BoxDecoration(
+                                        // color: Colors.red,
                                         borderRadius: BorderRadius.circular(20),
-                                        child: buildimage(index)),
-                                  ),
-                            Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Text(
-                                  widget.eventsLiveFeeds[index]['km'] +
-                                      " " +
-                                      "miles",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 17),
-                                )),
-                          ],
+                                      ),
+                                      child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: buildimage(index)),
+                                    ),
+                              Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Text(
+                                    widget.eventsLiveFeeds[index]['km'] +
+                                        " " +
+                                        "miles",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 17),
+                                  )),
+                            ],
+                          ),
                         ),
                       ),
                     );
