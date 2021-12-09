@@ -182,6 +182,7 @@ class _ExploreState extends State<Explore> {
     // TODO: implement dispose
     _search.dispose();
     _distance.dispose();
+
     super.dispose();
   }
 
@@ -262,6 +263,11 @@ class _ExploreState extends State<Explore> {
     Size size = MediaQuery.of(context).size;
     return RefreshIndicator(
         onRefresh: () {
+          eventsLiveFeed.clear();
+          // like.clear();
+          // favourite.clear();
+          // totalCount.clear();
+
           return getEvetns();
         },
         child: SafeArea(
@@ -280,7 +286,7 @@ class _ExploreState extends State<Explore> {
                 scrollDirection: Axis.vertical,
                 child: Padding(
                   padding: EdgeInsets.only(
-                      top: size.height * 0.02, left: size.width * 0.05),
+                      top: size.height * 0.02,left : 5),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Column(
@@ -782,7 +788,7 @@ class Button extends StatelessWidget {
     return ElevatedButton(
       onPressed: onpressed,
       style: ElevatedButton.styleFrom(
-        primary: Colors.white,
+        primary: Colors.white24,
         shape: RoundedRectangleBorder(
           borderRadius: radiusofbutton!,
         ),
@@ -793,6 +799,7 @@ class Button extends StatelessWidget {
             height: 30,
             width: 30,
             decoration: BoxDecoration(
+              
               shape: BoxShape.circle,
               image: DecorationImage(
                   image: NetworkImage(profileImage!), fit: BoxFit.cover),
@@ -826,7 +833,7 @@ class Buttonicon extends StatelessWidget {
     return ElevatedButton(
       onPressed: () {},
       style: ElevatedButton.styleFrom(
-        primary: Colors.white,
+        primary: Colors.white24,
         shape: RoundedRectangleBorder(
           borderRadius: radiusofbutton!,
         ),

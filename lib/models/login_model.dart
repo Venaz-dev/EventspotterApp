@@ -65,7 +65,7 @@ class User {
   late final String useLocation;
   late final String allowDirectMessage;
   late final String profilePrivate;
-  late final ProfilePicture? profilePicture;
+   ProfilePicture? profilePicture;
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];

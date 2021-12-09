@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/pages/explore.dart';
+import 'package:event_spotter/pages/timeago.dart';
 import 'package:event_spotter/pages/uploadimage.dart';
 import 'package:event_spotter/pages/userprofile.dart';
 import 'package:event_spotter/widgets/elevatedbutton.dart';
@@ -15,6 +16,7 @@ import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:event_spotter/widgets/toaster.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -81,7 +83,7 @@ class _EventdetailingState extends State<Eventdetailing> {
           backgroundColor: Colors.white,
           elevation: 0,
           leading: Padding(
-            padding: const EdgeInsets.only(left : 8.0 , top : 8),
+            padding: const EdgeInsets.only(left: 8.0, top: 8),
             child: Smallbutton(
               icon: FontAwesomeIcons.arrowLeft,
               onpressed: () {
@@ -91,30 +93,9 @@ class _EventdetailingState extends State<Eventdetailing> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.only(right: 30.0, left: 30, bottom: 30),
+          padding: const EdgeInsets.only(right: 5.0, left: 5, bottom: 30),
           child: ListView(
             children: [
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     Smallbutton(
-              //       icon: FontAwesomeIcons.arrowLeft,
-              //       onpressed: () {
-              //         Navigator.of(context).pop();
-              //       },
-              //     ),
-              //     ConstrainedBox(
-              //       constraints:
-              //           BoxConstraints.tightFor(width: size.width * 0.7),
-              //       child: Textform(
-              //         controller: _search,
-              //         icon: Icons.search,
-              //         label: "Search",
-              //         color: const Color(0XFFECF2F3),
-              //       ),
-              //     ),
-              //   ],
-              // ),
               const SizedBox(
                 height: 10,
               ),
@@ -127,9 +108,9 @@ class _EventdetailingState extends State<Eventdetailing> {
                 child: Column(children: [
                   Container(
                     height: size.height * 0.25,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
+                    decoration: const BoxDecoration(
+                        // borderRadius: BorderRadius.circular(15),
+                        ),
                     width: size.width * double.infinity,
                     child: Stack(children: [
                       widget.model!.data[widget.indexs!].events.eventPictures[0]
@@ -148,9 +129,10 @@ class _EventdetailingState extends State<Eventdetailing> {
                               height: size.height * 0.25,
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20)),
+                                  //borderRadius: BorderRadius.circular(20)
+                                  ),
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
+                                //  borderRadius: BorderRadius.circular(15),
                                 child: CachedNetworkImage(
                                   imageUrl: MainUrl1 +
                                       widget.model!.data[widget.indexs!].events
@@ -164,107 +146,6 @@ class _EventdetailingState extends State<Eventdetailing> {
                                 ),
                               ),
                             ),
-                      Positioned(
-                        right: 10,
-                        top: size.height * 0.02,
-                        child: SizedBox(
-                          height: size.height * 0.04,
-
-                          // decoration: const BoxDecoration(color: Color(0XFF38888E)),
-                          child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                primary: const Color(0XFF38888E),
-                              ),
-                              child: Row(
-                                children: const [
-                                  Icon(
-                                    FontAwesomeIcons.userPlus,
-                                    size: 10,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text("Follow"),
-                                ],
-                              )),
-                        ),
-                      ),
-                      // Positioned(
-                      //   top: size.height * 0.07,
-                      //   right: size.width * 0.02,
-                      //   child: Column(children: [
-                      //     LikeButton(
-                      //         size: 20,
-                      //         isLiked: active,
-                      //         likeBuilder: (isliked) {
-                      //           final color =
-                      //               isliked ? Colors.red : Colors.grey;
-                      //           return Icon(Icons.favorite,
-                      //               color: color, size: 20);
-                      //         },
-                      //         countBuilder: (count, isliked, text) {
-                      //           final color =
-                      //               isliked ? Colors.red : Colors.grey;
-                      //         }),
-                      //     const SizedBox(
-                      //       height: 10,
-                      //     ),
-                      //     // LikeButton(
-                      //     //     size: 20,
-                      //     //     isLiked: active,
-                      //     //     likeBuilder: (isliked) {
-                      //     //       final color =
-                      //     //           isliked ? Colors.green : Colors.grey;
-                      //     //       return Icon(Icons.flag, color: color, size: 20);
-                      //     //     },
-                      //     //     countBuilder: (count, isliked, text) {
-                      //     //       final color =
-                      //     //           isliked ? Colors.green : Colors.grey;
-                      //     //     }),
-                      //   ]),
-                      // ),
-                      Positioned(
-                        bottom: 0,
-                        right: size.width * 0.02,
-                        left: size.width * 0.02,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Button(
-                                onpressed: () {
-                                  Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  Eventposterprofile(
-                                                    id: widget
-                                                        .model!
-                                                        .data[widget.indexs!]
-                                                        .events
-                                                        .user
-                                                        .id,
-                                                  )));
-                                },
-                                title: widget.model!.data[widget.indexs!].events
-                                    .user.name,
-                                radiusofbutton: BorderRadius.circular(20),
-                                profileImage: MainUrl1 +
-                                    widget.model!.data[widget.indexs!].events
-                                        .user.profilePicture!.image),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Buttonicon(
-                              radiusofbutton: BorderRadius.circular(20),
-                              icon: FontAwesomeIcons.userPlus,
-                              title: widget
-                                      .model!.data[widget.indexs!].Following
-                                      .toString() +
-                                  " " "Followers",
-                            ),
-                          ],
-                        ),
-                      ),
                     ]),
                   ),
                   Container(
@@ -288,9 +169,9 @@ class _EventdetailingState extends State<Eventdetailing> {
                               width: 2,
                             ),
                             Text(
-                              widget
-                                  .model!.data[widget.indexs!].events.eventDate,
-                              style: const TextStyle(color: Colors.black87),
+                              time(
+                                widget.indexs!,
+                              ),
                             ),
                             const SizedBox(
                               width: 20,
@@ -503,7 +384,7 @@ class _EventdetailingState extends State<Eventdetailing> {
               ? const Center(child: CircularProgressIndicator())
               : widget.model!.data[widget.indexs!].events.userId == widget.id
                   ? Elevatedbutton(
-                    primary: Colors.redAccent,
+                      primary: Colors.redAccent,
                       text: "Delete",
                       width: double.infinity,
                       coloring: Colors.redAccent,
@@ -561,7 +442,7 @@ class _EventdetailingState extends State<Eventdetailing> {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 10.0),
+        padding: const EdgeInsets.only(left: 5, right: 5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -651,8 +532,101 @@ class _EventdetailingState extends State<Eventdetailing> {
             const SizedBox(
               height: 20,
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              "Snaps",
+              style: TextStyle(color: Colors.black, fontSize: 19),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Live.length>0?
+            Column(
+                children: List.generate(Live.length, (index) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 15.0),
+                child: Container(
+                    decoration:
+                        const BoxDecoration(color: Colors.white, boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        spreadRadius: 1,
+                        blurRadius: 1,
+                      ),
+                    ]),
+                    child: Column(children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 10, right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 40,
+                              width: 40,
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(300.0),
+                                  child: CachedNetworkImage(
+                                    imageUrl: MainUrl +
+                                        widget.model!.data[widget.indexs!]
+                                            .events.user.profilePicture!.image
+                                            .toString(),
+                                    fit: BoxFit.cover,
+                                  )),
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              height: 40,
+                              child: Text(
+                                widget.model!.data[widget.indexs!].events.user
+                                    .name,
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              height: 40,
+                              child: time1(widget.indexs!, index),
+                            ),
+                            IconButton(
+                              onPressed: () async {
+                                await showpopup(index);
+                              },
+                              icon: const Icon(Icons.delete,
+                                  size: 20, color: Color(0XFF368890)),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Live[index]
+                                  //////////////////////////
+                                  .toString()
+                                  .contains('.mp4') ||
+                              Live[index]
+                                  //////////////////////////
+                                  .toString()
+                                  .contains('.mov')
+                          ? VideoPlayerScreen(
+                              url: MainUrl + Live[index].toString())
+                          : SizedBox(
+                              height: size.height * 0.3,
+                              width: double.infinity,
+                              child: CachedNetworkImage(
+                                imageUrl: MainUrl + Live[index]["img"],
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                    ])),
+              );
+            })
+            ):Center(child: Text("No Snaps"),),
+            const SizedBox(
+              height: 15,
+            ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 10.0),
+              padding: const EdgeInsets.only(bottom: 10.0, right: 30, left: 30),
               child: Elevatedbutton(
                   primary: const Color(0xFF304747),
                   text: "Upload Picture/Video",
@@ -665,7 +639,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                                   widget.model!.data[widget.indexs!].events.id,
                             )));
                   }),
-            ),
+            )
           ],
         ),
       ),
@@ -716,6 +690,8 @@ class _EventdetailingState extends State<Eventdetailing> {
         var js = {
           'img': widget.model!.data[widget.indexs!].events.liveFeed[i].path,
           'id': widget.model!.data[widget.indexs!].events.liveFeed[i].id,
+          'createdAt':
+              widget.model!.data[widget.indexs!].events.liveFeed[i].createdAt
         };
         Live.add(js);
       }
@@ -734,6 +710,19 @@ class _EventdetailingState extends State<Eventdetailing> {
           child: CircularProgressIndicator(),
         );
       },
+    );
+  }
+
+  time1(int index, int index1) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 10.0),
+      child: Align(
+        alignment: Alignment.bottomRight,
+        child: Text(
+          TimeAgo.displayTimeAgoFromTimestamp(Live[index1]['createdAt']),
+          style: const TextStyle(fontSize: 15, color: Colors.black45),
+        ),
+      ),
     );
   }
 
@@ -789,6 +778,16 @@ class _EventdetailingState extends State<Eventdetailing> {
       _isLoading = false;
       setState(() {});
     }
+  }
+
+  String time(int index) {
+    DateTime parseDate = DateFormat("yyyy-mm-dd")
+        .parse(widget.model!.data[index].events.eventDate);
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat('MM/dd/yyyy');
+    var outputDate = outputFormat.format(inputDate);
+
+    return outputDate;
   }
 }
 
@@ -846,8 +845,6 @@ class _VideoPlayerScreemState extends State<VideoPlayerScreem> {
               return Container(
                 height: size.height * 0.25,
                 width: double.infinity,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(20)),
                 child: Stack(
                   alignment: Alignment.bottomCenter,
                   children: <Widget>[

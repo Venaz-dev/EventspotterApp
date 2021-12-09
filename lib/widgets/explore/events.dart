@@ -9,6 +9,7 @@ import 'package:event_spotter/widgets/explore/comment.dart';
 import 'package:event_spotter/widgets/explore/livefeed.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
@@ -41,6 +42,8 @@ class _EventssState extends State<Eventss> {
   late SharedPreferences _sharedPreferences;
   late String _token;
   // late int lenght;
+  late String formatted;
+
   late String valuee;
   //bool _isLoading = true;
   // late EventsModel _eventsModel;
@@ -57,6 +60,7 @@ class _EventssState extends State<Eventss> {
   String UnFavourite = "https://theeventspotter.com/api/unfavrouit";
   String MainUrl = "https://theeventspotter.com/";
   String PostlikeUrl = "https://theeventspotter.com/api/like";
+
   //late List<int> favourite = [];
 
   @override
@@ -90,7 +94,7 @@ class _EventssState extends State<Eventss> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(right: 20.0),
+          padding: const EdgeInsets.only(right: 5.0),
           child: Column(
             children: List.generate(widget.eventsModel.data.length, (index) {
               return Padding(
@@ -106,10 +110,10 @@ class _EventssState extends State<Eventss> {
                   },
                   child: Container(
                     width: size.width * double.infinity,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: const [
+                      // borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
                         BoxShadow(
                             spreadRadius: 1,
                             blurRadius: 10,
@@ -119,9 +123,9 @@ class _EventssState extends State<Eventss> {
                     child: Column(children: [
                       Container(
                         height: size.height * 0.25,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
+                        decoration: const BoxDecoration(
+                            //borderRadius: BorderRadius.circular(15),
+                            ),
                         width: size.width * double.infinity,
                         child: Stack(children: [
                           widget.eventsModel.data[index].events.eventPictures[0]
@@ -139,10 +143,11 @@ class _EventssState extends State<Eventss> {
                               : Container(
                                   height: size.height * 0.25,
                                   width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20)),
+                                  decoration: const BoxDecoration(
+                                      // borderRadius: BorderRadius.circular(20)
+                                      ),
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(15),
+                                    //  borderRadius: BorderRadius.circular(15),
                                     child: CachedNetworkImage(
                                       imageUrl: MainUrl +
                                           widget.eventsModel.data[index].events
@@ -189,29 +194,7 @@ class _EventssState extends State<Eventss> {
                                       color: widget.favourite[index] == 0
                                           ? Colors.grey
                                           : Colors.red))
-                              // child: LikeButton(
-                              //   size: 20,
-                              //   onTap: (isLiked) {
-                              //     // ignore: unrelated_type_equality_checks
-                              //     if (favourite[index] == isLiked) {
-                              //       setState(() {
-                              //         active = !active;
-                              //         print(active);
-                              //       });
-                              //       return PostLike(index,
-                              //           _eventsModel.data[index].events.id);
-                              //     } else {
-                              //       return PostDislike(index,
-                              //           _eventsModel.data[index].events.id);
-                              //     }
-                              //   },
-                              //   likeBuilder: (isLiked) {
-                              //     final color =
-                              //         active ? Colors.red : Colors.grey;
-                              //     return Icon(Icons.favorite,
-                              //         color: color, size: 20);
-                              //   },
-                              // ),
+                             
                               ),
                           Positioned(
                             bottom: 0,
@@ -274,9 +257,7 @@ class _EventssState extends State<Eventss> {
                                   color: Colors.black54,
                                 ),
                                 Text(
-                                  widget
-                                      .eventsModel.data[index].events.eventDate
-                                      .toString(),
+                                  time(index),
                                   style: const TextStyle(color: Colors.black87),
                                 ),
                                 const SizedBox(
@@ -571,6 +552,16 @@ class _EventssState extends State<Eventss> {
       setState(() {});
     }
   }
+
+  String time(int index) {
+    DateTime parseDate = DateFormat("yyyy-mm-dd")
+        .parse(widget.eventsModel.data[index].events.eventDate);
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat('MM/dd/yyyy');
+    var outputDate = outputFormat.format(inputDate);
+
+    return outputDate;
+  }
 }
 
 class VideoPlayerScreenn extends StatefulWidget {
@@ -625,13 +616,11 @@ class _VideoPlayerScreennState extends State<VideoPlayerScreenn> {
               return Container(
                 height: size.height * 0.25,
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                ),
+               
 
                 child: SizedBox(
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
+                    //  borderRadius: BorderRadius.circular(20),
                     child: Stack(
                       alignment: Alignment.bottomCenter,
                       children: <Widget>[
