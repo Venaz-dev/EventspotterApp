@@ -5,9 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class Livefeeds extends StatefulWidget {
-  Livefeeds({Key? key, required this.eventsLiveFeeds, required this.test,required this.eventsModel})
+  Livefeeds(
+      {Key? key,
+      required this.eventsLiveFeeds,
+      required this.test,
+      required this.eventsModel,
+      required this.id})
       : super(key: key);
   bool test;
+  String id;
   EventsModel eventsModel;
   late List eventsLiveFeeds;
 
@@ -67,7 +73,8 @@ class _LivefeedsState extends State<Livefeeds> {
                                 builder: (context) => Eventdetailing(
                                       model: widget.eventsModel,
                                       indexs: index,
-                                      id: widget.eventsLiveFeeds[index]['eventId'],
+                                      id: widget.id,
+                                      eventId: widget.eventsLiveFeeds[index]["eventId"],
                                     )));
                           },
                           child: Stack(

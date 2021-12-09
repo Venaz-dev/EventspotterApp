@@ -23,7 +23,7 @@ enum livefeed { details, livesnaps }
 class Eventdetailing extends StatefulWidget {
   EventsModel? model;
   final int? indexs;
-   int? eventId;
+  String? eventId;
   String id;
   Eventdetailing({
     Key? key,
@@ -541,90 +541,101 @@ class _EventdetailingState extends State<Eventdetailing> {
             const SizedBox(
               height: 10,
             ),
-            Live.length>0?
-            Column(
-                children: List.generate(Live.length, (index) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 15.0),
-                child: Container(
-                    decoration:
-                        const BoxDecoration(color: Colors.white, boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        spreadRadius: 1,
-                        blurRadius: 1,
-                      ),
-                    ]),
-                    child: Column(children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 10.0, left: 10, right: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              height: 40,
-                              width: 40,
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(300.0),
-                                  child: CachedNetworkImage(
-                                    imageUrl: MainUrl +
-                                        widget.model!.data[widget.indexs!]
-                                            .events.user.profilePicture!.image
-                                            .toString(),
-                                    fit: BoxFit.cover,
-                                  )),
-                            ),
-                            Container(
-                              alignment: Alignment.center,
-                              height: 40,
-                              child: Text(
-                                widget.model!.data[widget.indexs!].events.user
-                                    .name,
+            Live.length > 0
+                ? Column(
+                    children: List.generate(Live.length, (index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: Container(
+                          decoration: const BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  spreadRadius: 1,
+                                  blurRadius: 1,
+                                ),
+                              ]),
+                          child: Column(children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, left: 10, right: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    height: 40,
+                                    width: 40,
+                                    child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(300.0),
+                                        child: CachedNetworkImage(
+                                          imageUrl: MainUrl +
+                                              widget
+                                                  .model!
+                                                  .data[widget.indexs!]
+                                                  .events
+                                                  .user
+                                                  .profilePicture!
+                                                  .image
+                                                  .toString(),
+                                          fit: BoxFit.cover,
+                                        )),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    height: 40,
+                                    child: Text(
+                                      widget.model!.data[widget.indexs!].events
+                                          .user.name,
+                                    ),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    height: 40,
+                                    child: time1(widget.indexs!, index),
+                                  ),
+                                  widget.model!.data[widget.indexs!].events
+                                              .userId ==
+                                          widget.id
+                                      ? IconButton(
+                                          onPressed: () async {
+                                            await showpopup(index);
+                                          },
+                                          icon: const Icon(Icons.delete,
+                                              size: 20,
+                                              color: Color(0XFF368890)),
+                                        )
+                                      : const SizedBox(),
+                                ],
                               ),
                             ),
-                            Container(
-                              alignment: Alignment.center,
-                              height: 40,
-                              child: time1(widget.indexs!, index),
-                            ),
-                             widget.model!.data[widget.indexs!].events
-                                          .userId ==
-                                      widget.id
-                                  ? 
-                            IconButton(
-                              onPressed: () async {
-                                await showpopup(index);
-                              },
-                              icon: const Icon(Icons.delete,
-                                  size: 20, color: Color(0XFF368890)),
-                            ):const SizedBox(),
-                          ],
-                        ),
-                      ),
-                      Live[index]
-                                  //////////////////////////
-                                  .toString()
-                                  .contains('.mp4') ||
-                              Live[index]
-                                  //////////////////////////
-                                  .toString()
-                                  .contains('.mov')
-                          ? VideoPlayerScreen(
-                              url: MainUrl + Live[index].toString())
-                          : SizedBox(
-                              height: size.height * 0.3,
-                              width: double.infinity,
-                              child: CachedNetworkImage(
-                                imageUrl: MainUrl + Live[index]["img"],
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                    ])),
-              );
-            })
-            ):Center(child: Text("No Snaps"),),
+                            Live[index]
+                                        //////////////////////////
+                                        .toString()
+                                        .contains('.mp4') ||
+                                    Live[index]
+                                        //////////////////////////
+                                        .toString()
+                                        .contains('.mov')
+                                ? VideoPlayerScreen(
+                                    url: MainUrl + Live[index].toString())
+                                : SizedBox(
+                                    height: size.height * 0.3,
+                                    width: double.infinity,
+                                    child: CachedNetworkImage(
+                                      imageUrl: MainUrl + Live[index]["img"],
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                          ])),
+                    );
+                  }))
+                : Center(
+                    child: Text("No Snaps"),
+                  ),
             const SizedBox(
               height: 15,
             ),
@@ -686,21 +697,46 @@ class _EventdetailingState extends State<Eventdetailing> {
   }
 
   livefeedList() {
-    if (widget.model!.data[widget.indexs!].events.liveFeed.length > 0) {
-      for (int i = 0;
-          widget.model!.data[widget.indexs!].events.liveFeed.length > i;
-          i++) {
-        var js = {
-          'img': widget.model!.data[widget.indexs!].events.liveFeed[i].path,
-          'id': widget.model!.data[widget.indexs!].events.liveFeed[i].id,
-          'createdAt':
-              widget.model!.data[widget.indexs!].events.liveFeed[i].createdAt
-        };
-        Live.add(js);
+    if (widget.eventId == null) {
+      if (widget.model!.data[widget.indexs!].events.liveFeed.length > 0) {
+        for (int i = 0;
+            widget.model!.data[widget.indexs!].events.liveFeed.length > i;
+            i++) {
+          var js = {
+            'img': widget.model!.data[widget.indexs!].events.liveFeed[i].path,
+            'id': widget.model!.data[widget.indexs!].events.liveFeed[i].id,
+            'createdAt':
+                widget.model!.data[widget.indexs!].events.liveFeed[i].createdAt
+          };
+          Live.add(js);
+        }
+        test1 = true;
+      } else {
+        test1 = false;
       }
-      test1 = true;
     } else {
-      test1 = false;
+      print(widget.eventId);
+      var ss = widget.model!.data.indexWhere((element) {
+        return element.events.id.toString() == widget.eventId;
+      });
+
+      if (widget.model!.data[ss].events.liveFeed.length > 0) {
+        for (int i = 0;
+            widget.model!.data[ss].events.liveFeed.length > i;
+            i++) {
+          var js = {
+            'img': widget.model!.data[ss].events.liveFeed[i].path,
+            'id': widget.model!.data[ss].events.liveFeed[i].id,
+            'createdAt': widget.model!.data[ss].events.liveFeed[i].createdAt
+          };
+          Live.add(js);
+        }
+        test1 = true;
+        swapping = livefeed.livesnaps;
+        setState(() {});
+      } else {
+        test1 = false;
+      }
     }
   }
 
