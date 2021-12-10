@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
-import 'package:event_spotter/models/ChatModel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_beep/flutter_beep.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_6.dart';
 import 'package:pusher_client/pusher_client.dart';
@@ -12,7 +12,7 @@ import 'package:flutter_chat_bubble/bubble_type.dart';
 
 class ChatScreen extends StatefulWidget {
   String name;
-  int id;
+  String id;
   // StreamController<dynamic> chatStream;
   ChatScreen({
     Key? key,
@@ -184,63 +184,76 @@ class _ChatScreenState extends State<ChatScreen> {
                                 return Column(
                                     children:
                                         List.generate(chatList.length, (index) {
-                                  return ChatBubble(
-                                    clipper: ChatBubbleClipper6(
-                                      type: chatList[index]['toUserId'] == _id
-                                          ? BubbleType.receiverBubble
-                                          : BubbleType.sendBubble,
-                                    ),
-                                    alignment:
-                                        chatList[index]['toUserId'] == _id
-                                            ? Alignment.topLeft
-                                            : Alignment.topRight,
-                                    margin: const EdgeInsets.only(
-                                      top: 10,
-                                    ),
-                                    backGroundColor:
-                                        chatList[index]['toUserId'] == _id
-                                            ? Colors.white
-                                            : Colors.green,
-                                    child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.3,
-                                        margin:
-                                            chatList[index]['toUserId'] == _id
-                                                ? const EdgeInsets.only(
-                                                    top: 5.0,
-                                                    bottom: 5.0,
-                                                  )
-                                                : const EdgeInsets.only(
-                                                    top: 5,
-                                                    bottom: 5.0,
-                                                  ),
-                                        child: chatList[index]['toUserId'] ==
-                                                _id
-                                            // ignore: prefer_const_constructors
-                                            ? Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  chatList[index]['content']!,
-                                                  style: const TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 16.0,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              )
-                                            : Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  chatList[index]['content']!,
-                                                  style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 16.0,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              )),
-                                  );
+                                  return !(chatList[index]['content'] != null) ||
+                                          chatList[index]['content'].toString() !=""
+                                      ? ChatBubble(
+                                          clipper: ChatBubbleClipper6(
+                                            type: chatList[index]['toUserId'] ==
+                                                    _id
+                                                ? BubbleType.receiverBubble
+                                                : BubbleType.sendBubble,
+                                          ),
+                                          alignment:
+                                              chatList[index]['toUserId'] == _id
+                                                  ? Alignment.topLeft
+                                                  : Alignment.topRight,
+                                          margin: const EdgeInsets.only(
+                                            top: 10,
+                                          ),
+                                          backGroundColor:
+                                              chatList[index]['toUserId'] == _id
+                                                  ? Colors.white
+                                                  : Colors.green,
+                                          child: Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.3,
+                                              margin: chatList[index]
+                                                          ['toUserId'] ==
+                                                      _id
+                                                  ? const EdgeInsets.only(
+                                                      top: 5.0,
+                                                      bottom: 5.0,
+                                                    )
+                                                  : const EdgeInsets.only(
+                                                      top: 5,
+                                                      bottom: 5.0,
+                                                    ),
+                                              child: chatList[index]
+                                                          ['toUserId'] ==
+                                                      _id
+                                                  // ignore: prefer_const_constructors
+                                                  ? Align(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                        chatList[index]
+                                                            ['content']!,
+                                                        style: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 16.0,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Align(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                        chatList[index]
+                                                            ['content']!,
+                                                        style: const TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 16.0,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                    )),
+                                        )
+                                      : const SizedBox();
                                 }));
                                 // return const SizedBox(child: Text('asdf'),);
                               }),
@@ -352,6 +365,7 @@ class _ChatScreenState extends State<ChatScreen> {
             'content': ss['data']['content'],
             'toUserId': _id,
           };
+          FlutterBeep.playSysSound(iOSSoundIDs.MailReceived);
           chatStream1.sink.add(jsonEncode(ssq));
         }
       },

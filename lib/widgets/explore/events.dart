@@ -91,16 +91,19 @@ class _EventssState extends State<Eventss> {
             alignment: Alignment.centerLeft,
             child: Text(
               "Events near you",
-              style: TextStyle(color: Colors.black, fontSize: 15),
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15),
             ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(right: 5.0),
+          padding: const EdgeInsets.only(right: 8.0),
           child: Column(
             children: List.generate(widget.eventsModel.data.length, (index) {
               return Padding(
-                padding: const EdgeInsets.only(top: 20.0),
+                padding: const EdgeInsets.only(top: 8.0, bottom: 10),
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
@@ -117,14 +120,64 @@ class _EventssState extends State<Eventss> {
                       // borderRadius: BorderRadius.circular(15),
                       boxShadow: [
                         BoxShadow(
-                            spreadRadius: 1,
-                            blurRadius: 10,
-                            color: Colors.black12)
+                            spreadRadius: 0.5,
+                            blurRadius: 0.5,
+                            color: Colors.black12,
+                            offset: Offset(2, -2)),
+                        BoxShadow(
+                            spreadRadius: 0.5,
+                            blurRadius: 0.5,
+                            color: Colors.black12,
+                            offset: Offset(0, 2))
                       ],
                     ),
                     child: Column(children: [
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(right: 5, left: 2, top: 2),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Button(
+                                onpressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => Eventposterprofile(
+                                            id: widget.eventsModel.data[index]
+                                                .events.user.id,
+                                          )));
+                                },
+                                title: widget.eventsModel.data[index].events
+                                    .user.name, //new
+                                radiusofbutton: BorderRadius.circular(20),
+                                profileImage: MainUrl +
+                                    widget.eventsModel.data[index].events.user
+                                        .profilePicture!.image),
+                            SizedBox(
+                                height: size.height * 0.04,
+                                width: size.width * 0.25,
+                                // decoration: const BoxDecoration(color: Color(0XFF38888E)),
+                                child: followingcheck(index)),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8.0, right: 8, top: 3, bottom: 3),
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          child: AutoSizeText(
+                            widget.eventsModel.data[index].events.eventName,
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17),
+                            maxFontSize: 17,
+                            minFontSize: 10,
+                            maxLines: 5,
+                          ),
+                        ),
+                      ),
                       Container(
-                        height: size.height * 0.25,
                         decoration: const BoxDecoration(
                             //borderRadius: BorderRadius.circular(15),
                             ),
@@ -143,7 +196,7 @@ class _EventssState extends State<Eventss> {
                                       widget.eventsModel.data[index].events
                                           .eventPictures[0].imagePath)
                               : Container(
-                                  height: size.height * 0.25,
+                                  height: size.height * 0.4,
                                   width: double.infinity,
                                   decoration: const BoxDecoration(
                                       // borderRadius: BorderRadius.circular(20)
@@ -164,17 +217,8 @@ class _EventssState extends State<Eventss> {
                                   ),
                                 ),
                           Positioned(
-                            right: 10,
-                            top: size.height * 0.02,
-                            child: SizedBox(
-                                height: size.height * 0.04,
-                                width: size.width * 0.25,
-                                // decoration: const BoxDecoration(color: Color(0XFF38888E)),
-                                child: followingcheck(index)),
-                          ),
-                          Positioned(
-                              top: size.height * 0.07,
-                              right: 20,
+                              top: 10,
+                              right: 10,
                               child: IconButton(
                                   onPressed: () {
                                     if (widget.favourite[index] == 1) {
@@ -195,50 +239,7 @@ class _EventssState extends State<Eventss> {
                                   icon: Icon(MdiIcons.heart,
                                       color: widget.favourite[index] == 0
                                           ? Colors.grey
-                                          : Colors.red))
-                             
-                              ),
-                          Positioned(
-                            bottom: 0,
-                            right: size.width * 0.02,
-                            left: size.width * 0.02,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Button(
-                                    onpressed: () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  Eventposterprofile(
-                                                    id: widget
-                                                        .eventsModel
-                                                        .data[index]
-                                                        .events
-                                                        .user
-                                                        .id,
-                                                  )));
-                                    },
-                                    title: widget.eventsModel.data[index].events
-                                        .user.name, //new
-                                    radiusofbutton: BorderRadius.circular(20),
-                                    profileImage: MainUrl +
-                                        widget.eventsModel.data[index].events
-                                            .user.profilePicture!.image),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Buttonicon(
-                                  radiusofbutton: BorderRadius.circular(20),
-                                  icon: FontAwesomeIcons.userPlus,
-                                  title: widget.eventsModel.data[index].events
-                                          .user.followers.length
-                                          .toString() +
-                                      " " "Followers",
-                                ),
-                              ],
-                            ),
-                          ),
+                                          : Colors.red))),
                         ]),
                       ),
                       Container(
@@ -247,97 +248,117 @@ class _EventssState extends State<Eventss> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                const Icon(
-                                  FontAwesomeIcons.calendar,
-                                  size: 15,
-                                  color: Colors.black54,
+                            // const SizedBox(
+                            //   height: 10,
+                            // ),
+                            Container(
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                border: Border(
+                                  top: BorderSide(color: Colors.black12),
                                 ),
-                                Text(
-                                  time(index),
-                                  style: const TextStyle(color: Colors.black87),
+                              ),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(right: 8, left: 8),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Buttonicon(
+                                      radiusofbutton: BorderRadius.circular(20),
+                                      icon: FontAwesomeIcons.userPlus,
+                                      title: widget.eventsModel.data[index]
+                                              .events.user.followers.length
+                                              .toString() +
+                                          " " "Followers",
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    const Icon(
+                                      FontAwesomeIcons.calendar,
+                                      size: 13,
+                                      color: Colors.black54,
+                                    ),
+                                    Text(
+                                      time(index),
+                                      style: const TextStyle(
+                                          color: Colors.black87),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    const Icon(
+                                      FontAwesomeIcons.mapMarkerAlt,
+                                      size: 15,
+                                      color: Colors.black54,
+                                    ),
+                                    Text(
+                                        widget.eventsModel.data[index].km
+                                                .toString() +
+                                            " " +
+                                            "away",
+                                        style: const TextStyle(
+                                            color: Colors.black87)),
+                                  ],
                                 ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                const Icon(
-                                  FontAwesomeIcons.mapMarkerAlt,
-                                  size: 15,
-                                  color: Colors.black54,
-                                ),
-                                Text(
-                                    widget.eventsModel.data[index].km
-                                            .toString() +
-                                        " " +
-                                        "away",
-                                    style:
-                                        const TextStyle(color: Colors.black87)),
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 20.0, top: 10, right: 20),
-                              child: AutoSizeText(
-                                widget.eventsModel.data[index].events.eventName,
-                                style: const TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400),
-                                maxFontSize: 20,
-                                minFontSize: 15,
                               ),
                             ),
                             const SizedBox(
-                              height: 10,
+                              height: 2,
                             ),
-                            IntrinsicHeight(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  // extras(
-                                  //     FontAwesomeIcons.thumbsUp,
-                                  //     _eventsModel.data[index].isLiked
-                                  //         .toString(),
-                                  //     size, () {
-                                  //   postThumbs(_eventsModel
-                                  //       .data[index].events.id);
-                                  // }),
-                                  likefunction(
-                                      index, FontAwesomeIcons.thumbsUp),
-                                  divider(),
-                                  extras(
-                                      Icons.comment,
-                                      widget.eventsModel.data[index].events
-                                          .comment.length
-                                          .toString(),
-                                      size, () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                            builder: (context) => Commentofuser(
-                                                  eventsModel:
-                                                      widget.eventsModel,
-                                                  index: index,
-                                                )));
-                                  }),
-                                  divider(),
+                            Container(
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(color: Colors.black12),
+                                ),
+                              ),
+                              child: IntrinsicHeight(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    // extras(
+                                    //     FontAwesomeIcons.thumbsUp,
+                                    //     _eventsModel.data[index].isLiked
+                                    //         .toString(),
+                                    //     size, () {
+                                    //   postThumbs(_eventsModel
+                                    //       .data[index].events.id);
+                                    // }),
+                                    likefunction(
+                                        index, FontAwesomeIcons.thumbsUp),
+                                    divider(),
+                                    extras(
+                                        Icons.comment,
+                                        widget.eventsModel.data[index].events
+                                            .comment.length
+                                            .toString(),
+                                        size, () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  Commentofuser(
+                                                    eventsModel:
+                                                        widget.eventsModel,
+                                                    index: index,
+                                                  )));
+                                    }),
+                                    divider(),
 
-                                  // extras(MdiIcons.share,
-                                  //     posts[1]['share'], size),
-                                  // divider(),                           //no inculded
-                                  extras(
-                                      Icons.live_tv,
-                                      widget.eventsModel.data[index].events
-                                          .liveFeed.length
-                                          .toString(),
-                                      size,
-                                      () {}),
-                                ],
+                                    // extras(MdiIcons.share,
+                                    //     posts[1]['share'], size),
+                                    // divider(),                           //no inculded
+                                    extras(
+                                        Icons.play_arrow,
+                                        widget.eventsModel.data[index].events
+                                            .liveFeed.length
+                                            .toString(),
+                                        size,
+                                        () {}),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -369,7 +390,8 @@ class _EventssState extends State<Eventss> {
         IconButton(
             icon: Icon(
               icon,
-              size: 16,
+              size: 20,
+              color: Colors.black,
             ),
             onPressed: onpress),
         Text(totalcount),
@@ -383,7 +405,7 @@ class _EventssState extends State<Eventss> {
         IconButton(
           icon: Icon(icon,
               size: 16,
-              color: widget.like[index] == 1 ? Colors.blue : Colors.grey),
+              color: widget.like[index] == 1 ? Colors.blue : Colors.black),
           onPressed: () async {
             if (widget.like[index] == 0) {
               widget.like[index] = 1;
@@ -615,10 +637,9 @@ class _VideoPlayerScreennState extends State<VideoPlayerScreenn> {
             if (snapshot.connectionState == ConnectionState.done) {
               // If the VideoPlayerController has finished initialization, use
               // the data it provides to limit the aspect ratio of the video.
-              return Container(
-                height: size.height * 0.25,
+              return SizedBox(
+                height: size.height * 0.4,
                 width: double.infinity,
-               
 
                 child: SizedBox(
                   child: ClipRRect(

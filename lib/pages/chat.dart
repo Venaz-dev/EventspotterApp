@@ -33,7 +33,6 @@ class _NotificationsState extends State<Notifications> {
   @override
   void initState() {
     _search.addListener(searchnames);
-
     getMessageHistory();
     super.initState();
   }
@@ -75,7 +74,6 @@ class _NotificationsState extends State<Notifications> {
                 child: RefreshIndicator(
                   onRefresh: () {
                     data.clear();
-                    setState(() {});
                     return getMessageHistory();
                   },
                   child: ListView(
@@ -150,12 +148,13 @@ class _NotificationsState extends State<Notifications> {
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           ChatScreen(
-                                                            id: int.parse(
+                                                            id: 
                                                                 data[index]
-                                                                    ["toId"]),
+                                                                    ["toId"].toString(),
                                                             name: data[index]
                                                                 ["name"],
                                                           )));
+                                              // data.clear();
                                             },
                                             child: Row(
                                               crossAxisAlignment:
@@ -263,6 +262,7 @@ class _NotificationsState extends State<Notifications> {
       Response response = await _dio.get(getuserUrl);
 
       if (response.statusCode == 200) {
+        print(response.data);
         if (response.data['data'].length > 0) {
           for (int i = 0; i < response.data['data'].length; i++) {
             if (response.data['data'][i]['to_user']['profile_picture'] !=
@@ -283,7 +283,7 @@ class _NotificationsState extends State<Notifications> {
                 'userId': response.data['data'][i]['to_user']['name'],
                 'message': response.data['data'][i]['content'],
                 'toId': response.data['data'][i]['to_user']['id'],
-                'createdAt': response.data['data'][i]['created_at'],
+                'createdAt': response.data['data'][i]['updated_at'],
                 'name': response.data['data'][i]['to_user']['name']
               };
               data.add(js);

@@ -10,6 +10,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 class Singup extends StatefulWidget {
   const Singup({Key? key}) : super(key: key);
@@ -22,7 +23,6 @@ class _SingupState extends State<Singup> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   Dio _dio = Dio();
   bool _isLoading = false;
-
   String Url = "https://theeventspotter.com/api/create-account";
   late SharedPreferences _sharedPreferences;
   bool _isPSecure = true;
@@ -35,7 +35,14 @@ class _SingupState extends State<Singup> {
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirmPassword = TextEditingController();
   final TextEditingController _phoneNumber = TextEditingController();
+  bool isHTML = false;
 
+  final _recipientController = TextEditingController(
+    text: 'example@example.com',
+  );
+  final _subjectController = TextEditingController(text: 'Event Spotter');
+  final _bodyController = TextEditingController(
+      text: 'Welcome to event spotter thank you for sigining in app.');
   @override
   void dispose() {
     _fullname.dispose();
@@ -44,6 +51,34 @@ class _SingupState extends State<Singup> {
     _confirmPassword.dispose();
     _phoneNumber.dispose();
     super.dispose();
+  }
+
+  Future<void> send() async {
+    print("Hehe");
+    final Email email = Email(
+      body: _bodyController.text,
+      subject: _subjectController.text,
+      recipients: [_email.text],
+      // attachmentPaths: attachments,
+      isHTML: isHTML,
+    );
+    String platformResponse;
+
+    try {
+      await FlutterEmailSender.send(email);
+      platformResponse = 'success';
+    } catch (error) {
+      print(error.toString());
+      platformResponse = error.toString();
+    }
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(platformResponse),
+      ),
+    );
   }
 
   @override
@@ -348,6 +383,8 @@ class _SingupState extends State<Singup> {
                     ElevatedButton(
                       onPressed: () {
                         createAccount();
+                        //send();
+                        // Navigator.pop(context);
                       },
                       child: const Text("Accept"),
                       style: ElevatedButton.styleFrom(
@@ -402,6 +439,8 @@ class _SingupState extends State<Singup> {
       "password": _password.text
     });
     Response response = await _dio.post(Url, data: formData);
+       print(response.data.toString());
+
     if (response.data['access_token'].toString().isEmpty) {
     } else {
       print("hello g");

@@ -30,6 +30,7 @@ class _ExploreState extends State<Explore> {
   late String id;
   bool _isLoading = true;
   late EventsModel eventsModel;
+   late String _token;
   String urlEvent = "https://theeventspotter.com/api/getEvents";
   String searchUrl = "https://theeventspotter.com/api/search";
   String MainUrl = "https://theeventspotter.com/";
@@ -39,8 +40,8 @@ class _ExploreState extends State<Explore> {
   late List<int> like = [];
   late List<int> totalCount = [];
   late List search = [];
-
-  String? _token;
+  
+ 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   late Response response;
@@ -171,11 +172,12 @@ class _ExploreState extends State<Explore> {
     _search.addListener(searchnames);
 
     // getInitializedSharedPref();
-    // intiliaziePusher();
     getEvetns().whenComplete(() {
       setState(() {});
     });
   }
+
+ 
 
   @override
   void dispose() {
@@ -788,7 +790,7 @@ class Button extends StatelessWidget {
     return ElevatedButton(
       onPressed: onpressed,
       style: ElevatedButton.styleFrom(
-        primary: Colors.white24,
+        primary: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: radiusofbutton!,
         ),
@@ -832,7 +834,7 @@ class Buttonicon extends StatelessWidget {
     return ElevatedButton(
       onPressed: () {},
       style: ElevatedButton.styleFrom(
-        primary: Colors.white24,
+        primary: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: radiusofbutton!,
         ),
