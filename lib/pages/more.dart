@@ -25,6 +25,7 @@ class More extends StatelessWidget {
                 height: size.height * 0.06,
                 width: size.width * 0.8,
                 decoration: BoxDecoration(
+                  
                     color: const Color(0XFF38888F),
                     borderRadius: BorderRadius.circular(10)),
                 child: const Align(
@@ -41,7 +42,12 @@ class More extends StatelessWidget {
               Container(
                 height: size.height * 0.4,
                 width: size.width * 0.8,
-                decoration: const BoxDecoration(color: Colors.white),
+                decoration:  BoxDecoration(
+                 
+                  color: Colors.white,
+                  
+                  
+                   borderRadius: BorderRadius.circular(10)),
                 child: Column(
                   children: [
                     Containers(

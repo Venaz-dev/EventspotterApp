@@ -80,7 +80,7 @@ class _YoureventsState extends State<Yourevents> {
                           )),
                     ]),
                 child: Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding:  EdgeInsets.only(right : size.width*0.03, left :size.width*0.03, top : 10 , bottom : 20),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

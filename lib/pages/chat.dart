@@ -365,7 +365,7 @@ class _NotificationsState extends State<Notifications> {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => ChatScreen(
-                            id: search[index]['id'],
+                            id: search[index]['id'].toString(),
                             name: search[index]['name'],
                           )));
                 },

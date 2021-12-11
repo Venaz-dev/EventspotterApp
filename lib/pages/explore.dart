@@ -1,6 +1,6 @@
 import 'dart:async';
-
 import 'package:dio/dio.dart';
+import 'package:event_spotter/constant/colors.dart';
 import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/pages/userprofile.dart';
@@ -29,7 +29,7 @@ class _ExploreState extends State<Explore> {
   late int lenght;
   late String id;
   bool _isLoading = true;
-  late EventsModel eventsModel;
+   EventsModel ? eventsModel;
    late String _token;
   String urlEvent = "https://theeventspotter.com/api/getEvents";
   String searchUrl = "https://theeventspotter.com/api/search";
@@ -275,7 +275,8 @@ class _ExploreState extends State<Explore> {
         child: SafeArea(
           child: Scaffold(
             key: _scaffoldKey,
-            backgroundColor: Colors.white,
+            backgroundColor:scaffoldcolor,
+            //Color(0xFF5E5E5E),
             body: GestureDetector(
               onTap: () {
                 FocusScopeNode currentfocus = FocusScope.of(context);
@@ -284,10 +285,11 @@ class _ExploreState extends State<Explore> {
                   currentfocus.unfocus();
                 }
               },
-              child: SingleChildScrollView(
+              
+child : SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Padding(
-                  padding: EdgeInsets.only(top: size.height * 0.02, left: 5),
+                  padding:  EdgeInsets.only(top : 10 , right : size.width*0.03, left :size.width*0.03, bottom : 10),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Column(
@@ -298,7 +300,7 @@ class _ExploreState extends State<Explore> {
                           child: Row(
                             children: [
                               SizedBox(
-                                width: size.width * 0.9,
+                                width:size.width*0.93,
                                 child: Textform(
                                   onchange: (listen) {
                                     if (_search.text.length >= 3) {
@@ -329,7 +331,7 @@ class _ExploreState extends State<Explore> {
                             getpages(size),
                             _search.text.length >= 3
                                 ? searchnames()
-                                : SizedBox(),
+                                : const SizedBox(),
                           ],
                         ),
                       ],
@@ -337,9 +339,17 @@ class _ExploreState extends State<Explore> {
                   ),
                 ),
               ),
-            ),
-          ),
-        ));
+                  ),
+                ),
+              ),
+
+              
+              // 
+              // 
+              
+            );
+          
+        
   }
 
   Widget getpages(Size size) {
@@ -355,14 +365,13 @@ class _ExploreState extends State<Explore> {
   Widget exploringfeeds(Size size) {
     return Column(
       children: [
-        Padding(
-          padding: EdgeInsets.only(
-              right: size.width * 0.05, top: size.height * 0.03),
-          child: InkWell(
-            onTap: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const Createevent()));
-            },
+        InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const Createevent()));
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(top : 15.0),
             child: Container(
               height: size.height * 0.08,
               width: size.width,
@@ -403,7 +412,7 @@ class _ExploreState extends State<Explore> {
         _isLoading
             ? const Center(child: CircularProgressIndicator())
             : Eventss(
-                eventsModel: eventsModel,
+                eventsModel: eventsModel!,
                 favourite: favourite,
                 eventsLiveFeed: eventsLiveFeed,
                 like: like,
@@ -657,17 +666,17 @@ class _ExploreState extends State<Explore> {
       if (response.statusCode == 200) {
         eventsModel = EventsModel.fromJson(response.data);
 
-        lenght = eventsModel.data.length;
-        for (int i = 0; i < eventsModel.data.length; i++) {
-          var km = eventsModel.data[i].km;
-          if (eventsModel.data[i].events.liveFeed.isNotEmpty) {
+        lenght = eventsModel!.data.length;
+        for (int i = 0; i < eventsModel!.data.length; i++) {
+          var km = eventsModel!.data[i].km;
+          if (eventsModel!.data[i].events.liveFeed.isNotEmpty) {
             for (int j = 0;
-                j < eventsModel.data[i].events.liveFeed.length;
+                j < eventsModel!.data[i].events.liveFeed.length;
                 j++) {
               var js = {
-                'img': eventsModel.data[i].events.liveFeed[j].path,
+                'img': eventsModel!.data[i].events.liveFeed[j].path,
                 'km': km,
-                'eventId': eventsModel.data[i].events.liveFeed[j].eventId
+                'eventId': eventsModel!.data[i].events.liveFeed[j].eventId
               };
 
               eventsLiveFeed.add(js);
@@ -691,11 +700,11 @@ class _ExploreState extends State<Explore> {
   }
 
   listFav() {
-    if (eventsModel.data.length > 0) {
-      for (int i = 0; i < eventsModel.data.length; i++) {
-        var value = eventsModel.data[i].isFavroute;
-        var value1 = eventsModel.data[i].isLiked;
-        var value2 = eventsModel.data[i].totalLikes;
+    if (eventsModel!.data.length > 0) {
+      for (int i = 0; i < eventsModel!.data.length; i++) {
+        var value = eventsModel!.data[i].isFavroute;
+        var value1 = eventsModel!.data[i].isLiked;
+        var value2 = eventsModel!.data[i].totalLikes;
         like.add(value1);
         totalCount.add(value2);
         favourite.add(value);

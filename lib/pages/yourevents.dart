@@ -386,7 +386,7 @@ class _YeventsState extends State<Yevents> {
             children: [
               Elevatedbuttons(
                 sidecolor: Colors.black,
-                text: "Upcomingg",
+                text: "Upcoming",
                 textColor: Colors.black,
                 coloring: Colors.white,
                 primary: Colors.white,
@@ -545,7 +545,7 @@ class _YeventsState extends State<Yevents> {
                 }),
               )
             : const Center(
-                child: Text("No Upcoming Events"),
+                child: Text("No Past Events"),
               )
       ],
     );

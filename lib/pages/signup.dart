@@ -175,7 +175,7 @@ class _SingupState extends State<Singup> {
                                 validator: (password) {
                                   if (password!.isEmpty) {
                                     return 'Please enter the password';
-                                  } else if (password.length < 8) {
+                                  } else if (password.length < 7) {
                                     return 'Enter minimum 7 digits';
                                   } else {
                                     return null;

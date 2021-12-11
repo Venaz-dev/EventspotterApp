@@ -889,14 +889,12 @@ class _VideoPlayerScree1State extends State<VideoPlayerScree1> {
 
               // If the VideoPlayerController has finished initialization, use
               // the data it provides to limit the aspect ratio of the video.
-              return Container(
+              return SizedBox(
                 height: size.height * 0.3,
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                ),
+               
                 child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
+                  
                     child: VideoPlayer(_controller)),
               );
             } else {

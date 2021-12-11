@@ -3,13 +3,13 @@ import 'package:dio/dio.dart';
 import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/explore.dart';
 import 'package:event_spotter/pages/timeago.dart';
-import 'package:event_spotter/pages/userprofile.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:event_spotter/widgets/toaster.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class Commentofuser extends StatefulWidget {
   EventsModel eventsModel;
@@ -42,7 +42,7 @@ class _CommentofuserState extends State<Commentofuser> {
       child: Scaffold(
         body: Padding(
           padding:
-              const EdgeInsets.only(right: 30.0, left: 30, top: 20, bottom: 30),
+               EdgeInsets.only( right : size.width*0.03, left :size.width*0.03, top: 20, bottom: 30),
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
@@ -57,10 +57,16 @@ class _CommentofuserState extends State<Commentofuser> {
                   height: 20,
                 ),
                 Container(
-                  height: size.height * 0.38,
+                  
                   width: size.width * double.infinity,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color : Colors.white,
+                  boxShadow: const [BoxShadow(
+                    color: Colors.black12,
+                    spreadRadius: 2,
+                    blurRadius: 2,
+                  )],
+                   
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Column(children: [
@@ -106,42 +112,8 @@ class _CommentofuserState extends State<Commentofuser> {
                                   ),
                                 ),
                               ),
-                        Positioned(
-                          right: 10,
-                          top: size.height * 0.02,
-                          child: SizedBox(
-                            height: size.height * 0.04,
-
-                            // decoration: const BoxDecoration(color: Color(0XFF38888E)),
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => Eventposterprofile(
-                                          id: widget
-                                              .eventsModel
-                                              .data[widget.index]
-                                              .events
-                                              .user
-                                              .id)));
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  primary: const Color(0XFF38888E),
-                                ),
-                                child: Row(
-                                  children: const [
-                                    Icon(
-                                      FontAwesomeIcons.userPlus,
-                                      size: 10,
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text("Follow"),
-                                  ],
-                                )),
-                          ),
-                        ),
-                        Positioned(
+                        
+                     Positioned(
                           bottom: 0,
                           right: size.width * 0.02,
                           left: size.width * 0.02,
@@ -149,6 +121,7 @@ class _CommentofuserState extends State<Commentofuser> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Button(
+                                onpressed: (){},
                                 title: widget.eventsModel.data[widget.index]
                                     .events.user.name,
                                 // widget.model!.data[widget.indexs!].events
@@ -179,118 +152,107 @@ class _CommentofuserState extends State<Commentofuser> {
                         ),
                       ]),
                     ),
-                    Container(
-                      height: size.height * 0.12,
-                      width: double.infinity,
-                      decoration: const BoxDecoration(),
-                      child: Stack(
+                  const   SizedBox(height : 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        const Icon(
+                          FontAwesomeIcons.calendar,
+                          size: 15,
+                          color: Colors.black54,
+                        ),
+                        const SizedBox(
+                          width: 2,
+                        ),
+                        Text(
+                          widget.eventsModel.data[widget.index].events
+                              .eventDate,
+                          // widget.model!.data[widget.indexs!].events
+                          //     .eventDate,
+                          style: const TextStyle(color: Colors.black87),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        const Icon(
+                          FontAwesomeIcons.mapMarkerAlt,
+                          size: 15,
+                          color: Colors.black54,
+                        ),
+                        Text(
+                            widget.eventsModel.data[widget.index].km +
+                                " " +
+                                "away",
+                            style: TextStyle(color: Colors.black87)),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20.0),
+                      child: Container(
+                        
+                        alignment: Alignment.centerLeft,
+                        child: AutoSizeText(
+                        
+                          widget.eventsModel.data[widget.index].events
+                              .eventName,
+                          style: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400),
+                              minFontSize: 17,
+                              maxFontSize: 20,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    IntrinsicHeight(
+                      child: Row(
+                        mainAxisAlignment:
+                            MainAxisAlignment.spaceAround,
                         children: [
-                          Positioned(
-                            top: size.height * 0.008,
-                            right: size.width * 0.05,
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  FontAwesomeIcons.calendar,
-                                  size: 15,
-                                  color: Colors.black54,
-                                ),
-                                const SizedBox(
-                                  width: 2,
-                                ),
-                                Text(
-                                  widget.eventsModel.data[widget.index].events
-                                      .eventDate,
-                                  // widget.model!.data[widget.indexs!].events
-                                  //     .eventDate,
-                                  style: const TextStyle(color: Colors.black87),
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                const Icon(
-                                  FontAwesomeIcons.mapMarkerAlt,
-                                  size: 15,
-                                  color: Colors.black54,
-                                ),
-                                Text(
-                                    widget.eventsModel.data[widget.index].km +
-                                        " " +
-                                        "away",
-                                    style: TextStyle(color: Colors.black87)),
-                              ],
+                          extras(
+                              FontAwesomeIcons.thumbsUp,
+                              widget.eventsModel.data[widget.index]
+                                  .isLiked
+                                  .toString(),
+                              // widget
+                              //     .model!.data[widget.indexs!].isLiked
+                              //     .toString(),
+                              size),
+                          divider(),
+                          SizedBox(
+                            height: size.height * 0.04,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.green,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(15))),
+                              onPressed: () {},
+                              child: extras(
+                                  Icons.comment,
+                                  widget.eventsModel.data[widget.index]
+                                      .events.comment.length
+                                      .toString(),
+                                  // widget.model!.data[widget.indexs!]
+                                  //     .events.comment.length
+                                  //     .toString(),
+                                  size),
                             ),
                           ),
-                          Positioned(
-                              top: size.height * 0.04,
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 20.0),
-                                child: Text(
-                                  widget.eventsModel.data[widget.index].events
-                                      .eventName,
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              )),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            right: size.width * 0.01,
-                            left: size.width * 0.01,
-                            child: IntrinsicHeight(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  extras(
-                                      FontAwesomeIcons.thumbsUp,
-                                      widget.eventsModel.data[widget.index]
-                                          .isLiked
-                                          .toString(),
-                                      // widget
-                                      //     .model!.data[widget.indexs!].isLiked
-                                      //     .toString(),
-                                      size),
-                                  divider(),
-                                  SizedBox(
-                                    height: size.height * 0.04,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          primary: Colors.green,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15))),
-                                      onPressed: () {},
-                                      child: extras(
-                                          Icons.comment,
-                                          widget.eventsModel.data[widget.index]
-                                              .events.comment.length
-                                              .toString(),
-                                          // widget.model!.data[widget.indexs!]
-                                          //     .events.comment.length
-                                          //     .toString(),
-                                          size),
-                                    ),
-                                  ),
-                                  // divider(),
-                                  // extras(MdiIcons.share, posts[1]['share'],
-                                  //     size),
-                                  divider(),
-                                  extras(
-                                      Icons.live_tv,
-                                      "0",
-                                      // widget.model!.data[widget.indexs!]
-                                      //     .events.liveFeed.length
-                                      //     .toString(),
-                                      size),
-                                ],
-                              ),
-                            ),
-                          ),
+                          // divider(),
+                          // extras(MdiIcons.share, posts[1]['share'],
+                          //     size),
+                          divider(),
+                          extras(
+                              Icons.live_tv,
+                              "0",
+                              // widget.model!.data[widget.indexs!]
+                              //     .events.liveFeed.length
+                              //     .toString(),
+                              size),
                         ],
                       ),
                     ),

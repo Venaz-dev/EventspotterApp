@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:event_spotter/constant/colors.dart';
 import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/event_details_page.dart';
 import 'package:flutter/material.dart';
@@ -42,131 +43,129 @@ class _LivefeedsState extends State<Livefeeds> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: Container(
-              width: double.infinity,
-              decoration: const BoxDecoration(color: Colors.white,
-                  //   border: Border.all(color: Colors.black45,),
+          Container(
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              color :  Colors.white,
+                //   border: Border.all(color: Colors.black45,),
 
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      spreadRadius: 0.3,
-                      blurRadius: 0.3,
-                    )
-                  ]),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 10, bottom: 10, top: 10, right: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Event live feed",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    widget.eventsLiveFeeds.isEmpty
-                        ? const SizedBox()
-                        : SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                                children: List.generate(
-                                    widget.eventsLiveFeeds.length, (index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(
-                                  right: 5.0,bottom: 3 , top : 3
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    spreadRadius: 3,
+                    blurRadius: 3,
+                  )
+                ]),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 10, bottom: 10, top: 10, right: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Event live feed",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  widget.eventsLiveFeeds.isEmpty
+                      ? const SizedBox()
+                      : SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                              children: List.generate(
+                                  widget.eventsLiveFeeds.length, (index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                right: 5.0,bottom: 3 , top : 3
+                              ),
+                              child: Container(
+                                height: size.height * 0.24,
+                                width: size.width * 0.3,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white,
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black12,
+                                      spreadRadius: 1,
+                                      blurRadius: 1,
+                                      offset: Offset(0, 0),
+                                    )
+                                  ],
+
+                                  //  color: Colors.red,
                                 ),
-                                child: Container(
-                                  height: size.height * 0.24,
-                                  width: size.width * 0.3,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.white,
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Colors.black26,
-                                        spreadRadius: 1.5,
-                                        blurRadius: 1.5,
-                                        offset: Offset(1.5, 0),
-                                      )
-                                    ],
-
-                                    //  color: Colors.red,
-                                  ),
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  Eventdetailing(
-                                                    model: widget.eventsModel,
-                                                    indexs: index,
-                                                    id: widget.id,
-                                                    eventId:
-                                                        widget.eventsLiveFeeds[
-                                                            index]["eventId"],
-                                                  )));
-                                    },
-                                    child: Stack(
-                                      children: [
-                                        widget.eventsLiveFeeds[index][
-                                                        'img'] //////////////////////////
-                                                    .toString()
-                                                    .contains('.mp4') ||
-                                                widget.eventsLiveFeeds[index][
-                                                        'img'] //////////////////////////
-                                                    .toString()
-                                                    .contains('.mov')
-                                            ? VideoPlayerScreen(
-                                                url: MainUrl +
-                                                    widget.eventsLiveFeeds[
-                                                        index]['img'])
-                                            : Container(
-                                                height: size.height * 0.2,
-                                                width: size.width * 0.3,
-                                                decoration: BoxDecoration(
-                                                  // color: Colors.red,
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                ),
-                                                child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15),
-                                                    child: buildimage(index)),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Eventdetailing(
+                                                  model: widget.eventsModel,
+                                                  indexs: index,
+                                                  id: widget.id,
+                                                  eventId:
+                                                      widget.eventsLiveFeeds[
+                                                          index]["eventId"],
+                                                )));
+                                  },
+                                  child: Stack(
+                                    children: [
+                                      widget.eventsLiveFeeds[index][
+                                                      'img'] //////////////////////////
+                                                  .toString()
+                                                  .contains('.mp4') ||
+                                              widget.eventsLiveFeeds[index][
+                                                      'img'] //////////////////////////
+                                                  .toString()
+                                                  .contains('.mov')
+                                          ? VideoPlayerScreen(
+                                              url: MainUrl +
+                                                  widget.eventsLiveFeeds[
+                                                      index]['img'])
+                                          : Container(
+                                              height: size.height * 0.2,
+                                              width: size.width * 0.3,
+                                              decoration: BoxDecoration(
+                                                // color: Colors.red,
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
                                               ),
-                                        Align(
-                                            alignment: Alignment.bottomCenter,
-                                            child: Text(
-                                              widget.eventsLiveFeeds[index]
-                                                      ['km'] +
-                                                  " " +
-                                                  "miles",
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 17),
-                                            )),
-                                      ],
-                                    ),
+                                              child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15),
+                                                  child: buildimage(index)),
+                                            ),
+                                      Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Text(
+                                            widget.eventsLiveFeeds[index]
+                                                    ['km'] +
+                                                " " +
+                                                "miles",
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 17),
+                                          )),
+                                    ],
                                   ),
                                 ),
-                              );
+                              ),
+                            );
 
-                              // } else {
-                              //   //index = index + 1;
-                              //   return const SizedBox();
-                              // }
-                            })),
-                          ),
-                  ],
-                ),
+                            // } else {
+                            //   //index = index + 1;
+                            //   return const SizedBox();
+                            // }
+                          })),
+                        ),
+                ],
               ),
             ),
           ),
@@ -178,7 +177,7 @@ class _LivefeedsState extends State<Livefeeds> {
           children: const [
             Text(
               "Event live feed",
-              style: TextStyle(color: Colors.black, fontSize: 15),
+              style: TextStyle(color: Colors.black, fontSize: 16),
             ),
             SizedBox(
               height: 10,
