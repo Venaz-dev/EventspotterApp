@@ -601,7 +601,7 @@ class Events {
   late final String createdAt;
   late final String updatedAt;
   late final String isDrafted;
-   String? ticketLink;
+  late final String? ticketLink;
   late final List<EventPictures> eventPictures;
   late final User user;
   late final List<Comment> comment;

@@ -4,7 +4,6 @@ import 'package:event_spotter/models/userDraftEvents.dart';
 import 'package:event_spotter/models/userPastEvents.dart';
 import 'package:event_spotter/models/userUpcomingEvent.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
-import 'package:event_spotter/pages/differenteventsdetaisl.dart';
 import 'package:event_spotter/pages/draft.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -380,141 +379,110 @@ class _YoureventsState extends State<Yourevents> {
           children: List.generate(_getUserUpcomingEvents.data.length, (index) {
             return Padding(
               padding: const EdgeInsets.only(top: 20.0, left: 20),
-              child: InkWell(
-                onTap: (){
-                    Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Differenteventsdetails(
-                                  eventpicture: _getUserUpcomingEvents
-                                      .data[index].events.eventPictures[0].imagePath
-                                      .toString(),
-                                  eventname: _getUserUpcomingEvents
-                                      .data[index].events.eventName,
-                                  conditions: _getUserUpcomingEvents
-                                      .data[index].events.conditions
-                                      .toString(),
-                                  details: _getUserUpcomingEvents
-                                      .data[index].events.eventDescription,
-                                  ticketlink: _getUserUpcomingEvents
-                                      .data[index].events.ticketLink,
-                                  distance:
-                                      _getUserUpcomingEvents.data[index].km,
-                                  date: _getUserUpcomingEvents
-                                      .data[index].events.eventDate,
-
-                                      lat : _getUserUpcomingEvents
-                                      .data[index].events.lat,
-                                      long: _getUserUpcomingEvents
-                                      .data[index].events.lng,
-
-                                      location: _getUserUpcomingEvents
-                                      .data[index].events.location,
-                                )));
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: const [
-                        BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 10,
-                            spreadRadius: 2)
-                      ]),
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(top: 20.0, left: 15, bottom: 15),
-                    child: Row(
-                      children: [
-                        _getUserUpcomingEvents
-                                    .data[index].events.eventPictures[0].imagePath
-                                    .toString()
-                                    .contains('.mp4') ||
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 10,
+                          spreadRadius: 2)
+                    ]),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(top: 20.0, left: 15, bottom: 15),
+                  child: Row(
+                    children: [
+                      _getUserUpcomingEvents
+                                  .data[index].events.eventPictures[0].imagePath
+                                  .toString()
+                                  .contains('.mp4') ||
+                              _getUserUpcomingEvents
+                                  .data[index].events.eventPictures[0].imagePath
+                                  .toString()
+                                  .contains('.mov')
+                          ? VideoPlayerScreennn(
+                              url: MainUrl +
+                                  _getUserUpcomingEvents.data[index].events
+                                      .eventPictures[0].imagePath)
+                          : SizedBox(
+                              height: widget.size.height * 0.17,
+                              width: widget.size.width * 0.3,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: CachedNetworkImage(
+                                  imageUrl: MainUrl +
+                                      _getUserUpcomingEvents.data[index].events
+                                          .eventPictures[0].imagePath,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: size.width * 0.35,
+                              child: AutoSizeText(
                                 _getUserUpcomingEvents
-                                    .data[index].events.eventPictures[0].imagePath
-                                    .toString()
-                                    .contains('.mov')
-                            ? VideoPlayerScreennn(
-                                url: MainUrl +
-                                    _getUserUpcomingEvents.data[index].events
-                                        .eventPictures[0].imagePath)
-                            : SizedBox(
-                                height: widget.size.height * 0.17,
-                                width: widget.size.width * 0.3,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: CachedNetworkImage(
-                                    imageUrl: MainUrl +
-                                        _getUserUpcomingEvents.data[index].events
-                                            .eventPictures[0].imagePath,
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) {
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    },
-                                  ),
-                                ),
+                                    .data[index].events.eventName,
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 18),
+                                maxFontSize: 16,
+                                minFontSize: 15,
+                                overflow: TextOverflow.fade,
                               ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: size.width * 0.35,
-                                child: AutoSizeText(
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  FontAwesomeIcons.calendar,
+                                  size: 15,
+                                  color: Colors.black54,
+                                ),
+                                AutoSizeText(
                                   _getUserUpcomingEvents
-                                      .data[index].events.eventName,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 18),
-                                  maxFontSize: 16,
-                                  minFontSize: 15,
-                                  overflow: TextOverflow.fade,
+                                      .data[index].events.eventDate,
+                                  style: const TextStyle(color: Colors.black87),
+                                  //overflow: TextOverflow.ellipsis,
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    FontAwesomeIcons.calendar,
-                                    size: 15,
-                                    color: Colors.black54,
-                                  ),
-                                  AutoSizeText(
-                                    _getUserUpcomingEvents
-                                        .data[index].events.eventDate,
-                                    style: const TextStyle(color: Colors.black87),
-                                    //overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    FontAwesomeIcons.mapMarkerAlt,
-                                    size: 15,
-                                    color: Colors.black54,
-                                  ),
-                                  Text(
-                                      _getUserUpcomingEvents.data[index].km +
-                                          " " +
-                                          "away",
-                                      style:
-                                          const TextStyle(color: Colors.black87)),
-                                ],
-                              )
-                            ],
-                          ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  FontAwesomeIcons.mapMarkerAlt,
+                                  size: 15,
+                                  color: Colors.black54,
+                                ),
+                                Text(
+                                    _getUserUpcomingEvents.data[index].km +
+                                        " " +
+                                        "away",
+                                    style:
+                                        const TextStyle(color: Colors.black87)),
+                              ],
+                            )
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -535,139 +503,107 @@ class _YoureventsState extends State<Yourevents> {
           children: List.generate(_userPastEvents.data.length, (index) {
             return Padding(
               padding: const EdgeInsets.only(top: 20.0, left: 20),
-              child: InkWell(
-                onTap:() {
-                    Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Differenteventsdetails(
-                                  eventpicture: _userPastEvents
-                                      .data[index].events.eventPictures[0].imagePath
-                                      .toString(),
-                                      
-                                  eventname: _userPastEvents
-                                      .data[index].events.eventName,
-                                  conditions: _userPastEvents
-                                      .data[index].events.conditions
-                                      .toString(),
-                                  details: _userPastEvents
-                                      .data[index].events.eventDescription,
-                                  ticketlink: _userPastEvents
-                                      .data[index].events.ticketLink,
-                                  distance:
-                                      _userPastEvents.data[index].km,
-                                  date: _userPastEvents
-                                      .data[index].events.eventDate,
-
-                                      lat : _userPastEvents
-                                      .data[index].events.lat,
-                                      long: _userPastEvents
-                                      .data[index].events.lng,
-
-                                      location: _userPastEvents
-                                      .data[index].events.location,
-                                )));
-              },
-                child: Container(
-                  // width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: const [
-                        BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 10,
-                            spreadRadius: 2)
-                      ]),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 20.0, right: 15, left: 15, bottom: 15),
-                    child: Row(
-                      children: [
-                        _userPastEvents
-                                    .data[index].events.eventPictures[0].imagePath
-                                    .toString()
-                                    .contains('.mp4') ||
-                                _userPastEvents
-                                    .data[index].events.eventPictures[0].imagePath
-                                    .toString()
-                                    .contains('.mov')
-                            ? VideoPlayerScreennn(
-                                url: MainUrl +
-                                    _userPastEvents.data[index].events
-                                        .eventPictures[0].imagePath)
-                            : SizedBox(
-                                height: widget.size.height * 0.17,
-                                width: widget.size.width * 0.3,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: CachedNetworkImage(
-                                    imageUrl: MainUrl +
-                                        _userPastEvents.data[index].events
-                                            .eventPictures[0].imagePath,
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) {
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    },
-                                  ),
+              child: Container(
+                // width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 10,
+                          spreadRadius: 2)
+                    ]),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 20.0, right: 15, left: 15, bottom: 15),
+                  child: Row(
+                    children: [
+                      _userPastEvents
+                                  .data[index].events.eventPictures[0].imagePath
+                                  .toString()
+                                  .contains('.mp4') ||
+                              _userPastEvents
+                                  .data[index].events.eventPictures[0].imagePath
+                                  .toString()
+                                  .contains('.mov')
+                          ? VideoPlayerScreennn(
+                              url: MainUrl +
+                                  _userPastEvents.data[index].events
+                                      .eventPictures[0].imagePath)
+                          : SizedBox(
+                              height: widget.size.height * 0.17,
+                              width: widget.size.width * 0.3,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: CachedNetworkImage(
+                                  imageUrl: MainUrl +
+                                      _userPastEvents.data[index].events
+                                          .eventPictures[0].imagePath,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  },
                                 ),
                               ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: size.width * 0.35,
-                                child: AutoSizeText(
-                                  _userPastEvents.data[index].events.eventName,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 18),
-                                  maxFontSize: 16,
-                                  minFontSize: 15,
+                            ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: size.width * 0.35,
+                              child: AutoSizeText(
+                                _userPastEvents.data[index].events.eventName,
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 18),
+                                maxFontSize: 16,
+                                minFontSize: 15,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  FontAwesomeIcons.calendar,
+                                  size: 15,
+                                  color: Colors.black54,
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    FontAwesomeIcons.calendar,
-                                    size: 15,
-                                    color: Colors.black54,
-                                  ),
-                                  Text(
-                                    _userPastEvents.data[index].events.eventDate,
-                                    style: const TextStyle(color: Colors.black87),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    FontAwesomeIcons.mapMarkerAlt,
-                                    size: 15,
-                                    color: Colors.black54,
-                                  ),
-                                  Text(
-                                      _userPastEvents.data[index].km +
-                                          " " +
-                                          "away",
-                                      style:
-                                          const TextStyle(color: Colors.black87)),
-                                ],
-                              )
-                            ],
-                          ),
+                                Text(
+                                  _userPastEvents.data[index].events.eventDate,
+                                  style: const TextStyle(color: Colors.black87),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  FontAwesomeIcons.mapMarkerAlt,
+                                  size: 15,
+                                  color: Colors.black54,
+                                ),
+                                Text(
+                                    _userPastEvents.data[index].km +
+                                        " " +
+                                        "away",
+                                    style:
+                                        const TextStyle(color: Colors.black87)),
+                              ],
+                            )
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),

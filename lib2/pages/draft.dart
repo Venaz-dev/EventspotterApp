@@ -18,7 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 
 class Draftsedit extends StatefulWidget {
-  const Draftsedit(
+  Draftsedit(
       {Key? key,
       required this.eventname,
       required this.date,

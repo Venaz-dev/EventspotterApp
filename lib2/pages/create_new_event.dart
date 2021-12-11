@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:event_spotter/models/eventTypeModel.dart';
-import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/widgets/elevatedbutton.dart';
 import 'package:event_spotter/widgets/smallButton.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
@@ -12,47 +11,19 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-// import 'package:place_picker/entities/location_result.dart';
-// import 'package:place_picker/widgets/place_picker.dart';
+import 'package:place_picker/entities/location_result.dart';
+import 'package:place_picker/widgets/place_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 
-class Draftsedit extends StatefulWidget {
-  const Draftsedit(
-      {Key? key,
-      required this.eventname,
-      required this.date,
-      required this.placename,
-      required this.imagepath,
-      required this.videopath,
-      required this.eventdescription,
-      required this.conditions,
-      required this.lat,
-      required this.ticketlink,
-      required this.log,
-      required this.type,
-      required this.eventprivaacy})
-      : super(key: key);
-
-  final String eventname;
-  // final String description;
-  final String date;
-  final String placename;
-  final String imagepath;
-  final String videopath;
-  final String eventdescription;
-  final List conditions;
-  final String? ticketlink;
-  final String eventprivaacy;
-  final String lat;
-  final String type;
-  final String log;
+class Createevent extends StatefulWidget {
+  const Createevent({Key? key}) : super(key: key);
 
   @override
-  State<Draftsedit> createState() => _DraftseditState();
+  State<Createevent> createState() => _CreateeventState();
 }
 
-class _DraftseditState extends State<Draftsedit> {
+class _CreateeventState extends State<Createevent> {
   final Dio _dio = Dio();
   late SharedPreferences _sharedPreferences;
   late String _token;
@@ -60,14 +31,13 @@ class _DraftseditState extends State<Draftsedit> {
   String getEventTypesUrl = "https://theeventspotter.com/api/getEventTypes";
   String createEventUrl = "https://theeventspotter.com/api/createEvent";
   String drafteventUrl = "https://theeventspotter.com/api/draftEvent";
-  String MainUrl = "https://theeventspotter.com/";
 
   late Response response;
   String? value;
   late String latt;
   late String longg;
   bool check = false;
-  late List conditions = [];
+  late List<String> conditions = [];
   File? imagePath;
   bool _isloading = false;
   bool _isloading1 = false;
@@ -82,6 +52,7 @@ class _DraftseditState extends State<Draftsedit> {
   final ImagePicker _picker = ImagePicker();
   TextEditingController eventname = TextEditingController();
   TextEditingController eventDescription = TextEditingController();
+
   TextEditingController venue = TextEditingController();
   TextEditingController conditionss = TextEditingController();
 
@@ -90,7 +61,6 @@ class _DraftseditState extends State<Draftsedit> {
   //File? imageFile;
 
   late List<String> eventtypes = [];
-
   @override
   void dispose() {
     // TODO: implement dispose
@@ -98,7 +68,6 @@ class _DraftseditState extends State<Draftsedit> {
     eventDescription.dispose();
     venue.dispose();
     conditionss.dispose();
-    
     link.dispose();
     super.dispose();
   }
@@ -106,18 +75,8 @@ class _DraftseditState extends State<Draftsedit> {
   @override
   void initState() {
     super.initState();
-    eventname = TextEditingController(text: widget.eventname);
-    eventDescription = TextEditingController(text: widget.eventdescription);
-    imagePath = File(widget.imagepath);
-    latt = widget.lat;
-    longg = widget.log;
-    public = int.parse(widget.eventprivaacy);
-    link = TextEditingController(text: widget.ticketlink);;
-    //value = widget.type;
-    conditions = widget.conditions;
     getEventTypes();
     passingString();
-    formatted = formatter.format(now);
   }
 
   @override
@@ -137,7 +96,7 @@ class _DraftseditState extends State<Draftsedit> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: const Text(
-            "Drafts events",
+            "Create a new event",
             style: TextStyle(
                 fontWeight: FontWeight.w500,
                 color: Colors.black87,
@@ -169,62 +128,113 @@ class _DraftseditState extends State<Draftsedit> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                (imagePath!.path.toString().contains('.mp4') ||
-                        imagePath!.path.toString().contains('.mov'))
-                    ? SizedBox(
-                        height: size.height * 0.3,
-                        width: double.infinity,
-                        child: Column(
-                          children: [
-                            VideoPlayerScree1(url: MainUrl+imagePath!.path),
-                            Flexible(
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 10.0),
-                                child: Elevatedbutton(
-                                    primary: const Color(0xFF304747),
-                                    text: "Upload Picture/Video",
-                                    width: double.infinity,
-                                    coloring: const Color(0xFF304747),
-                                    onpressed: () {
-                                      _selectPhoto(); // Navigator.of(context).push(MaterialPageRoute(
-                                      //     builder: (context) => const Uploadimage()));
-                                    }),
-                              ),
-                            )
-                          ],
-                        ))
-                    : Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
+                imagePath == null
+                    ? Container(
+                        //height: size.height * 0.35,
+                        width: size.width * double.infinity,
+                        decoration: const BoxDecoration(
+                          border: Border(
+                              top: BorderSide(color: Colors.black54),
+                              left: BorderSide(color: Colors.black54),
+                              right: BorderSide(color: Colors.black54),
+                              bottom: BorderSide(color: Colors.black54)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 20.0, left: 20),
+                          child: Column(children: [
+                            const SizedBox(
+                              height: 20,
                             ),
-                            //color: Colors.red,
+                            SizedBox(
+                                height: size.height * 0.2,
+                                child:
+                                    Image.asset('Assets/images/upload.jpeg')),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const AutoSizeText(
+                              "Upload a catchy event picture or a video",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400),
+                              maxLines: 1,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Elevatedbutton(
+                                primary: const Color(0xFF304747),
+                                text: "Upload Picture/Video",
+                                width: double.infinity,
+                                coloring: const Color(0xFF304747),
+                                onpressed: () {
+                                  _selectPhoto(); // Navigator.of(context).push(MaterialPageRoute(
+                                  //     builder: (context) => const Uploadimage()));
+                                }),
+                          ]),
+                        ),
+                      )
+                    : (imagePath!.path.toString().contains('.mp4') ||
+                            imagePath!.path.toString().contains('.mov'))
+                        ? SizedBox(
                             height: size.height * 0.3,
-                            width: size.width * double.infinity,
-                            child: Image.network(MainUrl + widget.imagepath),
+                            width: double.infinity,
+                            child: Column(
+                              children: [
+                                VideoPlayerScree1(url: imagePath!),
+                                Flexible(
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 10.0),
+                                    child: Elevatedbutton(
+                                        primary: const Color(0xFF304747),
+                                        text: "Upload Picture/Video",
+                                        width: double.infinity,
+                                        coloring: const Color(0xFF304747),
+                                        onpressed: () {
+                                          _selectPhoto(); // Navigator.of(context).push(MaterialPageRoute(
+                                          //     builder: (context) => const Uploadimage()));
+                                        }),
+                                  ),
+                                )
+                              ],
+                            ))
+                        : Column(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                //color: Colors.red,
+                                height: size.height * 0.3,
+                                width: size.width * double.infinity,
+                                child: Image.file(
+                                  imagePath!,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Elevatedbutton(
+                                  primary: const Color(0xFF304747),
+                                  text: "Upload Picture/Video",
+                                  width: double.infinity,
+                                  coloring: const Color(0xFF304747),
+                                  onpressed: () {
+                                    _selectPhoto(); // Navigator.of(context).push(MaterialPageRoute(
+                                    //     builder: (context) => const Uploadimage()));
+                                  }),
+                            ],
                           ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Elevatedbutton(
-                              primary: const Color(0xFF304747),
-                              text: "Upload Picture/Video",
-                              width: double.infinity,
-                              coloring: const Color(0xFF304747),
-                              onpressed: () {
-                                _selectPhoto(); // Navigator.of(context).push(MaterialPageRoute(
-                                //     builder: (context) => const Uploadimage()));
-                              }),
-                        ],
-                      ),
                 const SizedBox(
                   height: 20,
                 ),
                 Textform(
                   isreadonly: false,
                   controller: eventname,
-                  label: widget.eventname,
+                  label: "Event name",
                   color: const Color(0XFFEBF2F2),
                   isSecure: false,
                 ),
@@ -314,14 +324,20 @@ class _DraftseditState extends State<Draftsedit> {
                 const SizedBox(
                   height: 10,
                 ),
-                Textform(
-                  input: false,
-                  isSecure: false,
-                  isreadonly: false,
-                  controller: venue,
-                  icon: FontAwesomeIcons.mapMarkerAlt,
-                  label: widget.placename,
-                  color: const Color(0XFFEBF2F2),
+                GestureDetector(
+                  onTap: () {
+                    showPlacePicker();
+                  },
+                  child: Textform(
+                    input: false,
+                    isSecure: false,
+                    //isreadonly: false,
+                    controller: venue,
+                    suffix: FontAwesomeIcons.crosshairs,
+                    icon: FontAwesomeIcons.mapMarkerAlt,
+                    label: venuee,
+                    color: const Color(0XFFEBF2F2),
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
@@ -397,6 +413,10 @@ class _DraftseditState extends State<Draftsedit> {
                 conditions.isEmpty
                     ? const Center(child: Text("No Conditions"))
                     : Wrap(
+
+                        ////////////////////////////////////////////////////////////////////
+                        ///
+                        ///
                         children: List.generate(conditions.length, (index) {
                         return Padding(
                           padding: const EdgeInsets.only(right: 6.0, top: 10),
@@ -439,6 +459,8 @@ class _DraftseditState extends State<Draftsedit> {
                           ? const Color(0XFF368890)
                           : const Color(0XFFFFFFFF),
                       onpressed: () {
+                        public = 1;
+
                         setState(() {
                           _ispublic = !_ispublic;
                           publicevent();
@@ -481,7 +503,7 @@ class _DraftseditState extends State<Draftsedit> {
                 _isloading
                     ? const Center(child: CircularProgressIndicator())
                     : Elevatedbutton(
-                        text: "Post",
+                        text: "Create",
                         width: double.infinity,
                         coloring: const Color(0xFF304747),
                         textColor: const Color(0XFFFFFFFF),
@@ -489,7 +511,7 @@ class _DraftseditState extends State<Draftsedit> {
                         onpressed: () async {
                           if (eventname.text.isEmpty ||
                               eventDescription.text.isEmpty ||
-                              
+                              venuee.contains("Not Selected") ||
                               imagePath == null ||
                               conditions.isEmpty) {
                             showToaster("Please fill all the above fields");
@@ -504,6 +526,30 @@ class _DraftseditState extends State<Draftsedit> {
                 const SizedBox(
                   height: 10,
                 ),
+                _isloading1
+                    ? const Center(child: CircularProgressIndicator())
+                    : Elevatedbutton(
+                        onpressed: () async {
+                          if (eventname.text.isEmpty ||
+                              eventDescription.text.isEmpty ||
+                              venuee.contains("Not Selected") ||
+                              imagePath == null ||
+                              conditions.isEmpty) {
+                            showToaster("Please fill all the above fields");
+                          } else {
+                            setState(() {
+                              _isloading1 = !_isloading1;
+                            });
+
+                            await DraftEvent();
+                          }
+                        },
+                        textColor: const Color(0XFF74ABB0),
+                        coloring: Colors.white,
+                        text: "Save as draft",
+                        width: double.infinity,
+                        primary: Colors.white,
+                      ),
               ],
             ),
           ),
@@ -603,21 +649,21 @@ class _DraftseditState extends State<Draftsedit> {
     formatted = formatter.format(now);
   }
 
-  // void showPlacePicker() async {
-  //   LocationResult? result = await Navigator.of(context).push(MaterialPageRoute(
-  //       builder: (context) => PlacePicker(
-  //             "AIzaSyCZTqBDEFeniyz9QukE0gu4yQ5g2mt7rm0",
-  //           )));
+  void showPlacePicker() async {
+    LocationResult? result = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => PlacePicker(
+              "AIzaSyCZTqBDEFeniyz9QukE0gu4yQ5g2mt7rm0",
+            )));
 
-  //   // Handle the result in your way
-  //   print(result?.name);
-  //   print(result?.latLng);
-  //   latt = result!.latLng!.latitude.toString();
-  //   longg = result.latLng!.longitude.toString();
-  //   venuee = result.formattedAddress!;
-  //   check = true;
-  //   setState(() {});
-  // }
+    // Handle the result in your way
+    print(result?.name);
+    print(result?.latLng);
+    latt = result!.latLng!.latitude.toString();
+    longg = result.latLng!.longitude.toString();
+    venuee = result.formattedAddress!;
+    check = true;
+    setState(() {});
+  }
 
   DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
       value: item,
@@ -745,9 +791,55 @@ class _DraftseditState extends State<Draftsedit> {
   }
 }
 
+class Elevatedbuttons extends StatelessWidget {
+  final String text;
+  final Color? coloring;
+  final Color? textColor;
+  final VoidCallback? onpressed;
+  final double width;
+  final Color? primary;
+  final Color? sidecolor;
+
+  const Elevatedbuttons({
+    required this.text,
+    Key? key,
+    this.coloring,
+    this.textColor,
+    this.onpressed,
+    this.width = 0,
+    this.primary,
+    this.sidecolor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.06,
+      decoration: BoxDecoration(
+        color: coloring,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: ElevatedButton(
+        child: Text(
+          text,
+          style: TextStyle(color: textColor, fontSize: 16),
+          textAlign: TextAlign.center,
+        ),
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+              side: BorderSide(color: sidecolor!),
+              borderRadius: const BorderRadius.all(Radius.circular(10))),
+          primary: primary,
+        ),
+        onPressed: onpressed,
+      ),
+    );
+  }
+}
+
 class VideoPlayerScree1 extends StatefulWidget {
   VideoPlayerScree1({Key? key, required this.url}) : super(key: key);
-  late String url;
+  late File url;
 
   @override
   _VideoPlayerScree1State createState() => _VideoPlayerScree1State();
@@ -762,7 +854,7 @@ class _VideoPlayerScree1State extends State<VideoPlayerScree1> {
     // Create and store the VideoPlayerController. The VideoPlayerController
     // offers several different constructors to play videos from assets, files,
     // or the internet.
-    _controller = VideoPlayerController.network(widget.url);
+    _controller = VideoPlayerController.file(widget.url);
     print(widget.url);
     print('Hello Wolrd');
 
@@ -797,14 +889,12 @@ class _VideoPlayerScree1State extends State<VideoPlayerScree1> {
 
               // If the VideoPlayerController has finished initialization, use
               // the data it provides to limit the aspect ratio of the video.
-              return Container(
+              return SizedBox(
                 height: size.height * 0.3,
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                ),
+               
                 child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
+                  
                     child: VideoPlayer(_controller)),
               );
             } else {

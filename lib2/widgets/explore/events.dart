@@ -627,7 +627,7 @@ class VideoPlayerScreenn extends StatefulWidget {
 class _VideoPlayerScreennState extends State<VideoPlayerScreenn> {
   late VideoPlayerController _controller;
   late Future<void> _initializeVideoPlayerFuture;
-//String MainUrl = "https://theeventspotter.com/";
+  String MainUrl = "https://theeventspotter.com/";
   @override
   void initState() {
     // Create and store the VideoPlayerController. The VideoPlayerController

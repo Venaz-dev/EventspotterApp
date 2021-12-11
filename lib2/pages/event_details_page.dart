@@ -18,7 +18,6 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:video_player/video_player.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 enum livefeed { details, livesnaps }
 
@@ -210,48 +209,44 @@ class _EventdetailingState extends State<Eventdetailing> {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.only(right: 8, left: 8),
-                            child: FittedBox(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Buttonicon(
-                                    radiusofbutton: BorderRadius.circular(20),
-                                    icon: FontAwesomeIcons.userPlus,
-                                    title: widget.model!.data[index1].events
-                                            .user.followers.length
-                                            .toString() +
-                                        " " "Followers",
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  const Icon(
-                                    FontAwesomeIcons.calendar,
-                                    size: 13,
-                                    color: Colors.black54,
-                                  ),
-                                  Text(
-                                    time(index1),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Buttonicon(
+                                  radiusofbutton: BorderRadius.circular(20),
+                                  icon: FontAwesomeIcons.userPlus,
+                                  title: widget.model!.data[index1].events.user
+                                          .followers.length
+                                          .toString() +
+                                      " " "Followers",
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                const Icon(
+                                  FontAwesomeIcons.calendar,
+                                  size: 13,
+                                  color: Colors.black54,
+                                ),
+                                Text(
+                                  time(index1),
+                                  style: const TextStyle(color: Colors.black87),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                const Icon(
+                                  FontAwesomeIcons.mapMarkerAlt,
+                                  size: 15,
+                                  color: Colors.black54,
+                                ),
+                                Text(
+                                    widget.model!.data[index1].km.toString() +
+                                        " " +
+                                        "away",
                                     style:
-                                        const TextStyle(color: Colors.black87),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  const Icon(
-                                    FontAwesomeIcons.mapMarkerAlt,
-                                    size: 15,
-                                    color: Colors.black54,
-                                  ),
-                                  Text(
-                                      widget.model!.data[index1].km.toString() +
-                                          " " +
-                                          "away",
-                                      style: const TextStyle(
-                                          color: Colors.black87)),
-                                ],
-                              ),
+                                        const TextStyle(color: Colors.black87)),
+                              ],
                             ),
                           ),
                         ),
@@ -431,14 +426,9 @@ class _EventdetailingState extends State<Eventdetailing> {
                 const SizedBox(
                   height: 10,
                 ),
-                TextButton(
-                  onPressed: () {
-                    ticketlink(index1);
-                  },
-                  child: Text(
-                    widget.model!.data[index1].events.ticketLink!,
-                    style: const TextStyle(color: Colors.black45, fontSize: 16),
-                  ),
+                Text(
+                  widget.model!.data[index1].events.ticketLink!,
+                  style: const TextStyle(color: Colors.black54, fontSize: 16),
                 ),
               ],
             ),
@@ -650,8 +640,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                                             .toString()
                                             .contains('.mov')
                                     ? VideoPlayerScreen(
-                                        url: MainUrl +
-                                            Live[index]['img'].toString())
+                                        url: MainUrl + Live[index]['img'].toString())
                                     : Container(
                                         height: size.height * 0.2,
                                         width: size.width * 0.3,
@@ -1001,28 +990,6 @@ class _EventdetailingState extends State<Eventdetailing> {
 
     return outputDate;
   }
-
-  ticketlink(int index2) async {
-    print("indeside launch");
-    if (widget.model!.data[index2].events.ticketLink != null) {
-      if (widget.model!.data[index2].events.ticketLink!.contains("https://")) {
-        var url = widget.model!.data[index2].events.ticketLink.toString();
-        if (await canLaunch(url)) {
-          await launch(url);
-        } else {
-          throw 'Could not launch $url';
-        }
-      } else {
-        var url = "https://" +
-            widget.model!.data[index2].events.ticketLink.toString();
-        if (await canLaunch(url)) {
-          await launch(url);
-        } else {
-          throw 'Could not launch $url';
-        }
-      }
-    }
-  }
 }
 
 class Snapsvideoplayer extends StatefulWidget {
@@ -1052,6 +1019,7 @@ class _SnapsvideoplayerState extends State<Snapsvideoplayer> {
     _controller.setLooping(false);
     _controller.setVolume(100);
 
+
     super.initState();
   }
 
@@ -1072,7 +1040,7 @@ class _SnapsvideoplayerState extends State<Snapsvideoplayer> {
           future: _initializeVideoPlayerFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              // _controller.play();
+             // _controller.play();
 
               // If the VideoPlayerController has finished initialization, use
               // the data it provides to limit the aspect ratio of the video.
