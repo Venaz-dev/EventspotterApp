@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:event_spotter/models/eventTypeModel.dart';
@@ -598,7 +599,7 @@ class _CreateeventState extends State<Createevent> {
       "lat": latt,
       "lng": longg,
       "ticket_link": link.text,
-      "conditions": conditions,
+      "conditions": jsonEncode(conditions),
       'image': file,
     });
 

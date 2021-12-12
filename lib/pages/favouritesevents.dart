@@ -238,7 +238,7 @@ class _FeventsState extends State<Fevents> {
                             builder: (context) => Differenteventsdetails(
                                   eventpicture: _favouriteUpcomingEventsModel
                                               .data[index].events.eventPictures[0].imagePath,
-                                     
+                                     eventId: _favouriteUpcomingEventsModel.data[index].events.id.toString(),
                                   eventname:  _favouriteUpcomingEventsModel
                                               .data[index].events.eventName,
                                   conditions: _favouriteUpcomingEventsModel
@@ -416,6 +416,7 @@ class _FeventsState extends State<Fevents> {
                                   eventpicture: _favouritePastEventsModel
                                       .data[index].events.eventPictures[0].imagePath
                                       .toString(),
+                                      eventId: _favouritePastEventsModel.data[index].events.id.toString(),
                                   eventname: _favouritePastEventsModel
                                       .data[index].events.eventName,
                                   conditions: _favouritePastEventsModel

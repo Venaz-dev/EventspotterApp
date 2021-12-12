@@ -263,7 +263,10 @@ class _YeventsState extends State<Yevents> {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => Differenteventsdetails(
                                   eventpicture: _getUserUpcomingEvents
-                                      .data[index].events.eventPictures[0].imagePath
+                                      .data[index]
+                                      .events
+                                      .eventPictures[0]
+                                      .imagePath
                                       .toString(),
                                   eventname: _getUserUpcomingEvents
                                       .data[index].events.eventName,
@@ -278,14 +281,15 @@ class _YeventsState extends State<Yevents> {
                                       _getUserUpcomingEvents.data[index].km,
                                   date: _getUserUpcomingEvents
                                       .data[index].events.eventDate,
-
-                                      lat : _getUserUpcomingEvents
+                                  lat: _getUserUpcomingEvents
                                       .data[index].events.lat,
-                                      long: _getUserUpcomingEvents
+                                  long: _getUserUpcomingEvents
                                       .data[index].events.lng,
-
-                                      location: _getUserUpcomingEvents
+                                  location: _getUserUpcomingEvents
                                       .data[index].events.location,
+                                  eventId: _getUserUpcomingEvents
+                                      .data[index].events.id
+                                      .toString(),
                                 )));
                       },
                       child: Container(
@@ -471,13 +475,12 @@ class _YeventsState extends State<Yevents> {
                   return Padding(
                     padding: EdgeInsets.only(top: size.height * .01),
                     child: InkWell(
-                        onTap: () {
+                      onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => Differenteventsdetails(
-                                  eventpicture: _userPastEvents
-                                      .data[index].events.eventPictures[0].imagePath
+                                  eventpicture: _userPastEvents.data[index]
+                                      .events.eventPictures[0].imagePath
                                       .toString(),
-                                      
                                   eventname: _userPastEvents
                                       .data[index].events.eventName,
                                   conditions: _userPastEvents
@@ -487,17 +490,14 @@ class _YeventsState extends State<Yevents> {
                                       .data[index].events.eventDescription,
                                   ticketlink: _userPastEvents
                                       .data[index].events.ticketLink,
-                                  distance:
-                                      _userPastEvents.data[index].km,
+                                  distance: _userPastEvents.data[index].km,
                                   date: _userPastEvents
                                       .data[index].events.eventDate,
-
-                                      lat : _userPastEvents
-                                      .data[index].events.lat,
-                                      long: _userPastEvents
-                                      .data[index].events.lng,
-
-                                      location: _userPastEvents
+                                  eventId: _userPastEvents.data[index].events.id
+                                      .toString(),
+                                  lat: _userPastEvents.data[index].events.lat,
+                                  long: _userPastEvents.data[index].events.lng,
+                                  location: _userPastEvents
                                       .data[index].events.location,
                                 )));
                       },
@@ -517,8 +517,8 @@ class _YeventsState extends State<Yevents> {
                               top: 20.0, right: 15, left: 15, bottom: 15),
                           child: Row(
                             children: [
-                              _userPastEvents.data[index].events.eventPictures[0]
-                                          .imagePath
+                              _userPastEvents.data[index].events
+                                          .eventPictures[0].imagePath
                                           .toString()
                                           .contains('.mp4') ||
                                       _userPastEvents.data[index].events
@@ -541,7 +541,8 @@ class _YeventsState extends State<Yevents> {
                                           fit: BoxFit.cover,
                                           placeholder: (context, url) {
                                             return const Center(
-                                              child: CircularProgressIndicator(),
+                                              child:
+                                                  CircularProgressIndicator(),
                                             );
                                           },
                                         ),
@@ -704,8 +705,6 @@ class _YeventsState extends State<Yevents> {
                                       _getUserDraftEvents.data[index].eventType,
                                   ticketlink: _getUserDraftEvents
                                       .data[index].ticketLink,
-
-                                   
                                 )));
                       },
                       child: Container(

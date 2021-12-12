@@ -29,8 +29,8 @@ class _ExploreState extends State<Explore> {
   late int lenght;
   late String id;
   bool _isLoading = true;
-   EventsModel ? eventsModel;
-   late String _token;
+  EventsModel? eventsModel;
+  late String _token;
   String urlEvent = "https://theeventspotter.com/api/getEvents";
   String searchUrl = "https://theeventspotter.com/api/search";
   String MainUrl = "https://theeventspotter.com/";
@@ -40,8 +40,7 @@ class _ExploreState extends State<Explore> {
   late List<int> like = [];
   late List<int> totalCount = [];
   late List search = [];
-  
- 
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   late Response response;
@@ -177,8 +176,6 @@ class _ExploreState extends State<Explore> {
     });
   }
 
- 
-
   @override
   void dispose() {
     // TODO: implement dispose
@@ -264,92 +261,91 @@ class _ExploreState extends State<Explore> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return RefreshIndicator(
-        onRefresh: () {
-          eventsLiveFeed.clear();
-          // like.clear();
-          // favourite.clear();
-          // totalCount.clear();
+      onRefresh: () {
+        eventsLiveFeed.clear();
+        // like.clear();
+        // favourite.clear();
+        // totalCount.clear();
 
-          return getEvetns();
-        },
-        child: SafeArea(
-          child: Scaffold(
-            key: _scaffoldKey,
-            backgroundColor:scaffoldcolor,
-            //Color(0xFF5E5E5E),
-            body: GestureDetector(
-              onTap: () {
-                FocusScopeNode currentfocus = FocusScope.of(context);
+        return getEvetns();
+      },
+      child: SafeArea(
+        child: Scaffold(
+          key: _scaffoldKey,
+          backgroundColor: scaffoldcolor,
+          //Color(0xFF5E5E5E),
+          body: GestureDetector(
+            onTap: () {
+              FocusScopeNode currentfocus = FocusScope.of(context);
 
-                if (!currentfocus.hasPrimaryFocus) {
-                  currentfocus.unfocus();
-                }
-              },
-              
-child : SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Padding(
-                  padding:  EdgeInsets.only(top : 10 , right : size.width*0.03, left :size.width*0.03, bottom : 10),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: size.height * 0.02),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width:size.width*0.93,
-                                child: Textform(
-                                  onchange: (listen) {
-                                    if (_search.text.length >= 3) {
-                                      searchApiCall();
-                                      if (_search.text.length == 0) {
-                                        search.clear();
-                                      }
-                                      setState(() {});
-                                    }
-                                    //setState(() {});
-                                  },
-                                  isreadonly: false,
-                                  isSecure: false,
-                                  controller: _search,
-                                  icon: Icons.search,
-                                  label: "Search",
-                                  color: const Color(0XFFECF2F3),
-                                ),
-                              ),
-                              SizedBox(
-                                width: size.width * 0.01,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Stack(
+              if (!currentfocus.hasPrimaryFocus) {
+                currentfocus.unfocus();
+              }
+            },
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    top: 10,
+                    right: size.width * 0.03,
+                    left: size.width * 0.03,
+                    bottom: 10),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: size.height * 0.02),
+                        child: Row(
                           children: [
-                            getpages(size),
-                            _search.text.length >= 3
-                                ? searchnames()
-                                : const SizedBox(),
+                            SizedBox(
+                              width: size.width * 0.93,
+                              child: Textform(
+                                onchange: (listen) {
+                                  if (_search.text.length >= 3) {
+                                    searchApiCall();
+                                    if (_search.text.length == 0) {
+                                      search.clear();
+                                    }
+                                    setState(() {});
+                                  }
+                                  //setState(() {});
+                                },
+                                isreadonly: false,
+                                isSecure: false,
+                                controller: _search,
+                                icon: Icons.search,
+                                label: "Search",
+                                color: const Color(0XFFECF2F3),
+                              ),
+                            ),
+                            SizedBox(
+                              width: size.width * 0.01,
+                            ),
                           ],
                         ),
-                      ],
-                    ),
+                      ),
+                      Stack(
+                        children: [
+                          getpages(size),
+                          _search.text.length >= 3
+                              ? searchnames()
+                              : const SizedBox(),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
-                  ),
-                ),
-              ),
+            ),
+          ),
+        ),
+      ),
 
-              
-              // 
-              // 
-              
-            );
-          
-        
+      //
+      //
+    );
   }
 
   Widget getpages(Size size) {
@@ -371,7 +367,7 @@ child : SingleChildScrollView(
                 MaterialPageRoute(builder: (context) => const Createevent()));
           },
           child: Padding(
-            padding: const EdgeInsets.only(top : 15.0),
+            padding: const EdgeInsets.only(top: 15.0),
             child: Container(
               height: size.height * 0.08,
               width: size.width,
