@@ -54,8 +54,10 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
   late var totalComments;
   List liveFeeds = [];
   bool _isLoading = true;
+  late String followersCount;
   late String profile_pic;
   String getEventDetailUrl = "https://theeventspotter.com/api/eventsdetails/";
+  List comments = [];
 
   @override
   void initState() {
@@ -375,6 +377,31 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                 value.data["data"]["user"]["profile_picture"]['image'];
           } else {
             profile_pic = "images/user.jpeg";
+          }
+          if (value.data["data"]["user"]["followers"].length > 0) {
+            followersCount =
+                value.data["data"]["user"]["followers"].length.toString();
+          } else {
+            followersCount = "0";
+          }
+          if (value.data["data"]["comment"].length > 0) {
+            if (value.data["data"]["comment"]["user"]["profile_picture"] !=
+                null) {
+              var js = {
+                'comment': value.data["data"]["comment"]["comment"],
+                'profile_pic': value.data["data"]["comment"]["user"]
+                    ["profile_picture"]["image"],
+                'user_name': value.data["data"]["comment"]["user"]["name"],
+              };
+              comments.add(js);
+            } else {
+              var js = {
+                'comment': value.data["data"]["comment"]["comment"],
+                'profile_pic': "images/user.jpeg",
+                'user_name': value.data["data"]["comment"]["user"]["name"],
+              };
+              comments.add(js);
+            }
           }
           if (value.data["data"]['livefeed'].length > 0) {
             for (int i = 0; i < value.data["data"]['livefeed'].length; i++) {
