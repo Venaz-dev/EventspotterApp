@@ -107,7 +107,7 @@ class _LivefeedsState extends State<Livefeeds> {
                                             builder: (context) =>
                                                 Eventdetailing(
                                                   model: widget.eventsModel,
-                                                  indexs: index,
+                                                  //indexs: index,
                                                   id: widget.id,
                                                   eventId:
                                                       widget.eventsLiveFeeds[

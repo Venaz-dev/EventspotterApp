@@ -384,6 +384,8 @@ class _YoureventsState extends State<Yourevents> {
                 onTap: (){
                     Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => Differenteventsdetails(
+                               eventId : _getUserUpcomingEvents
+                                      .data[index].events.id.toString(),
                                   eventpicture: _getUserUpcomingEvents
                                       .data[index].events.eventPictures[0].imagePath
                                       .toString(),
@@ -542,7 +544,7 @@ class _YoureventsState extends State<Yourevents> {
                                   eventpicture: _userPastEvents
                                       .data[index].events.eventPictures[0].imagePath
                                       .toString(),
-                                      
+                                      eventId: _userPastEvents.data[index].events.id.toString(),
                                   eventname: _userPastEvents
                                       .data[index].events.eventName,
                                   conditions: _userPastEvents
