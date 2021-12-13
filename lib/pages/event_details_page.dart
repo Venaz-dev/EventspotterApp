@@ -17,6 +17,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
 enum livefeed { details, livesnaps }
@@ -426,9 +427,14 @@ class _EventdetailingState extends State<Eventdetailing> {
                 const SizedBox(
                   height: 10,
                 ),
-                Text(
-                  widget.model!.data[index1].events.ticketLink!,
-                  style: const TextStyle(color: Colors.black54, fontSize: 16),
+                InkWell(
+                  onTap: () {
+                    urllaundher();
+                  },
+                  child: Text(
+                    widget.model!.data[index1].events.ticketLink!,
+                    style: const TextStyle(color: Colors.black54, fontSize: 16),
+                  ),
                 ),
               ],
             ),
@@ -640,7 +646,8 @@ class _EventdetailingState extends State<Eventdetailing> {
                                             .toString()
                                             .contains('.mov')
                                     ? VideoPlayerScreen(
-                                        url: MainUrl + Live[index]['img'].toString())
+                                        url: MainUrl +
+                                            Live[index]['img'].toString())
                                     : Container(
                                         height: size.height * 0.2,
                                         width: size.width * 0.3,
@@ -873,7 +880,7 @@ class _EventdetailingState extends State<Eventdetailing> {
         test1 = false;
       }
     } else {
-     // print(widget.eventId);
+      // print(widget.eventId);
       var ss = widget.model!.data.indexWhere((element) {
         return element.events.id.toString() == widget.eventId;
       });
@@ -990,6 +997,28 @@ class _EventdetailingState extends State<Eventdetailing> {
 
     return outputDate;
   }
+
+  void urllaundher() async {
+    if (widget.model!.data[widget.indexs!].events.ticketLink != null ||
+        widget.model!.data[widget.indexs!].events.ticketLink != "") {
+      if (widget.model!.data[widget.indexs!].events.ticketLink!
+          .contains("https://")) {
+        if (await canLaunch(
+            widget.model!.data[widget.indexs!].events.ticketLink!)) {
+          await launch(widget.model!.data[widget.indexs!].events.ticketLink!);
+        } else {
+          throw 'Could not launch $widget.model!.data[widget.indexs!].events.ticketLink!';
+        }
+      }else{
+         if (await canLaunch(
+           "https://"+widget.model!.data[widget.indexs!].events.ticketLink!)) {
+          await launch( "https://"+widget.model!.data[widget.indexs!].events.ticketLink!);
+        } else {
+          throw 'Could not launch $widget.model!.data[widget.indexs!].events.ticketLink!';
+        }
+      }
+    }
+  }
 }
 
 class Snapsvideoplayer extends StatefulWidget {
@@ -1019,7 +1048,6 @@ class _SnapsvideoplayerState extends State<Snapsvideoplayer> {
     _controller.setLooping(false);
     _controller.setVolume(100);
 
-
     super.initState();
   }
 
@@ -1040,7 +1068,7 @@ class _SnapsvideoplayerState extends State<Snapsvideoplayer> {
           future: _initializeVideoPlayerFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-             // _controller.play();
+              // _controller.play();
 
               // If the VideoPlayerController has finished initialization, use
               // the data it provides to limit the aspect ratio of the video.

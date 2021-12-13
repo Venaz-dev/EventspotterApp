@@ -566,6 +566,7 @@ class _YoureventsState extends State<Yourevents> {
 
                                       location: _userPastEvents
                                       .data[index].events.location,
+                                      
                                 )));
               },
                 child: Container(
