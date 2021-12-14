@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-
+import 'dart:io' show Platform;
 import 'package:event_spotter/pages/chat.dart';
 import 'package:event_spotter/pages/explore.dart';
 import 'package:event_spotter/pages/more.dart';
@@ -70,8 +70,13 @@ class _DashboardState extends State<Dashboard> {
             'content': ss['data']['content'],
             'toUserId': _id,
           };
-          FlutterBeep.playSysSound(iOSSoundIDs.MailReceived);
           test = true;
+          if (Platform.isIOS) {
+            FlutterBeep.playSysSound(iOSSoundIDs.MailReceived);
+          } else {
+            FlutterBeep.playSysSound(AndroidSoundIDs.TONE_SUP_PIP);
+          }
+
           chatStream1.sink.add(jsonEncode(ssq));
           setState(() {});
         }
@@ -102,11 +107,12 @@ class _DashboardState extends State<Dashboard> {
       pageindex == 1
           ? Column(
               children: [
-                Stack(children: [
-                  const Icon(FontAwesomeIcons.commentDots,
+                Stack(children: const [
+                  Icon(FontAwesomeIcons.commentDots,
                       color: Colors.white, size: 40),
                 ]),
-                Text("chat", style: TextStyle(color: bottom_navigationitems))
+                const Text("chat",
+                    style: TextStyle(color: bottom_navigationitems))
               ],
             )
           : Column(
@@ -124,9 +130,10 @@ class _DashboardState extends State<Dashboard> {
                           child: Icon(Icons.brightness_1,
                               size: 8.0, color: Colors.redAccent),
                         )
-                      : SizedBox(),
+                      : const SizedBox(),
                 ]),
-                Text("chat", style: TextStyle(color: bottom_navigationitems))
+                const Text("chat",
+                    style: TextStyle(color: bottom_navigationitems))
               ],
             ),
       pageindex == 2

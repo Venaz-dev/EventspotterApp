@@ -290,6 +290,7 @@ class _YeventsState extends State<Yevents> {
                                   eventId: _getUserUpcomingEvents
                                       .data[index].events.id
                                       .toString(),
+                                  
                                 )));
                       },
                       child: Container(

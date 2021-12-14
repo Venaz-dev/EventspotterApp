@@ -251,7 +251,7 @@ class _SingupState extends State<Singup> {
                                 primary: const Color(0xFF304747),
                                 textColor: Colors.white,
                                 width: double.infinity,
-                                text: "Signup",
+                                text: "Sign up",
                                 coloring: const Color(0xFF304747),
                                 onpressed: () {
                                   final form = _key.currentState!;
@@ -271,7 +271,7 @@ class _SingupState extends State<Singup> {
                                 width: MediaQuery.of(context).size.width,
                                 child: ElevatedButton(
                                   child: const Text(
-                                    "Already have an account? sigin",
+                                    "Already have an account? sign in",
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 18),
                                   ),

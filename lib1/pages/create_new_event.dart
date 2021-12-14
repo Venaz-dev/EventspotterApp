@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:async';
 import 'dart:io';
+import 'dart:core';
+
 import 'package:dio/dio.dart';
 import 'package:event_spotter/models/eventTypeModel.dart';
 import 'package:event_spotter/widgets/elevatedbutton.dart';
@@ -587,6 +591,7 @@ class _CreateeventState extends State<Createevent> {
         await MultipartFile.fromFile(imagePath!.path, filename: fileName);
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
+    //var toolsJson =  conditions.(toolList);
     _dio.options.headers["Authorization"] = "Bearer ${_token}";
     FormData formData = FormData.fromMap({
       "event_name": eventname.text,
@@ -753,7 +758,7 @@ class _CreateeventState extends State<Createevent> {
       "lat": latt,
       "lng": longg,
       "ticket_link": link.text,
-      "conditions": conditions,
+      "conditions": conditions.join(','),
       'image': file,
     });
 
@@ -889,15 +894,10 @@ class _VideoPlayerScree1State extends State<VideoPlayerScree1> {
 
               // If the VideoPlayerController has finished initialization, use
               // the data it provides to limit the aspect ratio of the video.
-              return Container(
+              return SizedBox(
                 height: size.height * 0.3,
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: VideoPlayer(_controller)),
+                child: ClipRRect(child: VideoPlayer(_controller)),
               );
             } else {
               // If the VideoPlayerController is still initializing, show a

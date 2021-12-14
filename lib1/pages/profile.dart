@@ -118,8 +118,8 @@ class _ProfileState extends State<Profile> {
                       automaticallyImplyLeading: false,
                       actions: [
                         Padding(
-                          padding: const EdgeInsets.only(
-                              top: 5.0, bottom: 5, right: 30),
+                          padding:  EdgeInsets.only(
+                              top: 5.0, bottom: 5, right : size.width*0.03,),
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.red,
@@ -166,8 +166,8 @@ class _ProfileState extends State<Profile> {
                   scrollDirection: Axis.vertical,
                   child: SizedBox(
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 20.0, right: 30, left: 30, bottom: 20),
+                      padding:  EdgeInsets.only(
+                          top: 20.0, right : size.width*0.03, left :size.width*0.03, bottom: 20),
                       child: Column(
                         children: [
                           Container(

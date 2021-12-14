@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
-import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/models/getUserFollowingStatusModel.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
@@ -75,8 +74,8 @@ class _EventposterprofileState extends State<Eventposterprofile> {
                 scrollDirection: Axis.vertical,
                 child: SizedBox(
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 20.0, right: 30, left: 30, bottom: 20),
+                    padding:  EdgeInsets.only(
+                        top: 20.0, right : size.width*0.03, left :size.width*0.03, bottom: 20),
                     child: Column(
                       children: [
                         Container(
@@ -115,44 +114,48 @@ class _EventposterprofileState extends State<Eventposterprofile> {
                                   height: 10,
                                 ),
 
-                                Row(
-                                  children: [
-                                    Container(
-                                      height: size.height * 0.12,
-                                      width: size.width * 0.12,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                              image: CachedNetworkImageProvider(
-                                                  MainUrl +
-                                                      _getUserFollowingStatus
-                                                          .data
-                                                          .profilePicture!
-                                                          .image),
-                                              fit: BoxFit.cover)),
-                                    ),
-                                    const SizedBox(
-                                      width: 15,
-                                    ),
-                                    Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
+                                FittedBox(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        height: size.height * 0.12,
+                                        width: size.width * 0.12,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                                image: CachedNetworkImageProvider(
+                                                    MainUrl +
+                                                        _getUserFollowingStatus
+                                                            .data
+                                                            .profilePicture!
+                                                            .image),
+                                                fit: BoxFit.cover)),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: size.width * 0.4,
+                                            child:  AutoSizeText(
+                                             
                                               _getUserFollowingStatus.data.name,
                                               style: const TextStyle(
-                                                  fontSize: 23,
+                                                  fontSize: 20,
                                                   fontWeight: FontWeight.w500),
+                                              maxFontSize: 20,
+                                              minFontSize: 17,
                                             ),
-                                            const SizedBox(
-                                              width: 20,
-                                            ),
-                                            button(),
-                                          ],
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                                          ),
+                                          const SizedBox(
+                                            width: 20,
+                                          ),
+                                          button(),
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
 
                                 Expanded(

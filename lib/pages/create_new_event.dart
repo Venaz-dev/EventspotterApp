@@ -754,7 +754,7 @@ class _CreateeventState extends State<Createevent> {
       "lat": latt,
       "lng": longg,
       "ticket_link": link.text,
-      "conditions": conditions,
+      "conditions": conditions.join(','),
       'image': file,
     });
 

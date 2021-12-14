@@ -11,17 +11,38 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
-class Commentofuser extends StatefulWidget {
-  EventsModel eventsModel;
-  int index;
-  Commentofuser({Key? key, required this.eventsModel, required this.index})
+class comment extends StatefulWidget {
+  String? eventPicture;
+  String? userName;
+  String? userProfile;
+  String? date;
+  String? distance;
+  String? eventName;
+  String? likeTotal;
+  String? commentTotal;
+  String? totalLive;
+  String? eventId;
+  List commentList = [];
+  comment(
+      {Key? key,
+      required this.eventPicture,
+      required this.userName,
+      required this.userProfile,
+      required this.distance,
+      required this.eventName,
+      required this.likeTotal,
+      required this.totalLive,
+      required this.eventId,
+      required this.commentList,
+      required this.commentTotal,
+      required this.date})
       : super(key: key);
 
   @override
-  State<Commentofuser> createState() => _CommentofuserState();
+  State<comment> createState() => _commentState();
 }
 
-class _CommentofuserState extends State<Commentofuser> {
+class _commentState extends State<comment> {
   String MainUrl = "https://theeventspotter.com/";
   bool active = false;
   EventsModel? model;
@@ -41,8 +62,11 @@ class _CommentofuserState extends State<Commentofuser> {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding:
-               EdgeInsets.only( right : size.width*0.03, left :size.width*0.03, top: 20, bottom: 30),
+          padding: EdgeInsets.only(
+              right: size.width * 0.03,
+              left: size.width * 0.03,
+              top: 20,
+              bottom: 30),
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
@@ -57,16 +81,16 @@ class _CommentofuserState extends State<Commentofuser> {
                   height: 20,
                 ),
                 Container(
-                  
                   width: size.width * double.infinity,
                   decoration: BoxDecoration(
-                    color : Colors.white,
-                  boxShadow: const [BoxShadow(
-                    color: Colors.black12,
-                    spreadRadius: 2,
-                    blurRadius: 2,
-                  )],
-                   
+                    color: Colors.white,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black12,
+                        spreadRadius: 2,
+                        blurRadius: 2,
+                      )
+                    ],
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Column(children: [
@@ -77,18 +101,10 @@ class _CommentofuserState extends State<Commentofuser> {
                       ),
                       width: size.width * double.infinity,
                       child: Stack(children: [
-                        widget.eventsModel.data[widget.index].events
-                                    .eventPictures[0].imagePath
-                                    .toString()
-                                    .contains('.mp4') ||
-                                widget.eventsModel.data[widget.index].events
-                                    .eventPictures[0].imagePath
-                                    .toString()
-                                    .contains('.mov')
+                        widget.eventPicture.toString().contains('.mp4') ||
+                                widget.eventPicture.toString().contains('.mov')
                             ? VideoPlayerScreennnn(
-                                url: MainUrl +
-                                    widget.eventsModel.data[widget.index].events
-                                        .eventPictures[0].imagePath)
+                                url: MainUrl + widget.eventPicture!)
                             : Container(
                                 height: size.height * 0.25,
                                 width: double.infinity,
@@ -97,9 +113,7 @@ class _CommentofuserState extends State<Commentofuser> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15),
                                   child: CachedNetworkImage(
-                                    imageUrl: MainUrl +
-                                        widget.eventsModel.data[widget.index]
-                                            .events.eventPictures[0].imagePath,
+                                    imageUrl: MainUrl + widget.eventPicture!,
                                     // imageUrl: mainurl +
                                     //     widget.model!.data[widget.indexs!].events
                                     //         .eventPictures[0].imagePath,
@@ -112,8 +126,7 @@ class _CommentofuserState extends State<Commentofuser> {
                                   ),
                                 ),
                               ),
-                        
-                     Positioned(
+                        Positioned(
                           bottom: 0,
                           right: size.width * 0.02,
                           left: size.width * 0.02,
@@ -121,15 +134,12 @@ class _CommentofuserState extends State<Commentofuser> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Button(
-                                onpressed: (){},
-                                title: widget.eventsModel.data[widget.index]
-                                    .events.user.name,
+                                onpressed: () {},
+                                title: widget.userName!,
                                 // widget.model!.data[widget.indexs!].events
                                 //     .user.name,
                                 radiusofbutton: BorderRadius.circular(20),
-                                profileImage: MainUrl +
-                                    widget.eventsModel.data[widget.index].events
-                                        .user.profilePicture!.image,
+                                profileImage: MainUrl + widget.userProfile!,
                                 //mainurl +
                                 // widget.
                                 // model!.data[widget.indexs!].events
@@ -152,7 +162,7 @@ class _CommentofuserState extends State<Commentofuser> {
                         ),
                       ]),
                     ),
-                  const   SizedBox(height : 5),
+                    const SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -165,8 +175,7 @@ class _CommentofuserState extends State<Commentofuser> {
                           width: 2,
                         ),
                         Text(
-                          widget.eventsModel.data[widget.index].events
-                              .eventDate,
+                          widget.date!,
                           // widget.model!.data[widget.indexs!].events
                           //     .eventDate,
                           style: const TextStyle(color: Colors.black87),
@@ -179,28 +188,22 @@ class _CommentofuserState extends State<Commentofuser> {
                           size: 15,
                           color: Colors.black54,
                         ),
-                        Text(
-                            widget.eventsModel.data[widget.index].km +
-                                " " +
-                                "away",
+                        Text(widget.distance! + " " + "away",
                             style: TextStyle(color: Colors.black87)),
                       ],
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 20.0),
                       child: Container(
-                        
                         alignment: Alignment.centerLeft,
                         child: AutoSizeText(
-                        
-                          widget.eventsModel.data[widget.index].events
-                              .eventName,
+                          widget.eventName!,
                           style: const TextStyle(
                               fontSize: 20,
                               color: Colors.black,
                               fontWeight: FontWeight.w400),
-                              minFontSize: 17,
-                              maxFontSize: 20,
+                          minFontSize: 17,
+                          maxFontSize: 20,
                         ),
                       ),
                     ),
@@ -209,14 +212,11 @@ class _CommentofuserState extends State<Commentofuser> {
                     ),
                     IntrinsicHeight(
                       child: Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           extras(
                               FontAwesomeIcons.thumbsUp,
-                              widget.eventsModel.data[widget.index]
-                                  .isLiked
-                                  .toString(),
+                              widget.likeTotal.toString(),
                               // widget
                               //     .model!.data[widget.indexs!].isLiked
                               //     .toString(),
@@ -228,14 +228,11 @@ class _CommentofuserState extends State<Commentofuser> {
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.green,
                                   shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(15))),
+                                      borderRadius: BorderRadius.circular(15))),
                               onPressed: () {},
                               child: extras(
                                   Icons.comment,
-                                  widget.eventsModel.data[widget.index]
-                                      .events.comment.length
-                                      .toString(),
+                                  widget.commentTotal.toString(),
                                   // widget.model!.data[widget.indexs!]
                                   //     .events.comment.length
                                   //     .toString(),
@@ -247,8 +244,8 @@ class _CommentofuserState extends State<Commentofuser> {
                           //     size),
                           divider(),
                           extras(
-                              Icons.live_tv,
-                              "0",
+                              Icons.play_arrow,
+                              widget.totalLive!,
                               // widget.model!.data[widget.indexs!]
                               //     .events.liveFeed.length
                               //     .toString(),
@@ -281,17 +278,13 @@ class _CommentofuserState extends State<Commentofuser> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        widget.eventsModel.data[widget.index].events.comment
-                                .isNotEmpty
+                        widget.commentList.isNotEmpty
                             ? Text(
-                                widget.eventsModel.data[widget.index].events
-                                        .comment.isEmpty
+                                widget.commentList.isEmpty
                                     ? "Comment"
                                     : "Comments" +
                                         " " +
-                                        widget.eventsModel.data[widget.index]
-                                            .events.comment.length
-                                            .toString(),
+                                        widget.commentList.length.toString(),
                                 style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 19,
@@ -308,10 +301,10 @@ class _CommentofuserState extends State<Commentofuser> {
                           height: 20,
                         ),
                         Commentbyperson(
-                            eventsModel: widget.eventsModel,
-                            index: widget.index,
-                            eventId:
-                                widget.eventsModel.data[widget.index].events.id)
+                            // eventsModel: widget.eventsModel,
+                            // index: widget.index,
+                            comments: widget.commentList,
+                            eventId: widget.eventId!)
                       ],
                     ),
                   ),
@@ -353,13 +346,13 @@ class _CommentofuserState extends State<Commentofuser> {
 }
 
 class Commentbyperson extends StatefulWidget {
-  EventsModel eventsModel;
-  int index;
-  int eventId;
+  List comments = [];
+  String eventId;
   Commentbyperson(
       {Key? key,
-      required this.eventsModel,
-      required this.index,
+      // required this.eventsModel,
+      // required this.index,
+      required this.comments,
       required this.eventId})
       : super(key: key);
 
@@ -375,28 +368,25 @@ class _CommentbypersonState extends State<Commentbyperson> {
   final TextEditingController _comment = TextEditingController();
   // late String text;
   String postCommenturl = "https://theeventspotter.com/api/storeComment";
-  late List listcomments = [];
-  late List createdAt = [];
-  late List listprofilepic = [];
-  late List username = [];
   late String _picture;
   late String _name;
+  List comments = [];
 
   String MainUrl = "https://theeventspotter.com/";
 
   @override
   void initState() {
+    comments = widget.comments;
     super.initState();
-    getcomments(widget.index);
   }
 
   @override
   Widget build(BuildContext context) {
-    print(widget.eventsModel.data[widget.index].events.comment.length);
+    // print(widget.eventsModel.data[widget.index].events.comment.length);
     return Column(
       children: [
         Column(
-            children: List.generate(listcomments.length, (index) {
+            children: List.generate(comments.length, (index) {
           return Padding(
             padding: const EdgeInsets.only(bottom: 10.0),
             child: Container(
@@ -418,15 +408,14 @@ class _CommentbypersonState extends State<Commentbyperson> {
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                   image: CachedNetworkImageProvider(MainUrl +
-                                      listcomments[index]['img']),
+                                      comments[index]['profile_pic']),
                                   fit: BoxFit.cover)),
                         ),
                         const SizedBox(
                           width: 20,
                         ),
                         Text(
-                          listcomments[index]['name'],
-                              
+                          comments[index]['user_name'],
                           style: TextStyle(fontSize: 18),
                         ),
                         const Spacer(),
@@ -436,7 +425,7 @@ class _CommentbypersonState extends State<Commentbyperson> {
                     Padding(
                         padding: EdgeInsets.only(
                             right: 40.0, left: 40, top: 5, bottom: 5),
-                        child: Text(listcomments[index]['comment']))
+                        child: Text(comments[index]['content']))
                   ],
                 ),
               ),
@@ -472,7 +461,7 @@ class _CommentbypersonState extends State<Commentbyperson> {
                       } else {
                         await PostComment(widget.eventId);
                         clearText();
-                       // Navigator.pop(context);
+                        // Navigator.pop(context);
                       }
                     },
                     child: const Text('Comment')),
@@ -484,41 +473,21 @@ class _CommentbypersonState extends State<Commentbyperson> {
     );
   }
 
-  getcomments(int index) {
-    if (widget.eventsModel.data[index].events.comment.length > 0) {
-      for (int i = 0;
-          i < widget.eventsModel.data[index].events.comment.length;
-          i++) {
-        {
-          var js = {
-            'img': widget.eventsModel.data[index].events.comment[i].user
-                .profilePicture!.image,
-            'name': widget.eventsModel.data[index].events.comment[i].user.name,
-            'createdAt':
-                widget.eventsModel.data[index].events.comment[i].createdAt,
-            'comment': widget.eventsModel.data[index].events.comment[i].comment,
-          };
-
-          listcomments.add(js);
-        }
-      }
-    }
-  }
-
   time(int index) {
     return Padding(
       padding: const EdgeInsets.only(right: 10.0),
       child: Align(
         alignment: Alignment.bottomRight,
         child: Text(
-          TimeAgo.displayTimeAgoFromTimestamp(listcomments[index]['createdAt']),
+          TimeAgo.displayTimeAgoFromTimestamp(
+              comments[index]['createdAt']),
           style: const TextStyle(fontSize: 15, color: Colors.black45),
         ),
       ),
     );
   }
 
-  PostComment(int id) async {
+  PostComment(String id) async {
     /////////////////////////
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
@@ -529,36 +498,34 @@ class _CommentbypersonState extends State<Commentbyperson> {
       "comment": _comment.text,
     });
     _dio.options.headers["Authorization"] = "Bearer ${_token}";
-    try{
-    await _dio.post(postCommenturl, data: formData).then((value) {
-      print(value.data.toString());
-      if (value.data['success'] == true) {
-        print(value.data);
-        showToaster("Comment Sent");
+    try {
+      await _dio.post(postCommenturl, data: formData).then((value) {
+        print(value.data.toString());
+        if (value.data['success'] == true) {
+          print(value.data);
+          showToaster("Comment Sent");
 
-        var text = value.data["data"]["comment"];
-        var text1 = value.data["data"]["created_at"];
-        // print(text);
-        // print(created);
-        var js = {
-          'name': _name,
-          'img': _picture,
-          'comment': _comment.text,
-          'createdAt': text1
-        };
-        listcomments.add(js);
-        setState(() {});
-        print("////////////");
-        // listcomments.add(text);
-        createdAt.add(text1);
-      } else {
-        showToaster("error");
-        //text = " ";
-      }
-    }
-   
-    );
-     }catch(e){
+          var text = value.data["data"]["comment"];
+          var text1 = value.data["data"]["created_at"];
+          // print(text);
+          // print(created);
+          var js = {
+            'user_name': _name,
+            'profile_pic': _picture,
+            'content': _comment.text,
+            'createdAt': text1
+          };
+          comments.add(js);
+          setState(() {});
+          print("////////////");
+          // listcomments.add(text);
+          //createdAt.add(text1);
+        } else {
+          showToaster("error");
+          //text = " ";
+        }
+      });
+    } catch (e) {
       print(e.toString());
     }
     //  print(text);

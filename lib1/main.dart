@@ -23,8 +23,8 @@ void main() {
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
-    runApp(const MaterialApp(
-      home: LoginScreen(),
+    runApp( const MaterialApp(
+      home:  LoginScreen(),
       debugShowCheckedModeBanner: false,
     ));
   });

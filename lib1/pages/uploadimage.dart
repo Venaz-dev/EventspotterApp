@@ -107,27 +107,24 @@ class _UploadimageState extends State<Uploadimage> {
                   : (imagePath!.path.toString().contains('.mp4') ||
                           imagePath!.path.toString().contains('.mov'))
                       ? SizedBox(
-                          height: size.height * 0.3,
                           width: double.infinity,
                           child: Column(
                             children: [
                               VideoPlayerScree1(url: imagePath!),
                               const SizedBox(
-                                height: 10,
-                              ),
-                              Flexible(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 10.0),
-                                  child: Elevatedbutton(
-                                      primary: const Color(0xFF304747),
-                                      text: "Upload Picture/Video",
-                                      width: double.infinity,
-                                      coloring: const Color(0xFF304747),
-                                      onpressed: () {
-                                        _selectPhoto(); // Navigator.of(context).push(MaterialPageRoute(
-                                        //     builder: (context) => const Uploadimage()));
-                                      }),
-                                ),
+                            height: 10,
+                          ),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 10.0),
+                                child: Elevatedbutton(
+                                    primary: const Color(0xFF304747),
+                                    text: "Upload Picture/Video",
+                                    width: double.infinity,
+                                    coloring: const Color(0xFF304747),
+                                    onpressed: () {
+                                      _selectPhoto(); // Navigator.of(context).push(MaterialPageRoute(
+                                      //     builder: (context) => const Uploadimage()));
+                                    }),
                               )
                             ],
                           ))
@@ -135,11 +132,11 @@ class _UploadimageState extends State<Uploadimage> {
                           children: [
                             SizedBox(
                               //color: Colors.red,
-                              height: size.height * 0.3,
+                              height: size.height * 0.35,
                               width: size.width * double.infinity,
                               child: Image.file(
                                 imagePath!,
-                                fit: BoxFit.contain,
+                                fit: BoxFit.fill,
                               ),
                             ),
                             const SizedBox(

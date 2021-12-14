@@ -8,6 +8,7 @@ import 'package:event_spotter/pages/explore.dart';
 import 'package:event_spotter/pages/timeago.dart';
 import 'package:event_spotter/pages/uploadimage.dart';
 import 'package:event_spotter/widgets/elevatedbutton.dart';
+import 'package:event_spotter/widgets/explore/comment.dart';
 import 'package:event_spotter/widgets/explore/events.dart';
 import 'package:event_spotter/widgets/explore/livefeed.dart';
 import 'package:event_spotter/widgets/smallbutton.dart';
@@ -140,7 +141,7 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                                         left: 3.0, right: 8, top: 3, bottom: 3),
                                     child: Button(
                                       onpressed: () {},
-                                      title:name1,
+                                      title: widget.eventname!,
                                       // widget.eventsModel.data[index].events
                                       //     .user.name, //new
                                       radiusofbutton: BorderRadius.circular(20),
@@ -202,7 +203,7 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                                             ),
                                             Text(
                                               time(),
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   color: Colors.black87),
                                             ),
                                           ],
@@ -411,15 +412,12 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                                   const SizedBox(
                                     height: 7,
                                   ),
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: const Text(
-                                      "Location",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
-                                    ),
+                                  const Text(
+                                    "Location",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
                                   ),
                                   Container(
                                     height: size.height * 0.15,
