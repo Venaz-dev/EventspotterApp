@@ -374,8 +374,8 @@ class _ExploreState extends State<Explore> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 image: const DecorationImage(
-                  image: AssetImage(
-                  'Assets/images/create_event.jpeg'),
+                  image: NetworkImage(
+                      'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fGV2ZW50fGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60'),
                   fit: BoxFit.cover,
                   //  colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.dstATop)
                 ),
@@ -407,16 +407,14 @@ class _ExploreState extends State<Explore> {
         ),
         _isLoading
             ? const Center(child: CircularProgressIndicator())
-            : Center(
-              child: Eventss(
-                  eventsModel: eventsModel!,
-                  favourite: favourite,
-                  eventsLiveFeed: eventsLiveFeed,
-                  like: like,
-                  totalCount: totalCount,
-                  id: id,
-                ),
-            ),
+            : Eventss(
+                eventsModel: eventsModel!,
+                favourite: favourite,
+                eventsLiveFeed: eventsLiveFeed,
+                like: like,
+                totalCount: totalCount,
+                id: id,
+              ),
       ],
     );
   }
@@ -794,25 +792,34 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          height: 30,
-          width: 30,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-                image: NetworkImage(profileImage!), fit: BoxFit.cover),
+    return ElevatedButton(
+      onPressed: onpressed,
+      style: ElevatedButton.styleFrom(
+        primary: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: radiusofbutton!,
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            height: 30,
+            width: 30,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                  image: NetworkImage(profileImage!), fit: BoxFit.cover),
+            ),
           ),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Text(
-          title,
-          style: const TextStyle(color: Colors.black, fontSize: 13),
-        ),
-      ],
+          const SizedBox(
+            width: 10,
+          ),
+          Text(
+            title,
+            style: const TextStyle(color: Colors.black, fontSize: 13),
+          ),
+        ],
+      ),
     );
   }
 }

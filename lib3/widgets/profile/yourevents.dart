@@ -8,7 +8,6 @@ import 'package:event_spotter/pages/differenteventsdetaisl.dart';
 import 'package:event_spotter/pages/draft.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -134,7 +133,7 @@ class _YoureventsState extends State<Yourevents> {
                 },
               ),
               const SizedBox(
-                width: 5,
+                width: 30,
               ),
               Elevatedbuttons(
                 sidecolor: const Color(0XFF38888F),
@@ -149,7 +148,7 @@ class _YoureventsState extends State<Yourevents> {
                 },
               ),
               const SizedBox(
-                width: 5,
+                width: 30,
               ),
               Elevatedbuttons(
                 sidecolor: const Color(0XFF38888F),
@@ -167,7 +166,7 @@ class _YoureventsState extends State<Yourevents> {
           ),
         ),
         const SizedBox(
-          height: 5,
+          height: 20,
         ),
         upcomingeventlist(size), ////////////////////////////
       ],
@@ -194,7 +193,7 @@ class _YoureventsState extends State<Yourevents> {
                 },
               ),
               const SizedBox(
-                width: 5,
+                width: 30,
               ),
               Elevatedbuttons(
                 sidecolor: Colors.white,
@@ -209,7 +208,7 @@ class _YoureventsState extends State<Yourevents> {
                 },
               ),
               const SizedBox(
-                width: 5,
+                width: 30,
               ),
               Elevatedbuttons(
                 sidecolor: const Color(0XFF38888F),
@@ -227,7 +226,7 @@ class _YoureventsState extends State<Yourevents> {
           ),
         ),
         const SizedBox(
-          height: 5,
+          height: 20,
         ),
 
         pasEventslist(size), //////////////////////////
@@ -255,7 +254,7 @@ class _YoureventsState extends State<Yourevents> {
                 },
               ),
               const SizedBox(
-                width: 5,
+                width: 30,
               ),
               Elevatedbuttons(
                 sidecolor: const Color(0XFF38888F),
@@ -270,7 +269,7 @@ class _YoureventsState extends State<Yourevents> {
                 },
               ),
               const SizedBox(
-                width: 5,
+                width: 30,
               ),
               Elevatedbuttons(
                 sidecolor: Colors.white,
@@ -290,7 +289,7 @@ class _YoureventsState extends State<Yourevents> {
           ),
         ),
         const SizedBox(
-          height: 5,
+          height: 20,
         ),
 
         userDraftlist(size), ///////////////////////
@@ -380,7 +379,7 @@ class _YoureventsState extends State<Yourevents> {
         child: Row(
           children: List.generate(_getUserUpcomingEvents.data.length, (index) {
             return Padding(
-              padding: const EdgeInsets.only(top: 10, left: 5 , bottom: 5 , right : 5),
+              padding: const EdgeInsets.only(top: 20.0, left: 20),
               child: InkWell(
                 onTap: (){
                     Navigator.of(context).push(MaterialPageRoute(
@@ -423,8 +422,7 @@ class _YoureventsState extends State<Yourevents> {
                             blurRadius: 10,
                             spreadRadius: 2)
                       ]),
-                  child:
-                     Padding(
+                  child: Padding(
                     padding:
                         const EdgeInsets.only(top: 20.0, left: 15, bottom: 15),
                     child: Row(
@@ -489,11 +487,9 @@ class _YoureventsState extends State<Yourevents> {
                                     color: Colors.black54,
                                   ),
                                   AutoSizeText(
-                                    
-                                   time(index),
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.black87),
+                                    _getUserUpcomingEvents
+                                        .data[index].events.eventDate,
+                                    style: const TextStyle(color: Colors.black87),
                                     //overflow: TextOverflow.ellipsis,
                                   ),
                                 ],
@@ -513,9 +509,7 @@ class _YoureventsState extends State<Yourevents> {
                                           " " +
                                           "away",
                                       style:
-                                          const TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.black87)),
+                                          const TextStyle(color: Colors.black87)),
                                 ],
                               )
                             ],
@@ -524,7 +518,6 @@ class _YoureventsState extends State<Yourevents> {
                       ],
                     ),
                   ),
-                  
                 ),
               ),
             );
@@ -543,7 +536,7 @@ class _YoureventsState extends State<Yourevents> {
         child: Row(
           children: List.generate(_userPastEvents.data.length, (index) {
             return Padding(
-              padding: const EdgeInsets.only(top: 10, left: 5 , bottom:5 , right : 5),
+              padding: const EdgeInsets.only(top: 20.0, left: 20),
               child: InkWell(
                 onTap:() {
                     Navigator.of(context).push(MaterialPageRoute(
@@ -650,7 +643,7 @@ class _YoureventsState extends State<Yourevents> {
                                     color: Colors.black54,
                                   ),
                                   Text(
-                                   time3(index),
+                                    _userPastEvents.data[index].events.eventDate,
                                     style: const TextStyle(color: Colors.black87),
                                   ),
                                 ],
@@ -723,9 +716,9 @@ class _YoureventsState extends State<Yourevents> {
                                     ticketlink: _getUserDraftEvents.data[index].ticketLink,)));
               },
               child: Padding(
-                padding: const EdgeInsets.only(top: 10, left: 5 , bottom: 5 , right : 5),
+                padding: const EdgeInsets.only(top: 20.0, left: 20),
                 child: Container(
-                 
+                  // width: double.infinity,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(15),
@@ -797,7 +790,7 @@ class _YoureventsState extends State<Yourevents> {
                                     color: Colors.black54,
                                   ),
                                   Text(
-                                  time1(index),
+                                    _getUserDraftEvents.data[index].eventDate,
                                     style: const TextStyle(color: Colors.black87),
                                   ),
                                 ],
@@ -813,7 +806,7 @@ class _YoureventsState extends State<Yourevents> {
                                     color: Colors.black54,
                                   ),
                                   // Text(
-                                  //          _getUserDraftEvents.data[index].location +
+                                  //     _getUserDraftEvents.data[index]. +
                                   //         " " +
                                   //         "away",
                                   //     style:
@@ -836,43 +829,7 @@ class _YoureventsState extends State<Yourevents> {
       return const Text("No Drafts Saved");
     }
   }
-
-
-
-String time(int index) {
-    DateTime parseDate = DateFormat("yyyy-mm-dd")
-        .parse( _getUserUpcomingEvents
-                                        .data[index].events.eventDate,);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('mm/dd/yyyy');
-    var outputDate = outputFormat.format(inputDate);
-
-    return outputDate;
-  }
-  String time1(int index) {
-    DateTime parseDate = DateFormat("yyyy-mm-dd")
-        .parse(              _getUserDraftEvents.data[index].eventDate,);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('mm/dd/yyyy');
-    var outputDate = outputFormat.format(inputDate);
-
-    return outputDate;
-  }
-  String time3(int index) {
-    DateTime parseDate = DateFormat("yyyy-mm-dd")
-        .parse( _userPastEvents.data[index].events.eventDate,);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('mm/dd/yyyy');
-    var outputDate = outputFormat.format(inputDate);
-
-    return outputDate;
-  }
 }
-
-
-
-
-
 
 class VideoPlayerScreennn extends StatefulWidget {
   VideoPlayerScreennn({Key? key, required this.url}) : super(key: key);

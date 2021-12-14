@@ -9,6 +9,7 @@ import 'package:event_spotter/pages/draft.dart';
 import 'package:event_spotter/widgets/profile/yourevents.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
@@ -81,16 +82,16 @@ class _YeventsState extends State<Yevents> {
           // appBar: PreferredSize(
           //  child: getAppBar(), preferredSize: Size.fromHeight(100)),
           body: Padding(
-            padding: EdgeInsets.only(top: 20.0, left: size.width * 0.05),
+            padding: EdgeInsets.only(
+                top: 10.0, left: size.width * 0.03, right: size.width * 0.03),
             child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Column(
                   children: [
-                    const SizedBox(height: 30),
-                    Padding(
-                      padding: EdgeInsets.only(right: size.width * 0.05),
-                      child: getwidgets(size),
+                    const SizedBox(
+                      height: 10,
                     ),
+                    getwidgets(size),
                   ],
                 )),
           ),
@@ -98,16 +99,6 @@ class _YeventsState extends State<Yevents> {
       ),
     );
   }
-
-  // Widget getAppBar() {
-  //   return AppBar(
-  //     // elevation:,
-  //     backgroundColor: Colors.red,
-  //     actions : [
-
-  //     ]
-  //   );
-  // }
 
   getUpComingEvents() async {
     _sharedPreferences = await SharedPreferences.getInstance();
@@ -249,50 +240,44 @@ class _YeventsState extends State<Yevents> {
             ],
           ),
         ),
-        const SizedBox(
-          height: 20,
-        ),
+        const SizedBox(height: 10),
         test
             ? Column(
                 children:
                     List.generate(_getUserUpcomingEvents.data.length, (index) {
-                  return Padding(
-                    padding: EdgeInsets.only(top: size.height * .01),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Differenteventsdetails(
-                                  eventpicture: _getUserUpcomingEvents
-                                      .data[index]
-                                      .events
-                                      .eventPictures[0]
-                                      .imagePath
-                                      .toString(),
-                                  eventname: _getUserUpcomingEvents
-                                      .data[index].events.eventName,
-                                  conditions: _getUserUpcomingEvents
-                                      .data[index].events.conditions
-                                      .toString(),
-                                  details: _getUserUpcomingEvents
-                                      .data[index].events.eventDescription,
-                                  ticketlink: _getUserUpcomingEvents
-                                      .data[index].events.ticketLink,
-                                  distance:
-                                      _getUserUpcomingEvents.data[index].km,
-                                  date: _getUserUpcomingEvents
-                                      .data[index].events.eventDate,
-                                  lat: _getUserUpcomingEvents
-                                      .data[index].events.lat,
-                                  long: _getUserUpcomingEvents
-                                      .data[index].events.lng,
-                                  location: _getUserUpcomingEvents
-                                      .data[index].events.location,
-                                  eventId: _getUserUpcomingEvents
-                                      .data[index].events.id
-                                      .toString(),
-                                  
-                                )));
-                      },
+                  return InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => Differenteventsdetails(
+                                eventpicture: _getUserUpcomingEvents.data[index]
+                                    .events.eventPictures[0].imagePath
+                                    .toString(),
+                                eventname: _getUserUpcomingEvents
+                                    .data[index].events.eventName,
+                                conditions: _getUserUpcomingEvents
+                                    .data[index].events.conditions
+                                    .toString(),
+                                details: _getUserUpcomingEvents
+                                    .data[index].events.eventDescription,
+                                ticketlink: _getUserUpcomingEvents
+                                    .data[index].events.ticketLink,
+                                distance: _getUserUpcomingEvents.data[index].km,
+                                date: _getUserUpcomingEvents
+                                    .data[index].events.eventDate,
+                                lat: _getUserUpcomingEvents
+                                    .data[index].events.lat,
+                                long: _getUserUpcomingEvents
+                                    .data[index].events.lng,
+                                location: _getUserUpcomingEvents
+                                    .data[index].events.location,
+                                eventId: _getUserUpcomingEvents
+                                    .data[index].events.id
+                                    .toString(),
+                              )));
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          top: size.height * .01, left: 2, right: 2),
                       child: Container(
                         decoration: BoxDecoration(
                             color: Colors.white,
@@ -300,113 +285,162 @@ class _YeventsState extends State<Yevents> {
                             boxShadow: const [
                               BoxShadow(
                                   color: Colors.black12,
-                                  blurRadius: 10,
-                                  spreadRadius: 2)
+                                  blurRadius: 1,
+                                  spreadRadius: 1)
                             ]),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 20.0, left: 15, bottom: 15),
-                          child: Row(
-                            children: [
-                              _getUserUpcomingEvents.data[index].events
-                                          .eventPictures[0].imagePath
-                                          .toString()
-                                          .contains('.mp4') ||
-                                      _getUserUpcomingEvents.data[index].events
-                                          .eventPictures[0].imagePath
-                                          .toString()
-                                          .contains('.mov')
-                                  ? VideoPlayerScreennn(
-                                      url: MainUrl +
-                                          _getUserUpcomingEvents
-                                              .data[index]
-                                              .events
-                                              .eventPictures[0]
-                                              .imagePath)
-                                  : SizedBox(
-                                      height: size.height * 0.17,
-                                      width: size.width * 0.3,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: CachedNetworkImage(
-                                          imageUrl: MainUrl +
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              bottom: size.height * 0.07,
+                              right: size.width * 0.005,
+                              child: FittedBox(
+                                fit : BoxFit.cover,
+                                  child: Container(
+                                    alignment: Alignment.centerRight,
+                                height: size.height * 0.1,
+                                width: size.width * 0.25,
+                               
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: const AutoSizeText(
+                                        "Event Type",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                 
+                                   maxFontSize: 16,
+                                            minFontSize: 14,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 2,
+                                    ),
+                                 Container(
+                                   alignment: Alignment.center,
+                                   child: AutoSizeText(
+                                     
+                                            _getUserUpcomingEvents
+                                                .data[index].events.eventType,
+                                            maxFontSize: 15,
+                                            minFontSize: 13,
+                                           
+                                          ),
+                                 ),
+                                  ],
+                                ),
+                              )),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 20.0, left: 15, bottom: 15),
+                              child: Row(
+                                children: [
+                                  _getUserUpcomingEvents.data[index].events
+                                              .eventPictures[0].imagePath
+                                              .toString()
+                                              .contains('.mp4') ||
+                                          _getUserUpcomingEvents.data[index]
+                                              .events.eventPictures[0].imagePath
+                                              .toString()
+                                              .contains('.mov')
+                                      ? VideoPlayerScreennn(
+                                          url: MainUrl +
                                               _getUserUpcomingEvents
                                                   .data[index]
                                                   .events
                                                   .eventPictures[0]
-                                                  .imagePath,
-                                          fit: BoxFit.cover,
-                                          placeholder: (context, url) {
-                                            return const Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            );
-                                          },
+                                                  .imagePath)
+                                      : SizedBox(
+                                          height: size.height * 0.17,
+                                          width: size.width * 0.3,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: CachedNetworkImage(
+                                              imageUrl: MainUrl +
+                                                  _getUserUpcomingEvents
+                                                      .data[index]
+                                                      .events
+                                                      .eventPictures[0]
+                                                      .imagePath,
+                                              fit: BoxFit.cover,
+                                              placeholder: (context, url) {
+                                                return const Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                );
+                                              },
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: size.width * 0.35,
-                                      child: AutoSizeText(
-                                        _getUserUpcomingEvents
-                                            .data[index].events.eventName,
-                                        style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 18),
-                                        maxFontSize: 16,
-                                        minFontSize: 15,
-                                        overflow: TextOverflow.fade,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        const Icon(
-                                          FontAwesomeIcons.calendar,
-                                          size: 15,
-                                          color: Colors.black54,
-                                        ),
-                                        AutoSizeText(
-                                          _getUserUpcomingEvents
-                                              .data[index].events.eventDate,
-                                          style: const TextStyle(
-                                              color: Colors.black87),
-                                          //overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          FontAwesomeIcons.mapMarkerAlt,
-                                          size: 15,
-                                          color: Colors.black54,
-                                        ),
-                                        Text(
+                                        SizedBox(
+                                          width: size.width * 0.3,
+                                          child: AutoSizeText(
                                             _getUserUpcomingEvents
-                                                    .data[index].km +
-                                                " " +
-                                                "away",
+                                                .data[index].events.eventName,
                                             style: const TextStyle(
-                                                color: Colors.black87)),
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 18),
+                                            maxFontSize: 19,
+                                            minFontSize: 15,
+                                            overflow: TextOverflow.fade,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              FontAwesomeIcons.calendar,
+                                              size: 15,
+                                              color: Colors.black54,
+                                            ),
+                                            AutoSizeText(
+                                              time(index),
+                                              style: const TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.black87),
+                                              //overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              FontAwesomeIcons.mapMarkerAlt,
+                                              size: 15,
+                                              color: Colors.black54,
+                                            ),
+                                            Text(
+                                                _getUserUpcomingEvents
+                                                        .data[index].km +
+                                                    " " +
+                                                    "away",
+                                                style: const TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.black87)),
+                                          ],
+                                        )
                                       ],
-                                    )
-                                  ],
-                                ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -416,6 +450,38 @@ class _YeventsState extends State<Yevents> {
             : const Center(child: Text("No upcoming events")),
       ],
     ); ////
+  }
+
+  String time(int index) {
+    DateTime parseDate = DateFormat("yyyy-mm-dd").parse(
+      _getUserUpcomingEvents.data[index].events.eventDate,
+    );
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat('mm/dd/yyyy');
+    var outputDate = outputFormat.format(inputDate);
+
+    return outputDate;
+  }
+
+  String time2(int index) {
+    DateTime parseDate = DateFormat("yyyy-mm-dd")
+        .parse(_userPastEvents.data[index].events.eventDate);
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat('mm/dd/yyyy');
+    var outputDate = outputFormat.format(inputDate);
+
+    return outputDate;
+  }
+
+  String time3(int index) {
+    DateTime parseDate = DateFormat("yyyy-mm-dd").parse(
+      _getUserDraftEvents.data[index].eventDate,
+    );
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat('mm/dd/yyyy');
+    var outputDate = outputFormat.format(inputDate);
+
+    return outputDate;
   }
 
   Widget past(Size size) {
@@ -470,11 +536,12 @@ class _YeventsState extends State<Yevents> {
             ],
           ),
         ),
+        const SizedBox(height: 10),
         test1
             ? Column(
                 children: List.generate(_userPastEvents.data.length, (index) {
                   return Padding(
-                    padding: EdgeInsets.only(top: size.height * .01),
+                    padding: EdgeInsets.only(top: size.height * .01, left: 2 , right : 2),
                     child: InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
@@ -510,104 +577,157 @@ class _YeventsState extends State<Yevents> {
                             boxShadow: const [
                               BoxShadow(
                                   color: Colors.black12,
-                                  blurRadius: 10,
-                                  spreadRadius: 2)
+                                  blurRadius: 1,
+                                  spreadRadius: 1)
                             ]),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 20.0, right: 15, left: 15, bottom: 15),
-                          child: Row(
-                            children: [
-                              _userPastEvents.data[index].events
-                                          .eventPictures[0].imagePath
-                                          .toString()
-                                          .contains('.mp4') ||
-                                      _userPastEvents.data[index].events
-                                          .eventPictures[0].imagePath
-                                          .toString()
-                                          .contains('.mov')
-                                  ? VideoPlayerScreennn(
-                                      url: MainUrl +
-                                          _userPastEvents.data[index].events
-                                              .eventPictures[0].imagePath)
-                                  : SizedBox(
-                                      height: size.height * 0.17,
-                                      width: size.width * 0.3,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: CachedNetworkImage(
-                                          imageUrl: MainUrl +
-                                              _userPastEvents.data[index].events
-                                                  .eventPictures[0].imagePath,
-                                          fit: BoxFit.cover,
-                                          placeholder: (context, url) {
-                                            return const Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10.0),
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              bottom: size.height * 0.07,
+                              right: size.width * 0.005,
+                              child: FittedBox(
+                                fit : BoxFit.cover,
+                                  child: Container(
+                                    alignment: Alignment.centerRight,
+                                height: size.height * 0.1,
+                                width: size.width * 0.25,
+                               
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
-                                      width: size.width * 0.35,
-                                      child: AutoSizeText(
-                                        _userPastEvents
-                                            .data[index].events.eventName,
-                                        style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 18),
-                                        maxFontSize: 16,
-                                        minFontSize: 15,
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: const AutoSizeText(
+                                        "Event Type",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                 
+                                   maxFontSize: 16,
+                                            minFontSize: 14,
                                       ),
                                     ),
                                     const SizedBox(
-                                      height: 10,
+                                      height: 2,
                                     ),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          FontAwesomeIcons.calendar,
-                                          size: 15,
-                                          color: Colors.black54,
-                                        ),
-                                        Text(
-                                          _userPastEvents
-                                              .data[index].events.eventDate,
-                                          style: const TextStyle(
-                                              color: Colors.black87),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          FontAwesomeIcons.mapMarkerAlt,
-                                          size: 15,
-                                          color: Colors.black54,
-                                        ),
-                                        Text(
-                                            _userPastEvents.data[index].km +
-                                                " " +
-                                                "away",
-                                            style: const TextStyle(
-                                                color: Colors.black87)),
-                                      ],
-                                    )
+                                 Container(
+                                   alignment: Alignment.center,
+                                   child: AutoSizeText(
+                                     
+                                            _userPastEvents
+                                                .data[index].events.eventType,
+                                            maxFontSize: 15,
+                                            minFontSize: 13,
+                                           
+                                          ),
+                                 ),
                                   ],
                                 ),
+                              )),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 20.0, right: 15, left: 15, bottom: 15),
+                              child: Row(
+                                children: [
+                                  _userPastEvents.data[index].events
+                                              .eventPictures[0].imagePath
+                                              .toString()
+                                              .contains('.mp4') ||
+                                          _userPastEvents.data[index].events
+                                              .eventPictures[0].imagePath
+                                              .toString()
+                                              .contains('.mov')
+                                      ? VideoPlayerScreennn(
+                                          url: MainUrl +
+                                              _userPastEvents.data[index].events
+                                                  .eventPictures[0].imagePath)
+                                      : SizedBox(
+                                          height: size.height * 0.17,
+                                          width: size.width * 0.3,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: CachedNetworkImage(
+                                              imageUrl: MainUrl +
+                                                  _userPastEvents
+                                                      .data[index]
+                                                      .events
+                                                      .eventPictures[0]
+                                                      .imagePath,
+                                              fit: BoxFit.cover,
+                                              placeholder: (context, url) {
+                                                return const Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width: size.width * 0.3,
+                                          child: AutoSizeText(
+                                            _userPastEvents
+                                                .data[index].events.eventName,
+                                            style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 18),
+                                            maxFontSize: 19,
+                                            minFontSize: 15,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              FontAwesomeIcons.calendar,
+                                              size: 18,
+                                              color: Colors.black54,
+                                            ),
+                                            const SizedBox(
+                                              width: 3,
+                                            ),
+                                            Text(
+                                              time2(index),
+                                              style: const TextStyle(
+                                                  color: Colors.black87),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              FontAwesomeIcons.mapMarkerAlt,
+                                              size: 15,
+                                              color: Colors.black54,
+                                            ),
+                                            Text(
+                                                _userPastEvents.data[index].km +
+                                                    " " +
+                                                    "away",
+                                                style: const TextStyle(
+                                                    color: Colors.black87)),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -673,15 +793,16 @@ class _YeventsState extends State<Yevents> {
             ],
           ),
         ),
+        const SizedBox(height: 10),
         test2
             ? Column(
                 children:
                     List.generate(_getUserDraftEvents.data.length, (index) {
                   return Padding(
-                    padding: EdgeInsets.only(top: size.height * .01),
+                    padding: EdgeInsets.only(top: size.height * .01, left: 2 , right: 2),
                     child: InkWell(
                       onTap: () {
-                        print("object");
+                        // print("object");
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => Draftsedit(
                                   eventname:
@@ -709,119 +830,166 @@ class _YeventsState extends State<Yevents> {
                                 )));
                       },
                       child: Container(
-                        // width: double.infinity,
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(15),
                             boxShadow: const [
                               BoxShadow(
                                   color: Colors.black12,
-                                  blurRadius: 10,
-                                  spreadRadius: 2)
+                                  blurRadius: 1,
+                                  spreadRadius: 1)
                             ]),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 20.0, right: 15, left: 15, bottom: 15),
-                          child: Row(
-                            children: [
-                              _getUserDraftEvents.data[index].eventPictures[0]
-                                          .imagePath
-                                          .toString()
-                                          .contains('.mp4') ||
-                                      _getUserDraftEvents.data[index]
-                                          .eventPictures[0].imagePath
-                                          .toString()
-                                          .contains('.mov')
-                                  ? VideoPlayerScreennn(
-                                      url: MainUrl +
-                                          _getUserDraftEvents.data[index]
-                                              .eventPictures[0].imagePath)
-                                  : SizedBox(
-                                      height: size.height * 0.17,
-                                      width: size.width * 0.3,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: CachedNetworkImage(
-                                          imageUrl: MainUrl +
-                                              _getUserDraftEvents.data[index]
-                                                  .eventPictures[0].imagePath,
-                                          fit: BoxFit.cover,
-                                          placeholder: (context, url) {
-                                            return const Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10.0),
+                        child: Stack(
+                          children: [
+                            Positioned(
+                               bottom: size.height * 0.07,
+                              right: size.width * 0.005,
+                               child: FittedBox(
+                                fit : BoxFit.cover,
+                                  child: Container(
+                                    alignment: Alignment.centerRight,
+                                height: size.height * 0.1,
+                                width: size.width * 0.25,
+                               
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
-                                      width: size.width * 0.35,
-                                      child: AutoSizeText(
-                                        _getUserDraftEvents
-                                            .data[index].eventName,
-                                        style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 18),
-                                        maxFontSize: 16,
-                                        minFontSize: 15,
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: const AutoSizeText(
+                                        "Event Type",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                 
+                                   maxFontSize: 16,
+                                            minFontSize: 14,
                                       ),
                                     ),
                                     const SizedBox(
-                                      height: 10,
+                                      height: 2,
                                     ),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          FontAwesomeIcons.calendar,
-                                          size: 15,
-                                          color: Colors.black54,
-                                        ),
-                                        Text(
-                                          _getUserDraftEvents
-                                              .data[index].eventDate,
-                                          style: const TextStyle(
-                                              color: Colors.black87),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          FontAwesomeIcons.mapMarkerAlt,
-                                          size: 15,
-                                          color: Colors.black54,
-                                        ),
-                                        SizedBox(
-                                          width: size.width * 0.35,
-                                          child: AutoSizeText(
+                                 Container(
+                                   alignment: Alignment.center,
+                                   child: AutoSizeText(
+                                     
                                             _getUserDraftEvents
-                                                    .data[index].location +
-                                                " " +
-                                                " " +
-                                                "away",
-                                            style: const TextStyle(
-                                                color: Colors.black87),
-                                            maxFontSize: 17,
-                                            minFontSize: 14,
+                                                .data[index].eventType,
+                                            maxFontSize: 15,
+                                            minFontSize: 13,
+                                           
                                           ),
-                                        ),
-                                      ],
-                                    )
+                                 ),
                                   ],
                                 ),
+                              )),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 20.0, right: 15, left: 15, bottom: 15),
+                              child: Row(
+                                children: [
+                                  _getUserDraftEvents.data[index]
+                                              .eventPictures[0].imagePath
+                                              .toString()
+                                              .contains('.mp4') ||
+                                          _getUserDraftEvents.data[index]
+                                              .eventPictures[0].imagePath
+                                              .toString()
+                                              .contains('.mov')
+                                      ? VideoPlayerScreennn(
+                                          url: MainUrl +
+                                              _getUserDraftEvents.data[index]
+                                                  .eventPictures[0].imagePath)
+                                      : SizedBox(
+                                          height: size.height * 0.17,
+                                          width: size.width * 0.3,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: CachedNetworkImage(
+                                              imageUrl: MainUrl +
+                                                  _getUserDraftEvents
+                                                      .data[index]
+                                                      .eventPictures[0]
+                                                      .imagePath,
+                                              fit: BoxFit.cover,
+                                              placeholder: (context, url) {
+                                                return const Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width: size.width * 0.3,
+                                          child: AutoSizeText(
+                                            _getUserDraftEvents
+                                                .data[index].eventName,
+                                            style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 18),
+                                            maxFontSize: 16,
+                                            minFontSize: 15,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              FontAwesomeIcons.calendar,
+                                              size: 15,
+                                              color: Colors.black54,
+                                            ),
+                                            Text(
+                                              time3(index),
+                                              style: const TextStyle(
+                                                  color: Colors.black87),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              FontAwesomeIcons.mapMarkerAlt,
+                                              size: 15,
+                                              color: Colors.black54,
+                                            ),
+                                            Container(
+                                              width: size.width * 0.25,
+                                              height: size.height * 0.1,
+                                              alignment: Alignment.center,
+                                              child: AutoSizeText(
+                                                _getUserDraftEvents
+                                                        .data[index].location ,
+                                                style: const TextStyle(
+                                                    color: Colors.black87),
+                                                maxFontSize: 17,
+                                                minFontSize: 10,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
+import 'package:event_spotter/constant/colors.dart';
 import 'package:event_spotter/models/eventTypeModel.dart';
 import 'package:event_spotter/models/eventsModel.dart';
 import 'package:event_spotter/pages/event_details_page.dart';
@@ -77,8 +78,7 @@ class _EventssState extends State<Eventss> {
 
     // String description = "new year party at local park";
 
-    return
-    Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Livefeeds(
@@ -116,7 +116,7 @@ class _EventssState extends State<Eventss> {
                           )));
                 },
                 child: Container(
-                
+                  width: size.width * double.infinity,
                   decoration: const BoxDecoration(
                     color:  Colors.white,
                     // borderRadius: BorderRadius.circular(15),
@@ -133,7 +133,7 @@ class _EventssState extends State<Eventss> {
                   child: Column(children: [
                     Padding(
                       padding:
-                          const EdgeInsets.only(right: 5, left: 5, top: 5),
+                          const EdgeInsets.only(right: 5, left: 2, top: 2),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -195,28 +195,25 @@ class _EventssState extends State<Eventss> {
                                 url: MainUrl +
                                     widget.eventsModel.data[index].events
                                         .eventPictures[0].imagePath)
-
-                                      
-
-                                        
                             : Container(
                                 height: size.height * 0.4,
                                 width: double.infinity,
                                 decoration: const BoxDecoration(
                                     // borderRadius: BorderRadius.circular(20)
                                     ),
-                                child: CachedNetworkImage(
-                                
-                                  alignment : Alignment.center,
-                                  imageUrl: MainUrl +
-                                      widget.eventsModel.data[index].events
-                                          .eventPictures[0].imagePath,
-                                  fit: BoxFit.fill,
-                                  placeholder: (context, url) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  },
+                                child: ClipRRect(
+                                  //  borderRadius: BorderRadius.circular(15),
+                                  child: CachedNetworkImage(
+                                    imageUrl: MainUrl +
+                                        widget.eventsModel.data[index].events
+                                            .eventPictures[0].imagePath,
+                                    fit: BoxFit.fill,
+                                    placeholder: (context, url) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                         Positioned(
@@ -264,52 +261,76 @@ class _EventssState extends State<Eventss> {
                             child: Padding(
                               padding:
                                   const EdgeInsets.only(right: 8, left: 8),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Buttonicon(
-                                    radiusofbutton: BorderRadius.circular(20),
-                                    icon: FontAwesomeIcons.userPlus,
-                                    title: widget.eventsModel.data[index]
-                                            .events.user.followers.length
-                                            .toString() +
-                                        " " "Followers",
-                                  ),
-                               
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        FontAwesomeIcons.calendar,
-                                        size: 13,
+                              child: FittedBox(
+                                fit : BoxFit.cover,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Buttonicon(
+                                      radiusofbutton: BorderRadius.circular(20),
+                                      icon: FontAwesomeIcons.userPlus,
+                                      title: widget.eventsModel.data[index]
+                                              .events.user.followers.length
+                                              .toString() +
+                                          " " "Followers",
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: (){},
+                                       style: ElevatedButton.styleFrom(
+                                      primary: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                        child: Row(
+                                          children: [
+                                            const Icon(
+                                              FontAwesomeIcons.calendar,
+                                              size: 13,
+                                              color: Colors.black54,
+                                            ),
+                                            const   SizedBox(width : 5),
+                                            Text(
+                                              time(index),
+                                              style: const TextStyle(
+                                                  color: Colors.black87),
+                                            ),
+                                          ],
+                                        )),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: (){},
+                                       style: ElevatedButton.styleFrom(
+                                      primary: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                      child: Row(
+                                        children : [
+                                    const Icon(
+                                        FontAwesomeIcons.mapMarkerAlt,
+                                        size: 15,
                                         color: Colors.black54,
                                       ),
-                                      const   SizedBox(width : 5),
                                       Text(
-                                        time(index),
-                                        style: const TextStyle(
-                                            color: Colors.black87),
+                                          widget.eventsModel.data[index].km
+                                                  .toString() +
+                                              " " +
+                                              "away",
+                                          style: const TextStyle(
+                                              color: Colors.black87)),
+                                        ]
                                       ),
-                                    ],
-                                  ),
-                                 
-                                  Row(
-                                    children : [
-                                  const Icon(
-                                    FontAwesomeIcons.mapMarkerAlt,
-                                    size: 15,
-                                    color: Colors.black54,
-                                  ),
-                                  Text(
-                                      widget.eventsModel.data[index].km
-                                              .toString() +
-                                          " " +
-                                          "away",
-                                      style: const TextStyle(
-                                          color: Colors.black87)),
-                                    ]
-                                  )
-                                ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -379,7 +400,6 @@ class _EventssState extends State<Eventss> {
           }),
         ),
       ],
-    
     );
   }
 

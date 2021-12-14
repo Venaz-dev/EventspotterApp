@@ -107,8 +107,8 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
               ),
               body: Padding(
                 padding: EdgeInsets.only(
-                  right: size.width * 0.02,
-                  left: size.width * 0.02,
+                  right: size.width * 0.03,
+                  left: size.width * 0.03,
                   top: 10,
                 ),
                 child: SingleChildScrollView(
@@ -116,304 +116,295 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left : 3.0 , right : 3),
-                          child: Container(
-                            width: size.width * double.infinity,
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              // borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  spreadRadius: 3,
-                                  blurRadius: 3,
-                                  color: Colors.black12,
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 3.0, right: 8, top: 3, bottom: 3),
-                                      child: Button(
-                                        onpressed: () {},
-                                        title:name1,
-                                        // widget.eventsModel.data[index].events
-                                        //     .user.name, //new
-                                        radiusofbutton: BorderRadius.circular(20),
-                                        profileImage: MainUrl + profile_pic!,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 8.0, right: 8, top: 3, bottom: 3),
-                                  child: Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: AutoSizeText(
-                                      widget.eventname!,
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 17),
-                                      maxFontSize: 17,
-                                      minFontSize: 10,
-                                      maxLines: 5,
+                        Container(
+                          width: size.width * double.infinity,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            // borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                spreadRadius: 3,
+                                blurRadius: 3,
+                                color: Colors.black12,
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 3.0, right: 8, top: 3, bottom: 3),
+                                    child: Button(
+                                      onpressed: () {},
+                                      title:name1,
+                                      // widget.eventsModel.data[index].events
+                                      //     .user.name, //new
+                                      radiusofbutton: BorderRadius.circular(20),
+                                      profileImage: MainUrl + profile_pic!,
                                     ),
                                   ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 8.0, right: 8, top: 3, bottom: 3),
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: AutoSizeText(
+                                    widget.eventname!,
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 17),
+                                    maxFontSize: 17,
+                                    minFontSize: 10,
+                                    maxLines: 5,
+                                  ),
                                 ),
-                                (widget.eventpicture.contains('.mp4') ||
-                                        widget.eventpicture.contains('.mov'))
-                                    ? VideoPlayerScreenn(
-                                        url: MainUrl + widget.eventpicture)
-                                    : SizedBox(
-                                        //color: Colors.red,
-                                        height: size.height * 0.3,
-                                        width: size.width * double.infinity,
-                                        child: CachedNetworkImage(
-                                          imageUrl: MainUrl + widget.eventpicture,
-                                          //  getUpComingEventUrl + imagePath!.path
+                              ),
+                              (widget.eventpicture.contains('.mp4') ||
+                                      widget.eventpicture.contains('.mov'))
+                                  ? VideoPlayerScreenn(
+                                      url: MainUrl + widget.eventpicture)
+                                  : SizedBox(
+                                      //color: Colors.red,
+                                      height: size.height * 0.3,
+                                      width: size.width * double.infinity,
+                                      child: CachedNetworkImage(
+                                        imageUrl: MainUrl + widget.eventpicture,
+                                        //  getUpComingEventUrl + imagePath!.path
+                                      ),
+                                    ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(right: 3.0, left: 3),
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Buttonicon(
+                                        radiusofbutton:
+                                            BorderRadius.circular(20),
+                                        icon: FontAwesomeIcons.userPlus,
+                                        title: followersCount + " " "Followers",
+                                      ),
+                                      SizedBox(
+                                        child: Row(
+                                          children: [
+                                            const Icon(
+                                              FontAwesomeIcons.calendar,
+                                              size: 13,
+                                              color: Colors.black54,
+                                            ),
+                                            Text(
+                                              time(),
+                                              style: const TextStyle(
+                                                  color: Colors.black87),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(right: 3.0, left: 3),
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Buttonicon(
-                                          radiusofbutton:
-                                              BorderRadius.circular(20),
-                                          icon: FontAwesomeIcons.userPlus,
-                                          title: followersCount + " " "Followers",
-                                        ),
-                                        SizedBox(
-                                          child: Row(
-                                            children: [
-                                              const Icon(
-                                                FontAwesomeIcons.calendar,
-                                                size: 13,
-                                                color: Colors.black54,
-                                              ),
-                                              Text(
-                                                time(),
+                                      SizedBox(
+                                        child: Row(
+                                          children: [
+                                            const Icon(
+                                              FontAwesomeIcons.mapMarkerAlt,
+                                              size: 15,
+                                              color: Colors.black54,
+                                            ),
+                                            Text(
+                                                widget.distance! + " " + "away",
                                                 style: const TextStyle(
-                                                    color: Colors.black87),
-                                              ),
-                                            ],
-                                          ),
+                                                    color: Colors.black87)),
+                                          ],
                                         ),
-                                        SizedBox(
-                                          child: Row(
-                                            children: [
-                                              const Icon(
-                                                FontAwesomeIcons.mapMarkerAlt,
-                                                size: 15,
-                                                color: Colors.black54,
-                                              ),
-                                              Text(
-                                                  widget.distance! + " " + "away",
-                                                  style: const TextStyle(
-                                                      color: Colors.black87)),
-                                            ],
-                                          ),
-                                        ),
-                                      ]),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Container(
-                                  decoration: const BoxDecoration(
-                                    border: Border(
-                                      top: BorderSide(color: Colors.black12),
-                                    ),
-                                  ),
-                                  child: IntrinsicHeight(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        extras(
-                                          FontAwesomeIcons.thumbsUp,
-                                          totalLike.toString(),
-                                          size,
-                                          () {},
-                                        ),
-
-                                        divider(),
-                                        extras(Icons.comment,
-                                            comments.length.toString(), size, () {
-                                          Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                                  builder: (context) => comment(
-                                                        eventPicture:
-                                                            widget.eventpicture,
-                                                        userName: name1,
-                                                        userProfile: profile_pic,
-                                                        date: widget.date,
-                                                        distance: widget.distance,
-                                                        eventName:
-                                                            widget.eventname,
-                                                        likeTotal:
-                                                            totalLike.toString(),
-                                                        commentTotal: comments
-                                                            .length
-                                                            .toString(),
-                                                        totalLive: livefeeds
-                                                            .length
-                                                            .toString(),
-                                                        eventId: widget.eventId,
-                                                        commentList: comments,
-                                                      )));
-                                        }),
-                                        divider(),
-
-                                        // extras(MdiIcons.share,
-                                        //     posts[1]['share'], size),
-                                        // divider(),                           //no inculded
-                                        extras(
-                                            Icons.play_arrow_sharp,
-                                            livefeeds.length.toString(),
-                                            size, () {
-                                          setState(() {
-                                            issnaps = !issnaps;
-                                          });
-                                        }),
-                                      ],
-                                    ),
+                                      ),
+                                    ]),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Container(
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    top: BorderSide(color: Colors.black12),
                                   ),
                                 ),
-                              ],
-                            ),
+                                child: IntrinsicHeight(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      extras(
+                                        FontAwesomeIcons.thumbsUp,
+                                        totalLike.toString(),
+                                        size,
+                                        () {},
+                                      ),
+
+                                      divider(),
+                                      extras(Icons.comment,
+                                          comments.length.toString(), size, () {
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                                builder: (context) => comment(
+                                                      eventPicture:
+                                                          widget.eventpicture,
+                                                      userName: name1,
+                                                      userProfile: profile_pic,
+                                                      date: widget.date,
+                                                      distance: widget.distance,
+                                                      eventName:
+                                                          widget.eventname,
+                                                      likeTotal:
+                                                          totalLike.toString(),
+                                                      commentTotal: comments
+                                                          .length
+                                                          .toString(),
+                                                      totalLive: livefeeds
+                                                          .length
+                                                          .toString(),
+                                                      eventId: widget.eventId,
+                                                      commentList: comments,
+                                                    )));
+                                      }),
+                                      divider(),
+
+                                      // extras(MdiIcons.share,
+                                      //     posts[1]['share'], size),
+                                      // divider(),                           //no inculded
+                                      extras(
+                                          Icons.play_arrow_sharp,
+                                          livefeeds.length.toString(),
+                                          size, () {
+                                        setState(() {
+                                          issnaps = !issnaps;
+                                        });
+                                      }),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(height: 10),
                         !issnaps
                             ? Column(
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(right : 3.0 , left : 3),
-                                    child: Container(
-                                      width: double.infinity,
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black12,
-                                            spreadRadius: 0.5,
-                                            blurRadius: 0.5,
-                                            offset: Offset(
-                                              0,
-                                              0,
-                                            ),
+                                  Container(
+                                    width: double.infinity,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black12,
+                                          spreadRadius: 0.5,
+                                          blurRadius: 0.5,
+                                          offset: Offset(
+                                            0,
+                                            0,
                                           ),
-                                          BoxShadow(
-                                            color: Colors.black12,
-                                            spreadRadius: 0.5,
-                                            blurRadius: 0.5,
-                                            offset: Offset(
-                                              0,
-                                              0,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const Text(
-                                              "Details",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(
-                                              widget.details!,
-                                              style: const TextStyle(
-                                                  color: Colors.black54,
-                                                  fontSize: 16),
-                                            ),
-                                          ],
                                         ),
+                                        BoxShadow(
+                                          color: Colors.black12,
+                                          spreadRadius: 0.5,
+                                          blurRadius: 0.5,
+                                          offset: Offset(
+                                            0,
+                                            0,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text(
+                                            "Details",
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            widget.details!,
+                                            style: const TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 16),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
                                   const SizedBox(
                                     height: 7,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right : 3.0 , left : 3),
-                                    child: Container(
-                                      width: double.infinity,
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black12,
-                                            spreadRadius: 0.5,
-                                            blurRadius: 0.5,
-                                            offset: Offset(
-                                              0,
-                                              0,
-                                            ),
+                                  Container(
+                                    width: double.infinity,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black12,
+                                          spreadRadius: 0.5,
+                                          blurRadius: 0.5,
+                                          offset: Offset(
+                                            0,
+                                            0,
                                           ),
-                                          BoxShadow(
-                                            color: Colors.black12,
-                                            spreadRadius: 0.5,
-                                            blurRadius: 0.5,
-                                            offset: Offset(
-                                              0,
-                                              0,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const Text(
-                                              "Ticket link",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            widget.ticketlink == null
-                                                ? const Text("")
-                                                : InkWell(
-                                                    onTap: () {
-                                                      urllauncher();
-                                                    },
-                                                    child: Text(
-                                                      widget.ticketlink!,
-                                                      style: const TextStyle(
-                                                          color: Colors.black54,
-                                                          fontSize: 16),
-                                                    ),
-                                                  ),
-                                          ],
                                         ),
+                                        BoxShadow(
+                                          color: Colors.black12,
+                                          spreadRadius: 0.5,
+                                          blurRadius: 0.5,
+                                          offset: Offset(
+                                            0,
+                                            0,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text(
+                                            "Ticket link",
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          widget.ticketlink == null
+                                              ? const Text("")
+                                              : InkWell(
+                                                  onTap: () {
+                                                    urllauncher();
+                                                  },
+                                                  child: Text(
+                                                    widget.ticketlink!,
+                                                    style: const TextStyle(
+                                                        color: Colors.black54,
+                                                        fontSize: 16),
+                                                  ),
+                                                ),
+                                        ],
                                       ),
                                     ),
                                   ),
@@ -507,7 +498,7 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                                                     ),
                                                     child: Container(
                                                       height:
-                                                          size.height * 0.24,
+                                                          size.height * 0.23,
                                                       width: size.width * 0.3,
                                                       decoration: BoxDecoration(
                                                         borderRadius:
@@ -539,7 +530,7 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                                                               : Container(
                                                                   height:
                                                                       size.height *
-                                                                          0.24,
+                                                                          0.2,
                                                                   width:
                                                                       size.width *
                                                                           0.3,
@@ -565,7 +556,6 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                                                                     " " +
                                                                     "miles",
                                                                 style: const TextStyle(
-                                                                  color : Colors.white,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w400,
@@ -785,7 +775,7 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
   String time() {
     DateTime parseDate = DateFormat("yyyy-mm-dd").parse(widget.date!);
     var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('mm/dd/yyyy');
+    var outputFormat = DateFormat('MM/dd/yyyy');
     var outputDate = outputFormat.format(inputDate);
 
     return outputDate;

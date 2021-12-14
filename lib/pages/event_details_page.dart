@@ -629,7 +629,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                             right: 10.0,
                           ),
                           child: Container(
-                            height: size.height * 0.23,
+                            height: size.height * 0.24,
                             width: size.width * 0.3,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
@@ -649,7 +649,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                                         url: MainUrl +
                                             Live[index]['img'].toString())
                                     : Container(
-                                        height: size.height * 0.2,
+                                        height: size.height * 0.24,
                                         width: size.width * 0.3,
                                         decoration: BoxDecoration(
                                           // color: Colors.red,
@@ -682,6 +682,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                                               " " +
                                               "miles",
                                           style: const TextStyle(
+                                            color : Colors.white,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 17),
                                         )),
@@ -992,7 +993,7 @@ class _EventdetailingState extends State<Eventdetailing> {
     DateTime parseDate = DateFormat("yyyy-mm-dd")
         .parse(widget.model!.data[index].events.eventDate);
     var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('MM/dd/yyyy');
+    var outputFormat = DateFormat('mm/dd/yyyy');
     var outputDate = outputFormat.format(inputDate);
 
     return outputDate;

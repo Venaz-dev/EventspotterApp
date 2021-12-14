@@ -175,8 +175,8 @@ class _SingupState extends State<Singup> {
                                 validator: (password) {
                                   if (password!.isEmpty) {
                                     return 'Please enter the password';
-                                  } else if (password.length <8) {
-                                    return 'Enter minimum 8 digits';
+                                  } else if (password.length < 7) {
+                                    return 'Enter minimum 7 digits';
                                   } else {
                                     return null;
                                   }
@@ -251,7 +251,7 @@ class _SingupState extends State<Singup> {
                                 primary: const Color(0xFF304747),
                                 textColor: Colors.white,
                                 width: double.infinity,
-                                text: "Sign Up",
+                                text: "Sign up",
                                 coloring: const Color(0xFF304747),
                                 onpressed: () {
                                   final form = _key.currentState!;
@@ -271,7 +271,7 @@ class _SingupState extends State<Singup> {
                                 width: MediaQuery.of(context).size.width,
                                 child: ElevatedButton(
                                   child: const Text(
-                                    "Already have an account? Sign in",
+                                    "Already have an account? sign in",
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 18),
                                   ),

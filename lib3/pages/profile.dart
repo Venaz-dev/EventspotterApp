@@ -211,7 +211,7 @@ class _ProfileState extends State<Profile> {
                                       imagePath == null
                                           ? SizedBox(
                                               height: size.height * 0.1,
-                                              width: size.width * 0.23,
+                                              width: size.width * 0.2,
                                               child: Stack(children: [
                                                 Container(
                                                   height: size.height * 0.1,
@@ -231,7 +231,7 @@ class _ProfileState extends State<Profile> {
                                                 ),
                                                 Positioned(
                                                     top: size.height * 0.04,
-                                                    left: size.width * 0.12,
+                                                    left: size.width * 0.11,
                                                     child: IconButton(
                                                         onPressed: () {
                                                           _selectPhoto();
@@ -471,7 +471,6 @@ class _ProfileState extends State<Profile> {
         onTap: ontap,
         child: Container(
           height: size.height * 0.06,
-          width: size.width*0.3,
           //width: size.width*0.3,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
