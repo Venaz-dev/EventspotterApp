@@ -178,16 +178,22 @@ class _EventdetailingState extends State<Eventdetailing> {
                                 ),
                             child: ClipRRect(
                               //  borderRadius: BorderRadius.circular(15),
-                              child: CachedNetworkImage(
-                                imageUrl: MainUrl +
-                                    widget.model!.data[index1].events
-                                        .eventPictures[0].imagePath,
-                                fit: BoxFit.fill,
-                                placeholder: (context, url) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                },
+                              child: Center(
+                                child: Container(
+                                  height: size.height * 0.4,
+                                       width: double.infinity,
+                                  child: CachedNetworkImage(
+                                    imageUrl: MainUrl +
+                                        widget.model!.data[index1].events
+                                            .eventPictures[0].imagePath,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    },
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -632,6 +638,12 @@ class _EventdetailingState extends State<Eventdetailing> {
                             height: size.height * 0.24,
                             width: size.width * 0.3,
                             decoration: BoxDecoration(
+                              color : Colors.white,
+                               boxShadow: const [BoxShadow (
+                                                        color: Colors.black12,
+                                                        spreadRadius: 1,
+                                                        blurRadius: 1,
+                                                      )],
                               borderRadius: BorderRadius.circular(15),
                               //  color: Colors.red,
                             ),
@@ -649,7 +661,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                                         url: MainUrl +
                                             Live[index]['img'].toString())
                                     : Container(
-                                        height: size.height * 0.24,
+                                        height: size.height * 0.21,
                                         width: size.width * 0.3,
                                         decoration: BoxDecoration(
                                           // color: Colors.red,
@@ -682,7 +694,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                                               " " +
                                               "miles",
                                           style: const TextStyle(
-                                            color : Colors.white,
+                                            color : Colors.black,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 17),
                                         )),
@@ -713,6 +725,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 15.0),
                         child: Container(
+                        
                             decoration: const BoxDecoration(
                                 color: Colors.white,
                                 boxShadow: [
@@ -750,7 +763,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                                             fit: BoxFit.cover,
                                           )),
                                     ),
-                                    const Spacer(),
+                                  const  SizedBox(width : 10),
                                     Text(
                                       widget
                                           .model!.data[index1].events.user.name,

@@ -63,68 +63,57 @@ class _ExploreState extends State<Explore> {
   double topbarheight = 50;
   late Map<String, double> userLocation;
   Widget searchnames() {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.2,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        boxShadow: const [
-          BoxShadow(
-            spreadRadius: 0.5,
-            blurRadius: 0.5,
-            color: Colors.black12,
-            offset: Offset(-1, 1),
-          ),
-          BoxShadow(
-            spreadRadius: 0.5,
-            blurRadius: 0.5,
-            color: Colors.black12,
-            offset: Offset(1, -1),
-          )
-        ],
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-            children: List.generate(search.length, (index) {
-          return Padding(
-            padding: const EdgeInsets.only(left: 15.0, top: 5, bottom: 10),
-            child: InkWell(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => Eventposterprofile(
-                          id: search[index]['id'],
-                        )));
-              },
-              child: Ink(
-                child: Row(
-                  children: [
-                    SizedBox(
-                      height: 30,
-                      width: 30,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(300),
-                        child: Image.network(
-                          MainUrl + search[index]["image"],
-                          fit: BoxFit.cover,
+    return Padding(
+      padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.05),
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.2,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+              children: List.generate(search.length, (index) {
+            return Padding(
+              padding: const EdgeInsets.only(left: 15.0, top: 5, bottom: 10),
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Eventposterprofile(
+                            id: search[index]['id'],
+                          )));
+                },
+                child: Ink(
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(300),
+                          child: Image.network(
+                            MainUrl + search[index]["image"],
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Text(search[index]["name"],
-                        style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black))
-                  ],
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Text(search[index]["name"],
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black))
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        })),
+            );
+          })),
+        ),
       ),
     );
   }
@@ -286,6 +275,17 @@ class _ExploreState extends State<Explore> {
           backgroundColor: scaffoldcolor,
           //Color(0xFF5E5E5E),
 
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            //  elevation : 0,
+            backgroundColor: scaffoldcolor,
+            leading: 
+              Padding(
+                padding:  EdgeInsets.only( left: size.width * 0.03,),
+                child: const Image(image: AssetImage('Assets/images/logo.png')),
+              ),
+            
+          ),
           body: GestureDetector(
             onTap: () {
               FocusScopeNode currentfocus = FocusScope.of(context);
@@ -296,82 +296,59 @@ class _ExploreState extends State<Explore> {
             },
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
-              child: Column(
-                children: [
-                  Container(
-                    decoration:
-                        const BoxDecoration(color: Colors.white, boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        spreadRadius: 2,
-                        blurRadius: 0,
-                        offset: Offset(0, 1),
-                      )
-                    ]),
-                    child: Padding(
-                      padding: EdgeInsets.only(top: size.height * 0.02),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment : CrossAxisAlignment.center,
-                        children: [
-                          const Image(
-                            image: AssetImage('Assets/images/logo.png'),
-                            height: 40,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          SizedBox(
-                            width: size.width * 0.73,
-                            child: Textform(
-                              onchange: (listen) {
-                                if (_search.text.length >= 3) {
-                                  searchApiCall();
-                                  if (_search.text.length == 0) {
-                                    search.clear();
+              child: Padding(
+                padding: EdgeInsets.only(
+                 
+                    right: size.width * 0.03,
+                    left: size.width * 0.03,
+                    bottom: 10),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: size.height * 0.02),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: size.width * 0.93,
+                              child: Textform(
+                                onchange: (listen) {
+                                  if (_search.text.length >= 3) {
+                                    searchApiCall();
+                                    if (_search.text.length == 0) {
+                                      search.clear();
+                                    }
+                                    setState(() {});
                                   }
-                                  setState(() {});
-                                }
-                                //setState(() {});
-                              },
-                              isreadonly: false,
-                              isSecure: false,
-                              controller: _search,
-                              icon: Icons.search,
-                              label: "Search",
-                              color: const Color(0XFFECF2F3),
+                                  //setState(() {});
+                                },
+                                isreadonly: false,
+                                isSecure: false,
+                                controller: _search,
+                                icon: Icons.search,
+                                label: "Search",
+                                color: const Color(0XFFECF2F3),
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            width: size.width * 0.01,
-                          ),
-                        ],
+                            SizedBox(
+                              width: size.width * 0.01,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        right: size.width * 0.03,
-                        left: size.width * 0.03,
-                        bottom: 10),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Stack(
                         children: [
-                          Stack(
-                            children: [
-                              getpages(size),
-                              _search.text.length >= 3
-                                  ? searchnames()
-                                  : const SizedBox(),
-                            ],
-                          ),
+                          getpages(size),
+                          _search.text.length >= 3
+                              ? searchnames()
+                              : const SizedBox(),
                         ],
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),

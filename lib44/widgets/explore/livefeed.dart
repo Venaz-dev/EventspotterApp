@@ -42,7 +42,18 @@ class _LivefeedsState extends State<Livefeeds> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-        
+         const SizedBox(
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Event live feed",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 17),
+            ),
+          ),
+        ),
           Padding(
             padding: const EdgeInsets.only(top : 8.0),
             child: Container(
@@ -62,21 +73,9 @@ class _LivefeedsState extends State<Livefeeds> {
                 padding: const EdgeInsets.only(
                     left: 10, bottom: 10, top: 10, right: 10),
                 child: Column(
-
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Event live feed",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 17),
-            ),
-          ),
-        ),
+                   
                     const SizedBox(
                       height: 10,
                     ),

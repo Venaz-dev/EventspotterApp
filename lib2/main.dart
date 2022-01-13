@@ -17,7 +17,7 @@
 import 'package:event_spotter/pages/signin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+ 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 

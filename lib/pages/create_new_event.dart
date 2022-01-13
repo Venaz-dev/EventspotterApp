@@ -381,8 +381,6 @@ class _CreateeventState extends State<Createevent> {
                         ),
                       ),
                       Container(
-                          height: 50,
-                          width: 50,
                           decoration: const BoxDecoration(
                               color: Color(0XFF368890), shape: BoxShape.circle),
                           child: Align(
@@ -421,13 +419,17 @@ class _CreateeventState extends State<Createevent> {
                         children: List.generate(conditions.length, (index) {
                         return Padding(
                           padding: const EdgeInsets.only(right: 6.0, top: 10),
-                          child: Elevatedbuttons(
-                            sidecolor: Colors.white,
-                            width: size.width * 0.4,
-                            coloring: const Color(0XFF368890),
-                            text: conditions[index].toString(),
-                            textColor: const Color(0XFFFFFFFF),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 15),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: const Color(0XFF368890),
+                            ),
+                            child: Text(conditions[index].toString(),
+                                style: const TextStyle(color: Colors.white)),
                           ),
+                        
                         );
                       })),
                 const SizedBox(
@@ -816,7 +818,7 @@ class Elevatedbuttons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.06,
-      width : MediaQuery.of(context).size.width*0.3,
+      width: MediaQuery.of(context).size.width * 0.3,
       decoration: BoxDecoration(
         color: coloring,
         borderRadius: BorderRadius.circular(10),
@@ -894,10 +896,7 @@ class _VideoPlayerScree1State extends State<VideoPlayerScree1> {
               return SizedBox(
                 height: size.height * 0.3,
                 width: double.infinity,
-               
-                child: ClipRRect(
-                  
-                    child: VideoPlayer(_controller)),
+                child: ClipRRect(child: VideoPlayer(_controller)),
               );
             } else {
               // If the VideoPlayerController is still initializing, show a

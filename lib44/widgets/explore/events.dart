@@ -14,7 +14,6 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:share/share.dart';
 
 class Eventss extends StatefulWidget {
   List<int> favourite = [];
@@ -78,7 +77,8 @@ class _EventssState extends State<Eventss> {
 
     // String description = "new year party at local park";
 
-    return Column(
+    return
+    Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Livefeeds(
@@ -116,20 +116,24 @@ class _EventssState extends State<Eventss> {
                           )));
                 },
                 child: Container(
+                
                   decoration: const BoxDecoration(
-                    color: Colors.white,
+                    color:  Colors.white,
                     // borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(
-                        spreadRadius: 3,
-                        blurRadius: 3,
-                        color: Colors.black12,
-                      ),
+                          spreadRadius: 3,
+                          blurRadius: 3,
+                          color: Colors.black12,
+                         
+                          ),
+                      
                     ],
                   ),
                   child: Column(children: [
                     Padding(
-                      padding: const EdgeInsets.only(right: 5, left: 5, top: 5),
+                      padding:
+                          const EdgeInsets.only(right: 5, left: 5, top: 5),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -141,8 +145,8 @@ class _EventssState extends State<Eventss> {
                                               .events.user.id,
                                         )));
                               },
-                              title: widget.eventsModel.data[index].events.user
-                                  .name, //new
+                              title: widget.eventsModel.data[index].events
+                                  .user.name, //new
                               radiusofbutton: BorderRadius.circular(20),
                               profileImage: MainUrl +
                                   widget.eventsModel.data[index].events.user
@@ -173,12 +177,12 @@ class _EventssState extends State<Eventss> {
                       ),
                     ),
                     Container(
-                      height: size.height,
                       decoration: const BoxDecoration(
-                        color: Colors.blue,
-                        //borderRadius: BorderRadius.circular(15),
-                      ),
+                          //borderRadius: BorderRadius.circular(15),
+                          ),
+                      width: size.width * double.infinity,
                       child: Stack(children: [
+                        
                         widget.eventsModel.data[index].events.eventPictures[0]
                                     .imagePath
                                     .toString()
@@ -187,23 +191,38 @@ class _EventssState extends State<Eventss> {
                                     .eventPictures[0].imagePath
                                     .toString()
                                     .contains('.mov')
-                            ? SizedBox.expand(
-                                child: VideoPlayerScreenn(
-                                    url: MainUrl +
-                                        widget.eventsModel.data[index].events
-                                            .eventPictures[0].imagePath),
-                              )
-                            : SizedBox.expand(
-                                child: CachedNetworkImage(
-                                  fit: BoxFit.cover,
-                                  imageUrl: MainUrl +
-                                      widget.eventsModel.data[index].events
-                                          .eventPictures[0].imagePath,
-                                  placeholder: (context, url) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  },
+                            ? VideoPlayerScreenn(
+                                url: MainUrl +
+                                    widget.eventsModel.data[index].events
+                                        .eventPictures[0].imagePath)
+
+                                      
+
+                                        
+                            : Container(
+                                height: size.height * 0.4,
+                                width: double.infinity,
+                                decoration: const BoxDecoration(
+                                    // borderRadius: BorderRadius.circular(20)
+                                    ),
+                                child: Center(
+                                  child: Container(
+                                       height: size.height * 0.4,
+                                       width: double.infinity,
+                                    child: CachedNetworkImage(
+                                    
+                                      alignment : Alignment.center,
+                                      imageUrl: MainUrl +
+                                          widget.eventsModel.data[index].events
+                                              .eventPictures[0].imagePath,
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      },
+                                    ),
+                                  ),
                                 ),
                               ),
                         Positioned(
@@ -215,14 +234,14 @@ class _EventssState extends State<Eventss> {
                                     widget.favourite[index] = 0;
                                     PostDislike(
                                         index,
-                                        widget
-                                            .eventsModel.data[index].events.id);
+                                        widget.eventsModel.data[index].events
+                                            .id);
                                   } else {
                                     widget.favourite[index] = 1;
                                     PostLike(
                                         index,
-                                        widget
-                                            .eventsModel.data[index].events.id);
+                                        widget.eventsModel.data[index].events
+                                            .id);
                                   }
                                   setState(() {});
                                 },
@@ -249,7 +268,8 @@ class _EventssState extends State<Eventss> {
                               ),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.only(right: 8, left: 8),
+                              padding:
+                                  const EdgeInsets.only(right: 8, left: 8),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -257,11 +277,12 @@ class _EventssState extends State<Eventss> {
                                   Buttonicon(
                                     radiusofbutton: BorderRadius.circular(20),
                                     icon: FontAwesomeIcons.userPlus,
-                                    title: widget.eventsModel.data[index].events
-                                            .user.followers.length
+                                    title: widget.eventsModel.data[index]
+                                            .events.user.followers.length
                                             .toString() +
                                         " " "Followers",
                                   ),
+                               
                                   Row(
                                     children: [
                                       const Icon(
@@ -269,7 +290,7 @@ class _EventssState extends State<Eventss> {
                                         size: 13,
                                         color: Colors.black54,
                                       ),
-                                      const SizedBox(width: 5),
+                                      const   SizedBox(width : 5),
                                       Text(
                                         time(index),
                                         style: const TextStyle(
@@ -277,20 +298,23 @@ class _EventssState extends State<Eventss> {
                                       ),
                                     ],
                                   ),
-                                  Row(children: [
-                                    const Icon(
-                                      FontAwesomeIcons.mapMarkerAlt,
-                                      size: 15,
-                                      color: Colors.black54,
-                                    ),
-                                    Text(
-                                        widget.eventsModel.data[index].km
-                                                .toString() +
-                                            " " +
-                                            "away",
-                                        style: const TextStyle(
-                                            color: Colors.black87)),
-                                  ])
+                                 
+                                  Row(
+                                    children : [
+                                  const Icon(
+                                    FontAwesomeIcons.mapMarkerAlt,
+                                    size: 15,
+                                    color: Colors.black54,
+                                  ),
+                                  Text(
+                                      widget.eventsModel.data[index].km
+                                              .toString() +
+                                          " " +
+                                          "away",
+                                      style: const TextStyle(
+                                          color: Colors.black87)),
+                                    ]
+                                  )
                                 ],
                               ),
                             ),
@@ -326,9 +350,10 @@ class _EventssState extends State<Eventss> {
                                           .comment.length
                                           .toString(),
                                       size, () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                            builder: (context) => Commentofuser(
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Commentofuser(
                                                   eventsModel:
                                                       widget.eventsModel,
                                                   index: index,
@@ -336,10 +361,9 @@ class _EventssState extends State<Eventss> {
                                   }),
                                   divider(),
 
-                                  extras(MdiIcons.share, "", size, () {
-                                    share(widget.eventsModel.data[index].events.id.toString());
-                                  }),
-                                  divider(), //no inculded
+                                  // extras(MdiIcons.share,
+                                  //     posts[1]['share'], size),
+                                  // divider(),                           //no inculded
                                   extras(
                                       Icons.play_arrow,
                                       widget.eventsModel.data[index].events
@@ -361,12 +385,10 @@ class _EventssState extends State<Eventss> {
           }),
         ),
       ],
+    
     );
   }
-  share(String ff){
-    Share.share('check out my post https://theeventspotter.com/eventDetails/'+ff);
 
-  }
   VerticalDivider divider() {
     return const VerticalDivider(
       thickness: 1,
@@ -376,7 +398,7 @@ class _EventssState extends State<Eventss> {
     );
   }
 
-  extras(IconData icon, String? totalcount, Size size, VoidCallback onpress) {
+  extras(IconData icon, String totalcount, Size size, VoidCallback onpress) {
     return Row(
       children: [
         IconButton(
@@ -386,7 +408,7 @@ class _EventssState extends State<Eventss> {
               color: Colors.black,
             ),
             onPressed: onpress),
-        Text(totalcount!),
+        Text(totalcount),
       ],
     );
   }
@@ -415,6 +437,7 @@ class _EventssState extends State<Eventss> {
     );
   }
 
+  
   PostDislike(int index, int eventId) async {
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
@@ -488,6 +511,7 @@ class _EventssState extends State<Eventss> {
   // }
 
   Future<void> postThumbs(int id) async {
+    int count = 0;
     _sharedPreferences = await SharedPreferences.getInstance();
     _token = _sharedPreferences.getString('accessToken')!;
     FormData formData = FormData.fromMap({
@@ -497,14 +521,11 @@ class _EventssState extends State<Eventss> {
       _dio.options.headers["Authorization"] = "Bearer ${_token}";
       Response response = await _dio.post(PostlikeUrl, data: formData);
       if (response.statusCode == 200) {
-        // ignore: avoid_print
         print('Like ');
       } else {
-        // ignore: avoid_print
         print('ERROR');
       }
     } catch (e) {
-      // ignore: avoid_print
       print(e.toString());
     } finally {
       setState(() {});
@@ -522,7 +543,6 @@ class _EventssState extends State<Eventss> {
   }
 }
 
-// ignore: must_be_immutable
 class VideoPlayerScreenn extends StatefulWidget {
   VideoPlayerScreenn({Key? key, required this.url}) : super(key: key);
   late String url;
@@ -541,7 +561,6 @@ class _VideoPlayerScreennState extends State<VideoPlayerScreenn> {
     // offers several different constructors to play videos from assets, files,
     // or the internet.
     _controller = VideoPlayerController.network(widget.url);
-    // ignore: avoid_print
     print(widget.url);
 
     // Initialize the controller and store the Future for later use.
@@ -603,12 +622,12 @@ class _VideoPlayerScreennState extends State<VideoPlayerScreenn> {
             }
           },
         ),
+        
       ],
     );
   }
 }
 
-// ignore: must_be_immutable
 class ControlsOverlay extends StatefulWidget {
   ControlsOverlay({Key? key, required this.controller}) : super(key: key);
 

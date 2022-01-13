@@ -117,7 +117,7 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 3.0, right: 3),
+                          padding: const EdgeInsets.only(left : 3.0 , right : 3),
                           child: Container(
                             width: size.width * double.infinity,
                             decoration: const BoxDecoration(
@@ -139,17 +139,13 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                          left: 3.0,
-                                          right: 8,
-                                          top: 3,
-                                          bottom: 3),
+                                          left: 3.0, right: 8, top: 3, bottom: 3),
                                       child: Button(
                                         onpressed: () {},
-                                        title: name1,
+                                        title:name1,
                                         // widget.eventsModel.data[index].events
                                         //     .user.name, //new
-                                        radiusofbutton:
-                                            BorderRadius.circular(20),
+                                        radiusofbutton: BorderRadius.circular(20),
                                         profileImage: MainUrl + profile_pic!,
                                       ),
                                     ),
@@ -178,24 +174,16 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                                         url: MainUrl + widget.eventpicture)
                                     : SizedBox(
                                         //color: Colors.red,
-                                        height: size.height * 0.4,
-                                       width: double.infinity,
-                                        child: Center(
-                                          child: Container(
-                                            height: size.height * 0.4,
-                                       width: double.infinity,
-                                            child: CachedNetworkImage(
-                                              imageUrl:
-                                                  MainUrl + widget.eventpicture,
-                                                  fit : BoxFit.cover,
-                                              //  getUpComingEventUrl + imagePath!.path
-                                            ),
-                                          ),
+                                        height: size.height * 0.3,
+                                        width: size.width * double.infinity,
+                                        child: CachedNetworkImage(
+                                          imageUrl: MainUrl + widget.eventpicture,
+                                          //  getUpComingEventUrl + imagePath!.path
                                         ),
                                       ),
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 3.0, left: 3),
+                                  padding:
+                                      const EdgeInsets.only(right: 3.0, left: 3),
                                   child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -204,8 +192,7 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                                           radiusofbutton:
                                               BorderRadius.circular(20),
                                           icon: FontAwesomeIcons.userPlus,
-                                          title:
-                                              followersCount + " " "Followers",
+                                          title: followersCount + " " "Followers",
                                         ),
                                         SizedBox(
                                           child: Row(
@@ -232,9 +219,7 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                                                 color: Colors.black54,
                                               ),
                                               Text(
-                                                  widget.distance! +
-                                                      " " +
-                                                      "away",
+                                                  widget.distance! + " " + "away",
                                                   style: const TextStyle(
                                                       color: Colors.black87)),
                                             ],
@@ -264,25 +249,21 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                                         ),
 
                                         divider(),
-                                        extras(
-                                            Icons.comment,
-                                            comments.length.toString(),
-                                            size, () {
+                                        extras(Icons.comment,
+                                            comments.length.toString(), size, () {
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
                                                   builder: (context) => comment(
                                                         eventPicture:
                                                             widget.eventpicture,
                                                         userName: name1,
-                                                        userProfile:
-                                                            profile_pic,
+                                                        userProfile: profile_pic,
                                                         date: widget.date,
-                                                        distance:
-                                                            widget.distance,
+                                                        distance: widget.distance,
                                                         eventName:
                                                             widget.eventname,
-                                                        likeTotal: totalLike
-                                                            .toString(),
+                                                        likeTotal:
+                                                            totalLike.toString(),
                                                         commentTotal: comments
                                                             .length
                                                             .toString(),
@@ -319,8 +300,7 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                             ? Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 3.0, left: 3),
+                                    padding: const EdgeInsets.only(right : 3.0 , left : 3),
                                     child: Container(
                                       width: double.infinity,
                                       decoration: const BoxDecoration(
@@ -377,8 +357,7 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                                     height: 7,
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 3.0, left: 3),
+                                    padding: const EdgeInsets.only(right : 3.0 , left : 3),
                                     child: Container(
                                       width: double.infinity,
                                       decoration: const BoxDecoration(
@@ -531,15 +510,6 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                                                           size.height * 0.24,
                                                       width: size.width * 0.3,
                                                       decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        boxShadow: const [
-                                                          BoxShadow(
-                                                            color:
-                                                                Colors.black12,
-                                                            spreadRadius: 1,
-                                                            blurRadius: 1,
-                                                          )
-                                                        ],
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(15),
@@ -569,7 +539,7 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                                                               : Container(
                                                                   height:
                                                                       size.height *
-                                                                          0.21,
+                                                                          0.24,
                                                                   width:
                                                                       size.width *
                                                                           0.3,
@@ -595,8 +565,7 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                                                                     " " +
                                                                     "miles",
                                                                 style: const TextStyle(
-                                                                    color: Colors
-                                                                        .black,
+                                                                  color : Colors.white,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w400,
@@ -674,8 +643,7 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                                                                               .cover,
                                                                         )),
                                                               ),
-                                                              const SizedBox(
-                                                                  width: 10),
+                                                              const Spacer(),
                                                               Text(
                                                                 name1,
                                                                 style: const TextStyle(
@@ -921,17 +889,21 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
     );
   }
 
-  void urllauncher() async {
-    if (widget.ticketlink != null || widget.ticketlink != "") {
-      if (widget.ticketlink!.contains("https://")) {
-        if (await canLaunch(widget.ticketlink!)) {
+ void urllauncher() async {
+    if (widget.ticketlink != null ||
+        widget.ticketlink != "") {
+      if (widget.ticketlink!
+          .contains("https://")) {
+        if (await canLaunch(
+           widget.ticketlink!)) {
           await launch(widget.ticketlink!);
         } else {
           throw 'Could not launch $widget.ticketlink';
         }
-      } else {
-        if (await canLaunch("https://" + widget.ticketlink!)) {
-          await launch("https://" + widget.ticketlink!);
+      }else{
+         if (await canLaunch(
+           "https://"+widget.ticketlink!)) {
+          await launch( "https://"+widget.ticketlink!);
         } else {
           throw 'Could not launch $widget.ticketlink!';
         }

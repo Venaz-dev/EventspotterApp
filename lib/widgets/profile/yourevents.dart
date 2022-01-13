@@ -114,6 +114,7 @@ class _YoureventsState extends State<Yourevents> {
 
   Widget upcoming(Size size) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         FittedBox(
           fit: BoxFit.cover,
@@ -176,6 +177,7 @@ class _YoureventsState extends State<Yourevents> {
 
   Widget past(Size size) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         FittedBox(
           fit: BoxFit.cover,
@@ -237,6 +239,7 @@ class _YoureventsState extends State<Yourevents> {
 
   Widget drafts(Size size) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         FittedBox(
           fit: BoxFit.cover,
@@ -378,6 +381,7 @@ class _YoureventsState extends State<Yourevents> {
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: List.generate(_getUserUpcomingEvents.data.length, (index) {
             return Padding(
               padding: const EdgeInsets.only(top: 10, left: 5 , bottom: 5 , right : 5),
@@ -541,6 +545,7 @@ class _YoureventsState extends State<Yourevents> {
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: List.generate(_userPastEvents.data.length, (index) {
             return Padding(
               padding: const EdgeInsets.only(top: 10, left: 5 , bottom:5 , right : 5),
@@ -697,6 +702,7 @@ class _YoureventsState extends State<Yourevents> {
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: List.generate(_getUserDraftEvents.data.length, (index) {
             return InkWell(
               onTap: () {
@@ -874,6 +880,7 @@ String time(int index) {
 
 
 
+// ignore: must_be_immutable
 class VideoPlayerScreennn extends StatefulWidget {
   VideoPlayerScreennn({Key? key, required this.url}) : super(key: key);
   late String url;
@@ -973,6 +980,7 @@ class _VideoPlayerScreennnState extends State<VideoPlayerScreennn> {
   }
 }
 
+// ignore: must_be_immutable
 class ControlsOverlay extends StatefulWidget {
   ControlsOverlay({Key? key, required this.controller}) : super(key: key);
 

@@ -15,6 +15,8 @@ import 'package:event_spotter/widgets/toaster.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -178,16 +180,22 @@ class _EventdetailingState extends State<Eventdetailing> {
                                 ),
                             child: ClipRRect(
                               //  borderRadius: BorderRadius.circular(15),
-                              child: CachedNetworkImage(
-                                imageUrl: MainUrl +
-                                    widget.model!.data[index1].events
-                                        .eventPictures[0].imagePath,
-                                fit: BoxFit.fill,
-                                placeholder: (context, url) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                },
+                              child: Center(
+                                child: Container(
+                                  height: size.height * 0.4,
+                                  width: double.infinity,
+                                  child: CachedNetworkImage(
+                                    imageUrl: MainUrl +
+                                        widget.model!.data[index1].events
+                                            .eventPictures[0].imagePath,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    },
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -286,7 +294,13 @@ class _EventdetailingState extends State<Eventdetailing> {
                                             index: index1,
                                           )));
                                 }),
+                               // divider(),
                                 divider(),
+
+                                  extras(MdiIcons.share, "", size, () {
+                                    share(widget.model!.data[widget.indexs!].events.id.toString());
+                                  }),
+                                  divider(), //
 
                                 // extras(MdiIcons.share,
                                 //     posts[1]['share'], size),
@@ -321,7 +335,10 @@ class _EventdetailingState extends State<Eventdetailing> {
       ),
     ));
   }
+share(String ff){
+    Share.share('check out my post https://theeventspotter.com/eventDetails/'+ff);
 
+  }
   Widget calloflivesnaps(Size size) {
     switch (swapping) {
       case livefeed.details:
@@ -489,15 +506,19 @@ class _EventdetailingState extends State<Eventdetailing> {
                             ''
                         ? Padding(
                             padding: const EdgeInsets.only(right: 6.0, top: 10),
-                            child: Elevatedbuttons(
-                              sidecolor: Colors.black,
-                              coloring: Colors.white,
-                              text: widget
-                                  .model!.data[index1].events.conditions[index]
-                                  .toString(),
-                              textColor: Colors.black,
-                              primary: Colors.white,
-                              onpressed: () {},
+                            child: Container(
+                              padding: const  EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 15),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black12),
+                                borderRadius: BorderRadius.circular(10),
+                              
+                              ),
+                              child: Text(
+                                  widget.model!.data[index1].events
+                                      .conditions[index]
+                                      .toString(),
+                                  style: const TextStyle(color: Colors.black)),
                             ),
                           )
                         : const SizedBox();
@@ -632,6 +653,14 @@ class _EventdetailingState extends State<Eventdetailing> {
                             height: size.height * 0.24,
                             width: size.width * 0.3,
                             decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  spreadRadius: 1,
+                                  blurRadius: 1,
+                                )
+                              ],
                               borderRadius: BorderRadius.circular(15),
                               //  color: Colors.red,
                             ),
@@ -649,7 +678,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                                         url: MainUrl +
                                             Live[index]['img'].toString())
                                     : Container(
-                                        height: size.height * 0.24,
+                                        height: size.height * 0.21,
                                         width: size.width * 0.3,
                                         decoration: BoxDecoration(
                                           // color: Colors.red,
@@ -682,7 +711,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                                               " " +
                                               "miles",
                                           style: const TextStyle(
-                                            color : Colors.white,
+                                              color: Colors.black,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 17),
                                         )),
@@ -750,7 +779,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                                             fit: BoxFit.cover,
                                           )),
                                     ),
-                                    const Spacer(),
+                                    const SizedBox(width: 10),
                                     Text(
                                       widget
                                           .model!.data[index1].events.user.name,
@@ -1010,10 +1039,11 @@ class _EventdetailingState extends State<Eventdetailing> {
         } else {
           throw 'Could not launch $widget.model!.data[widget.indexs!].events.ticketLink!';
         }
-      }else{
-         if (await canLaunch(
-           "https://"+widget.model!.data[widget.indexs!].events.ticketLink!)) {
-          await launch( "https://"+widget.model!.data[widget.indexs!].events.ticketLink!);
+      } else {
+        if (await canLaunch("https://" +
+            widget.model!.data[widget.indexs!].events.ticketLink!)) {
+          await launch("https://" +
+              widget.model!.data[widget.indexs!].events.ticketLink!);
         } else {
           throw 'Could not launch $widget.model!.data[widget.indexs!].events.ticketLink!';
         }
