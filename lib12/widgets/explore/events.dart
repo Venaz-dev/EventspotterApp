@@ -173,10 +173,11 @@ class _EventssState extends State<Eventss> {
                       ),
                     ),
                     Container(
+                      height: size.height,
                       decoration: const BoxDecoration(
-
-                          //borderRadius: BorderRadius.circular(15),
-                          ),
+                        color: Colors.blue,
+                        //borderRadius: BorderRadius.circular(15),
+                      ),
                       child: Stack(children: [
                         widget.eventsModel.data[index].events.eventPictures[0]
                                     .imagePath
@@ -186,21 +187,24 @@ class _EventssState extends State<Eventss> {
                                     .eventPictures[0].imagePath
                                     .toString()
                                     .contains('.mov')
-                            ? VideoPlayerScreenn(
-                                url: MainUrl +
-                                  widget.eventsModel.data[index].events
-                                        .eventPictures[0].imagePath)
-                            : CachedNetworkImage(
-                              width: double.infinity,
-                                fit: BoxFit.cover,
-                                imageUrl: MainUrl +
-                                    widget.eventsModel.data[index].events
-                                        .eventPictures[0].imagePath,
-                                placeholder: (context, url) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                },
+                            ? SizedBox.expand(
+                                child: VideoPlayerScreenn(
+                                    url: MainUrl +
+                                        widget.eventsModel.data[index].events
+                                            .eventPictures[0].imagePath),
+                              )
+                            : SizedBox.expand(
+                                child: CachedNetworkImage(
+                                  fit: BoxFit.cover,
+                                  imageUrl: MainUrl +
+                                      widget.eventsModel.data[index].events
+                                          .eventPictures[0].imagePath,
+                                  placeholder: (context, url) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  },
+                                ),
                               ),
                         Positioned(
                             top: 10,
@@ -333,9 +337,7 @@ class _EventssState extends State<Eventss> {
                                   divider(),
 
                                   extras(MdiIcons.share, "", size, () {
-                                    share(widget
-                                        .eventsModel.data[index].events.id
-                                        .toString());
+                                    share(widget.eventsModel.data[index].events.id.toString());
                                   }),
                                   divider(), //no inculded
                                   extras(
@@ -361,12 +363,10 @@ class _EventssState extends State<Eventss> {
       ],
     );
   }
+  share(String ff){
+    Share.share('check out my post https://theeventspotter.com/eventDetails/'+ff);
 
-  share(String ff) {
-    Share.share(
-        'check out my post https://theeventspotter.com/eventDetails/' + ff);
   }
-
   VerticalDivider divider() {
     return const VerticalDivider(
       thickness: 1,

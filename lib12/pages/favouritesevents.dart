@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:event_spotter/models/getFavouitePastEventsModel.dart';
 import 'package:event_spotter/models/getFavouriteUpcomingEvents.dart';
+import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/pages/differenteventsdetaisl.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

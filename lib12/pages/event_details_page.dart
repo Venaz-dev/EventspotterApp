@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:event_spotter/models/eventsModel.dart';
+import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/pages/explore.dart';
 import 'package:event_spotter/pages/timeago.dart';
 import 'package:event_spotter/pages/uploadimage.dart';
@@ -172,25 +173,29 @@ class _EventdetailingState extends State<Eventdetailing> {
                                 widget.model!.data[index1].events
                                     .eventPictures[0].imagePath)
                         : Container(
-                         
-                           
+                            height: size.height * 0.4,
+                            width: double.infinity,
                             decoration: const BoxDecoration(
                                 // borderRadius: BorderRadius.circular(20)
                                 ),
                             child: ClipRRect(
                               //  borderRadius: BorderRadius.circular(15),
-                              child: CachedNetworkImage(
-                                width: double.infinity,
-                                
-                                imageUrl: MainUrl +
-                                    widget.model!.data[index1].events
-                                        .eventPictures[0].imagePath,
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                },
+                              child: Center(
+                                child: Container(
+                                  height: size.height * 0.4,
+                                  width: double.infinity,
+                                  child: CachedNetworkImage(
+                                    imageUrl: MainUrl +
+                                        widget.model!.data[index1].events
+                                            .eventPictures[0].imagePath,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    },
+                                  ),
+                                ),
                               ),
                             ),
                           ),

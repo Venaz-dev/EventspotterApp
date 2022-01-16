@@ -48,6 +48,7 @@ dependencies:
   material_design_icons_flutter: ^5.0.6295
   provider: ^6.0.1
   #url_launcher: ^6.0.17
+ 
   share: ^2.0.4
   flutter_beep: ^1.0.0
   #flutter_local_notifications: ^9.1.4

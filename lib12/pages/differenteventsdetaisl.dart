@@ -178,14 +178,18 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                                         url: MainUrl + widget.eventpicture)
                                     : SizedBox(
                                         //color: Colors.red,
-                                     
+                                        height: size.height * 0.4,
                                        width: double.infinity,
                                         child: Center(
-                                          child: CachedNetworkImage(
-                                            imageUrl:
-                                                MainUrl + widget.eventpicture,
-                                                fit : BoxFit.cover,
-                                            //  getUpComingEventUrl + imagePath!.path
+                                          child: Container(
+                                            height: size.height * 0.4,
+                                       width: double.infinity,
+                                            child: CachedNetworkImage(
+                                              imageUrl:
+                                                  MainUrl + widget.eventpicture,
+                                                  fit : BoxFit.cover,
+                                              //  getUpComingEventUrl + imagePath!.path
+                                            ),
                                           ),
                                         ),
                                       ),
