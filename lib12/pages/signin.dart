@@ -228,7 +228,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: () {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                    builder: (context) => const Singup()));
+                                    builder: (context) => const Signup()));
                           },
                         ),
                       ),

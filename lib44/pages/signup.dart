@@ -12,14 +12,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 
-class Singup extends StatefulWidget {
-  const Singup({Key? key}) : super(key: key);
+class Signup extends StatefulWidget {
+  const Signup({Key? key}) : super(key: key);
 
   @override
-  _SingupState createState() => _SingupState();
+  _SignupState createState() => _SignupState();
 }
 
-class _SingupState extends State<Singup> {
+class _SignupState extends State<Signup> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   Dio _dio = Dio();
   bool _isLoading = false;

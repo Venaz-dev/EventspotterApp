@@ -1,4 +1,5 @@
 
+import 'package:event_spotter/pages/landing.dart';
 import 'package:event_spotter/pages/signin.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -80,6 +81,7 @@ class _MyAppState extends State<MyApp> {
         InitializationSettings(android: initializationSettingAndroid);
     flutterLocalNotificationsPlugin.initialize(intializationSetting);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null) {
@@ -105,7 +107,8 @@ class _MyAppState extends State<MyApp> {
   
    
    return const MaterialApp(
-       home:  LoginScreen(),
+     home: LandingScreen(),
+      //  home:  LoginScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

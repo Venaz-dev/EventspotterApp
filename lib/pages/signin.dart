@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xff101010),
         body: GestureDetector(
           onTap: () {
             FocusScopeNode currentfocus = FocusScope.of(context);
@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 "Explore events around you",
                 style: TextStyle(
                     fontSize: 17,
-                    color: Color(0XFF364351),
+                    color: Colors.blue,
                     fontWeight: FontWeight.w500),
               )),
               SizedBox(
@@ -194,7 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             shape: const RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10))),
-                            primary: const Color(0xFF304747),
+                            primary: Colors.red,
                           ),
                           onPressed: () {
                             login();
@@ -228,7 +228,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: () {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                    builder: (context) => const Singup()));
+                                    builder: (context) => const Signup()));
                           },
                         ),
                       ),
