@@ -90,8 +90,10 @@ class _DashboardState extends State<Dashboard> {
       pageindex == 0
           ? Column(
               children: const [
-                Icon(Icons.explore, color: Colors.white, size: 40),
-                Text("Explore", style: TextStyle(color: bottom_navigationitems))
+                SizedBox(
+                    width: 54.0,
+                    child:
+                        Image(image: AssetImage("Assets/icons/explore.png"))),
               ],
             )
           : Column(

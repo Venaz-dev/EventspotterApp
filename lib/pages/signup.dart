@@ -104,155 +104,224 @@ class _SignupState extends State<Signup> {
                   },
                   child: ListView(
                     children: [
-                      Updecoration(size: size),
-                      Center(
-                        child: Container(
-                          height: size.height * 0.2,
-                          width: size.width * 0.6,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage("Assets/images/logo.png"),
-                            ),
-                          ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                          // const Icon(
+                          //         Icons.arrow_back_ios,
+                          //         color: Color(0xff101010),
+                          //         size: 20.0,
+                          //       ),
+                          padding: const EdgeInsets.only(right: 0, left: 15),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Row(children: const [
+                              Icon(
+                                Icons.arrow_back_ios,
+                                color: Color(0xff101010),
+                                size: 22.0,
+                              ),
+                              Text(
+                                "Back",
+                                style: TextStyle(
+                                    color: Color(0xff222222), fontSize: 16),
+                                textAlign: TextAlign.left,
+                              ),
+                            ]),
+                          )),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.04,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(right: 30, left: 30),
+                        child: Text(
+                          "Create an account",
+                          style: TextStyle(
+                              color: Color(0xff101010),
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.left,
                         ),
+                      ),
+                      const SizedBox(
+                        height: 20,
                       ),
                       Padding(
                           padding: const EdgeInsets.only(right: 30, left: 30),
                           child: Column(
                             children: [
-                              Textform(
-                                isSecure: false,
-                                isreadonly: false,
-                                label: 'User Name',
-                                controller: _fullname,
-                                icon: Icons.person,
-                                color: const Color(0XFFEBF2F2),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Please enter your name";
-                                  }
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Textform(
-                                isreadonly: false,
-                                isSecure: false,
-                                label: 'Email',
-                                controller: _email,
-                                icon: Icons.email,
-                                color: const Color(0XFFEBF2F2),
-                                validator: (email) {
-                                  if (!RegExp(r'\S+@\S+\.\S+')
-                                      .hasMatch(email!)) {
-                                    return "Please enter a valid email address";
-                                  }
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Textform(
-                                isSecure: _isPSecure,
-                                isreadonly: false,
-                                color: const Color(0XFFEBF2F2),
-                                label: 'Password',
-                                controller: _password,
-                                icon: Icons.lock,
-                                suffix: _isPSecure == true
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                                onPressed: () {
-                                  setState(() {
-                                    if (_isPSecure) {
-                                      _isPSecure = false;
-                                    } else {
-                                      _isPSecure = true;
+                              Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10)),
+                                    border: Border.all(
+                                        color: const Color(0xffE5E5E5))),
+                                child: Textform(
+                                  isreadonly: false,
+                                  isSecure: false,
+                                  label: 'Enter your email',
+                                  controller: _email,
+                                  // icon: Icons.email,
+                                  color: Colors.white,
+                                  validator: (email) {
+                                    if (!RegExp(r'\S+@\S+\.\S+')
+                                        .hasMatch(email!)) {
+                                      return "Please enter a valid email address";
                                     }
-                                  });
-                                },
-                                validator: (password) {
-                                  if (password!.isEmpty) {
-                                    return 'Please enter the password';
-                                  } else if (password.length <8) {
-                                    return 'Enter minimum 8 digits';
-                                  } else {
-                                    return null;
-                                  }
-                                },
+                                  },
+                                ),
                               ),
                               const SizedBox(
                                 height: 20,
                               ),
-                              Textform(
-                                isSecure: _isCPSecure,
-                                color: const Color(0XFFEBF2F2),
-                                label: 'Confirm Password',
-                                isreadonly: false,
-                                controller: _confirmPassword,
-                                icon: Icons.lock,
-                                suffix: _isCPSecure == true
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                                onPressed: () {
-                                  setState(() {
-                                    if (_isCPSecure) {
-                                      _isCPSecure = false;
+                              Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10)),
+                                    border: Border.all(
+                                        color: const Color(0xffE5E5E5))),
+                                child: Textform(
+                                  keyboard: TextInputType.number,
+                                  color: Colors.white,
+                                  label: 'Enter your phone number',
+                                  controller: _phoneNumber,
+                                  isreadonly: false,
+                                  // icon: Icons.phone_android,
+                                  // isSecure: _isPHSecure,
+                                  // suffix: _isPHSecure == true
+                                  //     ? Icons.visibility
+                                  //     : Icons.visibility_off,
+                                  onPressed: () {
+                                    setState(() {
+                                      if (_isPHSecure) {
+                                        _isPHSecure = false;
+                                      } else {
+                                        _isPHSecure = true;
+                                      }
+                                    });
+                                  },
+                                  validator: (phonenumber) {
+                                    if (phonenumber!.isEmpty) {
+                                      return 'Please enter your number';
                                     } else {
-                                      _isCPSecure = true;
+                                      return null;
                                     }
-                                  });
-                                },
-                                validator: (confirmPassword) {
-                                  if (confirmPassword!.isEmpty) {
-                                    return "Please confirm your password";
-                                  } else if (_password.text !=
-                                      confirmPassword) {
-                                    return 'Password do not match';
-                                  } else {
-                                    return null;
-                                  }
-                                },
+                                  },
+                                ),
                               ),
                               const SizedBox(
                                 height: 20,
                               ),
-                              Textform(
-                                keyboard: TextInputType.number,
-                                color: const Color(0XFFEBF2F2),
-                                label: 'Phone Number',
-                                controller: _phoneNumber,
-                                isreadonly: false,
-                                icon: Icons.phone_android,
-                                isSecure: _isPHSecure,
-                                suffix: _isPHSecure == true
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                                onPressed: () {
-                                  setState(() {
-                                    if (_isPHSecure) {
-                                      _isPHSecure = false;
-                                    } else {
-                                      _isPHSecure = true;
-                                    }
-                                  });
-                                },
-                                validator: (phonenumber) {
-                                  if (phonenumber!.isEmpty) {
-                                    return 'Please enter your number';
-                                  } else {
-                                    return null;
-                                  }
-                                },
+                              Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(10)),
+                                      border: Border.all(
+                                          color: const Color(0xffE5E5E5))),
+                                  child: Textform(
+                                    isSecure: false,
+                                    isreadonly: false,
+                                    label: 'Enter your username',
+                                    controller: _fullname,
+                                    // icon: Icons.person,
+                                    color: Colors.white,
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return "Please enter your name";
+                                      }
+                                    },
+                                  )),
+                              const SizedBox(
+                                height: 20,
                               ),
-                              const SizedBox(height: 20),
+                              Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10)),
+                                    border: Border.all(
+                                        color: const Color(0xffE5E5E5))),
+                                child: Textform(
+                                  isSecure: _isPSecure,
+                                  isreadonly: false,
+                                  color: Colors.white,
+                                  label: 'Password',
+                                  controller: _password,
+                                  // icon: Icons.lock,
+                                  suffix: _isPSecure == true
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  onPressed: () {
+                                    setState(() {
+                                      if (_isPSecure) {
+                                        _isPSecure = false;
+                                      } else {
+                                        _isPSecure = true;
+                                      }
+                                    });
+                                  },
+                                  validator: (password) {
+                                    if (password!.isEmpty) {
+                                      return 'Please enter the password';
+                                    } else if (password.length < 8) {
+                                      return 'Enter minimum 8 digits';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10)),
+                                    border: Border.all(
+                                        color: const Color(0xffE5E5E5))),
+                                child: Textform(
+                                  isSecure: _isCPSecure,
+                                  color: Colors.white,
+                                  label: 'Confirm Password',
+                                  isreadonly: false,
+                                  controller: _confirmPassword,
+                                  // icon: Icons.lock,
+                                  suffix: _isCPSecure == true
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  onPressed: () {
+                                    setState(() {
+                                      if (_isCPSecure) {
+                                        _isCPSecure = false;
+                                      } else {
+                                        _isCPSecure = true;
+                                      }
+                                    });
+                                  },
+                                  validator: (confirmPassword) {
+                                    if (confirmPassword!.isEmpty) {
+                                      return "Please confirm your password";
+                                    } else if (_password.text !=
+                                        confirmPassword) {
+                                      return 'Password do not match';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: size.height * 0.06,
+                              ),
                               Elevatedbutton(
-                                primary: const Color(0xFF304747),
+                                primary: const Color(0xFF3BADB7),
                                 textColor: Colors.white,
                                 width: double.infinity,
                                 text: "Sign Up",
-                                coloring: const Color(0xFF304747),
+                                // coloring: const Color(0xFF304747),
                                 onpressed: () {
                                   final form = _key.currentState!;
                                   if (!form.validate()) {
@@ -267,23 +336,27 @@ class _SignupState extends State<Signup> {
                               ),
                               SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.06,
+                                    MediaQuery.of(context).size.height * 0.065,
                                 width: MediaQuery.of(context).size.width,
-                                child: ElevatedButton(
+                                child: GestureDetector(
                                   child: const Text(
-                                    "Already have an account? Sign in",
+                                    "Already have an account?",
                                     style: TextStyle(
-                                        color: Colors.black, fontSize: 18),
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  style: ElevatedButton.styleFrom(
-                                    side: const BorderSide(color: Colors.black),
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10))),
-                                    primary: Colors.white,
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context).pushReplacement(
+                                  // style: ElevatedButton.styleFrom(
+                                  //   // side: const BorderSide(color: Colors.black),
+                                  //   // shape: const RoundedRectangleBorder(
+                                  //   //     borderRadius: BorderRadius.all(
+                                  //   //         Radius.circular(10))),
+                                  //   primary: Colors.white,
+                                  // ),
+                                  onTap: () {
+                                    Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 const LoginScreen()));
@@ -302,7 +375,7 @@ class _SignupState extends State<Signup> {
                     ],
                   ),
                 ),
-          bottomNavigationBar: Downdecoration(size: size),
+          // bottomNavigationBar: Downdecoration(size: size),
         ),
       ),
     );
@@ -439,7 +512,7 @@ class _SignupState extends State<Signup> {
       "password": _password.text
     });
     Response response = await _dio.post(Url, data: formData);
-       print(response.data.toString());
+    print(response.data.toString());
 
     if (response.data['access_token'].toString().isEmpty) {
     } else {

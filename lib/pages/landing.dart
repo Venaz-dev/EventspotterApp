@@ -110,9 +110,11 @@ class _LandingScreenState extends State<LandingScreen> {
                             primary: Color(0xff3BADB7),
                           ),
                           onPressed: () {
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => const Signup()));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Signup()),
+                            );
                           },
                         ),
                       ),
@@ -141,9 +143,11 @@ class _LandingScreenState extends State<LandingScreen> {
                             primary: Color(0xffC8FBFF),
                           ),
                           onPressed: () {
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => const LoginScreen()));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginScreen()),
+                            );
                           },
                         ),
                       ),
