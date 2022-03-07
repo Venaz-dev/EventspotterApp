@@ -117,7 +117,8 @@ class _CreateeventState extends State<Createevent> {
             height: size.height * 0.06,
             icon: FontAwesomeIcons.arrowLeft,
             onpressed: () {
-              Navigator.of(context).pop();
+              Navigator.pop(context);
+              // Navigator.of(context).pop();
             },
           ),
         ),

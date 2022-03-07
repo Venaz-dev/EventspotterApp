@@ -96,8 +96,8 @@ class _EventssState extends State<Eventss> {
             child: Text(
               "Events near you",
               style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF101010),
+                  fontWeight: FontWeight.w700,
                   fontSize: 17),
             ),
           ),
@@ -188,10 +188,10 @@ class _EventssState extends State<Eventss> {
                                     .contains('.mov')
                             ? VideoPlayerScreenn(
                                 url: MainUrl +
-                                  widget.eventsModel.data[index].events
+                                    widget.eventsModel.data[index].events
                                         .eventPictures[0].imagePath)
                             : CachedNetworkImage(
-                              width: double.infinity,
+                                width: double.infinity,
                                 fit: BoxFit.cover,
                                 imageUrl: MainUrl +
                                     widget.eventsModel.data[index].events

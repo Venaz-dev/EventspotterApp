@@ -42,12 +42,12 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _email.dispose();
-    _password.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _email.dispose();
+  //   _password.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -65,27 +65,10 @@ class _LoginScreenState extends State<LoginScreen> {
           },
           child: ListView(
             children: [
-              // Image(
-              //   image: const AssetImage('Assets/images/welcome.png'),
-              //   height: size.height * 0.1,
-              // ),
-              // const Center(
-              //     child: Text(
-              //   "Explore events around you",
-              //   style: TextStyle(
-              //       fontSize: 17,
-              //       color: Colors.blue,
-              //       fontWeight: FontWeight.w500),
-              // )),
               const SizedBox(
                 height: 20,
               ),
               Padding(
-                  // const Icon(
-                  //         Icons.arrow_back_ios,
-                  //         color: Color(0xff101010),
-                  //         size: 20.0,
-                  //       ),
                   padding: const EdgeInsets.only(right: 0, left: 15),
                   child: GestureDetector(
                     onTap: () {
@@ -327,7 +310,7 @@ class _LoginScreenState extends State<LoginScreen> {
         String _id = _sharedPreferences.getString('id')!;
         Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (context) => Dashboard(
-                  id: _id,
+                // id: _id,
                 )));
       } else {
         showToaster('Invalid Credentials');
@@ -348,7 +331,7 @@ class _LoginScreenState extends State<LoginScreen> {
       String? _id = _sharedPreferences.getString('id');
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => Dashboard(
-                id: _id!,
+              // id: _id!,
               )));
     }
   }
