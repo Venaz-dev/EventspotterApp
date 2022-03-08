@@ -16,11 +16,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 
 class Dashboard extends StatefulWidget {
-  // String id;
-  Dashboard({
-    Key? key,
-  }) : super(key: key);
-// required this.id
+  String id;
+  Dashboard({Key? key, required this.id}) : super(key: key);
+//
   @override
   State<Dashboard> createState() => _DashboardState();
 }

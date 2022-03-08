@@ -42,12 +42,12 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
   }
 
-  // @override
-  // void dispose() {
-  //   _email.dispose();
-  //   _password.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -310,7 +310,7 @@ class _LoginScreenState extends State<LoginScreen> {
         String _id = _sharedPreferences.getString('id')!;
         Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (context) => Dashboard(
-                // id: _id,
+                  id: _id,
                 )));
       } else {
         showToaster('Invalid Credentials');
@@ -331,7 +331,7 @@ class _LoginScreenState extends State<LoginScreen> {
       String? _id = _sharedPreferences.getString('id');
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => Dashboard(
-              // id: _id!,
+                id: _id!,
               )));
     }
   }

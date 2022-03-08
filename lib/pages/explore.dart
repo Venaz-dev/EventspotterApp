@@ -326,7 +326,7 @@ class _ExploreState extends State<Explore> {
                             width: 10,
                           ),
                           SizedBox(
-                            width: size.width * 0.73,
+                            width: size.width * 0.63,
                             // width: 50,
                             child: Textform(
                               onchange: (listen) {
@@ -348,8 +348,13 @@ class _ExploreState extends State<Explore> {
                             ),
                           ),
                           SizedBox(
-                            width: size.width * 0.01,
+                            width: 40.0
                           ),
+                          const SizedBox(
+                              width: 27.0,
+                              child: Image(
+                                  image:
+                                  AssetImage("Assets/icons/notification.png"))),
                         ],
                       ),
                     ),
