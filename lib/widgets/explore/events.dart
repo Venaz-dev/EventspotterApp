@@ -160,11 +160,39 @@ class _EventssState extends State<Eventss> {
                               profileImage: MainUrl +
                                   widget.eventsModel.data[index].events.user
                                       .profilePicture!.image),
-                          SizedBox(
-                              height: size.height * 0.04,
-                              width: size.width * 0.25,
-                              // decoration: const BoxDecoration(color: Color(0XFF38888E)),
-                              child: followingcheck(index)),
+                          widget.eventsModel.data[index].events.user.id
+                                      .toString() !=
+                                  widget.id
+                              ? SizedBox(
+                                  height: 45,
+                                  width: 45,
+                                  //                     decoration: const BoxDecoration(
+                                  // //     borderRadius: const BorderRadius.all(Radius.circular(40)),
+                                  // //     border: Border.all(color: const Color(0xff200E32))
+                                  // ),
+                                  // decoration: const BoxDecoration(color: Color(0XFF38888E)),
+                                  child: Container(
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(40)),
+                                        // border: Border(
+                                        //     top: BorderSide(
+                                        //         width: 1,
+                                        //         color: Color(0xff200E32)),
+                                        //     left: BorderSide(
+                                        //         width: 1,
+                                        //         color: Color(0xff200E32)),
+                                        //     right: BorderSide(
+                                        //         width: 1,
+                                        //         color: Color(0xff200E32)),
+                                        //     bottom: BorderSide(
+                                        //         width: 1,
+                                        //         color: Color(0xff200E32))),
+                                        // border: Border.all(color: Colors.red)
+                                      ),
+                                      child: followingcheck(index)),
+                                )
+                              : const SizedBox()
                         ],
                       ),
                     ),
@@ -392,8 +420,8 @@ class _EventssState extends State<Eventss> {
                                   //   postThumbs(_eventsModel
                                   //       .data[index].events.id);
                                   // }),
-                                  likefunction(
-                                      index, FontAwesomeIcons.heart, FontAwesomeIcons.solidHeart),
+                                  likefunction(index, FontAwesomeIcons.heart,
+                                      FontAwesomeIcons.solidHeart),
                                   // divider(),
                                   extras(
                                       FontAwesomeIcons.commentDots,
@@ -420,8 +448,10 @@ class _EventssState extends State<Eventss> {
                                   extras(
                                       FontAwesomeIcons.playCircle,
                                       widget.eventsModel.data[index].events
-                                          .liveFeed.length
-                                          .toString() +" "+"Live snaps",
+                                              .liveFeed.length
+                                              .toString() +
+                                          " " +
+                                          "Live snaps",
                                       size,
                                       () {}),
                                 ],
@@ -476,8 +506,9 @@ class _EventssState extends State<Eventss> {
         IconButton(
           icon: Icon(widget.like[index] == 1 ? activeIcon : icon,
               size: 20,
-              color:
-                  widget.like[index] == 1 ? Color(0xFFEB5757) : Color(0xFF101010)),
+              color: widget.like[index] == 1
+                  ? Color(0xFFEB5757)
+                  : Color(0xFF101010)),
           onPressed: () async {
             if (widget.like[index] == 0) {
               widget.like[index] = 1;
@@ -539,18 +570,38 @@ class _EventssState extends State<Eventss> {
 
   followingcheck(int index) {
     if (widget.eventsModel.data[index].events.user.id.toString() != widget.id) {
-      return ElevatedButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => Eventposterprofile(
-                    id: widget.eventsModel.data[index].events.user.id,
-                  )));
-        },
-        style: ElevatedButton.styleFrom(
-          primary: const Color(0XFF38888E),
-        ),
-        child: const Text("Follow"),
-      );
+      return InkWell(
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => Eventposterprofile(
+                      id: widget.eventsModel.data[index].events.user.id,
+                    )));
+          },
+          child: const Padding(
+              padding:
+                  EdgeInsets.only(right: 11, left: 11, top: 11, bottom: 11),
+              // decoration: BoxDecoration(
+              //     borderRadius: const BorderRadius.all(Radius.circular(40)),
+              //     border: Border.all(color: const Color(0xff200E32))),
+              child: SizedBox(
+                width: 10.0,
+                child: Image(
+                    width: 10,
+                    image: AssetImage("Assets/icons/follow-user.png")),
+              )));
+      //follow here
+      // return ElevatedButton(
+      //   onPressed: () {
+      //     Navigator.of(context).push(MaterialPageRoute(
+      //         builder: (context) => Eventposterprofile(
+      //               id: widget.eventsModel.data[index].events.user.id,
+      //             )));
+      //   },
+      //   style: ElevatedButton.styleFrom(
+      //     primary: const Color(0XFF38888E),
+      //   ),
+      //   child: const Text("Follow2"),
+      // );
     } else {
       return const SizedBox();
     }
