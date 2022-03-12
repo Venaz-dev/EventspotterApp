@@ -120,7 +120,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           isSecure: false,
                           keyboard: TextInputType.emailAddress,
                           controller: _email,
-                          icon: Icons.email,
                           color: Colors.white,
                         )),
                     !_isEmailValid
@@ -149,7 +148,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           isSecure: _issecure,
                           label: 'Enter your password',
                           controller: _password,
-                          icon: Icons.lock,
                           suffix: _issecure == true
                               ? Icons.visibility
                               : Icons.visibility_off,

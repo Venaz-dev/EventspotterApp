@@ -299,17 +299,17 @@ class _ExploreState extends State<Explore> {
               child: Column(
                 children: [
                   Container(
-                    decoration:
-                        const BoxDecoration(color: Colors.white,
-                    //         boxShadow: [
-                    //   BoxShadow(
-                    //     color: Colors.black12,
-                    //     // spreadRadius: 2,
-                    //     // blurRadius: 0,
-                    //     // offset: Offset(0, 1),
-                    //   )
-                    // ]
-                        ),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      //         boxShadow: [
+                      //   BoxShadow(
+                      //     color: Colors.black12,
+                      //     // spreadRadius: 2,
+                      //     // blurRadius: 0,
+                      //     // offset: Offset(0, 1),
+                      //   )
+                      // ]
+                    ),
                     child: Padding(
                       padding: EdgeInsets.only(
                           top: size.height * 0.02, bottom: size.height * 0.02),
@@ -347,14 +347,12 @@ class _ExploreState extends State<Explore> {
                               color: const Color(0XFFECF2F3),
                             ),
                           ),
-                          SizedBox(
-                            width: 40.0
-                          ),
+                          const SizedBox(width: 40.0),
                           const SizedBox(
                               width: 27.0,
                               child: Image(
-                                  image:
-                                  AssetImage("Assets/icons/notification.png"))),
+                                  image: AssetImage(
+                                      "Assets/icons/notification.png"))),
                         ],
                       ),
                     ),
