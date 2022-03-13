@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:event_spotter/models/getProfile.dart';
+import 'package:event_spotter/pages/settings.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/pages/followers.dart';
 import 'package:event_spotter/pages/following.dart';
@@ -352,22 +353,31 @@ class _ProfileState extends State<Profile> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20.0, right: 20),
                       child: Row(
-                        children: const [
-                          SizedBox(
+                        children: [
+                          const SizedBox(
                               width: 35.0,
                               child: Image(
                                   image: AssetImage(
                                       "Assets/images/logo-no-text.png"))),
-                          Spacer(),
+                          const Spacer(),
                           SizedBox(
-                              width: 30.0,
-                              child: Image(
-                                  image:
-                                      AssetImage("Assets/icons/settings.png"))),
-                          SizedBox(
+                              width: 25.0,
+                              child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SettingsScreen()),
+                                    );
+                                  },
+                                  child: const Image(
+                                      image: AssetImage(
+                                          "Assets/icons/settings.png")))),
+                          const SizedBox(
                             width: 10,
                           ),
-                          SizedBox(
+                          const SizedBox(
                               width: 30.0,
                               child: Image(
                                   image: AssetImage(
@@ -437,25 +447,25 @@ class _ProfileState extends State<Profile> {
           //           //         primary: Colors.red,
           //           //         shape: RoundedRectangleBorder(
           //           //             borderRadius: BorderRadius.circular(10))),
-          //           //     onPressed: () {
-          //           //       // Navigator.pushAndRemoveUntil(
-          //           //       //     context,
-          //           //       //     MaterialPageRoute(
-          //           //       //         builder: (context) => const LoginScreen()),
-          //           //       //     (route) => false);
-          //           //       // _sharedPreferences.clear();
-          //           //       setState(() {
-          //           //         _isLoading = true;
-          //           //       });
-          //           //       LogoutapiCall();
-          //           //       _sharedPreferences.clear();
-          //           //       Navigator.pushAndRemoveUntil(
-          //           //           context,
-          //           //           MaterialPageRoute(
-          //           //               builder: (context) =>
-          //           //                   const LoginScreen()),
-          //           //           (route) => false);
-          //           //     },
+          // onPressed: () {
+          //   // Navigator.pushAndRemoveUntil(
+          //   //     context,
+          //   //     MaterialPageRoute(
+          //   //         builder: (context) => const LoginScreen()),
+          //   //     (route) => false);
+          //   // _sharedPreferences.clear();
+          //   setState(() {
+          //     _isLoading = true;
+          //   });
+          //   LogoutapiCall();
+          //   _sharedPreferences.clear();
+          //   Navigator.pushAndRemoveUntil(
+          //       context,
+          //       MaterialPageRoute(
+          //           builder: (context) =>
+          //               const LoginScreen()),
+          //       (route) => false);
+          // },
           //           //     child: Row(
           //           //       children: const [
           //           //         Icon(

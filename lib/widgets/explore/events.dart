@@ -705,7 +705,7 @@ class _VideoPlayerScreennState extends State<VideoPlayerScreenn> {
               // If the VideoPlayerController has finished initialization, use
               // the data it provides to limit the aspect ratio of the video.
               return SizedBox(
-                height: size.height * 0.4,
+                height: 280,
                 width: double.infinity,
 
                 child: SizedBox(
