@@ -11,6 +11,8 @@ class GetUserUpcomingEvents {
   GetUserUpcomingEvents.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     data = List.from(json['data']).map((e) => Data.fromJson(e)).toList();
+    print("success upcoming");
+    print(json['data']);
     message = json['message'];
   }
 
@@ -19,6 +21,7 @@ class GetUserUpcomingEvents {
     _data['success'] = success;
     _data['data'] = data.map((e) => e.toJson()).toList();
     _data['message'] = message;
+
     return _data;
   }
 }

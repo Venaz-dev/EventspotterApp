@@ -1042,10 +1042,12 @@ class Elevatedbuttons extends StatelessWidget {
   final double width;
   final Color? primary;
   final Color? sidecolor;
+  final Color? shadowColor;
 
   const Elevatedbuttons({
     required this.text,
     Key? key,
+    this.shadowColor,
     this.coloring,
     this.textColor,
     this.onpressed,
@@ -1070,11 +1072,11 @@ class Elevatedbuttons extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-              side: BorderSide(color: sidecolor!),
-              borderRadius: const BorderRadius.all(Radius.circular(10))),
-          primary: primary,
-        ),
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: sidecolor!),
+                borderRadius: const BorderRadius.all(Radius.circular(10))),
+            primary: primary,
+            shadowColor: shadowColor),
         onPressed: onpressed,
       ),
     );

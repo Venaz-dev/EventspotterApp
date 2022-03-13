@@ -82,14 +82,14 @@ class _NotificationsState extends State<Notifications> {
                         },
                         child: ListView(
                           children: [
-                            Text(
+                            const Text(
                               "All chats",
                               style: TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.w700,
                                   color: Color(0xFF101010)),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             SizedBox(
