@@ -299,30 +299,35 @@ class _ExploreState extends State<Explore> {
               child: Column(
                 children: [
                   Container(
-                    decoration:
-                        const BoxDecoration(color: Colors.white, boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        spreadRadius: 2,
-                        blurRadius: 0,
-                        offset: Offset(0, 1),
-                      )
-                    ]),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      //         boxShadow: [
+                      //   BoxShadow(
+                      //     color: Colors.black12,
+                      //     // spreadRadius: 2,
+                      //     // blurRadius: 0,
+                      //     // offset: Offset(0, 1),
+                      //   )
+                      // ]
+                    ),
                     child: Padding(
-                      padding: EdgeInsets.only(top: size.height * 0.02),
+                      padding: EdgeInsets.only(
+                          top: size.height * 0.02, bottom: size.height * 0.02),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment : CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const Image(
-                            image: AssetImage('Assets/images/logo.png'),
+                            image: AssetImage('Assets/images/logo-no-text.png'),
                             height: 40,
                           ),
                           const SizedBox(
+                            // width: size.width * 0.73,
                             width: 10,
                           ),
                           SizedBox(
-                            width: size.width * 0.73,
+                            width: size.width * 0.63,
+                            // width: 50,
                             child: Textform(
                               onchange: (listen) {
                                 if (_search.text.length >= 3) {
@@ -342,35 +347,42 @@ class _ExploreState extends State<Explore> {
                               color: const Color(0XFFECF2F3),
                             ),
                           ),
-                          SizedBox(
-                            width: size.width * 0.01,
-                          ),
+                          const SizedBox(width: 40.0),
+                          const SizedBox(
+                              width: 27.0,
+                              child: Image(
+                                  image: AssetImage(
+                                      "Assets/icons/notification.png"))),
                         ],
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        right: size.width * 0.03,
-                        left: size.width * 0.03,
-                        bottom: 10),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Stack(
-                            children: [
-                              getpages(size),
-                              _search.text.length >= 3
-                                  ? searchnames()
-                                  : const SizedBox(),
-                            ],
-                          ),
-                        ],
+                  Container(
+                    height: size.height * 0.85,
+                    decoration: const BoxDecoration(color: Color(0xFFE5E5E5)),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          right: size.width * 0.03,
+                          left: size.width * 0.03,
+                          bottom: 10),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Stack(
+                              children: [
+                                getpages(size),
+                                _search.text.length >= 3
+                                    ? searchnames()
+                                    : const SizedBox(),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
@@ -396,46 +408,46 @@ class _ExploreState extends State<Explore> {
   Widget exploringfeeds(Size size) {
     return Column(
       children: [
-        InkWell(
-          onTap: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const Createevent()));
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(top: 15.0),
-            child: Container(
-              height: size.height * 0.08,
-              width: size.width,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                image: const DecorationImage(
-                  image: AssetImage('Assets/images/create_event.jpeg'),
-                  fit: BoxFit.cover,
-                  //  colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.dstATop)
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(
-                    FontAwesomeIcons.plusCircle,
-                    color: Colors.white,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    "create a new event",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 20),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
+        // InkWell(
+        //   onTap: () {
+        //     Navigator.of(context).push(
+        //         MaterialPageRoute(builder: (context) => const Createevent()));
+        //   },
+        //   child: Padding(
+        //     padding: const EdgeInsets.only(top: 15.0),
+        //     child: Container(
+        //       height: size.height * 0.08,
+        //       width: size.width,
+        //       decoration: BoxDecoration(
+        //         borderRadius: BorderRadius.circular(10),
+        //         image: const DecorationImage(
+        //           image: AssetImage('Assets/images/create_event.jpeg'),
+        //           fit: BoxFit.cover,
+        //           //  colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.dstATop)
+        //         ),
+        //       ),
+        //       child: Row(
+        //         mainAxisAlignment: MainAxisAlignment.center,
+        //         children: const [
+        //           Icon(
+        //             FontAwesomeIcons.plusCircle,
+        //             color: Colors.white,
+        //           ),
+        //           SizedBox(
+        //             width: 10,
+        //           ),
+        //           Text(
+        //             "create a new event",
+        //             style: TextStyle(
+        //                 color: Colors.white,
+        //                 fontWeight: FontWeight.w400,
+        //                 fontSize: 20),
+        //           ),
+        //         ],
+        //       ),
+        //     ),
+        //   ),
+        // ),
         const SizedBox(
           height: 20,
         ),

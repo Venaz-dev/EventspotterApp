@@ -4,7 +4,8 @@ import 'package:event_spotter/pages/timeago.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'chatscreen.dart';
 
 class Notifications extends StatefulWidget {
@@ -55,186 +56,256 @@ class _NotificationsState extends State<Notifications> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: const Text(
-            "All chats",
-            style: TextStyle(
-                color: Colors.black, fontWeight: FontWeight.w600, fontSize: 23),
-          ),
-          centerTitle: true,
-          automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
-          elevation: 0,
-        ),
-        body: _isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: RefreshIndicator(
-                  onRefresh: () {
-                    data.clear();
-                    return getMessageHistory();
-                  },
-                  child: ListView(
-                    children: [
-                      SizedBox(
-                        width: size.width * 0.9,
-                        child: Textform(
-                          onchange: (listen) {
-                            if (_search.text.length >= 3) {
-                              search.clear();
-                              searchApiCall();
-                              setState(() {});
-                              if (_search.text.length == 0) {
-                                search.clear();
-                              }
-                              setState(() {});
-                            }
-                          },
-                          isreadonly: false,
-                          isSecure: false,
-                          controller: _search,
-                          icon: Icons.search,
-                          label: "Search",
-                          color: const Color(0XFFECF2F3),
-                        ),
-                      ),
-                      Stack(children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+          // appBar: AppBar(
+          //   title: const Text(
+          //     "All chats",
+          //     style: TextStyle(
+          //         color: Colors.black, fontWeight: FontWeight.w600, fontSize: 23),
+          //   ),
+          //   centerTitle: true,
+          //   automaticallyImplyLeading: false,
+          //   backgroundColor: Colors.white,
+          //   elevation: 0,
+          // ),
+          body: _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 80.0, bottom: 20, left: 20, right: 20),
+                      child: RefreshIndicator(
+                        onRefresh: () {
+                          data.clear();
+                          return getMessageHistory();
+                        },
+                        child: ListView(
                           children: [
-                            GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                //   height: size.height * 0.1,
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border(
-                                      top: BorderSide(color: Colors.white),
-                                      left: BorderSide(color: Colors.white),
-                                      right: BorderSide(color: Colors.white),
-                                      bottom: BorderSide(color: Colors.white)),
-                                ),
+                            const Text(
+                              "All chats",
+                              style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xFF101010)),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            SizedBox(
+                              width: size.width * 0.9,
+                              child: Textform(
+                                onchange: (listen) {
+                                  if (_search.text.length >= 3) {
+                                    search.clear();
+                                    searchApiCall();
+                                    setState(() {});
+                                    if (_search.text.length == 0) {
+                                      search.clear();
+                                    }
+                                    setState(() {});
+                                  }
+                                },
+                                isreadonly: false,
+                                isSecure: false,
+                                controller: _search,
+                                icon: FontAwesomeIcons.search,
+                                iconColor: Color(0xFF707070),
+                                iconSize: 18.0,
+                                label: "Search chat",
+                                color: const Color(0XFFf5f5f5),
+                              ),
+                            ),
+                            Stack(children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Container(
+                                      //   height: size.height * 0.1,
+                                      decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border(
+                                            top:
+                                                BorderSide(color: Colors.white),
+                                            left:
+                                                BorderSide(color: Colors.white),
+                                            right:
+                                                BorderSide(color: Colors.white),
+                                            bottom: BorderSide(
+                                                color: Colors.white)),
+                                      ),
 
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 30.0, bottom: 20),
-                                  child: Column(
-                                    children:
-                                        List.generate(data.length, (index) {
-                                      return Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 10.0),
-                                        child: Container(
-                                          margin:
-                                              const EdgeInsets.only(bottom: 10),
-                                          decoration: const BoxDecoration(
-                                            //color: Colors.red,
-                                            border: Border(
-                                              top: BorderSide(
-                                                  color: Colors.white),
-                                              left: BorderSide(
-                                                  color: Colors.white),
-                                              right: BorderSide(
-                                                  color: Colors.white),
-                                              bottom: BorderSide(
-                                                  color: Colors.black12),
-                                            ),
-                                          ),
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ChatScreen(
-                                                            id: data[index]
-                                                                    ["toId"]
-                                                                .toString(),
-                                                            name: data[index]
-                                                                ["name"],
-                                                          )));
-                                              // data.clear();
-                                            },
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  height: 40,
-                                                  width: 40,
-                                                  decoration: BoxDecoration(
-                                                    //color: Colors.blue,
-                                                    shape: BoxShape.circle,
-                                                    image: DecorationImage(
-                                                        image:
-                                                            CachedNetworkImageProvider(
-                                                                MainUrl +
-                                                                    data[index][
-                                                                        "img"]),
-                                                        fit: BoxFit.cover),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 30.0, bottom: 20),
+                                        child: Column(
+                                          children: List.generate(data.length,
+                                              (index) {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 10.0),
+                                              child: Container(
+                                                margin: const EdgeInsets.only(
+                                                    bottom: 10),
+                                                decoration: const BoxDecoration(
+                                                  //color: Colors.red,
+                                                  border: Border(
+                                                    top: BorderSide(
+                                                        color: Colors.white),
+                                                    left: BorderSide(
+                                                        color: Colors.white),
+                                                    right: BorderSide(
+                                                        color: Colors.white),
+                                                    bottom: BorderSide(
+                                                        color: Colors.white),
                                                   ),
                                                 ),
-                                                const SizedBox(
-                                                  width: 20,
-                                                ),
-                                                Expanded(
-                                                  child: Column(
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    ChatScreen(
+                                                                      id: data[index]
+                                                                              [
+                                                                              "toId"]
+                                                                          .toString(),
+                                                                      name: data[
+                                                                              index]
+                                                                          [
+                                                                          "name"],
+                                                                    )));
+                                                    // data.clear();
+                                                  },
+                                                  child: Row(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
                                                             .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
                                                     children: [
-                                                      Text(
-                                                        data[index]['name'],
-                                                        style: const TextStyle(
-                                                            color: Colors.black,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 22.5),
+                                                      Container(
+                                                        height: 40,
+                                                        width: 40,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          //color: Colors.blue,
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          image: DecorationImage(
+                                                              image: CachedNetworkImageProvider(
+                                                                  MainUrl +
+                                                                      data[index]
+                                                                          [
+                                                                          "img"]),
+                                                              fit:
+                                                                  BoxFit.cover),
+                                                        ),
                                                       ),
-                                                      Text(
-                                                        data[index]["message"],
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style: const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color:
-                                                                Colors.black38),
+                                                      const SizedBox(
+                                                        width: 20,
                                                       ),
+                                                      Expanded(
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              data[index]
+                                                                  ['name'],
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                  fontSize: 16),
+                                                            ),
+                                                            Text(
+                                                              data[index]
+                                                                  ["message"],
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 14,
+                                                                color: Color(
+                                                                    0xFF6B7280),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      // Text(
+                                                      //   "12:00pm",
+                                                      //   style: TextStyle(
+                                                      //       color: Colors.green.shade400,
+                                                      //       fontWeight: FontWeight.w600),
+                                                      // ),
+                                                      time(index),
                                                     ],
                                                   ),
                                                 ),
-                                                // Text(
-                                                //   "12:00pm",
-                                                //   style: TextStyle(
-                                                //       color: Colors.green.shade400,
-                                                //       fontWeight: FontWeight.w600),
-                                                // ),
-                                                time(index),
-                                              ],
-                                            ),
-                                          ),
+                                              ),
+                                            );
+                                          }),
                                         ),
-                                      );
-                                    }),
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
-                            ),
+                              _search.text.length >= 3
+                                  ? searchnames()
+                                  : const SizedBox(),
+                            ]),
                           ],
                         ),
-                        _search.text.length >= 3
-                            ? searchnames()
-                            : const SizedBox(),
-                      ]),
-                    ],
-                  ),
-                ),
-              ),
-      ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 0.0,
+                      left: 0.0,
+                      right: 0.0,
+                      child: Container(
+                          height: 58,
+                          decoration: const BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      color: Color(0xFFE5E7EB), width: 1))),
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: 20.0, right: 20),
+                            child: Row(
+                              children: const [
+                                SizedBox(
+                                    width: 35.0,
+                                    child: Image(
+                                        image: AssetImage(
+                                            "Assets/images/logo-no-text.png"))),
+                                Spacer(),
+                                SizedBox(
+                                    width: 35.0,
+                                    child: Image(
+                                        image: AssetImage(
+                                            "Assets/icons/notification.png")))
+                              ],
+                            ),
+                          )),
+                    ),
+                  ],
+                )),
     );
   }
 
@@ -245,8 +316,10 @@ class _NotificationsState extends State<Notifications> {
         alignment: Alignment.bottomRight,
         child: Text(
           TimeAgo.displayTimeAgoFromTimestamp(data[index]["createdAt"]),
-          style: TextStyle(
-              color: Colors.green.shade400, fontWeight: FontWeight.w600),
+          style: const TextStyle(
+              color: Color(0xFF6B7280),
+              fontWeight: FontWeight.w400,
+              fontSize: 12),
         ),
       ),
     );

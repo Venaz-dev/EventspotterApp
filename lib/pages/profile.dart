@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:event_spotter/models/getProfile.dart';
+import 'package:event_spotter/pages/settings.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/pages/followers.dart';
 import 'package:event_spotter/pages/following.dart';
@@ -107,252 +108,383 @@ class _ProfileState extends State<Profile> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
-        body: _isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : NestedScrollView(
-                headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                  SliverAppBar(
-                      backgroundColor: Colors.white,
-                      elevation: 0,
-                      automaticallyImplyLeading: false,
-                      actions: [
-                        Padding(
-                          padding:  EdgeInsets.only(
-                              top: 5.0, bottom: 5, right : size.width*0.03,),
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.red,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10))),
-                              onPressed: () {
-                                // Navigator.pushAndRemoveUntil(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) => const LoginScreen()),
-                                //     (route) => false);
-                                // _sharedPreferences.clear();
-                                setState(() {
-                                  _isLoading = true;
-                                });
-                                LogoutapiCall();
-                                _sharedPreferences.clear();
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const LoginScreen()),
-                                    (route) => false);
-                              },
-                              child: Row(
-                                children: const [
-                                  Icon(
-                                    Icons.logout,
-                                    color: Colors.white,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    "Logout",
-                                    style: TextStyle(color: Colors.white),
-                                  )
-                                ],
-                              )),
-                        ),
-                      ]),
-                ],
-                body: SingleChildScrollView(
+          backgroundColor: Colors.white,
+          body: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    right: 10.0, left: 10, top: 0, bottom: 0),
+                child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
-                  child: SizedBox(
-                    child: Padding(
-                      padding:  EdgeInsets.only(
-                          top: 20.0, right : size.width*0.03, left :size.width*0.03, bottom: 20),
-                      child: Column(
-                        children: [
-                          Container(
-                            height: size.height * 0.25,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              boxShadow: const [
-                                //background color of box
-                                BoxShadow(
-                                    color: Colors.black12,
-                                    blurRadius: 2,
-                                    spreadRadius: 2.0,
-                                    offset: Offset(
-                                      0,
-                                      0,
-                                    ))
-                              ],
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Column(
-                                children: [
-                                  const Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
-                                      "Profile",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 17),
-                                    ),
-                                  ),
-
-                                  SizedBox(
-                                    height: size.height * 0.006,
-                                  ),
-
-                                  Row(
-                                    children: [
-                                      imagePath == null
-                                          ? SizedBox(
-                                              height: size.height * 0.1,
-                                              width: size.width * 0.23,
-                                              child: Stack(children: [
-                                                Container(
-                                                  height: size.height * 0.1,
-                                                  width: size.width * 0.2,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                          shape:
-                                                              BoxShape.circle),
-                                                  child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              300.0),
-                                                      child: CachedNetworkImage(
-                                                        imageUrl: profile_pic,
-                                                        fit: BoxFit.cover,
-                                                      )),
-                                                ),
-                                                Positioned(
-                                                    top: size.height * 0.04,
-                                                    left: size.width * 0.12,
-                                                    child: IconButton(
-                                                        onPressed: () {
-                                                          _selectPhoto();
-                                                        },
-                                                        icon: const Icon(
-                                                          Icons.add_a_photo,
-                                                          color:
-                                                              Color(0XFF38888F),
-                                                        )))
-                                              ]),
-                                            )
-                                          : SizedBox(
-                                              height: size.height * 0.1,
-                                              width: size.width * 0.2,
-                                              child: Stack(children: [
-                                                Container(
-                                                  height: size.height * 0.1,
-                                                  width: size.width * 0.2,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                          shape:
-                                                              BoxShape.circle),
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            300.0),
-                                                    child: Image.file(
-                                                      imagePath!,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Positioned(
-                                                    top: size.height * 0.04,
-                                                    left: size.width * 0.11,
-                                                    child: IconButton(
-                                                        onPressed: () {
-                                                          _selectPhoto();
-                                                        },
-                                                        icon: const Icon(
-                                                          Icons.add_a_photo,
-                                                          color:
-                                                              Color(0XFF38888F),
-                                                        )))
-                                              ]),
-                                            ),
-                                      const SizedBox(
-                                        width: 15,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            _getProfile.data.name,
-                                            style: const TextStyle(
-                                                fontSize: 23,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          Text(
-                                            _getProfile.data.email,
-                                            style:
-                                                const TextStyle(fontSize: 15),
-                                          )
-                                        ],
-                                      )
+                  child: _isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : SizedBox(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 80.0, right: 10, left: 10, bottom: 20),
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: size.height * 0.25,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    boxShadow: const [
+                                      //background color of box
+                                      // BoxShadow(
+                                      //     color: Colors.black12,
+                                      //     blurRadius: 2,
+                                      //     spreadRadius: 2.0,
+                                      //     offset: Offset(
+                                      //       0,
+                                      //       0,
+                                      //     ))
                                     ],
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 10.0,
+                                        right: 0,
+                                        left: 0,
+                                        bottom: 10),
+                                    child: Column(
+                                      children: [
+                                        // const Align(
+                                        //   alignment: Alignment.topLeft,
+                                        //   child: Text(
+                                        //     "Profile",
+                                        //     style: TextStyle(
+                                        //         fontWeight: FontWeight.w500,
+                                        //         fontSize: 17),
+                                        //   ),
+                                        // ),
 
-                                  Expanded(
-                                    child: FittedBox(
-                                      child: Row(
-                                        children: [
-                                          container(
-                                              size,
-                                              _getProfile.data.followers.length,
-                                              'Followers', () {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const Following()));
-                                          }),
-                                          container(
-                                              size,
-                                              _getProfile.data.following.length,
-                                              'Following', () {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const Follower()));
-                                          }),
-                                          container(size, totalEvents, 'Events',
-                                              () {}),
-                                        ],
-                                      ),
+                                        SizedBox(
+                                          height: size.height * 0.006,
+                                        ),
+
+                                        Column(
+                                          children: [
+                                            imagePath == null
+                                                ? SizedBox(
+                                                    height: size.height * 0.1,
+                                                    width: size.width * 0.23,
+                                                    child: Stack(children: [
+                                                      Container(
+                                                        height:
+                                                            size.height * 0.1,
+                                                        width: size.width * 0.2,
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle),
+                                                        child: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        300.0),
+                                                            child:
+                                                                CachedNetworkImage(
+                                                              imageUrl:
+                                                                  profile_pic,
+                                                              fit: BoxFit.cover,
+                                                            )),
+                                                      ),
+                                                      Positioned(
+                                                          top: size.height *
+                                                              0.04,
+                                                          left:
+                                                              size.width * 0.12,
+                                                          child: IconButton(
+                                                              onPressed: () {
+                                                                _selectPhoto();
+                                                              },
+                                                              icon: const Icon(
+                                                                Icons
+                                                                    .add_a_photo,
+                                                                color: Color(
+                                                                    0XFF38888F),
+                                                              )))
+                                                    ]),
+                                                  )
+                                                : SizedBox(
+                                                    height: size.height * 0.1,
+                                                    width: size.width * 0.2,
+                                                    child: Stack(children: [
+                                                      Container(
+                                                        height:
+                                                            size.height * 0.1,
+                                                        width: size.width * 0.2,
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle),
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      300.0),
+                                                          child: Image.file(
+                                                            imagePath!,
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Positioned(
+                                                          top: size.height *
+                                                              0.04,
+                                                          left:
+                                                              size.width * 0.11,
+                                                          child: IconButton(
+                                                              onPressed: () {
+                                                                _selectPhoto();
+                                                              },
+                                                              icon: const Icon(
+                                                                Icons
+                                                                    .add_a_photo,
+                                                                color: Color(
+                                                                    0XFF38888F),
+                                                              )))
+                                                    ]),
+                                                  ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  _getProfile.data.name,
+                                                  textAlign: TextAlign.center,
+                                                  style: const TextStyle(
+                                                      fontSize: 23,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                // Text(
+                                                //   _getProfile.data.email,
+                                                //   style: const TextStyle(
+                                                //       fontSize: 15),
+                                                // )
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 30,
+                                            ),
+                                          ],
+                                        ),
+
+                                        Expanded(
+                                          child: FittedBox(
+                                              child: IntrinsicHeight(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                container(
+                                                    size,
+                                                    _getProfile
+                                                        .data.followers.length,
+                                                    'Followers', () {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const Following()));
+                                                }),
+                                                const VerticalDivider(
+                                                    thickness: 1,
+                                                    color: Color(0xFFAfafaf)),
+                                                container(
+                                                    size,
+                                                    _getProfile
+                                                        .data.following.length,
+                                                    'Following', () {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const Follower()));
+                                                }),
+                                                const VerticalDivider(
+                                                    thickness: 1,
+                                                    color: Color(0xFFAfafaf)),
+                                                container(size, totalEvents,
+                                                    'Events', () {}),
+                                              ],
+                                            ),
+                                          )),
+                                        ),
+
+                                        // ),
+                                      ],
                                     ),
                                   ),
-
-                                  // ),
-                                ],
-                              ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Yourevents(size: size),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                Container(
+                                  child: getwidgets(),
+                                ),
+                                //settings
+                              ],
                             ),
                           ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Yourevents(size: size),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Container(
-                            child: getwidgets(),
-                          ),
-                          //settings
-                        ],
-                      ),
-                    ),
-                  ),
+                        ),
                 ),
               ),
-      ),
+              Positioned(
+                top: 0.0,
+                left: 0.0,
+                right: 0.0,
+                child: Container(
+                    height: 60,
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        border: Border(
+                            bottom: BorderSide(
+                                color: Color(0xFFE5E7EB), width: 1))),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20.0, right: 20),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                              width: 35.0,
+                              child: Image(
+                                  image: AssetImage(
+                                      "Assets/images/logo-no-text.png"))),
+                          const Spacer(),
+                          SizedBox(
+                              width: 25.0,
+                              child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SettingsScreen()),
+                                    );
+                                  },
+                                  child: const Image(
+                                      image: AssetImage(
+                                          "Assets/icons/settings.png")))),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          const SizedBox(
+                              width: 30.0,
+                              child: Image(
+                                  image: AssetImage(
+                                      "Assets/icons/notification.png")))
+                        ],
+                      ),
+                    )),
+              ),
+            ],
+          )
+          // NestedScrollView(
+          // headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          // SliverAppBar(
+          //     backgroundColor: Colors.white,
+          //     elevation: 0,
+          //     automaticallyImplyLeading: false,
+          //     actions: [
+          //       // Container(
+          //       //     height: 58,
+          //       //     decoration: const BoxDecoration(
+          //       //         border: Border(
+          //       //             bottom: BorderSide(
+          //       //                 color: Color(0xFFc4c4c4), width: 1))),
+          //       //     child: Padding(
+          //       //       padding:
+          //       //           const EdgeInsets.only(left: 20.0, right: 20),
+          //       //       child: Row(
+          //       //         children: const [
+          //       //           Spacer(),
+          //       //           Text(
+          //       //             "Create a new event",
+          //       //             style: TextStyle(
+          //       //                 color: Color(0xff222222),
+          //       //                 fontSize: 17,
+          //       //                 fontWeight: FontWeight.w500),
+          //       //             textAlign: TextAlign.center,
+          //       //           ),
+          //       //           Spacer(),
+          //       //         ],
+          //       //       ),
+          //       //     )),
+
+          //       Padding(
+          //           padding: EdgeInsets.only(
+          //             top: 5.0,
+          //             bottom: 5,
+          //             right: size.width * 0.03,
+          //           ),
+          //           child: Container(
+          //             width: double.infinity,
+          //             height: 58,
+          //             child: Row(children: const [
+          //               Spacer(),
+          //               Text(
+          //                 "Edit Profile",
+          //                 style: TextStyle(
+          //                     color: Color(0xff222222),
+          //                     fontSize: 17,
+          //                     fontWeight: FontWeight.w500),
+          //                 textAlign: TextAlign.center,
+          //               ),
+          //               Spacer(),
+          //             ]),
+          //           )
+          //           // ElevatedButton(
+          //           //     style: ElevatedButton.styleFrom(
+          //           //         primary: Colors.red,
+          //           //         shape: RoundedRectangleBorder(
+          //           //             borderRadius: BorderRadius.circular(10))),
+          // onPressed: () {
+          //   // Navigator.pushAndRemoveUntil(
+          //   //     context,
+          //   //     MaterialPageRoute(
+          //   //         builder: (context) => const LoginScreen()),
+          //   //     (route) => false);
+          //   // _sharedPreferences.clear();
+          //   setState(() {
+          //     _isLoading = true;
+          //   });
+          //   LogoutapiCall();
+          //   _sharedPreferences.clear();
+          //   Navigator.pushAndRemoveUntil(
+          //       context,
+          //       MaterialPageRoute(
+          //           builder: (context) =>
+          //               const LoginScreen()),
+          //       (route) => false);
+          // },
+          //           //     child: Row(
+          //           //       children: const [
+          //           //         Icon(
+          //           //           Icons.logout,
+          //           //           color: Colors.white,
+          //           //         ),
+          //           //         SizedBox(
+          //           //           width: 10,
+          //           //         ),
+          //           //         Text(
+          //           //           "Logout",
+          //           //           style: TextStyle(color: Colors.white),
+          //           //         )
+          //           //       ],
+          //           //     )),
+          //           ),
+          //     ]),
+
+          ),
     );
   }
 
@@ -471,14 +603,14 @@ class _ProfileState extends State<Profile> {
         onTap: ontap,
         child: Container(
           height: size.height * 0.06,
-          width: size.width*0.3,
+          width: size.width * 0.3,
           //width: size.width*0.3,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: const Color(0XFFECF2F3),
+            // color: const Color(0XFFECF2F3),
           ),
           child: Padding(
-            padding: const EdgeInsets.only(left: 10.0, right: 10),
+            padding: const EdgeInsets.only(left: 20.0, right: 20),
             child: FittedBox(
               fit: BoxFit.contain,
               child: Column(
@@ -486,11 +618,14 @@ class _ProfileState extends State<Profile> {
                   AutoSizeText(
                     count.toString(),
                     style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.w400),
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF101010)),
                   ),
                   AutoSizeText(
                     textType,
-                    style: const TextStyle(color: Colors.black54, fontSize: 15),
+                    style:
+                        const TextStyle(color: Color(0xFF707070), fontSize: 15),
                   )
                 ],
               ),
@@ -871,9 +1006,8 @@ class _ProfileState extends State<Profile> {
     print(response.data.toString());
     if (response.data["success"] == true) {
       showToaster('Logged out');
-  
-        _isLoading = false;
-      
+
+      _isLoading = false;
     } else {
       print("error with logout");
       showToaster('Error!');
@@ -927,7 +1061,7 @@ class _ProfileState extends State<Profile> {
           profile_pic =
               "https://imgr.search.brave.com/agcf_54hKLs35Jr3YaOMycn250z6b8N8p1HEYsRqi8Q/fit/980/980/ce/1/aHR0cDovL2Nkbi5v/bmxpbmV3ZWJmb250/cy5jb20vc3ZnL2lt/Z18yMTgwOTAucG5n";
         }
-       
+
         // print(MainUrl + _eventsModel.data[0].events.user.profilePicture.image);
       }
     } catch (e) {

@@ -13,11 +13,12 @@ import 'package:flutter_beep/flutter_beep.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pusher_client/pusher_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:event_spotter/pages/create_new_event.dart';
 
 class Dashboard extends StatefulWidget {
   String id;
   Dashboard({Key? key, required this.id}) : super(key: key);
-
+//
   @override
   State<Dashboard> createState() => _DashboardState();
 }
@@ -91,106 +92,86 @@ class _DashboardState extends State<Dashboard> {
           ? Column(
               children: const [
                 SizedBox(
-                    width: 54.0,
+                    width: 24.0,
                     child:
                         Image(image: AssetImage("Assets/icons/explore.png"))),
               ],
             )
           : Column(
               children: const [
-                Icon(
-                  Icons.explore,
-                  color: bottom_navigationitems,
-                  size: 30,
-                ),
-                Text("Explore", style: TextStyle(color: bottom_navigationitems))
+                SizedBox(
+                    width: 24.0,
+                    child: Image(
+                        image:
+                            AssetImage("Assets/icons/explore-inactive.png"))),
               ],
             ),
       pageindex == 1
           ? Column(
-              children: [
-                Stack(children: const [
-                  Icon(FontAwesomeIcons.commentDots,
-                      color: Colors.white, size: 40),
-                ]),
-                const Text("chat",
-                    style: TextStyle(color: bottom_navigationitems))
+              children: const [
+                SizedBox(
+                    width: 22.0,
+                    child: Image(
+                        image: AssetImage("Assets/icons/more-inactive.png"))),
               ],
             )
           : Column(
-              children: [
-                Stack(children: [
-                  const Icon(
-                    FontAwesomeIcons.commentDots,
-                    color: bottom_navigationitems,
-                    size: 30,
-                  ),
-                  test
-                      ? const Positioned(
-                          top: 0.0,
-                          right: 0.0,
-                          child: Icon(Icons.brightness_1,
-                              size: 8.0, color: Colors.redAccent),
-                        )
-                      : const SizedBox(),
-                ]),
-                const Text("chat",
-                    style: TextStyle(color: bottom_navigationitems))
+              children: const [
+                SizedBox(
+                    width: 22.0,
+                    child: Image(
+                        image: AssetImage("Assets/icons/more-inactive.png"))),
               ],
             ),
       pageindex == 2
           ? Column(
               children: const [
-                Icon(Icons.notifications_none, color: Colors.white, size: 40),
-                Text("notifications",
-                    style: TextStyle(color: bottom_navigationitems))
+                SizedBox(
+                    width: 35.0,
+                    child: Image(image: AssetImage("Assets/icons/plus.png"))),
               ],
             )
           : Column(
               children: const [
-                Icon(
-                  Icons.notifications_none,
-                  color: bottom_navigationitems,
-                  size: 30,
-                ),
-                Text("notifications",
-                    style: TextStyle(color: bottom_navigationitems))
+                SizedBox(
+                    width: 35.0,
+                    child: Image(image: AssetImage("Assets/icons/plus.png"))),
               ],
             ),
       pageindex == 3
           ? Column(
               children: const [
-                Icon(Icons.person, color: Colors.white, size: 40),
-                Text("profile", style: TextStyle(color: bottom_navigationitems))
+                SizedBox(
+                    width: 22.0,
+                    child: Image(image: AssetImage("Assets/icons/chat.png"))),
               ],
             )
           : Column(
               children: const [
-                Icon(
-                  Icons.person,
-                  color: bottom_navigationitems,
-                  size: 30,
-                ),
-                Text("profile", style: TextStyle(color: bottom_navigationitems))
+                SizedBox(
+                    width: 22.0,
+                    child: Image(
+                        image: AssetImage("Assets/icons/chat-inactive.png"))),
               ],
             ),
       pageindex == 4
           ? Column(
               children: const [
-                Icon(Icons.more_horiz, color: Colors.white, size: 40),
-                Text("more", style: TextStyle(color: bottom_navigationitems))
+                SizedBox(
+                    width: 20.0,
+                    child:
+                        Image(image: AssetImage("Assets/icons/profile.png"))),
               ],
             )
           : Column(
               children: const [
-                Icon(
-                  Icons.more_horiz,
-                  color: bottom_navigationitems,
-                  size: 30,
-                ),
-                Text("more", style: TextStyle(color: bottom_navigationitems))
+                SizedBox(
+                    width: 20.0,
+                    child: Image(
+                        image:
+                            AssetImage("Assets/icons/profile-inactive.png"))),
               ],
-            )
+            ),
     ];
     Size size = MediaQuery.of(context).size;
     return SafeArea(
@@ -199,7 +180,9 @@ class _DashboardState extends State<Dashboard> {
         bottomNavigationBar: Container(
           height: size.height * 0.08,
           width: size.width * double.infinity,
-          decoration: const BoxDecoration(color: bottom_navigationbg),
+          decoration: const BoxDecoration(
+              color: bottom_navigationbg,
+              border: Border(top: BorderSide(color: Color(0xFFE5E7EB)))),
           child: Padding(
             padding: const EdgeInsets.only(right: 25, left: 25),
             child: Row(
@@ -238,10 +221,11 @@ getbody(
 ) {
   List<Widget> pages = [
     const Explore(),
-    Notifications(),
-    const Noti(),
-    const Profile(),
     const More(),
+    // const Noti(),
+    const Createevent(),
+    Notifications(),
+    const Profile(),
   ];
 
   return IndexedStack(

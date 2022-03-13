@@ -69,28 +69,34 @@ class _YoureventsState extends State<Yourevents> {
               Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: const [
-                      BoxShadow(
-                          color: Colors.black12,
-                          spreadRadius: 2,
-                          blurRadius: 2,
-                          offset: Offset(
-                            0,
-                            0,
-                          )),
-                    ]),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  // boxShadow: const [
+                  //   BoxShadow(
+                  //       color: Colors.black12,
+                  //       spreadRadius: 2,
+                  //       blurRadius: 2,
+                  //       offset: Offset(
+                  //         0,
+                  //         0,
+                  //       )),
+                  // ]
+                ),
                 child: Padding(
-                  padding:  EdgeInsets.only(right : size.width*0.03, left :size.width*0.03, top : 10 , bottom : 20),
+                  padding: const EdgeInsets.only(
+                      // right: size.width * 0.03,
+                      // left: size.width * 0.03,
+                      top: 10,
+                      bottom: 20),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          "Your Events",
-                          style: TextStyle(fontSize: 20),
-                        ),
+                        // const Text(
+                        //   "Your Events",
+                        //   style: TextStyle(fontSize: 20),
+                        // ),
                         const SizedBox(height: 10),
+
                         eventstype(size),
                       ]),
                 ),
@@ -116,57 +122,72 @@ class _YoureventsState extends State<Yourevents> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FittedBox(
-          fit: BoxFit.cover,
-          child: Row(
-            children: [
-              Elevatedbuttons(
-                sidecolor: Colors.white,
-                primary: const Color(0XFF38888F),
-                text: "Upcoming",
-                textColor: Colors.white,
-                coloring: Colors.white,
-                onpressed: () {
-                  setState(() {
-                    setState(() {
-                      eventshuffling = yourevent.upcoming;
-                    });
-                  });
-                },
+        Container(
+            // height: 80,
+            padding: const EdgeInsets.only(
+                // right: size.width * 0.03,
+                // left: size.width * 0.03,
+                left: 10,
+                right: 10,
+                top: 5,
+                bottom: 5),
+            decoration: const BoxDecoration(
+              color: Color(0XFFE5E7EB),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            child: FittedBox(
+              fit: BoxFit.cover,
+              child: Row(
+                children: [
+                  Elevatedbuttons(
+                    sidecolor: Colors.white,
+                    primary: Colors.white,
+                    text: "Upcoming",
+                    textColor: const Color(0xFF101010),
+                    coloring: Colors.white,
+                    onpressed: () {
+                      setState(() {
+                        setState(() {
+                          eventshuffling = yourevent.upcoming;
+                        });
+                      });
+                    },
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Elevatedbuttons(
+                    shadowColor: const Color(0XFF00000000),
+                    sidecolor: const Color(0XFFE5E7EB),
+                    primary: const Color(0XFFE5E7EB),
+                    text: "Past Events",
+                    textColor: const Color(0xFF101010),
+                    coloring: Colors.white,
+                    onpressed: () {
+                      setState(() {
+                        eventshuffling = yourevent.pastevents;
+                      });
+                    },
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Elevatedbuttons(
+                    shadowColor: const Color(0xff00000000),
+                    sidecolor: const Color(0XFFE5E7EB),
+                    primary: const Color(0XFFE5E7EB),
+                    text: "Drafts",
+                    textColor: const Color(0xFF101010),
+                    coloring: Colors.white,
+                    onpressed: () {
+                      setState(() {
+                        eventshuffling = yourevent.drafts;
+                      });
+                    },
+                  ),
+                ],
               ),
-              const SizedBox(
-                width: 5,
-              ),
-              Elevatedbuttons(
-                sidecolor: const Color(0XFF38888F),
-                primary: Colors.white,
-                text: "Past Events",
-                textColor: const Color(0XFF38888F),
-                coloring: Colors.white,
-                onpressed: () {
-                  setState(() {
-                    eventshuffling = yourevent.pastevents;
-                  });
-                },
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              Elevatedbuttons(
-                sidecolor: const Color(0XFF38888F),
-                primary: Colors.white,
-                text: "Drafts",
-                textColor: const Color(0XFF38888F),
-                coloring: Colors.white,
-                onpressed: () {
-                  setState(() {
-                    eventshuffling = yourevent.drafts;
-                  });
-                },
-              ),
-            ],
-          ),
-        ),
+            )),
         const SizedBox(
           height: 5,
         ),
@@ -179,53 +200,69 @@ class _YoureventsState extends State<Yourevents> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FittedBox(
-          fit: BoxFit.cover,
-          child: Row(
-            children: [
-              Elevatedbuttons(
-                sidecolor: const Color(0XFF38888F),
-                primary: Colors.white,
-                text: "Upcoming",
-                textColor: const Color(0XFF38888F),
-                coloring: Colors.white,
-                onpressed: () {
-                  setState(() {
-                    eventshuffling = yourevent.upcoming;
-                  });
-                },
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              Elevatedbuttons(
-                sidecolor: Colors.white,
-                primary: const Color(0XFF38888F),
-                text: "Past Events",
-                textColor: Colors.white,
-                coloring: const Color(0XFF38888F),
-                onpressed: () {
-                  setState(() {
-                    eventshuffling = yourevent.pastevents;
-                  });
-                },
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              Elevatedbuttons(
-                sidecolor: const Color(0XFF38888F),
-                primary: Colors.white,
-                text: "Drafts",
-                textColor: const Color(0XFF38888F),
-                coloring: Colors.white,
-                onpressed: () {
-                  setState(() {
-                    eventshuffling = yourevent.drafts;
-                  });
-                },
-              ),
-            ],
+        Container(
+          // height: 80,
+          padding: const EdgeInsets.only(
+              // right: size.width * 0.03,
+              // left: size.width * 0.03,
+              left: 10,
+              right: 10,
+              top: 5,
+              bottom: 5),
+          decoration: const BoxDecoration(
+            color: Color(0XFFE5E7EB),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          child: FittedBox(
+            fit: BoxFit.cover,
+            child: Row(
+              children: [
+                Elevatedbuttons(
+                  shadowColor: const Color(0xff00000000),
+                  sidecolor: const Color(0XFFE5E7EB),
+                  primary: const Color(0XFFE5E7EB),
+                  text: "Upcoming",
+                  textColor: const Color(0xFF101010),
+                  coloring: Colors.white,
+                  onpressed: () {
+                    setState(() {
+                      eventshuffling = yourevent.upcoming;
+                    });
+                  },
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                Elevatedbuttons(
+                  sidecolor: Colors.white,
+                  primary: Colors.white,
+                  text: "Past Events",
+                  textColor: const Color(0xFF101010),
+                  coloring: const Color(0XFF38888F),
+                  onpressed: () {
+                    setState(() {
+                      eventshuffling = yourevent.pastevents;
+                    });
+                  },
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                Elevatedbuttons(
+                  shadowColor: const Color(0xff00000000),
+                  sidecolor: const Color(0XFFE5E7EB),
+                  primary: const Color(0XFFE5E7EB),
+                  text: "Drafts",
+                  textColor: const Color(0xFF101010),
+                  coloring: Colors.white,
+                  onpressed: () {
+                    setState(() {
+                      eventshuffling = yourevent.drafts;
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
         ),
         const SizedBox(
@@ -241,55 +278,71 @@ class _YoureventsState extends State<Yourevents> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FittedBox(
-          fit: BoxFit.cover,
-          child: Row(
-            children: [
-              Elevatedbuttons(
-                sidecolor: const Color(0XFF38888F),
-                primary: Colors.white,
-                text: "Upcoming",
-                textColor: const Color(0XFF38888F),
-                coloring: Colors.white,
-                onpressed: () {
-                  setState(() {
-                    eventshuffling = yourevent.upcoming;
-                  });
-                },
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              Elevatedbuttons(
-                sidecolor: const Color(0XFF38888F),
-                primary: Colors.white,
-                text: "Past Events",
-                textColor: const Color(0XFF38888F),
-                coloring: Colors.white,
-                onpressed: () {
-                  setState(() {
-                    eventshuffling = yourevent.pastevents;
-                  });
-                },
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              Elevatedbuttons(
-                sidecolor: Colors.white,
-                primary: const Color(0XFF38888F),
-                text: "Drafts",
-                textColor: Colors.white,
-                coloring: Colors.white,
-                onpressed: () {
-                  setState(() {
+        Container(
+          // height: 80,
+          padding: const EdgeInsets.only(
+              // right: size.width * 0.03,
+              // left: size.width * 0.03,
+              left: 10,
+              right: 10,
+              top: 5,
+              bottom: 5),
+          decoration: const BoxDecoration(
+            color: Color(0XFFE5E7EB),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          child: FittedBox(
+            fit: BoxFit.cover,
+            child: Row(
+              children: [
+                Elevatedbuttons(
+                  shadowColor: const Color(0xff00000000),
+                  sidecolor: const Color(0XFFE5E7EB),
+                  primary: const Color(0XFFE5E7EB),
+                  text: "Upcoming",
+                  textColor: const Color(0xFF101010),
+                  coloring: Colors.white,
+                  onpressed: () {
                     setState(() {
                       eventshuffling = yourevent.upcoming;
                     });
-                  });
-                },
-              ),
-            ],
+                  },
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                Elevatedbuttons(
+                  shadowColor: const Color(0xff00000000),
+                  sidecolor: const Color(0XFFE5E7EB),
+                  primary: const Color(0XFFE5E7EB),
+                  text: "Past Events",
+                  textColor: const Color(0xFF101010),
+                  coloring: Colors.white,
+                  onpressed: () {
+                    setState(() {
+                      eventshuffling = yourevent.pastevents;
+                    });
+                  },
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                Elevatedbuttons(
+                  sidecolor: Colors.white,
+                  primary: Colors.white,
+                  text: "Drafts",
+                  textColor: const Color(0xFF101010),
+                  coloring: Colors.white,
+                  onpressed: () {
+                    setState(() {
+                      setState(() {
+                        eventshuffling = yourevent.upcoming;
+                      });
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
         ),
         const SizedBox(
@@ -379,159 +432,197 @@ class _YoureventsState extends State<Yourevents> {
   upcomingeventlist(Size size) {
     if (test) {
       return SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
+        scrollDirection: Axis.vertical,
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: List.generate(_getUserUpcomingEvents.data.length, (index) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 10, left: 5 , bottom: 5 , right : 5),
-              child: InkWell(
-                onTap: (){
-                    Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Differenteventsdetails(
-                               eventId : _getUserUpcomingEvents
-                                      .data[index].events.id.toString(),
-                                  eventpicture: _getUserUpcomingEvents
-                                      .data[index].events.eventPictures[0].imagePath
-                                      .toString(),
-                                  eventname: _getUserUpcomingEvents
-                                      .data[index].events.eventName,
-                                  conditions: _getUserUpcomingEvents
-                                      .data[index].events.conditions
-                                      .toString(),
-                                  details: _getUserUpcomingEvents
-                                      .data[index].events.eventDescription,
-                                  ticketlink: _getUserUpcomingEvents
-                                      .data[index].events.ticketLink,
-                                  distance:
-                                      _getUserUpcomingEvents.data[index].km,
-                                  date: _getUserUpcomingEvents
-                                      .data[index].events.eventDate,
+            return Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                    border: Border(
+                        bottom:
+                            BorderSide(color: Color(0xFFE5E7EB), width: 1))),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 10, left: 5, bottom: 15, right: 5),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => Differenteventsdetails(
+                                eventId: _getUserUpcomingEvents
+                                    .data[index].events.id
+                                    .toString(),
+                                eventpicture: _getUserUpcomingEvents.data[index]
+                                    .events.eventPictures[0].imagePath
+                                    .toString(),
+                                eventname: _getUserUpcomingEvents
+                                    .data[index].events.eventName,
+                                conditions: _getUserUpcomingEvents
+                                    .data[index].events.conditions
+                                    .toString(),
+                                details: _getUserUpcomingEvents
+                                    .data[index].events.eventDescription,
+                                ticketlink: _getUserUpcomingEvents
+                                    .data[index].events.ticketLink,
+                                distance: _getUserUpcomingEvents.data[index].km,
+                                date: _getUserUpcomingEvents
+                                    .data[index].events.eventDate,
+                                lat: _getUserUpcomingEvents
+                                    .data[index].events.lat,
+                                long: _getUserUpcomingEvents
+                                    .data[index].events.lng,
+                                location: _getUserUpcomingEvents
+                                    .data[index].events.location,
+                              )));
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
 
-                                      lat : _getUserUpcomingEvents
-                                      .data[index].events.lat,
-                                      long: _getUserUpcomingEvents
-                                      .data[index].events.lng,
+                        // boxShadow: const [
+                        //   BoxShadow(
+                        //       color: Colors.black12,
+                        //       blurRadius: 10,
+                        //       spreadRadius: 2)
+                        // ]
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 20.0, left: 0, bottom: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 0.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: size.width * 0.45,
+                                    child: AutoSizeText(
+                                      _getUserUpcomingEvents
+                                          .data[index].events.eventName,
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 18),
+                                      maxFontSize: 18,
+                                      minFontSize: 15,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.fade,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  SizedBox(
+                                      height: 15,
+                                      child: Row(
+                                        children: [
+                                          // const Icon(
+                                          //   FontAwesomeIcons.calendar,
+                                          //   size: 15,
+                                          //   color: Colors.black54,
+                                          // ),
+                                          AutoSizeText(
+                                            time(index),
+                                            style: const TextStyle(
+                                                fontSize: 13,
+                                                color: Color(0xFF606060)),
+                                            //overflow: TextOverflow.ellipsis,
+                                          ),
 
-                                      location: _getUserUpcomingEvents
-                                      .data[index].events.location,
-                                )));
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: const [
-                        BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 10,
-                            spreadRadius: 2)
-                      ]),
-                  child:
-                     Padding(
-                    padding:
-                        const EdgeInsets.only(top: 20.0, left: 15, bottom: 15),
-                    child: Row(
-                      children: [
-                        _getUserUpcomingEvents
-                                    .data[index].events.eventPictures[0].imagePath
-                                    .toString()
-                                    .contains('.mp4') ||
-                                _getUserUpcomingEvents
-                                    .data[index].events.eventPictures[0].imagePath
-                                    .toString()
-                                    .contains('.mov')
-                            ? VideoPlayerScreennn(
-                                url: MainUrl +
+                                          const VerticalDivider(
+                                            color: Color(0xFF606060),
+                                            thickness: 1,
+                                          ),
+                                          AutoSizeText(
+                                            _getUserUpcomingEvents
+                                                    .data[index].km +
+                                                " " +
+                                                "away",
+                                            style: const TextStyle(
+                                                fontSize: 13,
+                                                color: Color(0xFF606060)),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
+                                      )),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  SizedBox(
+                                    width: size.width * 0.45,
+                                    child: Text(
+                                      _getUserUpcomingEvents
+                                          .data[index].events.eventDescription,
+                                      style: const TextStyle(
+                                          fontSize: 13,
+                                          color: Color(0xFF606060)),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  // Row(
+                                  //   children: [
+                                  //     // const Icon(
+                                  //     //   FontAwesomeIcons.mapMarkerAlt,
+                                  //     //   size: 15,
+                                  //     //   color: Colors.black54,
+                                  //     // ),
+                                  //     Text(
+                                  //         _getUserUpcomingEvents
+                                  //                 .data[index].km +
+                                  //             " " +
+                                  //             "away",
+                                  //         style: const TextStyle(
+                                  //             fontSize: 13,
+                                  //             color: Color(0xFF606060))),
+                                  //   ],
+                                  // )
+                                ],
+                              ),
+                            ),
+                            _getUserUpcomingEvents.data[index].events
+                                        .eventPictures[0].imagePath
+                                        .toString()
+                                        .contains('.mp4') ||
                                     _getUserUpcomingEvents.data[index].events
-                                        .eventPictures[0].imagePath)
-                            : SizedBox(
-                                height: widget.size.height * 0.17,
-                                width: widget.size.width * 0.3,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: CachedNetworkImage(
-                                    imageUrl: MainUrl +
-                                        _getUserUpcomingEvents.data[index].events
-                                            .eventPictures[0].imagePath,
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) {
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    },
+                                        .eventPictures[0].imagePath
+                                        .toString()
+                                        .contains('.mov')
+                                ? VideoPlayerScreennn(
+                                    url: MainUrl +
+                                        _getUserUpcomingEvents.data[index]
+                                            .events.eventPictures[0].imagePath)
+                                : SizedBox(
+                                    height: widget.size.width * 0.3,
+                                    width: widget.size.width * 0.3,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: CachedNetworkImage(
+                                        imageUrl: MainUrl +
+                                            _getUserUpcomingEvents
+                                                .data[index]
+                                                .events
+                                                .eventPictures[0]
+                                                .imagePath,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) {
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        },
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: size.width * 0.35,
-                                child: AutoSizeText(
-                                  _getUserUpcomingEvents
-                                      .data[index].events.eventName,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 18),
-                                  maxFontSize: 16,
-                                  minFontSize: 15,
-                                  overflow: TextOverflow.fade,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    FontAwesomeIcons.calendar,
-                                    size: 15,
-                                    color: Colors.black54,
-                                  ),
-                                  AutoSizeText(
-                                    
-                                   time(index),
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.black87),
-                                    //overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    FontAwesomeIcons.mapMarkerAlt,
-                                    size: 15,
-                                    color: Colors.black54,
-                                  ),
-                                  Text(
-                                      _getUserUpcomingEvents.data[index].km +
-                                          " " +
-                                          "away",
-                                      style:
-                                          const TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.black87)),
-                                ],
-                              )
-                            ],
-                          ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                  
-                ),
-              ),
-            );
+                ));
           }),
         ),
       );
@@ -543,150 +634,177 @@ class _YoureventsState extends State<Yourevents> {
   pasEventslist(Size size) {
     if (test1) {
       return SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
+        scrollDirection: Axis.vertical,
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: List.generate(_userPastEvents.data.length, (index) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 10, left: 5 , bottom:5 , right : 5),
-              child: InkWell(
-                onTap:() {
-                    Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Differenteventsdetails(
-                                  eventpicture: _userPastEvents
-                                      .data[index].events.eventPictures[0].imagePath
-                                      .toString(),
-                                      eventId: _userPastEvents.data[index].events.id.toString(),
-                                  eventname: _userPastEvents
-                                      .data[index].events.eventName,
-                                  conditions: _userPastEvents
-                                      .data[index].events.conditions
-                                      .toString(),
-                                  details: _userPastEvents
-                                      .data[index].events.eventDescription,
-                                  ticketlink: _userPastEvents
-                                      .data[index].events.ticketLink,
-                                  distance:
-                                      _userPastEvents.data[index].km,
-                                  date: _userPastEvents
-                                      .data[index].events.eventDate,
+            return Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                    border: Border(
+                        bottom:
+                            BorderSide(color: Color(0xFFE5E7EB), width: 1))),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 10, left: 5, bottom: 5, right: 5),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => Differenteventsdetails(
+                                eventpicture: _userPastEvents.data[index].events
+                                    .eventPictures[0].imagePath
+                                    .toString(),
+                                eventId: _userPastEvents.data[index].events.id
+                                    .toString(),
+                                eventname: _userPastEvents
+                                    .data[index].events.eventName,
+                                conditions: _userPastEvents
+                                    .data[index].events.conditions
+                                    .toString(),
+                                details: _userPastEvents
+                                    .data[index].events.eventDescription,
+                                ticketlink: _userPastEvents
+                                    .data[index].events.ticketLink,
+                                distance: _userPastEvents.data[index].km,
+                                date: _userPastEvents
+                                    .data[index].events.eventDate,
+                                lat: _userPastEvents.data[index].events.lat,
+                                long: _userPastEvents.data[index].events.lng,
+                                location:
+                                    _userPastEvents.data[index].events.location,
+                              )));
+                    },
+                    child: Container(
+                      // width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                        // boxShadow: const [
+                        //   BoxShadow(
+                        //       color: Colors.black12,
+                        //       blurRadius: 10,
+                        //       spreadRadius: 2)
+                        // ]
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 20.0, right: 0, left: 0, bottom: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 0.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: size.width * 0.45,
+                                    child: AutoSizeText(
+                                      _userPastEvents
+                                          .data[index].events.eventName,
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 18),
+                                      maxFontSize: 18,
+                                      minFontSize: 15,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  SizedBox(
+                                      height: 15,
+                                      child: Row(
+                                        children: [
+                                          // const Icon(
+                                          //   FontAwesomeIcons.calendar,
+                                          //   size: 15,
+                                          //   color: Colors.black54,
+                                          // ),
+                                          // Text(
+                                          //   time3(index),
+                                          //   style: const TextStyle(
+                                          //       color: Colors.black87),
+                                          // ),
+                                          AutoSizeText(
+                                            time3(index),
+                                            style: const TextStyle(
+                                                fontSize: 13,
+                                                color: Color(0xFF606060)),
+                                            //overflow: TextOverflow.ellipsis,
+                                          ),
 
-                                      lat : _userPastEvents
-                                      .data[index].events.lat,
-                                      long: _userPastEvents
-                                      .data[index].events.lng,
-
-                                      location: _userPastEvents
-                                      .data[index].events.location,
-                                      
-                                )));
-              },
-                child: Container(
-                  // width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: const [
-                        BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 10,
-                            spreadRadius: 2)
-                      ]),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 20.0, right: 15, left: 15, bottom: 15),
-                    child: Row(
-                      children: [
-                        _userPastEvents
-                                    .data[index].events.eventPictures[0].imagePath
-                                    .toString()
-                                    .contains('.mp4') ||
-                                _userPastEvents
-                                    .data[index].events.eventPictures[0].imagePath
-                                    .toString()
-                                    .contains('.mov')
-                            ? VideoPlayerScreennn(
-                                url: MainUrl +
+                                          const VerticalDivider(
+                                            color: Color(0xFF606060),
+                                            thickness: 1,
+                                          ),
+                                          AutoSizeText(
+                                            _userPastEvents.data[index].km +
+                                                " " +
+                                                "away",
+                                            style: const TextStyle(
+                                                fontSize: 13,
+                                                color: Color(0xFF606060)),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
+                                      )),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  SizedBox(
+                                    width: size.width * 0.45,
+                                    child: Text(
+                                      _userPastEvents
+                                          .data[index].events.eventDescription,
+                                      style: const TextStyle(
+                                          fontSize: 13,
+                                          color: Color(0xFF606060)),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            _userPastEvents.data[index].events.eventPictures[0]
+                                        .imagePath
+                                        .toString()
+                                        .contains('.mp4') ||
                                     _userPastEvents.data[index].events
-                                        .eventPictures[0].imagePath)
-                            : SizedBox(
-                                height: widget.size.height * 0.17,
-                                width: widget.size.width * 0.3,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: CachedNetworkImage(
-                                    imageUrl: MainUrl +
+                                        .eventPictures[0].imagePath
+                                        .toString()
+                                        .contains('.mov')
+                                ? VideoPlayerScreennn(
+                                    url: MainUrl +
                                         _userPastEvents.data[index].events
-                                            .eventPictures[0].imagePath,
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) {
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    },
+                                            .eventPictures[0].imagePath)
+                                : SizedBox(
+                                    height: widget.size.width * 0.3,
+                                    width: widget.size.width * 0.3,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: CachedNetworkImage(
+                                        imageUrl: MainUrl +
+                                            _userPastEvents.data[index].events
+                                                .eventPictures[0].imagePath,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) {
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        },
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: size.width * 0.35,
-                                child: AutoSizeText(
-                                  _userPastEvents.data[index].events.eventName,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 18),
-                                  maxFontSize: 16,
-                                  minFontSize: 15,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    FontAwesomeIcons.calendar,
-                                    size: 15,
-                                    color: Colors.black54,
-                                  ),
-                                  Text(
-                                   time3(index),
-                                    style: const TextStyle(color: Colors.black87),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    FontAwesomeIcons.mapMarkerAlt,
-                                    size: 15,
-                                    color: Colors.black54,
-                                  ),
-                                  Text(
-                                      _userPastEvents.data[index].km +
-                                          " " +
-                                          "away",
-                                      style:
-                                          const TextStyle(color: Colors.black87)),
-                                ],
-                              )
-                            ],
-                          ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ),
-            );
+                ));
           }),
         ),
       );
@@ -700,141 +818,181 @@ class _YoureventsState extends State<Yourevents> {
   userDraftlist(Size size) {
     if (test2) {
       return SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
+        scrollDirection: Axis.vertical,
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: List.generate(_getUserDraftEvents.data.length, (index) {
-            return InkWell(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Draftsedit(
-                               eventname:
-                                    _getUserDraftEvents.data[index].eventName,
-                                date: _getUserDraftEvents.data[index].eventDate,
-                                placename:
-                                    _getUserDraftEvents.data[index].location,
-                                imagepath: _getUserDraftEvents
-                                    .data[index].eventPictures[0].imagePath,
-                                videopath: _getUserDraftEvents
-                                    .data[index].eventPictures[0].imagePath,
-                                eventdescription: _getUserDraftEvents
-                                    .data[index].eventDescription,
-                                conditions:
-                                    _getUserDraftEvents.data[index].conditions,
-                                eventprivaacy:
-                                    _getUserDraftEvents.data[index].isPublic,
-                                    lat: _getUserDraftEvents.data[index].lat,
-                                    log: _getUserDraftEvents.data[index].lng,
-                                    type: _getUserDraftEvents.data[index].eventType,
-                                    ticketlink: _getUserDraftEvents.data[index].ticketLink,)));
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10, left: 5 , bottom: 5 , right : 5),
-                child: Container(
-                 
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: const [
-                        BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 10,
-                            spreadRadius: 2)
-                      ]),
-                  child: Padding(
+            return Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                    border: Border(
+                        bottom:
+                            BorderSide(color: Color(0xFFE5E7EB), width: 1))),
+                child: Padding(
                     padding: const EdgeInsets.only(
-                        top: 20.0, right: 15, left: 15, bottom: 15),
-                    child: Row(
-                      children: [
-                        _getUserDraftEvents.data[index].eventPictures[0].imagePath
-                                    .toString()
-                                    .contains('.mp4') ||
-                                _getUserDraftEvents
-                                    .data[index].eventPictures[0].imagePath
-                                    .toString()
-                                    .contains('.mov')
-                            ? VideoPlayerScreennn(
-                                url: MainUrl +
-                                    _getUserDraftEvents
-                                        .data[index].eventPictures[0].imagePath)
-                            : SizedBox(
-                                height: widget.size.height * 0.17,
-                                width: widget.size.width * 0.3,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: CachedNetworkImage(
-                                    imageUrl: MainUrl +
+                        top: 10, left: 5, bottom: 5, right: 5),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => Draftsedit(
+                                  eventname:
+                                      _getUserDraftEvents.data[index].eventName,
+                                  date:
+                                      _getUserDraftEvents.data[index].eventDate,
+                                  placename:
+                                      _getUserDraftEvents.data[index].location,
+                                  imagepath: _getUserDraftEvents
+                                      .data[index].eventPictures[0].imagePath,
+                                  videopath: _getUserDraftEvents
+                                      .data[index].eventPictures[0].imagePath,
+                                  eventdescription: _getUserDraftEvents
+                                      .data[index].eventDescription,
+                                  conditions: _getUserDraftEvents
+                                      .data[index].conditions,
+                                  eventprivaacy:
+                                      _getUserDraftEvents.data[index].isPublic,
+                                  lat: _getUserDraftEvents.data[index].lat,
+                                  log: _getUserDraftEvents.data[index].lng,
+                                  type:
+                                      _getUserDraftEvents.data[index].eventType,
+                                  ticketlink: _getUserDraftEvents
+                                      .data[index].ticketLink,
+                                )));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10, left: 5, bottom: 5, right: 5),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            // boxShadow: const [
+                            //   BoxShadow(
+                            //       color: Colors.black12,
+                            //       blurRadius: 10,
+                            //       spreadRadius: 2)
+                            // ]
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 20.0, right: 0, left: 0, bottom: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width: size.width * 0.45,
+                                        child: AutoSizeText(
+                                          _getUserDraftEvents
+                                              .data[index].eventName,
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 18),
+                                          maxFontSize: 18,
+                                          minFontSize: 15,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      SizedBox(
+                                          height: 15,
+                                          width: size.width * 0.45,
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              const Icon(
+                                                FontAwesomeIcons.calendar,
+                                                size: 15,
+                                                color: Color(0xFF606060),
+                                              ),
+                                              const SizedBox(
+                                                width: 7,
+                                              ),
+                                              AutoSizeText(
+                                                "Created: " + time1(index),
+                                                style: const TextStyle(
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Color(0xFF606060)),
+                                              ),
+                                              // const VerticalDivider(
+                                              //   color: Color(0xFF606060),
+                                              //   thickness: 1,
+                                              // ),
+                                              // AutoSizeText(
+                                              //   _getUserDraftEvents
+                                              //       .data[index].location,
+                                              //   style: const TextStyle(
+                                              //       fontSize: 13,
+                                              //       color: Color(0xFF606060)),
+                                              //   overflow: TextOverflow.ellipsis,
+                                              // )
+                                            ],
+                                          )),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.45,
+                                        child: Text(
+                                          _getUserDraftEvents
+                                              .data[index].location,
+                                          style: const TextStyle(
+                                              fontSize: 13,
+                                              color: Color(0xFF606060)),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                _getUserDraftEvents.data[index].eventPictures[0]
+                                            .imagePath
+                                            .toString()
+                                            .contains('.mp4') ||
                                         _getUserDraftEvents.data[index]
-                                            .eventPictures[0].imagePath,
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) {
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: size.width * 0.35,
-                                child: AutoSizeText(
-                                  _getUserDraftEvents.data[index].eventName,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 18),
-                                  maxFontSize: 16,
-                                  minFontSize: 15,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    FontAwesomeIcons.calendar,
-                                    size: 15,
-                                    color: Colors.black54,
-                                  ),
-                                  Text(
-                                  time1(index),
-                                    style: const TextStyle(color: Colors.black87),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    FontAwesomeIcons.mapMarkerAlt,
-                                    size: 15,
-                                    color: Colors.black54,
-                                  ),
-                                  // Text(
-                                  //          _getUserDraftEvents.data[index].location +
-                                  //         " " +
-                                  //         "away",
-                                  //     style:
-                                  //         const TextStyle(color: Colors.black87)),
-                                ],
-                              )
-                            ],
+                                            .eventPictures[0].imagePath
+                                            .toString()
+                                            .contains('.mov')
+                                    ? VideoPlayerScreennn(
+                                        url: MainUrl +
+                                            _getUserDraftEvents.data[index]
+                                                .eventPictures[0].imagePath)
+                                    : SizedBox(
+                                        height: widget.size.width * 0.3,
+                                        width: widget.size.width * 0.3,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: CachedNetworkImage(
+                                            imageUrl: MainUrl +
+                                                _getUserDraftEvents.data[index]
+                                                    .eventPictures[0].imagePath,
+                                            fit: BoxFit.cover,
+                                            placeholder: (context, url) {
+                                              return const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                              ],
+                            ),
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            );
+                      ),
+                    )));
           }),
         ),
       );
@@ -843,30 +1001,32 @@ class _YoureventsState extends State<Yourevents> {
     }
   }
 
-
-
-String time(int index) {
-    DateTime parseDate = DateFormat("yyyy-mm-dd")
-        .parse( _getUserUpcomingEvents
-                                        .data[index].events.eventDate,);
+  String time(int index) {
+    DateTime parseDate = DateFormat("yyyy-mm-dd").parse(
+      _getUserUpcomingEvents.data[index].events.eventDate,
+    );
     var inputDate = DateTime.parse(parseDate.toString());
     var outputFormat = DateFormat('mm/dd/yyyy');
     var outputDate = outputFormat.format(inputDate);
 
     return outputDate;
   }
+
   String time1(int index) {
-    DateTime parseDate = DateFormat("yyyy-mm-dd")
-        .parse(              _getUserDraftEvents.data[index].eventDate,);
+    DateTime parseDate = DateFormat("yyyy-mm-dd").parse(
+      _getUserDraftEvents.data[index].eventDate,
+    );
     var inputDate = DateTime.parse(parseDate.toString());
     var outputFormat = DateFormat('mm/dd/yyyy');
     var outputDate = outputFormat.format(inputDate);
 
     return outputDate;
   }
+
   String time3(int index) {
-    DateTime parseDate = DateFormat("yyyy-mm-dd")
-        .parse( _userPastEvents.data[index].events.eventDate,);
+    DateTime parseDate = DateFormat("yyyy-mm-dd").parse(
+      _userPastEvents.data[index].events.eventDate,
+    );
     var inputDate = DateTime.parse(parseDate.toString());
     var outputFormat = DateFormat('mm/dd/yyyy');
     var outputDate = outputFormat.format(inputDate);
@@ -874,11 +1034,6 @@ String time(int index) {
     return outputDate;
   }
 }
-
-
-
-
-
 
 // ignore: must_be_immutable
 class VideoPlayerScreennn extends StatefulWidget {
@@ -931,7 +1086,7 @@ class _VideoPlayerScreennnState extends State<VideoPlayerScreennn> {
               // If the VideoPlayerController has finished initialization, use
               // the data it provides to limit the aspect ratio of the video.
               return Container(
-                height: size.height * 0.17,
+                height: size.width * 0.3,
                 width: size.width * 0.3,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),

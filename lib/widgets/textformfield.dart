@@ -10,6 +10,9 @@ class Textform extends StatefulWidget {
     this.keyboard,
     this.validator,
     this.icon,
+    this.iconSize,
+    this.iconColor,
+    this.endIcon,
     this.suffix,
     this.input = true,
     this.color,
@@ -26,6 +29,9 @@ class Textform extends StatefulWidget {
   final TextInputType? keyboard;
   final FormFieldValidator<String>? validator;
   final IconData? icon;
+  final IconData? endIcon;
+  final double? iconSize;
+  final Color? iconColor;
   final bool input;
   final IconData? suffix;
   final Color? color;
@@ -55,11 +61,13 @@ class _TextformState extends State<Textform> {
       controller: widget.controller,
       decoration: InputDecoration(
         // contentPadding: EdgeInsets.symmetric(vertical: widget.width),
-        // prefixIcon: Icon(
-        //   widget.icon,
-        //   color: const Color(0XFF277279),
-        //   size: 5.0,
-        // ),
+        prefixIcon: widget.icon != null
+            ? Icon(
+                widget.icon,
+                color: widget.iconColor ?? const Color(0XFF277279),
+                size: widget.iconSize ?? 5.0,
+              )
+            : null,
         suffixIcon: IconButton(
           icon: Icon(widget.suffix),
           onPressed: widget.onPressed,

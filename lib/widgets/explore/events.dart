@@ -81,31 +81,40 @@ class _EventssState extends State<Eventss> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Livefeeds(
-          eventsLiveFeeds: widget.eventsLiveFeed,
-          test: test,
-          eventsModel: widget.eventsModel,
-          id: widget.id,
-        ),
+        // Livefeeds(
+        //   eventsLiveFeeds: widget.eventsLiveFeed,
+        //   test: test,
+        //   eventsModel: widget.eventsModel,
+        //   id: widget.id,
+        // ),
         const SizedBox(
           height: 20,
         ),
-        const SizedBox(
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Events near you",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 17),
+        const Padding(
+          padding: EdgeInsets.only(
+            right: 10,
+            bottom: 20,
+          ),
+          child: SizedBox(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Events near you",
+                style: TextStyle(
+                    color: Color(0xFF101010),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 22),
+              ),
             ),
           ),
         ),
+
         Column(
           children: List.generate(widget.eventsModel.data.length, (index) {
             return Padding(
-              padding: const EdgeInsets.only(top: 8.0, bottom: 10),
+              padding: const EdgeInsets.only(
+                bottom: 20,
+              ),
               child: InkWell(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
@@ -118,18 +127,22 @@ class _EventssState extends State<Eventss> {
                 child: Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
                     // borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        spreadRadius: 3,
-                        blurRadius: 3,
-                        color: Colors.black12,
-                      ),
-                    ],
+                    // boxShadow: [
+                    //   BoxShadow(
+                    //     spreadRadius: 3,
+                    //     blurRadius: 3,
+                    //     color: Colors.black12,
+                    //   ),
+                    // ],
                   ),
                   child: Column(children: [
                     Padding(
-                      padding: const EdgeInsets.only(right: 5, left: 5, top: 5),
+                      padding: const EdgeInsets.only(
+                          right: 15, left: 15, top: 15, bottom: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -147,61 +160,79 @@ class _EventssState extends State<Eventss> {
                               profileImage: MainUrl +
                                   widget.eventsModel.data[index].events.user
                                       .profilePicture!.image),
-                          SizedBox(
-                              height: size.height * 0.04,
-                              width: size.width * 0.25,
-                              // decoration: const BoxDecoration(color: Color(0XFF38888E)),
-                              child: followingcheck(index)),
+                          widget.eventsModel.data[index].events.user.id
+                                      .toString() !=
+                                  widget.id
+                              ? SizedBox(
+                                  height: 45,
+                                  width: 45,
+                                  //                     decoration: const BoxDecoration(
+                                  // //     borderRadius: const BorderRadius.all(Radius.circular(40)),
+                                  // //     border: Border.all(color: const Color(0xff200E32))
+                                  // ),
+                                  // decoration: const BoxDecoration(color: Color(0XFF38888E)),
+                                  child: Container(
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(40)),
+                                        // border: Border(
+                                        //     top: BorderSide(
+                                        //         width: 1,
+                                        //         color: Color(0xff200E32)),
+                                        //     left: BorderSide(
+                                        //         width: 1,
+                                        //         color: Color(0xff200E32)),
+                                        //     right: BorderSide(
+                                        //         width: 1,
+                                        //         color: Color(0xff200E32)),
+                                        //     bottom: BorderSide(
+                                        //         width: 1,
+                                        //         color: Color(0xff200E32))),
+                                        // border: Border.all(color: Colors.red)
+                                      ),
+                                      child: followingcheck(index)),
+                                )
+                              : const SizedBox()
                         ],
                       ),
                     ),
                     Padding(
+                      // decoration: const BoxDecoration(
+                      //
+                      //     //borderRadius: BorderRadius.circular(15),
+                      //     ),
                       padding: const EdgeInsets.only(
-                          left: 8.0, right: 8, top: 3, bottom: 3),
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        child: AutoSizeText(
-                          widget.eventsModel.data[index].events.eventName,
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 17),
-                          maxFontSize: 17,
-                          minFontSize: 10,
-                          maxLines: 5,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      decoration: const BoxDecoration(
-
-                          //borderRadius: BorderRadius.circular(15),
-                          ),
+                          right: 15, left: 15, top: 0, bottom: 0),
                       child: Stack(children: [
-                        widget.eventsModel.data[index].events.eventPictures[0]
-                                    .imagePath
-                                    .toString()
-                                    .contains('.mp4') ||
-                                widget.eventsModel.data[index].events
-                                    .eventPictures[0].imagePath
-                                    .toString()
-                                    .contains('.mov')
-                            ? VideoPlayerScreenn(
-                                url: MainUrl +
-                                  widget.eventsModel.data[index].events
-                                        .eventPictures[0].imagePath)
-                            : CachedNetworkImage(
-                              width: double.infinity,
-                                fit: BoxFit.cover,
-                                imageUrl: MainUrl +
-                                    widget.eventsModel.data[index].events
-                                        .eventPictures[0].imagePath,
-                                placeholder: (context, url) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                },
-                              ),
+                        SizedBox(
+                            height: 280,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15.0),
+                              child: widget.eventsModel.data[index].events
+                                          .eventPictures[0].imagePath
+                                          .toString()
+                                          .contains('.mp4') ||
+                                      widget.eventsModel.data[index].events
+                                          .eventPictures[0].imagePath
+                                          .toString()
+                                          .contains('.mov')
+                                  ? VideoPlayerScreenn(
+                                      url: MainUrl +
+                                          widget.eventsModel.data[index].events
+                                              .eventPictures[0].imagePath)
+                                  : CachedNetworkImage(
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                      imageUrl: MainUrl +
+                                          widget.eventsModel.data[index].events
+                                              .eventPictures[0].imagePath,
+                                      placeholder: (context, url) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      },
+                                    ),
+                            )),
                         Positioned(
                             top: 10,
                             right: 10,
@@ -228,6 +259,81 @@ class _EventssState extends State<Eventss> {
                                         : Colors.red))),
                       ]),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 15, right: 15, top: 20, bottom: 8),
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        child: AutoSizeText(
+                          widget.eventsModel.data[index].events.eventName,
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 17),
+                          maxFontSize: 17,
+                          minFontSize: 12,
+                          maxLines: 5,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(right: 8, left: 15, bottom: 8),
+                      child: Row(
+                        children: [
+                          Row(children: [
+                            const Icon(
+                              FontAwesomeIcons.mapMarkerAlt,
+                              size: 15,
+                              color: Color(0xFF3BADB7),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 8, right: 15),
+                              child: Text(
+                                  widget.eventsModel.data[index].km.toString() +
+                                      " " +
+                                      "miles away",
+                                  style:
+                                      const TextStyle(color: Colors.black87)),
+                            ),
+                          ]),
+                          Row(
+                            children: [
+                              const Icon(
+                                FontAwesomeIcons.calendar,
+                                size: 15,
+                                color: Color(0xFF3BADB7),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                time(index),
+                                style: const TextStyle(color: Colors.black87),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 15, right: 15, bottom: 15),
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        child: AutoSizeText(
+                          widget
+                              .eventsModel.data[index].events.eventDescription,
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15),
+                          maxFontSize: 15,
+                          minFontSize: 15,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
                     Container(
                       width: double.infinity,
                       decoration: const BoxDecoration(),
@@ -237,60 +343,60 @@ class _EventssState extends State<Eventss> {
                           // const SizedBox(
                           //   height: 10,
                           // ),
-                          Container(
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              border: Border(
-                                top: BorderSide(color: Colors.black12),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 8, left: 8),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Buttonicon(
-                                    radiusofbutton: BorderRadius.circular(20),
-                                    icon: FontAwesomeIcons.userPlus,
-                                    title: widget.eventsModel.data[index].events
-                                            .user.followers.length
-                                            .toString() +
-                                        " " "Followers",
-                                  ),
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        FontAwesomeIcons.calendar,
-                                        size: 13,
-                                        color: Colors.black54,
-                                      ),
-                                      const SizedBox(width: 5),
-                                      Text(
-                                        time(index),
-                                        style: const TextStyle(
-                                            color: Colors.black87),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(children: [
-                                    const Icon(
-                                      FontAwesomeIcons.mapMarkerAlt,
-                                      size: 15,
-                                      color: Colors.black54,
-                                    ),
-                                    Text(
-                                        widget.eventsModel.data[index].km
-                                                .toString() +
-                                            " " +
-                                            "away",
-                                        style: const TextStyle(
-                                            color: Colors.black87)),
-                                  ])
-                                ],
-                              ),
-                            ),
-                          ),
+                          // Container(
+                          //   decoration: const BoxDecoration(
+                          //     color: Colors.white,
+                          //     border: Border(
+                          //       top: BorderSide(color: Colors.black12),
+                          //     ),
+                          //   ),
+                          //   child: Padding(
+                          //     padding: const EdgeInsets.only(right: 8, left: 8),
+                          //     child: Row(
+                          //       mainAxisAlignment:
+                          //           MainAxisAlignment.spaceBetween,
+                          //       children: [
+                          //         Buttonicon(
+                          //           radiusofbutton: BorderRadius.circular(20),
+                          //           icon: FontAwesomeIcons.userPlus,
+                          //           title: widget.eventsModel.data[index].events
+                          //                   .user.followers.length
+                          //                   .toString() +
+                          //               " " "Followers",
+                          //         ),
+                          //         Row(
+                          //           children: [
+                          //             const Icon(
+                          //               FontAwesomeIcons.calendar,
+                          //               size: 13,
+                          //               color: Colors.black54,
+                          //             ),
+                          //             const SizedBox(width: 5),
+                          //             Text(
+                          //               time(index),
+                          //               style: const TextStyle(
+                          //                   color: Colors.black87),
+                          //             ),
+                          //           ],
+                          //         ),
+                          //         Row(children: [
+                          //           const Icon(
+                          //             FontAwesomeIcons.mapMarkerAlt,
+                          //             size: 15,
+                          //             color: Colors.black54,
+                          //           ),
+                          //           Text(
+                          //               widget.eventsModel.data[index].km
+                          //                       .toString() +
+                          //                   " " +
+                          //                   "away",
+                          //               style: const TextStyle(
+                          //                   color: Colors.black87)),
+                          //         ])
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
                           const SizedBox(
                             height: 2,
                           ),
@@ -300,7 +406,8 @@ class _EventssState extends State<Eventss> {
                                 top: BorderSide(color: Colors.black12),
                               ),
                             ),
-                            child: IntrinsicHeight(
+                            child: SizedBox(
+                              height: 55,
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
@@ -313,11 +420,11 @@ class _EventssState extends State<Eventss> {
                                   //   postThumbs(_eventsModel
                                   //       .data[index].events.id);
                                   // }),
-                                  likefunction(
-                                      index, FontAwesomeIcons.thumbsUp),
-                                  divider(),
+                                  likefunction(index, FontAwesomeIcons.heart,
+                                      FontAwesomeIcons.solidHeart),
+                                  // divider(),
                                   extras(
-                                      Icons.comment,
+                                      FontAwesomeIcons.commentDots,
                                       widget.eventsModel.data[index].events
                                           .comment.length
                                           .toString(),
@@ -330,19 +437,21 @@ class _EventssState extends State<Eventss> {
                                                   index: index,
                                                 )));
                                   }),
-                                  divider(),
+                                  // divider(),
 
                                   extras(MdiIcons.share, "", size, () {
                                     share(widget
                                         .eventsModel.data[index].events.id
                                         .toString());
                                   }),
-                                  divider(), //no inculded
+                                  // divider(), //no inculded
                                   extras(
-                                      Icons.play_arrow,
+                                      FontAwesomeIcons.playCircle,
                                       widget.eventsModel.data[index].events
-                                          .liveFeed.length
-                                          .toString(),
+                                              .liveFeed.length
+                                              .toString() +
+                                          " " +
+                                          "Live snaps",
                                       size,
                                       () {}),
                                 ],
@@ -391,13 +500,15 @@ class _EventssState extends State<Eventss> {
     );
   }
 
-  likefunction(int index, IconData icon) {
+  likefunction(int index, IconData icon, IconData activeIcon) {
     return Row(
       children: [
         IconButton(
-          icon: Icon(icon,
-              size: 16,
-              color: widget.like[index] == 1 ? Colors.blue : Colors.black),
+          icon: Icon(widget.like[index] == 1 ? activeIcon : icon,
+              size: 20,
+              color: widget.like[index] == 1
+                  ? Color(0xFFEB5757)
+                  : Color(0xFF101010)),
           onPressed: () async {
             if (widget.like[index] == 0) {
               widget.like[index] = 1;
@@ -459,18 +570,38 @@ class _EventssState extends State<Eventss> {
 
   followingcheck(int index) {
     if (widget.eventsModel.data[index].events.user.id.toString() != widget.id) {
-      return ElevatedButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => Eventposterprofile(
-                    id: widget.eventsModel.data[index].events.user.id,
-                  )));
-        },
-        style: ElevatedButton.styleFrom(
-          primary: const Color(0XFF38888E),
-        ),
-        child: const Text("Follow"),
-      );
+      return InkWell(
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => Eventposterprofile(
+                      id: widget.eventsModel.data[index].events.user.id,
+                    )));
+          },
+          child: const Padding(
+              padding:
+                  EdgeInsets.only(right: 11, left: 11, top: 11, bottom: 11),
+              // decoration: BoxDecoration(
+              //     borderRadius: const BorderRadius.all(Radius.circular(40)),
+              //     border: Border.all(color: const Color(0xff200E32))),
+              child: SizedBox(
+                width: 10.0,
+                child: Image(
+                    width: 10,
+                    image: AssetImage("Assets/icons/follow-user.png")),
+              )));
+      //follow here
+      // return ElevatedButton(
+      //   onPressed: () {
+      //     Navigator.of(context).push(MaterialPageRoute(
+      //         builder: (context) => Eventposterprofile(
+      //               id: widget.eventsModel.data[index].events.user.id,
+      //             )));
+      //   },
+      //   style: ElevatedButton.styleFrom(
+      //     primary: const Color(0XFF38888E),
+      //   ),
+      //   child: const Text("Follow2"),
+      // );
     } else {
       return const SizedBox();
     }
@@ -574,7 +705,7 @@ class _VideoPlayerScreennState extends State<VideoPlayerScreenn> {
               // If the VideoPlayerController has finished initialization, use
               // the data it provides to limit the aspect ratio of the video.
               return SizedBox(
-                height: size.height * 0.4,
+                height: 280,
                 width: double.infinity,
 
                 child: SizedBox(

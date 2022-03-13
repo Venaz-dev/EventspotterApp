@@ -1,7 +1,7 @@
-
 import 'package:event_spotter/pages/landing.dart';
 import 'package:event_spotter/pages/signin.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:event_spotter/pages/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -11,7 +11,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
- 
 // void main() {
 //   WidgetsFlutterBinding.ensureInitialized();
 //    await Firebase.initializeApp();
@@ -22,7 +21,6 @@ import 'package:firebase_core/firebase_core.dart';
 //       debugShowCheckedModeBanner: false,
 //     ));
 //   });
-  
 
 // }
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -30,24 +28,26 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('Handling a background message ${message.messageId}');
   print(message.notification!.title);
   print(message.notification!.body);
-   var flutterLocalNotificationsPlugin;
-      flutterLocalNotificationsPlugin.show(
-            message.notification.hashCode,
-            message.notification!.title,
-            message.notification!.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
-                channelDescription: channel.description,
-                icon: 'launch_background',
-              ),
-            ));
+  var flutterLocalNotificationsPlugin;
+  flutterLocalNotificationsPlugin.show(
+      message.notification.hashCode,
+      message.notification!.title,
+      message.notification!.body,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          channel.id,
+          channel.name,
+          channelDescription: channel.description,
+          icon: 'launch_background',
+        ),
+      ));
 }
+
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high_importance_channel', // id
   'High Importance Notifications', // title
-  description: 'This channel is used for important notifications.', // description
+  description:
+      'This channel is used for important notifications.', // description
   importance: Importance.high,
 );
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -61,12 +61,9 @@ Future<void> main() async {
           AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
   runApp(MyApp());
- 
- 
 }
 
 class MyApp extends StatefulWidget {
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -75,13 +72,12 @@ class _MyAppState extends State<MyApp> {
   @override
   @override
   void initState() {
-     var initializationSettingAndroid =
+    var initializationSettingAndroid =
         const AndroidInitializationSettings('@mipmap/ic_launcher');
     var intializationSetting =
         InitializationSettings(android: initializationSettingAndroid);
     flutterLocalNotificationsPlugin.initialize(intializationSetting);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null) {
@@ -93,22 +89,19 @@ class _MyAppState extends State<MyApp> {
               android: AndroidNotificationDetails(
                 channel.id,
                 channel.name,
-               channelDescription: channel.description,
-                
+                channelDescription: channel.description,
                 icon: 'launch_background',
               ),
             ));
       }
     });
     super.initState();
-    
   }
+
   Widget build(BuildContext context) {
-  
-   
-   return const MaterialApp(
-     home: LandingScreen(),
-      //  home:  LoginScreen(),
+    return const MaterialApp(
+      // home: LandingScreen(),
+      home: LoginScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
