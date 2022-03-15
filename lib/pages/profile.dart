@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:event_spotter/models/getProfile.dart';
 import 'package:event_spotter/pages/settings.dart';
+import 'package:event_spotter/pages/edit_profile.dart';
 import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/pages/followers.dart';
 import 'package:event_spotter/pages/following.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 enum scrolling { personal, settings }
 
@@ -198,11 +200,18 @@ class _ProfileState extends State<Profile> {
                                                               size.width * 0.12,
                                                           child: IconButton(
                                                               onPressed: () {
-                                                                _selectPhoto();
+                                                                Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              const EditProfile()),
+                                                                );
+                                                                // _selectPhoto();
                                                               },
                                                               icon: const Icon(
-                                                                Icons
-                                                                    .add_a_photo,
+                                                                FontAwesomeIcons
+                                                                    .solidEdit,
                                                                 color: Color(
                                                                     0XFF38888F),
                                                               )))
@@ -238,11 +247,18 @@ class _ProfileState extends State<Profile> {
                                                               size.width * 0.11,
                                                           child: IconButton(
                                                               onPressed: () {
-                                                                _selectPhoto();
+                                                                // _selectPhoto();
+                                                                Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              const EditProfile()),
+                                                                );
                                                               },
                                                               icon: const Icon(
-                                                                Icons
-                                                                    .add_a_photo,
+                                                                FontAwesomeIcons
+                                                                    .solidEdit,
                                                                 color: Color(
                                                                     0XFF38888F),
                                                               )))
@@ -329,9 +345,9 @@ class _ProfileState extends State<Profile> {
                                 const SizedBox(
                                   height: 30,
                                 ),
-                                Container(
-                                  child: getwidgets(),
-                                ),
+                                // Container(
+                                //   child: getwidgets(),
+                                // ),
                                 //settings
                               ],
                             ),

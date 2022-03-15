@@ -100,7 +100,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return GestureDetector(
+    return SafeArea(
+        child: GestureDetector(
       onTap: () {
         FocusScopeNode currentfocus = FocusScope.of(context);
 
@@ -265,7 +266,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           )))),
             ],
           )),
-    );
+    ));
   }
 
   Future _selectPhoto() async {
