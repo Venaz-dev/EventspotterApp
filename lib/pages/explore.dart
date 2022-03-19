@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:event_spotter/pages/notification.dart';
 
 enum screens { explore, filter }
 
@@ -348,23 +349,39 @@ class _ExploreState extends State<Explore> {
                             ),
                           ),
                           const SizedBox(width: 40.0),
-                          const SizedBox(
-                              width: 27.0,
-                              child: Image(
-                                  image: AssetImage(
-                                      "Assets/icons/notification.png"))),
+                          SizedBox(
+                            width: 55,
+                            height: 55,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const Noti()),
+                                );
+                              },
+                              child: Container(
+                                  child: const Center(
+                                      child: SizedBox(
+                                          width: 30.0,
+                                          child: Image(
+                                              image: AssetImage(
+                                                  "Assets/icons/notification.png"))))),
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ),
                   Container(
                     height: size.height * 0.85,
-                    decoration: const BoxDecoration(color: Color(0xFFE5E5E5)),
+                    decoration: const BoxDecoration(
+                        color: Color.fromARGB(228, 229, 229, 229)),
                     child: Padding(
                       padding: EdgeInsets.only(
                           right: size.width * 0.03,
                           left: size.width * 0.03,
-                          bottom: 10),
+                          bottom: 50),
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: Column(

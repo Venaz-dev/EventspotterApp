@@ -4,6 +4,7 @@ import 'package:event_spotter/pages/request.dart';
 import 'package:event_spotter/pages/timeago.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:event_spotter/widgets/topmenu.dart';
 
 class Noti extends StatefulWidget {
   const Noti({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class _NotiState extends State<Noti> {
   String MainUrl = "https://theeventspotter.com/";
   late SharedPreferences _sharedPreferences;
   late AutoGenerate _notificationModel;
-  int lenght = 2;
+  int length = 2;
   late String token;
   bool _isLoading = true;
   Dio _dio = Dio();
@@ -35,134 +36,176 @@ class _NotiState extends State<Noti> {
 
   @override
   Widget build(BuildContext context) {
-    if (lenght != 0) {
+    if (length != 0) {
       Size size = MediaQuery.of(context).size;
-      return _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Scaffold(
+      return SafeArea(
+          child: Scaffold(
               backgroundColor: Colors.white,
-              body: NestedScrollView(
-                  headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                        const SliverAppBar(
-                          backgroundColor: Colors.white,
-                          elevation: 0,
-                          automaticallyImplyLeading: false,
-                          title: Text(
-                            "Notifications",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 23,
-                            ),
-                          ),
-                          centerTitle: true,
-                        ),
-                      ],
-                  body: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Column(children: [
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: List.generate(lenght, (index) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 10.0, bottom: 10),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (contexxt) =>
-                                          const Pendingrequests()));
-                                },
-                                child: Container(
-                                  decoration: const BoxDecoration(
-                                    color: Color(0XFFFAFAFA),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 20,
-                                            left: 30,
-                                            right: 30.0,
-                                            bottom: 20),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            // Container(
-                                            //   height: 40,
-                                            //   width: 40,
-                                            //   decoration:
-
-                                            //   BoxDecoration(
-                                            //     shape: BoxShape.circle,
-                                            //     image: DecorationImage(
-
-                                            //         image: NetworkImage(imagepath),
-                                            //         fit: BoxFit.cover),
-                                            //   ),
-
-                                            // ),
-
-                                            CircleAvatar(
-                                              backgroundColor: Colors.white,
-                                              radius: 25.0,
-                                              // ignore: unrelated_type_equality_checks
-                                              backgroundImage: _notificationModel
-                                                          .data[index]
-                                                          .user
-                                                          .profilePicture !=
-                                                      ""
-                                                  ? NetworkImage(MainUrl +
-                                                      _notificationModel
-                                                          .data[index]
-                                                          .user
-                                                          .profilePicture!
-                                                          .image)
-                                                  : const AssetImage(
-                                                          'Assets/images/user.png')
-                                                      as ImageProvider,
-                                            ),
-
-                                            const SizedBox(
-                                              width: 20,
-                                            ),
-                                            Expanded(
+              body: Stack(
+                children: [
+                  _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                              color: Color(0xFF3BADB7)))
+                      : NestedScrollView(
+                          headerSliverBuilder: (context, innerBoxIsScrolled) =>
+                              [
+                                // const SliverAppBar(
+                                //   backgroundColor: Colors.white,
+                                //   elevation: 0,
+                                //   automaticallyImplyLeading: false,
+                                //   title: Text(
+                                //     "Notifications",
+                                //     style: TextStyle(
+                                //       color: Colors.black,
+                                //       fontWeight: FontWeight.w700,
+                                //       fontSize: 23,
+                                //     ),
+                                //   ),
+                                //   centerTitle: true,
+                                // ),
+                              ],
+                          body: Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 10.0, left: 10, top: 80, bottom: 0),
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.vertical,
+                                child: Column(children: [
+                                  Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: List.generate(length, (index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 10.0, bottom: 10),
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (contexxt) =>
+                                                          const Pendingrequests()));
+                                            },
+                                            child: Container(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 10),
+                                              decoration: const BoxDecoration(
+                                                  color: Colors.white,
+                                                  border: Border(
+                                                      bottom: BorderSide(
+                                                          color: Color(
+                                                              0xFFE5E7EB)))),
                                               child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(
-                                                    _notificationModel
-                                                        .data[index].title,
-                                                    style: const TextStyle(
-                                                        fontSize: 17),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Text(
-                                                    _notificationModel
-                                                        .data[index].message,
-                                                    style: const TextStyle(
-                                                        fontSize: 16,
-                                                        color: Colors.black54),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 20,
+                                                            left: 10,
+                                                            right: 10.0,
+                                                            bottom: 20),
+                                                    child: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: <Widget>[
+                                                        // Container(
+                                                        //   height: 40,
+                                                        //   width: 40,
+                                                        //   decoration:
+
+                                                        //   BoxDecoration(
+                                                        //     shape: BoxShape.circle,
+                                                        //     image: DecorationImage(
+
+                                                        //         image: NetworkImage(imagepath),
+                                                        //         fit: BoxFit.cover),
+                                                        //   ),
+
+                                                        // ),
+
+                                                        CircleAvatar(
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          radius: 25.0,
+                                                          // ignore: unrelated_type_equality_checks
+                                                          backgroundImage: _notificationModel
+                                                                      .data[
+                                                                          index]
+                                                                      .user
+                                                                      .profilePicture !=
+                                                                  ""
+                                                              ? NetworkImage(MainUrl +
+                                                                  _notificationModel
+                                                                      .data[
+                                                                          index]
+                                                                      .user
+                                                                      .profilePicture!
+                                                                      .image)
+                                                              : const AssetImage(
+                                                                      'Assets/images/user.png')
+                                                                  as ImageProvider,
+                                                        ),
+
+                                                        const SizedBox(
+                                                          width: 20,
+                                                        ),
+                                                        Expanded(
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Row(
+                                                                children: [
+                                                                  Text(
+                                                                    _notificationModel
+                                                                        .data[
+                                                                            index]
+                                                                        .title,
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            18,
+                                                                        color: Color(
+                                                                            0xFF101010)),
+                                                                  ),
+                                                                  const Spacer(),
+                                                                  time(index),
+                                                                ],
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              Text(
+                                                                _notificationModel
+                                                                    .data[index]
+                                                                    .message,
+                                                                maxLines: 2,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        16,
+                                                                    color: Color(
+                                                                        0xFF606060)),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ],
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                      time(index),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          })),
-                    ]),
-                  )));
+                                          ),
+                                        );
+                                      })),
+                                ]),
+                              ))),
+                  const Topmenu(title: "Notifications"),
+                ],
+              )));
     } else {
       return Scaffold(
         backgroundColor: Colors.white,
@@ -201,7 +244,7 @@ class _NotiState extends State<Noti> {
       Response response = await _dio.get(NotificationUrl);
       if (response.data["success"] == true) {
         _notificationModel = AutoGenerate.fromJson(response.data);
-        lenght = _notificationModel.data.length;
+        length = _notificationModel.data.length;
         // print(response);
       }
     } catch (e) {

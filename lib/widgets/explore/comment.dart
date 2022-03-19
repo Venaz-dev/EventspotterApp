@@ -10,6 +10,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:event_spotter/widgets/topmenu.dart';
 
 class Commentofuser extends StatefulWidget {
   EventsModel eventsModel;
@@ -40,286 +41,309 @@ class _CommentofuserState extends State<Commentofuser> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        body: Padding(
-          padding:
-               EdgeInsets.only( right : size.width*0.03, left :size.width*0.03, top: 20, bottom: 30),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                Textform(
-                  controller: _search,
-                  icon: Icons.search,
-                  label: "Search",
-                  color: const Color(0XFFECF2F3),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  
-                  width: size.width * double.infinity,
-                  decoration: BoxDecoration(
-                    color : Colors.white,
-                  boxShadow: const [BoxShadow(
-                    color: Colors.black12,
-                    spreadRadius: 2,
-                    blurRadius: 2,
-                  )],
-                   
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Column(children: [
-                    Container(
-                      height: size.height * 0.25,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      width: size.width * double.infinity,
-                      child: Stack(children: [
-                        widget.eventsModel.data[widget.index].events
-                                    .eventPictures[0].imagePath
-                                    .toString()
-                                    .contains('.mp4') ||
-                                widget.eventsModel.data[widget.index].events
-                                    .eventPictures[0].imagePath
-                                    .toString()
-                                    .contains('.mov')
-                            ? VideoPlayerScreennnn(
-                                url: MainUrl +
-                                    widget.eventsModel.data[widget.index].events
-                                        .eventPictures[0].imagePath)
-                            : Container(
-                                height: size.height * 0.25,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: CachedNetworkImage(
-                                    imageUrl: MainUrl +
-                                        widget.eventsModel.data[widget.index]
-                                            .events.eventPictures[0].imagePath,
-                                    // imageUrl: mainurl +
-                                    //     widget.model!.data[widget.indexs!].events
-                                    //         .eventPictures[0].imagePath,
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) {
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                        
-                     Positioned(
-                          bottom: 0,
-                          right: size.width * 0.02,
-                          left: size.width * 0.02,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        backgroundColor: Colors.white,
+        body: GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: Stack(children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    right: 10, left: 10, top: 60, bottom: 10),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    children: [
+                      // Textform(
+                      //   controller: _search,
+                      //   icon: Icons.search,
+                      //   label: "Searching",
+                      //   color: const Color(0XFFECF2F3),
+                      // ),
+
+                      // Container(
+                      //   width: size.width * double.infinity,
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.white,
+                      //     boxShadow: const [
+                      //       BoxShadow(
+                      //         color: Colors.black12,
+                      //         spreadRadius: 2,
+                      //         blurRadius: 2,
+                      //       )
+                      //     ],
+                      //     borderRadius: BorderRadius.circular(15),
+                      //   ),
+                      //   child: Column(children: [
+                      //     Container(
+                      //       height: size.height * 0.25,
+                      //       decoration: BoxDecoration(
+                      //         borderRadius: BorderRadius.circular(15),
+                      //       ),
+                      //       width: size.width * double.infinity,
+                      //       child: Stack(children: [
+                      //         widget.eventsModel.data[widget.index].events
+                      //                     .eventPictures[0].imagePath
+                      //                     .toString()
+                      //                     .contains('.mp4') ||
+                      //                 widget.eventsModel.data[widget.index]
+                      //                     .events.eventPictures[0].imagePath
+                      //                     .toString()
+                      //                     .contains('.mov')
+                      //             ? VideoPlayerScreennnn(
+                      //                 url: MainUrl +
+                      //                     widget
+                      //                         .eventsModel
+                      //                         .data[widget.index]
+                      //                         .events
+                      //                         .eventPictures[0]
+                      //                         .imagePath)
+                      //             : Container(
+                      //                 height: size.height * 0.25,
+                      //                 width: double.infinity,
+                      //                 decoration: BoxDecoration(
+                      //                     borderRadius:
+                      //                         BorderRadius.circular(20)),
+                      //                 child: ClipRRect(
+                      //                   borderRadius: BorderRadius.circular(15),
+                      //                   child: CachedNetworkImage(
+                      //                     imageUrl: MainUrl +
+                      //                         widget
+                      //                             .eventsModel
+                      //                             .data[widget.index]
+                      //                             .events
+                      //                             .eventPictures[0]
+                      //                             .imagePath,
+                      //                     // imageUrl: mainurl +
+                      //                     //     widget.model!.data[widget.indexs!].events
+                      //                     //         .eventPictures[0].imagePath,
+                      //                     fit: BoxFit.cover,
+                      //                     placeholder: (context, url) {
+                      //                       return const Center(
+                      //                         child:
+                      //                             CircularProgressIndicator(),
+                      //                       );
+                      //                     },
+                      //                   ),
+                      //                 ),
+                      //               ),
+                      //         Positioned(
+                      //           bottom: 0,
+                      //           right: size.width * 0.02,
+                      //           left: size.width * 0.02,
+                      //           child: Row(
+                      //             mainAxisAlignment:
+                      //                 MainAxisAlignment.spaceBetween,
+                      //             children: [
+                      //               Button(
+                      //                 onpressed: () {},
+                      //                 title: widget.eventsModel
+                      //                     .data[widget.index].events.user.name,
+                      //                 // widget.model!.data[widget.indexs!].events
+                      //                 //     .user.name,
+                      //                 radiusofbutton: BorderRadius.circular(20),
+                      //                 profileImage: MainUrl +
+                      //                     widget
+                      //                         .eventsModel
+                      //                         .data[widget.index]
+                      //                         .events
+                      //                         .user
+                      //                         .profilePicture!
+                      //                         .image,
+                      //                 //mainurl +
+                      //                 // widget.
+                      //                 // model!.data[widget.indexs!].events
+                      //                 //     .user.profilePicture!.image!
+                      //               ),
+                      //               const SizedBox(
+                      //                 width: 10,
+                      //               ),
+                      //               // Buttonicon(
+                      //               //     radiusofbutton: BorderRadius.circular(20),
+                      //               //     icon: FontAwesomeIcons.userPlus,
+                      //               //     title: "sfssf"
+                      //               //     // widget
+                      //               //     //         .model!.data[widget.indexs!].Following
+                      //               //     //         .toString() +
+                      //               //     //     " " "Followers",
+                      //               //     ),
+                      //             ],
+                      //           ),
+                      //         ),
+                      //       ]),
+                      //     ),
+                      //     const SizedBox(height: 5),
+                      //     Row(
+                      //       mainAxisAlignment: MainAxisAlignment.end,
+                      //       children: [
+                      //         const Icon(
+                      //           FontAwesomeIcons.calendar,
+                      //           size: 15,
+                      //           color: Colors.black54,
+                      //         ),
+                      //         const SizedBox(
+                      //           width: 2,
+                      //         ),
+                      //         Text(
+                      //           widget.eventsModel.data[widget.index].events
+                      //               .eventDate,
+                      //           // widget.model!.data[widget.indexs!].events
+                      //           //     .eventDate,
+                      //           style: const TextStyle(color: Colors.black87),
+                      //         ),
+                      //         const SizedBox(
+                      //           width: 20,
+                      //         ),
+                      //         const Icon(
+                      //           FontAwesomeIcons.mapMarkerAlt,
+                      //           size: 15,
+                      //           color: Colors.black54,
+                      //         ),
+                      //         Text(
+                      //             widget.eventsModel.data[widget.index].km +
+                      //                 " " +
+                      //                 "away",
+                      //             style: TextStyle(color: Colors.black87)),
+                      //       ],
+                      //     ),
+                      //     Padding(
+                      //       padding: const EdgeInsets.only(left: 20.0),
+                      //       child: Container(
+                      //         alignment: Alignment.centerLeft,
+                      //         child: AutoSizeText(
+                      //           widget.eventsModel.data[widget.index].events
+                      //               .eventName,
+                      //           style: const TextStyle(
+                      //               fontSize: 20,
+                      //               color: Colors.black,
+                      //               fontWeight: FontWeight.w400),
+                      //           minFontSize: 17,
+                      //           maxFontSize: 20,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     const SizedBox(
+                      //       height: 10,
+                      //     ),
+                      //     IntrinsicHeight(
+                      //       child: Row(
+                      //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      //         children: [
+                      //           extras(
+                      //               FontAwesomeIcons.thumbsUp,
+                      //               widget
+                      //                   .eventsModel.data[widget.index].isLiked
+                      //                   .toString(),
+                      //               // widget
+                      //               //     .model!.data[widget.indexs!].isLiked
+                      //               //     .toString(),
+                      //               size),
+                      //           divider(),
+                      //           SizedBox(
+                      //             height: size.height * 0.04,
+                      //             child: ElevatedButton(
+                      //               style: ElevatedButton.styleFrom(
+                      //                   primary: Colors.green,
+                      //                   shape: RoundedRectangleBorder(
+                      //                       borderRadius:
+                      //                           BorderRadius.circular(15))),
+                      //               onPressed: () {},
+                      //               child: extras(
+                      //                   Icons.comment,
+                      //                   widget.eventsModel.data[widget.index]
+                      //                       .events.comment.length
+                      //                       .toString(),
+                      //                   // widget.model!.data[widget.indexs!]
+                      //                   //     .events.comment.length
+                      //                   //     .toString(),
+                      //                   size),
+                      //             ),
+                      //           ),
+                      //           // divider(),
+                      //           // extras(MdiIcons.share, posts[1]['share'],
+                      //           //     size),
+                      //           divider(),
+                      //           extras(
+                      //               Icons.live_tv,
+                      //               "0",
+                      //               // widget.model!.data[widget.indexs!]
+                      //               //     .events.liveFeed.length
+                      //               //     .toString(),
+                      //               size),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ]),
+                      // ),
+                      const SizedBox(height: 20),
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(15),
+                          // boxShadow: const [
+                          //   //background color of box
+                          //   BoxShadow(
+                          //       color: Colors.black12,
+                          //       blurRadius: 2,
+                          //       spreadRadius: 2.0,
+                          //       offset: Offset(
+                          //         0,
+                          //         0,
+                          //       ))
+                          // ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Button(
-                                onpressed: (){},
-                                title: widget.eventsModel.data[widget.index]
-                                    .events.user.name,
-                                // widget.model!.data[widget.indexs!].events
-                                //     .user.name,
-                                radiusofbutton: BorderRadius.circular(20),
-                                profileImage: MainUrl +
-                                    widget.eventsModel.data[widget.index].events
-                                        .user.profilePicture!.image,
-                                //mainurl +
-                                // widget.
-                                // model!.data[widget.indexs!].events
-                                //     .user.profilePicture!.image!
-                              ),
+                              widget.eventsModel.data[widget.index].events
+                                      .comment.isNotEmpty
+                                  ? Text(
+                                      widget.eventsModel.data[widget.index]
+                                              .events.comment.isEmpty
+                                          ? "Comment"
+                                          : "Comments" +
+                                              " " +
+                                              "(" +
+                                              widget
+                                                  .eventsModel
+                                                  .data[widget.index]
+                                                  .events
+                                                  .comment
+                                                  .length
+                                                  .toString() +
+                                              ")",
+                                      style: const TextStyle(
+                                          color: Color(0xFF101010),
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.w500),
+                                    )
+                                  : const Text(
+                                      "No comments",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.w500),
+                                    ),
                               const SizedBox(
-                                width: 10,
+                                height: 20,
                               ),
-                              // Buttonicon(
-                              //     radiusofbutton: BorderRadius.circular(20),
-                              //     icon: FontAwesomeIcons.userPlus,
-                              //     title: "sfssf"
-                              //     // widget
-                              //     //         .model!.data[widget.indexs!].Following
-                              //     //         .toString() +
-                              //     //     " " "Followers",
-                              //     ),
+                              Commentbyperson(size,
+                                  eventsModel: widget.eventsModel,
+                                  index: widget.index,
+                                  eventId: widget
+                                      .eventsModel.data[widget.index].events.id)
                             ],
                           ),
                         ),
-                      ]),
-                    ),
-                  const   SizedBox(height : 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        const Icon(
-                          FontAwesomeIcons.calendar,
-                          size: 15,
-                          color: Colors.black54,
-                        ),
-                        const SizedBox(
-                          width: 2,
-                        ),
-                        Text(
-                          widget.eventsModel.data[widget.index].events
-                              .eventDate,
-                          // widget.model!.data[widget.indexs!].events
-                          //     .eventDate,
-                          style: const TextStyle(color: Colors.black87),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        const Icon(
-                          FontAwesomeIcons.mapMarkerAlt,
-                          size: 15,
-                          color: Colors.black54,
-                        ),
-                        Text(
-                            widget.eventsModel.data[widget.index].km +
-                                " " +
-                                "away",
-                            style: TextStyle(color: Colors.black87)),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: Container(
-                        
-                        alignment: Alignment.centerLeft,
-                        child: AutoSizeText(
-                        
-                          widget.eventsModel.data[widget.index].events
-                              .eventName,
-                          style: const TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400),
-                              minFontSize: 17,
-                              maxFontSize: 20,
-                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    IntrinsicHeight(
-                      child: Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.spaceAround,
-                        children: [
-                          extras(
-                              FontAwesomeIcons.thumbsUp,
-                              widget.eventsModel.data[widget.index]
-                                  .isLiked
-                                  .toString(),
-                              // widget
-                              //     .model!.data[widget.indexs!].isLiked
-                              //     .toString(),
-                              size),
-                          divider(),
-                          SizedBox(
-                            height: size.height * 0.04,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.green,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(15))),
-                              onPressed: () {},
-                              child: extras(
-                                  Icons.comment,
-                                  widget.eventsModel.data[widget.index]
-                                      .events.comment.length
-                                      .toString(),
-                                  // widget.model!.data[widget.indexs!]
-                                  //     .events.comment.length
-                                  //     .toString(),
-                                  size),
-                            ),
-                          ),
-                          // divider(),
-                          // extras(MdiIcons.share, posts[1]['share'],
-                          //     size),
-                          divider(),
-                          extras(
-                              Icons.live_tv,
-                              "0",
-                              // widget.model!.data[widget.indexs!]
-                              //     .events.liveFeed.length
-                              //     .toString(),
-                              size),
-                        ],
-                      ),
-                    ),
-                  ]),
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: const [
-                      //background color of box
-                      BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 2,
-                          spreadRadius: 2.0,
-                          offset: Offset(
-                            0,
-                            0,
-                          ))
                     ],
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        widget.eventsModel.data[widget.index].events.comment
-                                .isNotEmpty
-                            ? Text(
-                                widget.eventsModel.data[widget.index].events
-                                        .comment.isEmpty
-                                    ? "Comment"
-                                    : "Comments" +
-                                        " " +
-                                        widget.eventsModel.data[widget.index]
-                                            .events.comment.length
-                                            .toString(),
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.w500),
-                              )
-                            : const Text(
-                                "No comments",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Commentbyperson(
-                            eventsModel: widget.eventsModel,
-                            index: widget.index,
-                            eventId:
-                                widget.eventsModel.data[widget.index].events.id)
-                      ],
-                    ),
-                  ),
                 ),
-              ],
-            ),
-          ),
-        ),
+              ),
+              Topmenu(
+                  title: widget.eventsModel.data[widget.index].events.eventName)
+            ])),
       ),
     );
   }
@@ -356,7 +380,7 @@ class Commentbyperson extends StatefulWidget {
   EventsModel eventsModel;
   int index;
   int eventId;
-  Commentbyperson(
+  Commentbyperson(Size size,
       {Key? key,
       required this.eventsModel,
       required this.index,
@@ -392,94 +416,115 @@ class _CommentbypersonState extends State<Commentbyperson> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     print(widget.eventsModel.data[widget.index].events.comment.length);
-    return Column(
+    return Stack(
       children: [
-        Column(
-            children: List.generate(listcomments.length, (index) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 10.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFFF7F7F7),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+        Container(
+            height: size.height * 0.78,
+            child: Column(
+                children: List.generate(listcomments.length, (index) {
+              return Padding(
+                  padding: const EdgeInsets.only(bottom: 20.0),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  image: CachedNetworkImageProvider(MainUrl +
-                                      listcomments[index]['img']),
-                                  fit: BoxFit.cover)),
+                        Row(
+                          children: [
+                            Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      image: CachedNetworkImageProvider(
+                                          MainUrl + listcomments[index]['img']),
+                                      fit: BoxFit.cover)),
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              listcomments[index]['name'],
+                              style: const TextStyle(fontSize: 18),
+                            ),
+                          ],
                         ),
                         const SizedBox(
-                          width: 20,
+                          height: 8,
                         ),
-                        Text(
-                          listcomments[index]['name'],
-                              
-                          style: TextStyle(fontSize: 18),
+                        Container(
+                          constraints:
+                              BoxConstraints(maxWidth: size.width * 0.75),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF9F9F9),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 40.0,
+                                      left: 16,
+                                      top: 10,
+                                      bottom: 5),
+                                  child: Text(listcomments[index]['comment'],
+                                      style: TextStyle(fontSize: 18)),
+                                ),
+                                Row(children: [
+                                  const Spacer(),
+                                  time(index),
+                                ])
+                              ],
+                            ),
+                          ),
                         ),
-                        const Spacer(),
-                        time(index),
-                      ],
+                      ]));
+            }))),
+        Positioned(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            left: 0.0,
+            right: 0.0,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: const Color(0xFFF7F7F7),
+                  borderRadius: BorderRadius.circular(10)),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: TextField(
+                        maxLines: null,
+                        controller: _comment,
+                        cursorColor: Colors.black54,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Write the comment"),
+                      ),
                     ),
-                    Padding(
-                        padding: EdgeInsets.only(
-                            right: 40.0, left: 40, top: 5, bottom: 5),
-                        child: Text(listcomments[index]['comment']))
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: const Color(0xFF3BACEC),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        onPressed: () async {
+                          if (_comment.text.isEmpty) {
+                            showToaster("please write the comment");
+                          } else {
+                            await PostComment(widget.eventId);
+                            clearText();
+                            // Navigator.pop(context);
+                          }
+                        },
+                        child: const Text('Comment')),
                   ],
                 ),
               ),
-            ),
-          );
-        })),
-        Container(
-          decoration: BoxDecoration(
-              color: const Color(0xFFF7F7F7),
-              borderRadius: BorderRadius.circular(10)),
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              children: [
-                Flexible(
-                  child: TextField(
-                    maxLines: null,
-                    controller: _comment,
-                    cursorColor: Colors.black54,
-                    decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Write the comment"),
-                  ),
-                ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        primary: const Color(0xFF3BACEC),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                    onPressed: () async {
-                      if (_comment.text.isEmpty) {
-                        showToaster("please write the comment");
-                      } else {
-                        await PostComment(widget.eventId);
-                        clearText();
-                       // Navigator.pop(context);
-                      }
-                    },
-                    child: const Text('Comment')),
-              ],
-            ),
-          ),
-        ),
+            )),
       ],
     );
   }
@@ -529,36 +574,34 @@ class _CommentbypersonState extends State<Commentbyperson> {
       "comment": _comment.text,
     });
     _dio.options.headers["Authorization"] = "Bearer ${_token}";
-    try{
-    await _dio.post(postCommenturl, data: formData).then((value) {
-      print(value.data.toString());
-      if (value.data['success'] == true) {
-        print(value.data);
-        showToaster("Comment Sent");
+    try {
+      await _dio.post(postCommenturl, data: formData).then((value) {
+        print(value.data.toString());
+        if (value.data['success'] == true) {
+          print(value.data);
+          showToaster("Comment Sent");
 
-        var text = value.data["data"]["comment"];
-        var text1 = value.data["data"]["created_at"];
-        // print(text);
-        // print(created);
-        var js = {
-          'name': _name,
-          'img': _picture,
-          'comment': _comment.text,
-          'createdAt': text1
-        };
-        listcomments.add(js);
-        setState(() {});
-        print("////////////");
-        // listcomments.add(text);
-        createdAt.add(text1);
-      } else {
-        showToaster("error");
-        //text = " ";
-      }
-    }
-   
-    );
-     }catch(e){
+          var text = value.data["data"]["comment"];
+          var text1 = value.data["data"]["created_at"];
+          // print(text);
+          // print(created);
+          var js = {
+            'name': _name,
+            'img': _picture,
+            'comment': _comment.text,
+            'createdAt': text1
+          };
+          listcomments.add(js);
+          setState(() {});
+          print("////////////");
+          // listcomments.add(text);
+          createdAt.add(text1);
+        } else {
+          showToaster("error");
+          //text = " ";
+        }
+      });
+    } catch (e) {
       print(e.toString());
     }
     //  print(text);

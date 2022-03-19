@@ -579,7 +579,7 @@ class _EventssState extends State<Eventss> {
           },
           child: const Padding(
               padding:
-                  EdgeInsets.only(right: 11, left: 11, top: 11, bottom: 11),
+                  EdgeInsets.only(right: 11, top: 11, bottom: 11),
               // decoration: BoxDecoration(
               //     borderRadius: const BorderRadius.all(Radius.circular(40)),
               //     border: Border.all(color: const Color(0xff200E32))),

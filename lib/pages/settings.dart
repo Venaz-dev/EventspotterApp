@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:event_spotter/widgets/topmenu.dart';
 
 enum scrolling { personal, settings }
 
@@ -210,60 +211,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                 ),
               ),
-              Positioned(
-                top: 0.0,
-                left: 0.0,
-                right: 0.0,
-                child: Container(
-                    height: 60,
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        border: Border(
-                            bottom: BorderSide(
-                                color: Color(0xFFE5E7EB), width: 1))),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0, right: 20),
-                      child: Row(
-                        children: const [
-                          Spacer(),
-                          Text(
-                            "Settings",
-                            style: TextStyle(
-                                color: Color(0xff222222),
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500),
-                            textAlign: TextAlign.center,
-                          ),
-                          Spacer(),
-                        ],
-                      ),
-                    )),
-              ),
-              Positioned(
-                  top: 0.0,
-                  left: 20.0,
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                          height: 60,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: const [
-                              Icon(
-                                Icons.arrow_back_ios,
-                                color: Color(0xff101010),
-                                size: 22.0,
-                              ),
-                              Text(
-                                "Back",
-                                style: TextStyle(
-                                    color: Color(0xff222222), fontSize: 16),
-                                textAlign: TextAlign.left,
-                              ),
-                            ],
-                          )))),
+              const Topmenu(title: "Settings"),
             ],
           )),
     ));

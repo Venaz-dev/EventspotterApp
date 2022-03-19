@@ -610,9 +610,20 @@ class _YoureventsState extends State<Yourevents> {
                                                 .imagePath,
                                         fit: BoxFit.cover,
                                         placeholder: (context, url) {
-                                          return const Center(
-                                            child: CircularProgressIndicator(),
-                                          );
+                                          return ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: Container(
+                                                  color:
+                                                      const Color(0xFFC8C8C8),
+                                                  height: size.width * 0.3,
+                                                  width: size.width * 0.3,
+                                                  child: const Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                            color: Color(
+                                                                0xFF3BADB7)),
+                                                  )));
                                         },
                                       ),
                                     ),
@@ -792,9 +803,20 @@ class _YoureventsState extends State<Yourevents> {
                                                 .eventPictures[0].imagePath,
                                         fit: BoxFit.cover,
                                         placeholder: (context, url) {
-                                          return const Center(
-                                            child: CircularProgressIndicator(),
-                                          );
+                                          return ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: Container(
+                                                  color:
+                                                      const Color(0xFFC8C8C8),
+                                                  height: size.width * 0.3,
+                                                  width: size.width * 0.3,
+                                                  child: const Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                            color: Color(
+                                                                0xFF3BADB7)),
+                                                  )));
                                         },
                                       ),
                                     ),
@@ -979,10 +1001,20 @@ class _YoureventsState extends State<Yourevents> {
                                                     .eventPictures[0].imagePath,
                                             fit: BoxFit.cover,
                                             placeholder: (context, url) {
-                                              return const Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              );
+                                              return ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: Container(
+                                                      color: const Color(
+                                                          0xFFC8C8C8),
+                                                      height: size.width * 0.3,
+                                                      width: size.width * 0.3,
+                                                      child: const Center(
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                                color: Color(
+                                                                    0xFF3BADB7)),
+                                                      )));
                                             },
                                           ),
                                         ),
@@ -1112,9 +1144,16 @@ class _VideoPlayerScreennnState extends State<VideoPlayerScreennn> {
             } else {
               // If the VideoPlayerController is still initializing, show a
               // loading spinner.
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                      color: const Color(0xFFC8C8C8),
+                      height: size.width * 0.3,
+                      width: size.width * 0.3,
+                      child: const Center(
+                        child:
+                            CircularProgressIndicator(color: Color(0xFF3BADB7)),
+                      )));
             }
           },
         ),

@@ -90,86 +90,122 @@ class _DashboardState extends State<Dashboard> {
     List bottomitems = [
       pageindex == 0
           ? Column(
-              children: const [
-                SizedBox(
-                    width: 24.0,
-                    child:
-                        Image(image: AssetImage("Assets/icons/explore.png"))),
+              children: [
+                Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(12),
+                    child: const SizedBox(
+                        width: 24.0,
+                        child: Image(
+                            image: AssetImage("Assets/icons/explore.png")))),
               ],
             )
           : Column(
-              children: const [
-                SizedBox(
-                    width: 24.0,
-                    child: Image(
-                        image:
-                            AssetImage("Assets/icons/explore-inactive.png"))),
+              children: [
+                Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(12),
+                    child: const SizedBox(
+                        width: 24.0,
+                        child: Image(
+                            image: AssetImage(
+                                "Assets/icons/explore-inactive.png")))),
               ],
             ),
       pageindex == 1
           ? Column(
-              children: const [
-                SizedBox(
-                    width: 22.0,
-                    child: Image(
-                        image: AssetImage("Assets/icons/more-inactive.png"))),
+              children: [
+                Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(12),
+                    child: const SizedBox(
+                        width: 22.0,
+                        child: Image(
+                            image:
+                                AssetImage("Assets/icons/more-inactive.png")))),
               ],
             )
           : Column(
-              children: const [
-                SizedBox(
-                    width: 22.0,
-                    child: Image(
-                        image: AssetImage("Assets/icons/more-inactive.png"))),
+              children: [
+                Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(12),
+                    child: const SizedBox(
+                        width: 22.0,
+                        child: Image(
+                            image:
+                                AssetImage("Assets/icons/more-inactive.png")))),
               ],
             ),
       pageindex == 2
           ? Column(
-              children: const [
-                SizedBox(
-                    width: 35.0,
-                    child: Image(image: AssetImage("Assets/icons/plus.png"))),
+              children: [
+                Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(12),
+                    child: const SizedBox(
+                        width: 35.0,
+                        child:
+                            Image(image: AssetImage("Assets/icons/plus.png")))),
               ],
             )
           : Column(
-              children: const [
-                SizedBox(
-                    width: 35.0,
-                    child: Image(image: AssetImage("Assets/icons/plus.png"))),
+              children: [
+                Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(12),
+                    child: const SizedBox(
+                        width: 35.0,
+                        child:
+                            Image(image: AssetImage("Assets/icons/plus.png")))),
               ],
             ),
       pageindex == 3
           ? Column(
-              children: const [
-                SizedBox(
-                    width: 22.0,
-                    child: Image(image: AssetImage("Assets/icons/chat.png"))),
+              children: [
+                Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(12),
+                    child: const SizedBox(
+                        width: 22.0,
+                        child:
+                            Image(image: AssetImage("Assets/icons/chat.png")))),
               ],
             )
           : Column(
-              children: const [
-                SizedBox(
-                    width: 22.0,
-                    child: Image(
-                        image: AssetImage("Assets/icons/chat-inactive.png"))),
+              children: [
+                Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(12),
+                    child: const SizedBox(
+                        width: 22.0,
+                        child: Image(
+                            image:
+                                AssetImage("Assets/icons/chat-inactive.png")))),
               ],
             ),
       pageindex == 4
           ? Column(
-              children: const [
-                SizedBox(
-                    width: 20.0,
-                    child:
-                        Image(image: AssetImage("Assets/icons/profile.png"))),
+              children: [
+                Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(12),
+                    child: const SizedBox(
+                        width: 20.0,
+                        child: Image(
+                            image: AssetImage("Assets/icons/profile.png")))),
               ],
             )
           : Column(
-              children: const [
-                SizedBox(
-                    width: 20.0,
-                    child: Image(
-                        image:
-                            AssetImage("Assets/icons/profile-inactive.png"))),
+              children: [
+                Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(12),
+                    child: const SizedBox(
+                        width: 20.0,
+                        child: Image(
+                            image: AssetImage(
+                                "Assets/icons/profile-inactive.png")))),
               ],
             ),
     ];

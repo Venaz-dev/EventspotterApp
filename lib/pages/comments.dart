@@ -407,8 +407,8 @@ class _CommentbypersonState extends State<Commentbyperson> {
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                  image: CachedNetworkImageProvider(MainUrl +
-                                      comments[index]['profile_pic']),
+                                  image: CachedNetworkImageProvider(
+                                      MainUrl + comments[index]['profile_pic']),
                                   fit: BoxFit.cover)),
                         ),
                         const SizedBox(
@@ -479,8 +479,7 @@ class _CommentbypersonState extends State<Commentbyperson> {
       child: Align(
         alignment: Alignment.bottomRight,
         child: Text(
-          TimeAgo.displayTimeAgoFromTimestamp(
-              comments[index]['createdAt']),
+          TimeAgo.displayTimeAgoFromTimestamp(comments[index]['createdAt']),
           style: const TextStyle(fontSize: 15, color: Colors.black45),
         ),
       ),

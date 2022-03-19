@@ -9,6 +9,7 @@ import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_6.dart';
 import 'package:pusher_client/pusher_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_chat_bubble/bubble_type.dart';
+import 'package:event_spotter/widgets/topmenu.dart';
 
 class ChatScreen extends StatefulWidget {
   String name;
@@ -48,10 +49,17 @@ class _ChatScreenState extends State<ChatScreen> {
   final Dio _dio = Dio();
   _buildMessageComposer() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      padding: const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
       height: 70.0,
       decoration: const BoxDecoration(
         color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            spreadRadius: 2,
+            blurRadius: 2,
+          )
+        ],
         //  borderRadius: BorderRadius.only(
         //    topLeft: Radius.circular(20) , topRight : Radius.circular(20)),
       ),
@@ -59,6 +67,7 @@ class _ChatScreenState extends State<ChatScreen> {
         children: <Widget>[
           Expanded(
             child: TextFormField(
+              maxLines: null,
               controller: _writemessage,
               textCapitalization: TextCapitalization.sentences,
               onChanged: (value) {},
@@ -67,11 +76,14 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ),
           ),
+          const SizedBox(
+            width: 10,
+          ),
           Container(
             height: 35,
             width: 35,
             decoration: const BoxDecoration(
-                color: Color(0XFF17796F), shape: BoxShape.circle),
+                color: Color(0XFF3BADB7), shape: BoxShape.circle),
             child: Align(
               alignment: Alignment.center,
               child: StreamBuilder<bool>(
@@ -87,7 +99,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 color: Colors.white,
                               ),
                         iconSize: 20.0,
-                        color: const Color(0XFF368890),
+                        color: const Color(0XFF3BADB7),
                         onPressed: () {
                           Map<String, dynamic> ssq = {
                             'content': _writemessage.text,
@@ -137,140 +149,247 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0XFF17796F),
-      appBar: AppBar(
-        backgroundColor: const Color(0XFF17796F),
-        title: Text(
-          widget.name,
-          style: const TextStyle(
-            fontSize: 28.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        elevation: 0.3,
-      ),
+    Size size = MediaQuery.of(context).size;
+    return SafeArea(
+        child: Scaffold(
+      backgroundColor: Colors.white,
+      // appBar: AppBar(
+      //   backgroundColor: const Color(0XFF17796F),
+      //   title: Text(
+      //     widget.name,
+      //     style: const TextStyle(
+      //       fontSize: 28.0,
+      //       fontWeight: FontWeight.bold,
+      //     ),
+      //   ),
+      //   elevation: 0.3,
+      // ),
       body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: SingleChildScrollView(
-          child: Column(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Stack(
             children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.8,
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('Assets/images/chat_background.jpeg'),
-                        fit: BoxFit.cover)),
-                child: Stack(
-                  children: [
-                    ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(30.0),
-                          topRight: Radius.circular(30.0),
-                        ),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: StreamBuilder<dynamic>(
-                              stream: chatStream1.stream,
-                              builder: (context, AsyncSnapshot snapshot) {
-                                if (snapshot.hasError) {
-                                  return const Text('error');
-                                } else if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const CircularProgressIndicator();
-                                }
+              SingleChildScrollView(
+                  child: Column(
+                children: [
+                  const SizedBox(height: 60),
+                  Container(
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      width: double.infinity,
+                      // decoration: const BoxDecoration(
+                      //     image: DecorationImage(
+                      //         image: AssetImage(
+                      //             'Assets/images/chat_background.jpeg'),
+                      //         fit: BoxFit.cover)),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: Stack(
+                          children: [
+                            ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(30.0),
+                                  topRight: Radius.circular(30.0),
+                                ),
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  child: StreamBuilder<dynamic>(
+                                      stream: chatStream1.stream,
+                                      builder:
+                                          (context, AsyncSnapshot snapshot) {
+                                        if (snapshot.hasError) {
+                                          return const Text('error');
+                                        } else if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return SizedBox(
+                                              height: size.height * 0.7,
+                                              child: const Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                          color: Color(
+                                                              0XFF3BADB7))));
+                                        }
 
-                                return Column(
-                                    children:
-                                        List.generate(chatList.length, (index) {
-                                  return !(chatList[index]['content'] != null) ||
-                                          chatList[index]['content'].toString() !=""
-                                      ? ChatBubble(
-                                          clipper: ChatBubbleClipper6(
-                                            type: chatList[index]['toUserId'] ==
-                                                    _id
-                                                ? BubbleType.receiverBubble
-                                                : BubbleType.sendBubble,
-                                          ),
-                                          alignment:
-                                              chatList[index]['toUserId'] == _id
-                                                  ? Alignment.topLeft
-                                                  : Alignment.topRight,
-                                          margin: const EdgeInsets.only(
-                                            top: 10,
-                                          ),
-                                          backGroundColor:
-                                              chatList[index]['toUserId'] == _id
-                                                  ? Colors.white
-                                                  : Colors.green,
-                                          child: Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.3,
-                                              margin: chatList[index]
-                                                          ['toUserId'] ==
-                                                      _id
-                                                  ? const EdgeInsets.only(
-                                                      top: 5.0,
-                                                      bottom: 5.0,
-                                                    )
-                                                  : const EdgeInsets.only(
-                                                      top: 5,
-                                                      bottom: 5.0,
-                                                    ),
-                                              child: chatList[index]
-                                                          ['toUserId'] ==
-                                                      _id
-                                                  // ignore: prefer_const_constructors
-                                                  ? Align(
-                                                      alignment:
-                                                          Alignment.centerLeft,
-                                                      child: Text(
-                                                        chatList[index]
-                                                            ['content']!,
-                                                        style: const TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 16.0,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                                      ),
-                                                    )
-                                                  : Align(
-                                                      alignment:
-                                                          Alignment.centerLeft,
-                                                      child: Text(
-                                                        chatList[index]
-                                                            ['content']!,
-                                                        style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 16.0,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                                      ),
-                                                    )),
-                                        )
-                                      : const SizedBox();
-                                }));
-                                // return const SizedBox(child: Text('asdf'),);
-                              }),
-                        )),
-                  ],
-                ),
+                                        return Column(
+                                            children: List.generate(
+                                                chatList.length, (index) {
+                                          return !(chatList[index]['content'] !=
+                                                      null) ||
+                                                  chatList[index]['content']
+                                                          .toString() !=
+                                                      ""
+                                              ? Container(
+                                                  child: chatList[index]
+                                                              ['toUserId'] ==
+                                                          _id
+                                                      ? recieverBubble(
+                                                          size,
+                                                          chatList[index]
+                                                              ['content']!)
+                                                      : senderBubble(
+                                                          size,
+                                                          chatList[index]
+                                                              ['content']!))
+                                              // ChatBubble(
+                                              //     clipper: ChatBubbleClipper6(
+                                              //       type: chatList[index]
+                                              //                   ['toUserId'] ==
+                                              //               _id
+                                              //           ? BubbleType
+                                              //               .receiverBubble
+                                              //           : BubbleType.sendBubble,
+                                              //     ),
+                                              //     alignment: chatList[index]
+                                              //                 ['toUserId'] ==
+                                              //             _id
+                                              //         ? Alignment.topLeft
+                                              //         : Alignment.topRight,
+                                              //     margin: const EdgeInsets.only(
+                                              //       top: 10,
+                                              //     ),
+                                              //     backGroundColor: chatList[
+                                              //                     index]
+                                              //                 ['toUserId'] ==
+                                              //             _id
+                                              //         ? Color(0xFFF9F9F9)
+                                              //         : const Color(0xFFC8FBFF),
+                                              //     child: Container(
+                                              //         // width:
+                                              //         //     MediaQuery.of(context)
+                                              //         //             .size
+                                              //         //             .width *
+                                              //         //         0.3,
+                                              //         margin: chatList[index][
+                                              //                     'toUserId'] ==
+                                              //                 _id
+                                              //             ? const EdgeInsets
+                                              //                 .only(
+                                              //                 top: 5.0,
+                                              //                 bottom: 5.0,
+                                              //               )
+                                              //             : const EdgeInsets
+                                              //                 .only(
+                                              //                 top: 5,
+                                              //                 bottom: 5.0,
+                                              //               ),
+                                              //         child: chatList[index][
+                                              //                     'toUserId'] ==
+                                              //                 _id
+                                              //             // ignore: prefer_const_constructors
+                                              //             ? Align(
+                                              //                 alignment: Alignment
+                                              //                     .centerLeft,
+                                              //                 child: Text(
+                                              //                   chatList[index][
+                                              //                       'content']!,
+                                              //                   style:
+                                              //                       const TextStyle(
+                                              //                     color: Color(
+                                              //                         0XFF101010),
+                                              //                     fontSize:
+                                              //                         16.0,
+                                              //                     fontWeight:
+                                              //                         FontWeight
+                                              //                             .w600,
+                                              //                   ),
+                                              //                 ),
+                                              //               )
+                                              //             : Align(
+                                              //                 alignment: Alignment
+                                              //                     .centerLeft,
+                                              //                 child: Text(
+                                              //                   chatList[index][
+                                              //                       'content']!,
+                                              //                   style:
+                                              //                       const TextStyle(
+                                              //                     color: Color(
+                                              //                         0xFF101010),
+                                              //                     fontSize:
+                                              //                         16.0,
+                                              //                     fontWeight:
+                                              //                         FontWeight
+                                              //                             .w600,
+                                              //                   ),
+                                              //                 ),
+                                              //               )),
+                                              //   )
+                                              : const SizedBox();
+                                        }));
+                                        // return const SizedBox(child: Text('asdf'),);
+                                      }),
+                                )),
+                          ],
+                        ),
+                      )),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: double.infinity,
+                    child: _buildMessageComposer(),
+                  )
+                ],
+              )),
+              Topmenu(
+                title: widget.name,
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.1,
-                width: double.infinity,
-                child: _buildMessageComposer(),
-              )
             ],
+          )),
+    ));
+  }
+
+  recieverBubble(Size size, String message) {
+    return Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          padding: const EdgeInsets.only(
+              left: 16.0, right: 14.0, top: 20, bottom: 25),
+          margin: const EdgeInsets.only(top: 20, left: 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: const Color(0xFFF9F9F9),
           ),
-        ),
-      ),
-    );
+          constraints: BoxConstraints(
+            maxWidth: size.width * 0.7,
+            minWidth: 120,
+          ),
+          child:
+              // FittedBox(
+              // fit: BoxFit.fill,
+              // child:
+              Text(message,
+                  style: const TextStyle(
+                    color: Color(0xFF101010),
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w400,
+                    // ),
+                  )),
+        ));
+  }
+
+  senderBubble(Size size, String message) {
+    return Align(
+        alignment: Alignment.centerRight,
+        child: Container(
+          padding: const EdgeInsets.only(
+              left: 16.0, right: 14.0, top: 20, bottom: 25),
+          margin: const EdgeInsets.only(top: 20, right: 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: const Color(0xFFC8FBFF),
+          ),
+          constraints: BoxConstraints(
+            maxWidth: size.width * 0.7,
+            minWidth: 120,
+          ),
+          child:
+              // FittedBox(
+              // fit: BoxFit.fill,
+              // child:
+              Text(message,
+                  style: const TextStyle(
+                    color: Color(0xFF101010),
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w400,
+                    // ),
+                  )),
+        ));
   }
 
   void getSharepref() async {
@@ -372,7 +491,6 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
-
 
 // import 'dart:convert';
 // import 'package:file_picker/file_picker.dart';
