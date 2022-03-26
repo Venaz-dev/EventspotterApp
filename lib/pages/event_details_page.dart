@@ -11,6 +11,7 @@ import 'package:event_spotter/widgets/explore/livefeed.dart';
 import 'package:event_spotter/widgets/map.dart';
 import 'package:event_spotter/widgets/smallbutton.dart';
 import 'package:event_spotter/widgets/toaster.dart';
+import 'package:event_spotter/widgets/topmenu.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -82,258 +83,323 @@ class _EventdetailingState extends State<Eventdetailing> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
           backgroundColor: Colors.white,
-          elevation: 0,
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 8.0, top: 8),
-            child: Smallbutton(
-              icon: FontAwesomeIcons.arrowLeft,
-              onpressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-        ),
-        body: ListView(
-          children: [
-            const SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                right: size.width * 0.03,
-                left: size.width * 0.03,
-              ),
-              child: Container(
-                width: size.width * double.infinity,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  // borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      spreadRadius: 3,
-                      blurRadius: 3,
-                      color: Colors.black12,
-                    ),
-                  ],
+          // appBar: AppBar(
+          //   backgroundColor: Colors.white,
+          //   elevation: 0,
+          //   leading: Padding(
+          //     padding: const EdgeInsets.only(left: 8.0, top: 8),
+          //     child: Smallbutton(
+          //       icon: FontAwesomeIcons.arrowLeft,
+          //       onpressed: () {
+          //         Navigator.of(context).pop();
+          //       },
+          //     ),
+          //   ),
+          // ),
+          body: Stack(children: [
+            ListView(
+              children: [
+                const SizedBox(
+                  height: 60,
                 ),
-                child: Column(children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 5, left: 2, top: 2),
+                Container(
+                  decoration: const BoxDecoration(
+                      //borderRadius: BorderRadius.circular(15),
+                      ),
+                  width: size.width * double.infinity,
+                  child: widget.model!.data[index1].events.eventPictures[0]
+                              .imagePath
+                              .toString()
+                              .contains('.mp4') ||
+                          widget.model!.data[index1].events.eventPictures[0]
+                              .imagePath
+                              .toString()
+                              .contains('.mov')
+                      ? VideoPlayerScreenn(
+                          url: MainUrl +
+                              widget.model!.data[index1].events.eventPictures[0]
+                                  .imagePath)
+                      : Container(
+                          decoration: const BoxDecoration(
+                              // borderRadius: BorderRadius.circular(20)
+                              ),
+                          child: ClipRRect(
+                            //  borderRadius: BorderRadius.circular(15),
+                            child: CachedNetworkImage(
+                              width: double.infinity,
+                              imageUrl: MainUrl +
+                                  widget.model!.data[index1].events
+                                      .eventPictures[0].imagePath,
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(right: 15),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      top: BorderSide(color: Colors.black12),
+                    ),
+                  ),
+                  child: IntrinsicHeight(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Button(
-                            onpressed: () {},
-                            title: widget.model!.data[index1].events.user.name,
-                            // widget.eventsModel.data[index].events
-                            //     .user.name, //new
-                            radiusofbutton: BorderRadius.circular(20),
-                            profileImage: MainUrl +
-                                widget.model!.data[index1].events.user
-                                    .profilePicture!.image),
+                        extras(
+                          FontAwesomeIcons.heart,
+                          widget.model!.data[index1].totalLikes.toString(),
+                          size,
+                          () {},
+                        ),
+
+                        //
+                        extras(
+                            FontAwesomeIcons.commentDots,
+                            widget.model!.data[index1].events.comment.length
+                                .toString(),
+                            size, () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => Commentofuser(
+                                    eventsModel: widget.model!,
+                                    index: index1,
+                                  )));
+                        }),
+                        // divider(),
+                        // divider(),
+
+                        extras(MdiIcons.share, "", size, () {
+                          share(widget.model!.data[widget.indexs!].events.id
+                              .toString());
+                        }),
+                        // divider(), //
+
+                        // extras(MdiIcons.share,
+                        //     posts[1]['share'], size),
+                        // divider(),                           //no inculded
+                        // extras(
+                        //     Icons.play_arrow_sharp,
+                        //     widget.model!.data[index1].events
+                        //         .liveFeed.length
+                        //         .toString(),
+                        //     size, () {
+                        //   setState(() {
+                        //     swapping = livefeed.livesnaps;
+                        //   });
+                        // }),
+                        extras(
+                            FontAwesomeIcons.playCircle,
+                            widget.model!.data[index1].events.liveFeed.length
+                                    .toString() +
+                                " " +
+                                "Live snaps",
+                            size, () {
+                          setState(() {
+                            swapping = livefeed.livesnaps;
+                          });
+                        }),
                       ],
                     ),
                   ),
-                  Padding(
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                    child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 15,
+                    left: 15,
+                  ),
+                  child: Container(
                     padding: const EdgeInsets.only(
-                        left: 8.0, right: 8, top: 3, bottom: 3),
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      child: AutoSizeText(
-                        widget.model!.data[index1].events.eventName,
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 17),
-                        maxFontSize: 17,
-                        minFontSize: 10,
-                        maxLines: 5,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    decoration: const BoxDecoration(
-                        //borderRadius: BorderRadius.circular(15),
-                        ),
+                        top: 15, bottom: 15, left: 15, right: 15),
                     width: size.width * double.infinity,
-                    child: widget.model!.data[index1].events.eventPictures[0]
-                                .imagePath
-                                .toString()
-                                .contains('.mp4') ||
-                            widget.model!.data[index1].events.eventPictures[0]
-                                .imagePath
-                                .toString()
-                                .contains('.mov')
-                        ? VideoPlayerScreenn(
-                            url: MainUrl +
-                                widget.model!.data[index1].events
-                                    .eventPictures[0].imagePath)
-                        : Container(
-                         
-                           
-                            decoration: const BoxDecoration(
-                                // borderRadius: BorderRadius.circular(20)
-                                ),
-                            child: ClipRRect(
-                              //  borderRadius: BorderRadius.circular(15),
-                              child: CachedNetworkImage(
-                                width: double.infinity,
-                                
-                                imageUrl: MainUrl +
-                                    widget.model!.data[index1].events
-                                        .eventPictures[0].imagePath,
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    decoration: const BoxDecoration(),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                            color: const Color(0xffE5E7EB), width: 2)),
+                    // boxShadow: [
+                    //   BoxShadow(
+                    //     spreadRadius: 3,
+                    //     blurRadius: 3,
+                    //     color: Colors.black12,
+                    //   ),
+                    // ],
+
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        //  const SizedBox(
-                        //    height: 2,
-                        //  ),
-                        Container(
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            border: Border(
-                              top: BorderSide(color: Colors.black12),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 8, left: 8),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                right: 5, left: 2, top: 2),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Buttonicon(
-                                  radiusofbutton: BorderRadius.circular(20),
-                                  icon: FontAwesomeIcons.userPlus,
-                                  title: widget.model!.data[index1].events.user
-                                          .followers.length
-                                          .toString() +
-                                      " " "Followers",
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                const Icon(
-                                  FontAwesomeIcons.calendar,
-                                  size: 13,
-                                  color: Colors.black54,
-                                ),
-                                Text(
-                                  time(index1),
-                                  style: const TextStyle(color: Colors.black87),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                const Icon(
-                                  FontAwesomeIcons.mapMarkerAlt,
-                                  size: 15,
-                                  color: Colors.black54,
-                                ),
-                                Text(
-                                    widget.model!.data[index1].km.toString() +
-                                        " " +
-                                        "away",
-                                    style:
-                                        const TextStyle(color: Colors.black87)),
+                                Button(
+                                    size: 48,
+                                    onpressed: () {},
+                                    title: widget
+                                        .model!.data[index1].events.user.name,
+                                    // widget.eventsModel.data[index].events
+                                    //     .user.name, //new
+                                    radiusofbutton: BorderRadius.circular(50),
+                                    profileImage: MainUrl +
+                                        widget.model!.data[index1].events.user
+                                            .profilePicture!.image),
                               ],
                             ),
                           ),
-                        ),
-
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              top: BorderSide(color: Colors.black12),
-                            ),
+                          const SizedBox(
+                            height: 15,
                           ),
-                          child: IntrinsicHeight(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          Text(
+                            widget.model!.data[index1].events.eventDescription,
+                            style: const TextStyle(
+                                color: Color(0xFF333333), fontSize: 16),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Text(
+                            "Event Details",
+                            style: TextStyle(
+                                color: Color(0xFF333333),
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: const [
+                              SizedBox(
+                                  width: 35.0,
+                                  child: Image(
+                                      image: AssetImage(
+                                          "Assets/icons/details-distance.png"))),
+                              SizedBox(
+                                width: 20,
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: const [
+                              SizedBox(
+                                  width: 35.0,
+                                  child: Image(
+                                      image: AssetImage(
+                                          "Assets/icons/details-date.png")))
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            decoration: const BoxDecoration(),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                extras(
-                                  FontAwesomeIcons.thumbsUp,
-                                  widget.model!.data[index1].totalLikes
-                                      .toString(),
-                                  size,
-                                  () {},
+                                //  const SizedBox(
+                                //    height: 2,
+                                //  ),
+                                Container(
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border(
+                                      top: BorderSide(color: Colors.black12),
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 8, left: 8),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Buttonicon(
+                                          radiusofbutton:
+                                              BorderRadius.circular(20),
+                                          icon: FontAwesomeIcons.userPlus,
+                                          title: widget.model!.data[index1]
+                                                  .events.user.followers.length
+                                                  .toString() +
+                                              " " "Followers",
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        const Icon(
+                                          FontAwesomeIcons.calendar,
+                                          size: 13,
+                                          color: Colors.black54,
+                                        ),
+                                        Text(
+                                          time(index1),
+                                          style: const TextStyle(
+                                              color: Colors.black87),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        const Icon(
+                                          FontAwesomeIcons.mapMarkerAlt,
+                                          size: 15,
+                                          color: Colors.black54,
+                                        ),
+                                        Text(
+                                            widget.model!.data[index1].km
+                                                    .toString() +
+                                                " " +
+                                                "away",
+                                            style: const TextStyle(
+                                                color: Colors.black87)),
+                                      ],
+                                    ),
+                                  ),
                                 ),
 
-                                divider(),
-                                extras(
-                                    Icons.comment,
-                                    widget.model!.data[index1].events.comment
-                                        .length
-                                        .toString(),
-                                    size, () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => Commentofuser(
-                                            eventsModel: widget.model!,
-                                            index: index1,
-                                          )));
-                                }),
-                               // divider(),
-                                divider(),
-
-                                  extras(MdiIcons.share, "", size, () {
-                                    share(widget.model!.data[widget.indexs!].events.id.toString());
-                                  }),
-                                  divider(), //
-
-                                // extras(MdiIcons.share,
-                                //     posts[1]['share'], size),
-                                // divider(),                           //no inculded
-                                extras(
-                                    Icons.play_arrow_sharp,
-                                    widget.model!.data[index1].events.liveFeed
-                                        .length
-                                        .toString(),
-                                    size, () {
-                                  setState(() {
-                                    swapping = livefeed.livesnaps;
-                                  });
-                                }),
+                                const SizedBox(
+                                  height: 5,
+                                ),
                               ],
                             ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ]),
                   ),
-                ]),
-              ),
+                )),
+                Padding(
+                  padding: EdgeInsets.only(
+                      right: size.width * 0.03,
+                      left: size.width * 0.03,
+                      top: 20),
+                  child: calloflivesnaps(size),
+                ),
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.only(
-                  right: size.width * 0.03, left: size.width * 0.03, top: 20),
-              child: calloflivesnaps(size),
-            ),
-          ],
-        ),
-      ),
+            Topmenu(
+              title: widget.model!.data[index1].events.eventName,
+            )
+          ])),
     ));
   }
-share(String ff){
-    Share.share('check out my post https://theeventspotter.com/eventDetails/'+ff);
 
+  share(String ff) {
+    Share.share(
+        'check out my post https://theeventspotter.com/eventDetails/' + ff);
   }
+
   Widget calloflivesnaps(Size size) {
     switch (swapping) {
       case livefeed.details:
@@ -502,12 +568,11 @@ share(String ff){
                         ? Padding(
                             padding: const EdgeInsets.only(right: 6.0, top: 10),
                             child: Container(
-                              padding: const  EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 15),
                               decoration: BoxDecoration(
                                 border: Border.all(color: Colors.black12),
                                 borderRadius: BorderRadius.circular(10),
-                              
                               ),
                               child: Text(
                                   widget.model!.data[index1].events

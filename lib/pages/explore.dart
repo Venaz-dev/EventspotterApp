@@ -51,6 +51,7 @@ class _ExploreState extends State<Explore> {
   screens swap = screens.explore;
   String? value;
   bool ontao = false;
+  bool showSearch = false;
 
   final dropdown = ['interest', 'no interest'];
 
@@ -313,7 +314,9 @@ class _ExploreState extends State<Explore> {
                     ),
                     child: Padding(
                       padding: EdgeInsets.only(
-                          top: size.height * 0.02, bottom: size.height * 0.02),
+                          top: size.height * 0.02,
+                          bottom: size.height * 0.02,
+                          left: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -324,31 +327,79 @@ class _ExploreState extends State<Explore> {
                           ),
                           const SizedBox(
                             // width: size.width * 0.73,
-                            width: 10,
+                            width: 20,
                           ),
-                          SizedBox(
-                            width: size.width * 0.63,
-                            // width: 50,
-                            child: Textform(
-                              onchange: (listen) {
-                                if (_search.text.length >= 3) {
-                                  searchApiCall();
-                                  if (_search.text.length == 0) {
-                                    search.clear();
-                                  }
-                                  setState(() {});
-                                }
-                                //setState(() {});
-                              },
-                              isreadonly: false,
-                              isSecure: false,
-                              controller: _search,
-                              icon: Icons.search,
-                              label: "Search",
-                              color: const Color(0XFFECF2F3),
-                            ),
-                          ),
-                          const SizedBox(width: 40.0),
+                          // const Spacer(),
+                          showSearch ? SizedBox() : const Spacer(),
+                          showSearch
+                              ? Stack(children: [
+                                  SizedBox(
+                                    height: 60,
+                                    width: size.width * 0.65,
+                                    // width: 50,
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(10)),
+                                            border: Border.all(
+                                                color: const Color(0xffE5E7EB),
+                                                width: 2)),
+                                        child: Textform(
+                                          onchange: (listen) {
+                                            if (_search.text.length >= 3) {
+                                              searchApiCall();
+                                              if (_search.text.length == 0) {
+                                                search.clear();
+                                              }
+                                              setState(() {});
+                                            }
+                                            //setState(() {});
+                                          },
+                                          isreadonly: false,
+                                          isSecure: false,
+                                          controller: _search,
+                                          // icon: Icons.search,
+                                          label: "Search users",
+                                          color: Colors.white,
+                                        )),
+                                  ),
+                                  Positioned(
+                                      top: 5.0,
+                                      right: 0.0,
+                                      child: IconButton(
+                                        onPressed: () {
+                                          showSearch = false;
+                                        },
+                                        icon: const Icon(
+                                          FontAwesomeIcons.solidTimesCircle,
+                                          size: 25,
+                                        ),
+                                      ))
+                                ])
+                              :
+                              // const SizedBox(width: 40.0),
+                              SizedBox(
+                                  width: 55,
+                                  height: 55,
+                                  child: InkWell(
+                                    onTap: () {
+                                      showSearch = true;
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //       builder: (context) => const Noti()),
+                                      // );
+                                    },
+                                    child: Container(
+                                        child: const Center(
+                                            child: SizedBox(
+                                                width: 30.0,
+                                                child: Image(
+                                                    image: AssetImage(
+                                                        "Assets/icons/search.png"))))),
+                                  ),
+                                ),
                           SizedBox(
                             width: 55,
                             height: 55,
@@ -847,6 +898,7 @@ class Button extends StatelessWidget {
     this.radiusofbutton,
     this.profileImage = '',
     this.onpressed,
+    this.size = 32,
     required this.title,
   }) : super(key: key);
 
@@ -854,14 +906,15 @@ class Button extends StatelessWidget {
   final String? profileImage;
   final String title;
   final VoidCallback? onpressed;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Container(
-          height: 30,
-          width: 30,
+          height: size,
+          width: size,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: DecorationImage(
@@ -873,7 +926,7 @@ class Button extends StatelessWidget {
         ),
         Text(
           title,
-          style: const TextStyle(color: Colors.black, fontSize: 13),
+          style: const TextStyle(color: Colors.black, fontSize: 15),
         ),
       ],
     );

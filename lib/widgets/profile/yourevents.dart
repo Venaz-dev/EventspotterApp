@@ -883,7 +883,7 @@ class _YoureventsState extends State<Yourevents> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(
-                            top: 10, left: 5, bottom: 5, right: 5),
+                            top: 0, left: 5, bottom: 0, right: 0),
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.white,

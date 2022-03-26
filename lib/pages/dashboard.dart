@@ -88,126 +88,133 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     List bottomitems = [
-      pageindex == 0
-          ? Column(
-              children: [
-                Container(
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(12),
-                    child: const SizedBox(
-                        width: 24.0,
-                        child: Image(
-                            image: AssetImage("Assets/icons/explore.png")))),
-              ],
-            )
-          : Column(
-              children: [
-                Container(
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(12),
-                    child: const SizedBox(
-                        width: 24.0,
-                        child: Image(
-                            image: AssetImage(
-                                "Assets/icons/explore-inactive.png")))),
-              ],
-            ),
-      pageindex == 1
-          ? Column(
-              children: [
-                Container(
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(12),
-                    child: const SizedBox(
-                        width: 22.0,
-                        child: Image(
-                            image:
-                                AssetImage("Assets/icons/more-inactive.png")))),
-              ],
-            )
-          : Column(
-              children: [
-                Container(
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(12),
-                    child: const SizedBox(
-                        width: 22.0,
-                        child: Image(
-                            image:
-                                AssetImage("Assets/icons/more-inactive.png")))),
-              ],
-            ),
-      pageindex == 2
-          ? Column(
-              children: [
-                Container(
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(12),
-                    child: const SizedBox(
-                        width: 35.0,
-                        child:
-                            Image(image: AssetImage("Assets/icons/plus.png")))),
-              ],
-            )
-          : Column(
-              children: [
-                Container(
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(12),
-                    child: const SizedBox(
-                        width: 35.0,
-                        child:
-                            Image(image: AssetImage("Assets/icons/plus.png")))),
-              ],
-            ),
-      pageindex == 3
-          ? Column(
-              children: [
-                Container(
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(12),
-                    child: const SizedBox(
-                        width: 22.0,
-                        child:
-                            Image(image: AssetImage("Assets/icons/chat.png")))),
-              ],
-            )
-          : Column(
-              children: [
-                Container(
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(12),
-                    child: const SizedBox(
-                        width: 22.0,
-                        child: Image(
-                            image:
-                                AssetImage("Assets/icons/chat-inactive.png")))),
-              ],
-            ),
-      pageindex == 4
-          ? Column(
-              children: [
-                Container(
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(12),
-                    child: const SizedBox(
-                        width: 20.0,
-                        child: Image(
-                            image: AssetImage("Assets/icons/profile.png")))),
-              ],
-            )
-          : Column(
-              children: [
-                Container(
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(12),
-                    child: const SizedBox(
-                        width: 20.0,
-                        child: Image(
-                            image: AssetImage(
-                                "Assets/icons/profile-inactive.png")))),
-              ],
-            ),
+      Column(
+        children: [
+          Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  top: BorderSide(
+                      color: pageindex == 0 ? Colors.black : Colors.transparent,
+                      width: 2),
+                ),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 21, horizontal: 12),
+              child: SizedBox(
+                  width: 24.0,
+                  child: Image(
+                      image: pageindex == 0
+                          ? const AssetImage("Assets/icons/explore.png")
+                          : const AssetImage(
+                              "Assets/icons/explore-inactive.png")))),
+        ],
+      ),
+      Column(
+        children: [
+          Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  top: BorderSide(
+                      color: pageindex == 1 ? Colors.black : Colors.transparent,
+                      width: 2),
+                ),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 21, horizontal: 12),
+              child: SizedBox(
+                  width: 22.0,
+                  child: Image(
+                      image: pageindex == 1
+                          ? const AssetImage("Assets/icons/chat.png")
+                          : const AssetImage(
+                              "Assets/icons/chat-inactive.png")))),
+        ],
+      ),
+
+      Column(
+        children: [
+          Container(
+              color: Colors.white,
+              padding: const EdgeInsets.all(12),
+              child: const SizedBox(
+                  width: 35.0,
+                  child: Image(image: AssetImage("Assets/icons/plus.png")))),
+        ],
+      ),
+      // Profile Icon Here
+      Column(
+        children: [
+          Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  top: BorderSide(
+                      color: pageindex == 3 ? Colors.black : Colors.transparent,
+                      width: 2),
+                ),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 21, horizontal: 12),
+              child: SizedBox(
+                  width: 20.0,
+                  child: Image(
+                      image: pageindex == 3
+                          ? const AssetImage("Assets/icons/profile.png")
+                          : const AssetImage(
+                              "Assets/icons/profile-inactive.png")))),
+        ],
+      ),
+
+      // More Icon Here
+      Column(
+        children: [
+          Container(
+              padding: const EdgeInsets.symmetric(vertical: 21, horizontal: 12),
+              decoration: BoxDecoration(
+                // color: Colors.red,
+                border: Border(
+                  top: BorderSide(
+                      color: pageindex == 4 ? Colors.black : Colors.transparent,
+                      width: 2),
+                ),
+              ),
+              child: SizedBox(
+                  width: 22.0,
+                  child: Image(
+                      image: pageindex == 4
+                          ? const AssetImage("Assets/icons/more.png")
+                          : const AssetImage(
+                              "Assets/icons/more-inactive.png")))),
+        ],
+      ),
+      // pageindex == 4
+      //     ? Column(
+      //         children: [
+      //           Container(
+      //               color: Colors.white,
+      //               padding: const EdgeInsets.all(12),
+      //               child: const SizedBox(
+      //                   width: 22.0,
+      //                   child:
+      //                       Image(image: AssetImage("Assets/icons/more.png")))),
+      //         ],
+      //       )
+      //     : Column(
+      //         children: [
+      //           Container(
+      //               padding: const EdgeInsets.symmetric(
+      //                   vertical: 21, horizontal: 12),
+      //               decoration: const BoxDecoration(
+      //                 // color: Colors.red,
+      //                 border: Border(
+      //                   top: BorderSide(color: Colors.black, width: 2),
+      //                 ),
+      //               ),
+      //               child: const SizedBox(
+      //                   width: 22.0,
+      //                   child:
+      //                       Image(image: AssetImage("Assets/icons/more.png")))),
+      //         ],
+      //       ),
     ];
     Size size = MediaQuery.of(context).size;
     return SafeArea(
@@ -257,11 +264,11 @@ getbody(
 ) {
   List<Widget> pages = [
     const Explore(),
-    const More(),
-    // const Noti(),
-    const Createevent(),
+    // const Noti(),s
     Notifications(),
+    const Createevent(),
     const Profile(),
+    const More(),
   ];
 
   return IndexedStack(

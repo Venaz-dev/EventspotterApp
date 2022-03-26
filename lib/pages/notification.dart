@@ -157,17 +157,23 @@ class _NotiState extends State<Noti> {
                                                             children: [
                                                               Row(
                                                                 children: [
-                                                                  Text(
-                                                                    _notificationModel
-                                                                        .data[
-                                                                            index]
-                                                                        .title,
-                                                                    style: const TextStyle(
-                                                                        fontSize:
-                                                                            18,
-                                                                        color: Color(
-                                                                            0xFF101010)),
-                                                                  ),
+                                                                  SizedBox(
+                                                                      width: size
+                                                                              .width *
+                                                                          0.43,
+                                                                      child:
+                                                                          Text(
+                                                                        _notificationModel
+                                                                            .data[index]
+                                                                            .title,
+                                                                        maxLines:
+                                                                            2,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                18,
+                                                                            color:
+                                                                                Color(0xFF101010)),
+                                                                      )),
                                                                   const Spacer(),
                                                                   time(index),
                                                                 ],

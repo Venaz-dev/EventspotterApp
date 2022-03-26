@@ -74,8 +74,11 @@ class _EventposterprofileState extends State<Eventposterprofile> {
                 scrollDirection: Axis.vertical,
                 child: SizedBox(
                   child: Padding(
-                    padding:  EdgeInsets.only(
-                        top: 20.0, right : size.width*0.03, left :size.width*0.03, bottom: 20),
+                    padding: EdgeInsets.only(
+                        top: 20.0,
+                        right: size.width * 0.03,
+                        left: size.width * 0.03,
+                        bottom: 20),
                     child: Column(
                       children: [
                         Container(
@@ -138,8 +141,7 @@ class _EventposterprofileState extends State<Eventposterprofile> {
                                         children: [
                                           SizedBox(
                                             width: size.width * 0.4,
-                                            child:  AutoSizeText(
-                                             
+                                            child: AutoSizeText(
                                               _getUserFollowingStatus.data.name,
                                               style: const TextStyle(
                                                   fontSize: 20,
@@ -280,12 +282,17 @@ class _EventposterprofileState extends State<Eventposterprofile> {
             ),
             const Text("Email"),
             const SizedBox(height: 10),
-            Textform(
-              label: _getUserFollowingStatus.data.email,
-              controller: _email,
-              isSecure: false,
-              color: const Color(0XFFEBF2F2),
-            ),
+            Container(
+                decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    border:
+                        Border.all(color: const Color(0xffE5E7EB), width: 2)),
+                child: Textform(
+                  label: _getUserFollowingStatus.data.email,
+                  controller: _email,
+                  isSecure: false,
+                  color: Colors.white,
+                )),
             const SizedBox(
               height: 20,
             ),

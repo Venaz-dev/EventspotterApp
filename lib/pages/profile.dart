@@ -120,240 +120,269 @@ class _ProfileState extends State<Profile> {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: _isLoading
-                      ? const Center(child: CircularProgressIndicator())
+                      ? SizedBox(
+                          height: size.height * 0.8,
+                          child: const Center(
+                              child: CircularProgressIndicator(
+                            color: Color(0xFF3BADB7),
+                          )))
                       : SizedBox(
                           child: Padding(
                             padding: const EdgeInsets.only(
                                 top: 80.0, right: 10, left: 10, bottom: 20),
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: size.height * 0.30,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    boxShadow: const [
-                                      //background color of box
-                                      // BoxShadow(
-                                      //     color: Colors.black12,
-                                      //     blurRadius: 2,
-                                      //     spreadRadius: 2.0,
-                                      //     offset: Offset(
-                                      //       0,
-                                      //       0,
-                                      //     ))
-                                    ],
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 10.0,
-                                        right: 0,
-                                        left: 0,
-                                        bottom: 10),
-                                    child: Column(
-                                      children: [
-                                        // const Align(
-                                        //   alignment: Alignment.topLeft,
-                                        //   child: Text(
-                                        //     "Profile",
-                                        //     style: TextStyle(
-                                        //         fontWeight: FontWeight.w500,
-                                        //         fontSize: 17),
-                                        //   ),
-                                        // ),
-
-                                        SizedBox(
-                                          height: size.height * 0.006,
-                                        ),
-
-                                        Column(
-                                          children: [
-                                            imagePath == null
-                                                ? SizedBox(
-                                                    height: size.height * 0.1,
-                                                    width: size.width * 0.23,
-                                                    child: Stack(children: [
-                                                      Container(
-                                                        height:
-                                                            size.height * 0.1,
-                                                        width: size.width * 0.2,
-                                                        decoration:
-                                                            const BoxDecoration(
-                                                                shape: BoxShape
-                                                                    .circle),
-                                                        child: ClipRRect(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        300.0),
-                                                            child:
-                                                                CachedNetworkImage(
-                                                              imageUrl:
-                                                                  profile_pic,
-                                                              fit: BoxFit.cover,
-                                                            )),
-                                                      ),
-                                                      Positioned(
-                                                          top: size.height *
-                                                              0.04,
-                                                          left:
-                                                              size.width * 0.12,
-                                                          child: IconButton(
-                                                              onPressed: () {
-                                                                Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder:
-                                                                          (context) =>
-                                                                              const EditProfile()),
-                                                                );
-                                                                // _selectPhoto();
-                                                              },
-                                                              icon: const Icon(
-                                                                FontAwesomeIcons
-                                                                    .solidEdit,
-                                                                color: Color(
-                                                                    0XFF38888F),
-                                                              )))
-                                                    ]),
-                                                  )
-                                                : SizedBox(
-                                                    height: size.height * 0.1,
-                                                    width: size.width * 0.2,
-                                                    child: Stack(children: [
-                                                      Container(
-                                                        height:
-                                                            size.height * 0.1,
-                                                        width: size.width * 0.2,
-                                                        decoration:
-                                                            const BoxDecoration(
-                                                                shape: BoxShape
-                                                                    .circle),
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      300.0),
-                                                          child: Image.file(
-                                                            imagePath!,
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Positioned(
-                                                          top: size.height *
-                                                              0.04,
-                                                          left:
-                                                              size.width * 0.11,
-                                                          child: IconButton(
-                                                              onPressed: () {
-                                                                // _selectPhoto();
-                                                                Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder:
-                                                                          (context) =>
-                                                                              const EditProfile()),
-                                                                );
-                                                              },
-                                                              icon: const Icon(
-                                                                FontAwesomeIcons
-                                                                    .solidEdit,
-                                                                color: Color(
-                                                                    0XFF38888F),
-                                                              )))
-                                                    ]),
-                                                  ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  _getProfile.data.name,
-                                                  textAlign: TextAlign.center,
-                                                  style: const TextStyle(
-                                                      fontSize: 23,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                                // Text(
-                                                //   _getProfile.data.email,
-                                                //   style: const TextStyle(
-                                                //       fontSize: 15),
-                                                // )
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              height: 40,
-                                            ),
+                            child: _getProfile != null
+                                ? Column(
+                                    children: [
+                                      Container(
+                                        height: size.height * 0.30,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          boxShadow: const [
+                                            //background color of box
+                                            // BoxShadow(
+                                            //     color: Colors.black12,
+                                            //     blurRadius: 2,
+                                            //     spreadRadius: 2.0,
+                                            //     offset: Offset(
+                                            //       0,
+                                            //       0,
+                                            //     ))
                                           ],
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                         ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 10.0,
+                                              right: 0,
+                                              left: 0,
+                                              bottom: 10),
+                                          child: Column(
+                                            children: [
+                                              // const Align(
+                                              //   alignment: Alignment.topLeft,
+                                              //   child: Text(
+                                              //     "Profile",
+                                              //     style: TextStyle(
+                                              //         fontWeight: FontWeight.w500,
+                                              //         fontSize: 17),
+                                              //   ),
+                                              // ),
 
-                                        Expanded(
-                                            child: SizedBox(
-                                          width: double.infinity,
-                                          height: 10.0,
-                                          child: IntrinsicHeight(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                container(
-                                                    size,
-                                                    _getProfile
-                                                        .data.followers.length,
-                                                    'Followers', () {
-                                                  Navigator.of(context).push(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              const Following()));
-                                                }),
-                                                const VerticalDivider(
-                                                    thickness: 1,
-                                                    color: Color(0xFFAfafaf)),
-                                                container(
-                                                    size,
-                                                    _getProfile
-                                                        .data.following.length,
-                                                    'Following', () {
-                                                  Navigator.of(context).push(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              const Follower()));
-                                                }),
-                                                const VerticalDivider(
-                                                    thickness: 1,
-                                                    color: Color(0xFFAfafaf)),
-                                                container(size, totalEvents,
-                                                    'Events', () {}),
-                                              ],
-                                            ),
+                                              SizedBox(
+                                                height: size.height * 0.006,
+                                              ),
+
+                                              Column(
+                                                children: [
+                                                  imagePath == null
+                                                      ? SizedBox(
+                                                          height:
+                                                              size.height * 0.1,
+                                                          width:
+                                                              size.width * 0.23,
+                                                          child: Stack(
+                                                              children: [
+                                                                Container(
+                                                                  height:
+                                                                      size.height *
+                                                                          0.1,
+                                                                  width:
+                                                                      size.width *
+                                                                          0.2,
+                                                                  decoration:
+                                                                      const BoxDecoration(
+                                                                          shape:
+                                                                              BoxShape.circle),
+                                                                  child: ClipRRect(
+                                                                      borderRadius: BorderRadius.circular(300.0),
+                                                                      child: CachedNetworkImage(
+                                                                        imageUrl:
+                                                                            profile_pic,
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                      )),
+                                                                ),
+                                                                Positioned(
+                                                                    top: size
+                                                                            .height *
+                                                                        0.04,
+                                                                    left: size
+                                                                            .width *
+                                                                        0.12,
+                                                                    child: IconButton(
+                                                                        onPressed: () {
+                                                                          Navigator
+                                                                              .push(
+                                                                            context,
+                                                                            MaterialPageRoute(builder: (context) => const EditProfile()),
+                                                                          );
+                                                                          // _selectPhoto();
+                                                                        },
+                                                                        icon: const Icon(
+                                                                          FontAwesomeIcons
+                                                                              .solidEdit,
+                                                                          color:
+                                                                              Color(0XFF38888F),
+                                                                        )))
+                                                              ]),
+                                                        )
+                                                      : SizedBox(
+                                                          height:
+                                                              size.height * 0.1,
+                                                          width:
+                                                              size.width * 0.2,
+                                                          child: Stack(
+                                                              children: [
+                                                                Container(
+                                                                  height:
+                                                                      size.height *
+                                                                          0.1,
+                                                                  width:
+                                                                      size.width *
+                                                                          0.2,
+                                                                  decoration:
+                                                                      const BoxDecoration(
+                                                                          shape:
+                                                                              BoxShape.circle),
+                                                                  child:
+                                                                      ClipRRect(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            300.0),
+                                                                    child: Image
+                                                                        .file(
+                                                                      imagePath!,
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                Positioned(
+                                                                    top: size
+                                                                            .height *
+                                                                        0.04,
+                                                                    left: size
+                                                                            .width *
+                                                                        0.11,
+                                                                    child: IconButton(
+                                                                        onPressed: () {
+                                                                          // _selectPhoto();
+                                                                          Navigator
+                                                                              .push(
+                                                                            context,
+                                                                            MaterialPageRoute(builder: (context) => const EditProfile()),
+                                                                          );
+                                                                        },
+                                                                        icon: const Icon(
+                                                                          FontAwesomeIcons
+                                                                              .solidEdit,
+                                                                          color:
+                                                                              Color(0XFF38888F),
+                                                                        )))
+                                                              ]),
+                                                        ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        _getProfile.data.name,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: const TextStyle(
+                                                            fontSize: 23,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                      // Text(
+                                                      //   _getProfile.data.email,
+                                                      //   style: const TextStyle(
+                                                      //       fontSize: 15),
+                                                      // )
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 40,
+                                                  ),
+                                                ],
+                                              ),
+
+                                              Expanded(
+                                                  child: SizedBox(
+                                                width: double.infinity,
+                                                height: 10.0,
+                                                child: IntrinsicHeight(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      container(
+                                                          size,
+                                                          _getProfile.data
+                                                              .followers.length,
+                                                          'Followers', () {
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        const Following()));
+                                                      }),
+                                                      const VerticalDivider(
+                                                          thickness: 1,
+                                                          color: Color(
+                                                              0xFFAfafaf)),
+                                                      container(
+                                                          size,
+                                                          _getProfile.data
+                                                              .following.length,
+                                                          'Following', () {
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        const Follower()));
+                                                      }),
+                                                      const VerticalDivider(
+                                                          thickness: 1,
+                                                          color: Color(
+                                                              0xFFAfafaf)),
+                                                      container(
+                                                          size,
+                                                          totalEvents,
+                                                          'Events',
+                                                          () {}),
+                                                    ],
+                                                  ),
+                                                ),
+                                              )),
+
+                                              // ),
+                                            ],
                                           ),
-                                        )),
-
-                                        // ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Yourevents(size: size),
-                                const SizedBox(
-                                  height: 30,
-                                ),
-                                // Container(
-                                //   child: getwidgets(),
-                                // ),
-                                //settings
-                              ],
-                            ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      Yourevents(size: size),
+                                      const SizedBox(
+                                        height: 30,
+                                      ),
+                                      // Container(
+                                      //   child: getwidgets(),
+                                      // ),
+                                      //settings
+                                    ],
+                                  )
+                                : const Text("Error fetching profile data"),
                           ),
                         ),
                 ),
@@ -1124,10 +1153,11 @@ class _ProfileState extends State<Profile> {
 
         // print(MainUrl + _eventsModel.data[0].events.user.profilePicture.image);
       }
+      _isLoading = false;
     } catch (e) {
       print(e.toString() + "Catch");
     } finally {
-      _isLoading = false;
+      // _isLoading = false;
     }
     setState(() {});
   }

@@ -120,12 +120,43 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: _isLoading
-                      ? SizedBox(
-                          height: size.height * 0.9,
-                          child: const Center(
-                              child: CircularProgressIndicator(
-                            color: Color(0xFF3BADB7),
-                          )))
+                      ? Container(
+                          // color: Colors.red,
+                          margin: const EdgeInsets.only(top: 120),
+                          height: size.height * 0.7,
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                    height: size.height * 0.65,
+                                    child: const Center(
+                                        child: CircularProgressIndicator(
+                                      color: Color(0xFF3BADB7),
+                                    ))),
+                                //Log out
+                                InkWell(
+                                  onTap: () {
+                                    // setState(() {
+                                    //   _isLoading = true;
+                                    // });
+                                    LogoutapiCall();
+                                    _sharedPreferences.clear();
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LandingScreen()),
+                                        (route) => false);
+                                  },
+                                  child: const Text(
+                                    "Log out",
+                                    style: TextStyle(
+                                        color: Color(0xFfEB5757),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                              ]))
                       : SizedBox(
                           child: Padding(
                             padding: const EdgeInsets.only(
