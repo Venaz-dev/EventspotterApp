@@ -228,7 +228,8 @@ class _EventssState extends State<Eventss> {
                                               .eventPictures[0].imagePath,
                                       placeholder: (context, url) {
                                         return const Center(
-                                          child: CircularProgressIndicator(),
+                                          child: CircularProgressIndicator(
+                                              color: Color(0xFF3BADB7)),
                                         );
                                       },
                                     ),
@@ -578,8 +579,7 @@ class _EventssState extends State<Eventss> {
                     )));
           },
           child: const Padding(
-              padding:
-                  EdgeInsets.only(right: 11, top: 11, bottom: 11),
+              padding: EdgeInsets.only(right: 11, top: 11, bottom: 11),
               // decoration: BoxDecoration(
               //     borderRadius: const BorderRadius.all(Radius.circular(40)),
               //     border: Border.all(color: const Color(0xff200E32))),
@@ -729,7 +729,7 @@ class _VideoPlayerScreennState extends State<VideoPlayerScreenn> {
               // If the VideoPlayerController is still initializing, show a
               // loading spinner.
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
               );
             }
           },

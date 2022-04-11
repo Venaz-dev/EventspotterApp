@@ -63,7 +63,8 @@ class _YoureventsState extends State<Yourevents> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return _isLoading
-        ? const Center(child: CircularProgressIndicator())
+        ? const Center(
+            child: CircularProgressIndicator(color: Color(0xFF3BADB7)))
         : Column(
             children: [
               Container(
@@ -1121,12 +1122,12 @@ class _VideoPlayerScreennnState extends State<VideoPlayerScreennn> {
                 height: size.width * 0.3,
                 width: size.width * 0.3,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(10),
                 ),
 
                 child: SizedBox(
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(10),
                     child: Stack(
                       alignment: Alignment.bottomCenter,
                       children: <Widget>[

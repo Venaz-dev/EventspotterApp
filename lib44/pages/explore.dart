@@ -279,12 +279,12 @@ class _ExploreState extends State<Explore> {
             automaticallyImplyLeading: false,
             //  elevation : 0,
             backgroundColor: scaffoldcolor,
-            leading: 
-              Padding(
-                padding:  EdgeInsets.only( left: size.width * 0.03,),
-                child: const Image(image: AssetImage('Assets/images/logo.png')),
+            leading: Padding(
+              padding: EdgeInsets.only(
+                left: size.width * 0.03,
               ),
-            
+              child: const Image(image: AssetImage('Assets/images/logo.png')),
+            ),
           ),
           body: GestureDetector(
             onTap: () {
@@ -298,7 +298,6 @@ class _ExploreState extends State<Explore> {
               scrollDirection: Axis.vertical,
               child: Padding(
                 padding: EdgeInsets.only(
-                 
                     right: size.width * 0.03,
                     left: size.width * 0.03,
                     bottom: 10),
@@ -417,7 +416,8 @@ class _ExploreState extends State<Explore> {
           height: 20,
         ),
         _isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)))
             : Center(
                 child: Eventss(
                   eventsModel: eventsModel!,

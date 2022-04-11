@@ -243,24 +243,29 @@ class _CreateeventState extends State<Createevent> {
                                 ])
                               : Column(
                                   children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      //color: Colors.red,
-                                      height: size.height * 0.3,
-                                      width: size.width * double.infinity,
-                                      child: Image.file(
-                                        imagePath!,
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
+                                    InkWell(
+                                        onTap: () {
+                                          _selectPhoto();
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
+                                          //color: Colors.red,
+                                          height: size.height * 0.3,
+                                          width: size.width * double.infinity,
+                                          child: Image.file(
+                                            imagePath!,
+                                            fit: BoxFit.contain,
+                                          ),
+                                        )),
                                     const SizedBox(
                                       height: 10,
                                     ),
                                     Elevatedbutton(
                                         primary: const Color(0xFF304747),
-                                        text: "Upload Picture/Video",
+                                        text: "Change Picture/Video",
                                         width: double.infinity,
                                         coloring: const Color(0xFF304747),
                                         onpressed: () {
@@ -714,7 +719,9 @@ class _CreateeventState extends State<Createevent> {
                       // !_ispublic ? privateevent() : publicevent(),
 
                       _isloading
-                          ? const Center(child: CircularProgressIndicator())
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                                  color: Color(0xFF3BADB7)))
                           : Elevatedbutton(
                               text: "Create",
                               width: double.infinity,
@@ -741,7 +748,9 @@ class _CreateeventState extends State<Createevent> {
                         height: 16,
                       ),
                       _isloading1
-                          ? const Center(child: CircularProgressIndicator())
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                                  color: Color(0xFF3BADB7)))
                           : Elevatedbutton(
                               onpressed: () async {
                                 if (eventname.text.isEmpty ||
@@ -1069,7 +1078,7 @@ class Elevatedbuttons extends StatelessWidget {
       child: ElevatedButton(
         child: Text(
           text,
-          style: TextStyle(color: textColor, fontSize: 16),
+          style: TextStyle(color: textColor, fontSize: 15),
           textAlign: TextAlign.center,
         ),
         style: ElevatedButton.styleFrom(
@@ -1145,7 +1154,7 @@ class _VideoPlayerScree1State extends State<VideoPlayerScree1> {
               // If the VideoPlayerController is still initializing, show a
               // loading spinner.
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
               );
             }
           },

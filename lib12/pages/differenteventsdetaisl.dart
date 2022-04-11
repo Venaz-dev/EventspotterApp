@@ -89,7 +89,8 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(
+              child: CircularProgressIndicator(color: Color(0xFF3BADB7)))
           : Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
@@ -179,15 +180,15 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
                                     : SizedBox(
                                         //color: Colors.red,
                                         height: size.height * 0.4,
-                                       width: double.infinity,
+                                        width: double.infinity,
                                         child: Center(
                                           child: Container(
                                             height: size.height * 0.4,
-                                       width: double.infinity,
+                                            width: double.infinity,
                                             child: CachedNetworkImage(
                                               imageUrl:
                                                   MainUrl + widget.eventpicture,
-                                                  fit : BoxFit.cover,
+                                              fit: BoxFit.cover,
                                               //  getUpComingEventUrl + imagePath!.path
                                             ),
                                           ),
@@ -784,7 +785,7 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
       fit: BoxFit.cover,
       placeholder: (context, url) {
         return const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
         );
       },
     );

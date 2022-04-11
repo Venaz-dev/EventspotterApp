@@ -5,6 +5,7 @@ import 'package:event_spotter/pages/explore.dart';
 import 'package:event_spotter/pages/timeago.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:event_spotter/widgets/toaster.dart';
+import 'package:event_spotter/widgets/topmenu.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,249 +61,96 @@ class _commentState extends State<comment> {
     //     widget.model!.data[widget.indexs!].events.eventDescription;
     Size size = MediaQuery.of(context).size;
     return SafeArea(
+        child: GestureDetector(
+      onTap: () {
+        FocusScopeNode currentfocus = FocusScope.of(context);
+
+        if (!currentfocus.hasPrimaryFocus) {
+          currentfocus.unfocus();
+        }
+      },
       child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.only(
-              right: size.width * 0.03,
-              left: size.width * 0.03,
-              top: 20,
-              bottom: 30),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
+        resizeToAvoidBottomInset: false,
+        // resizeToAvoidBottomInset: true,
+        backgroundColor: Colors.white,
+        body: Stack(children: [
+          Padding(
+            padding: const EdgeInsets.only(
+                // right: size.width * 0.03,
+                // left: size.width * 0.03,
+                top: 20,
+                bottom: 0),
+            child:
+                // SingleChildScrollView(
+                //   scrollDirection: Axis.vertical,
+                //   child:
+                Column(
               children: [
-                Textform(
-                  controller: _search,
-                  icon: Icons.search,
-                  label: "Search",
-                  color: const Color(0XFFECF2F3),
-                ),
+                // Textform(
+                //   controller: _search,
+                //   icon: Icons.search,
+                //   label: "Search",
+                //   color: const Color(0XFFECF2F3),
+                // ),
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
-                  width: size.width * double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black12,
-                        spreadRadius: 2,
-                        blurRadius: 2,
-                      )
-                    ],
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Column(children: [
-                    Container(
-                      height: size.height * 0.25,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      width: size.width * double.infinity,
-                      child: Stack(children: [
-                        widget.eventPicture.toString().contains('.mp4') ||
-                                widget.eventPicture.toString().contains('.mov')
-                            ? VideoPlayerScreennnn(
-                                url: MainUrl + widget.eventPicture!)
-                            : Container(
-                                height: size.height * 0.25,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: CachedNetworkImage(
-                                    imageUrl: MainUrl + widget.eventPicture!,
-                                    // imageUrl: mainurl +
-                                    //     widget.model!.data[widget.indexs!].events
-                                    //         .eventPictures[0].imagePath,
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) {
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                        Positioned(
-                          bottom: 0,
-                          right: size.width * 0.02,
-                          left: size.width * 0.02,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Button(
-                                onpressed: () {},
-                                title: widget.userName!,
-                                // widget.model!.data[widget.indexs!].events
-                                //     .user.name,
-                                radiusofbutton: BorderRadius.circular(20),
-                                profileImage: MainUrl + widget.userProfile!,
-                                //mainurl +
-                                // widget.
-                                // model!.data[widget.indexs!].events
-                                //     .user.profilePicture!.image!
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              // Buttonicon(
-                              //     radiusofbutton: BorderRadius.circular(20),
-                              //     icon: FontAwesomeIcons.userPlus,
-                              //     title: "sfssf"
-                              //     // widget
-                              //     //         .model!.data[widget.indexs!].Following
-                              //     //         .toString() +
-                              //     //     " " "Followers",
-                              //     ),
-                            ],
-                          ),
-                        ),
-                      ]),
-                    ),
-                    const SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        const Icon(
-                          FontAwesomeIcons.calendar,
-                          size: 15,
-                          color: Colors.black54,
-                        ),
-                        const SizedBox(
-                          width: 2,
-                        ),
-                        Text(
-                          widget.date!,
-                          // widget.model!.data[widget.indexs!].events
-                          //     .eventDate,
-                          style: const TextStyle(color: Colors.black87),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        const Icon(
-                          FontAwesomeIcons.mapMarkerAlt,
-                          size: 15,
-                          color: Colors.black54,
-                        ),
-                        Text(widget.distance! + " " + "away",
-                            style: TextStyle(color: Colors.black87)),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        child: AutoSizeText(
-                          widget.eventName!,
-                          style: const TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400),
-                          minFontSize: 17,
-                          maxFontSize: 20,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    IntrinsicHeight(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          extras(
-                              FontAwesomeIcons.thumbsUp,
-                              widget.likeTotal.toString(),
-                              // widget
-                              //     .model!.data[widget.indexs!].isLiked
-                              //     .toString(),
-                              size),
-                          divider(),
-                          SizedBox(
-                            height: size.height * 0.04,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.green,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15))),
-                              onPressed: () {},
-                              child: extras(
-                                  Icons.comment,
-                                  widget.commentTotal.toString(),
-                                  // widget.model!.data[widget.indexs!]
-                                  //     .events.comment.length
-                                  //     .toString(),
-                                  size),
-                            ),
-                          ),
-                          // divider(),
-                          // extras(MdiIcons.share, posts[1]['share'],
-                          //     size),
-                          divider(),
-                          extras(
-                              Icons.play_arrow,
-                              widget.totalLive!,
-                              // widget.model!.data[widget.indexs!]
-                              //     .events.liveFeed.length
-                              //     .toString(),
-                              size),
-                        ],
-                      ),
-                    ),
-                  ]),
-                ),
+
                 const SizedBox(height: 20),
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(15),
-                    boxShadow: const [
-                      //background color of box
-                      BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 2,
-                          spreadRadius: 2.0,
-                          offset: Offset(
-                            0,
-                            0,
-                          ))
-                    ],
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
+                  child: Container(
+                    // padding: const EdgeInsets.all(10.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        widget.commentList.isNotEmpty
-                            ? Text(
-                                widget.commentList.isEmpty
-                                    ? "Comment"
-                                    : "Comments" +
-                                        " " +
-                                        widget.commentList.length.toString(),
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.w500),
-                              )
-                            : const Text(
-                                "No comments",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.w500),
-                              ),
+                        Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Text(
+                              widget.commentList.isEmpty
+                                  ? "Comment"
+                                  : "Comments" +
+                                      " " +
+                                      "(" +
+                                      widget.commentList.length.toString() +
+                                      ")",
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.w500),
+                            )),
+                        // widget.commentList.isNotEmpty
+                        //     ?
+                        //     Text(
+                        //         widget.commentList.isEmpty
+                        //             ? "Comment"
+                        //             : "Comments" +
+                        //                 " " +
+                        //                 widget.commentList.length.toString(),
+                        //         style: const TextStyle(
+                        //             color: Colors.black,
+                        //             fontSize: 19,
+                        //             fontWeight: FontWeight.w500),
+                        //       )
+                        //     : const Text(
+                        //         "No comments",
+                        //         style: TextStyle(
+                        //             color: Colors.black,
+                        //             fontSize: 19,
+                        //             fontWeight: FontWeight.w500),
+                        //       ),
                         const SizedBox(
                           height: 20,
                         ),
                         Commentbyperson(
                             // eventsModel: widget.eventsModel,
                             // index: widget.index,
+                            size: size,
                             comments: widget.commentList,
                             eventId: widget.eventId!)
                       ],
@@ -312,9 +160,13 @@ class _commentState extends State<comment> {
               ],
             ),
           ),
-        ),
+          // ),
+          Topmenu(
+            title: widget.eventName!,
+          ),
+        ]),
       ),
-    );
+    ));
   }
 
   extras(
@@ -348,13 +200,15 @@ class _commentState extends State<comment> {
 class Commentbyperson extends StatefulWidget {
   List comments = [];
   String eventId;
-  Commentbyperson(
-      {Key? key,
-      // required this.eventsModel,
-      // required this.index,
-      required this.comments,
-      required this.eventId})
-      : super(key: key);
+  Size size;
+  Commentbyperson({
+    Key? key,
+    // required this.eventsModel,
+    // required this.index,
+    required this.comments,
+    required this.eventId,
+    required this.size,
+  }) : super(key: key);
 
   @override
   State<Commentbyperson> createState() => _CommentbypersonState();
@@ -372,105 +226,176 @@ class _CommentbypersonState extends State<Commentbyperson> {
   late String _name;
   List comments = [];
 
+  // late Size size;
+
   String MainUrl = "https://theeventspotter.com/";
 
   @override
   void initState() {
     comments = widget.comments;
+    // size = widget.size;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    Size size = widget.size;
+    final kbHeight = MediaQuery.of(context).viewInsets.bottom;
     // print(widget.eventsModel.data[widget.index].events.comment.length);
-    return Column(
-      children: [
-        Column(
-            children: List.generate(comments.length, (index) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 10.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFFF7F7F7),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  image: CachedNetworkImageProvider(
-                                      MainUrl + comments[index]['profile_pic']),
-                                  fit: BoxFit.cover)),
+    return Container(
+        // height: size.height * 0.50,
+        constraints: BoxConstraints(
+          minHeight: (size.height * 0.82) - kbHeight,
+          maxHeight: (size.height * 0.82) - kbHeight,
+        ),
+        // color: Colors.red,
+        child: Stack(children: [
+          comments.isEmpty
+              ? SizedBox(height: 20, width: size.width, child: const Text(""))
+              : SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  // physics: const NeverScrollableScrollPhysics(),
+                  child: Column(
+                    children: [
+                      Column(
+                          children: List.generate(comments.length, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                              bottom: 20.0, left: 20, right: 20),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF7F7F7),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        height: 35,
+                                        width: 35,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                                image:
+                                                    CachedNetworkImageProvider(
+                                                        MainUrl +
+                                                            comments[index][
+                                                                'profile_pic']),
+                                                fit: BoxFit.cover)),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        comments[index]['user_name'],
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          color: Color(0xFF101010),
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      time(index),
+                                    ],
+                                  ),
+                                  Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 40.0,
+                                          left: 0,
+                                          top: 10,
+                                          bottom: 5),
+                                      child: Text(
+                                        comments[index]['content'],
+                                        style: const TextStyle(
+                                            color: Color(0xFF101010),
+                                            fontSize: 15),
+                                      ))
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      })),
+                      const SizedBox(height: 80),
+                      // const SizedBox(height: 80),
+                      // const SizedBox(height: 80),
+                      // const SizedBox(height: 500),
+                    ],
+                  )),
+          Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                width: size.width,
+                height: 80,
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 10,
+                          spreadRadius: 2)
+                    ]),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      Flexible(
+                          child: Container(
+                        padding: const EdgeInsets.only(left: 20),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xFFD1D5DB)),
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                        const SizedBox(
-                          width: 20,
+                        child: TextField(
+                          maxLines: null,
+                          controller: _comment,
+                          cursorColor: Colors.black54,
+                          decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Write the comment"),
                         ),
-                        Text(
-                          comments[index]['user_name'],
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        const Spacer(),
-                        time(index),
-                      ],
-                    ),
-                    Padding(
-                        padding: EdgeInsets.only(
-                            right: 40.0, left: 40, top: 5, bottom: 5),
-                        child: Text(comments[index]['content']))
-                  ],
-                ),
-              ),
-            ),
-          );
-        })),
-        Container(
-          decoration: BoxDecoration(
-              color: const Color(0xFFF7F7F7),
-              borderRadius: BorderRadius.circular(10)),
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              children: [
-                Flexible(
-                  child: TextField(
-                    maxLines: null,
-                    controller: _comment,
-                    cursorColor: Colors.black54,
-                    decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Write the comment"),
+                      )),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      InkWell(
+                          onTap: () async {
+                            if (_comment.text.isEmpty) {
+                              showToaster("please write the comment");
+                            } else {
+                              await PostComment(widget.eventId);
+                              clearText();
+                              FocusScopeNode currentfocus =
+                                  FocusScope.of(context);
+
+                              if (!currentfocus.hasPrimaryFocus) {
+                                currentfocus.unfocus();
+                              }
+                              // Navigator.pop(context);
+                            }
+                          },
+                          child: Container(
+                              height: 48,
+                              width: 48,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF3BADB7),
+                                borderRadius: BorderRadius.circular(40),
+                              ),
+                              child: const Icon(
+                                Icons.send,
+                                color: Colors.white,
+                              ))),
+                    ],
                   ),
                 ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        primary: const Color(0xFF3BACEC),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                    onPressed: () async {
-                      if (_comment.text.isEmpty) {
-                        showToaster("please write the comment");
-                      } else {
-                        await PostComment(widget.eventId);
-                        clearText();
-                        // Navigator.pop(context);
-                      }
-                    },
-                    child: const Text('Comment')),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
+              )),
+        ]));
   }
 
   time(int index) {
@@ -599,7 +524,7 @@ class _VideoPlayerScreennnnState extends State<VideoPlayerScreennnn> {
               // If the VideoPlayerController is still initializing, show a
               // loading spinner.
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
               );
             }
           },

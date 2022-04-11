@@ -374,8 +374,7 @@ class _ExploreState extends State<Explore> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 image: const DecorationImage(
-                  image: AssetImage(
-                  'Assets/images/create_event.jpeg'),
+                  image: AssetImage('Assets/images/create_event.jpeg'),
                   fit: BoxFit.cover,
                   //  colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.dstATop)
                 ),
@@ -406,9 +405,10 @@ class _ExploreState extends State<Explore> {
           height: 20,
         ),
         _isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)))
             : Center(
-              child: Eventss(
+                child: Eventss(
                   eventsModel: eventsModel!,
                   favourite: favourite,
                   eventsLiveFeed: eventsLiveFeed,
@@ -416,7 +416,7 @@ class _ExploreState extends State<Explore> {
                   totalCount: totalCount,
                   id: id,
                 ),
-            ),
+              ),
       ],
     );
   }

@@ -640,7 +640,9 @@ class _DraftseditState extends State<Draftsedit> {
                   // !_ispublic ? privateevent() : publicevent(),
 
                   _isloading
-                      ? const Center(child: CircularProgressIndicator())
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                              color: Color(0xFF3BADB7)))
                       : Elevatedbutton(
                           text: "Post",
                           width: double.infinity,
@@ -975,7 +977,7 @@ class _VideoPlayerScree1State extends State<VideoPlayerScree1> {
               // If the VideoPlayerController is still initializing, show a
               // loading spinner.
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
               );
             }
           },

@@ -191,7 +191,8 @@ class _EventdetailingState extends State<Eventdetailing> {
                                     fit: BoxFit.cover,
                                     placeholder: (context, url) {
                                       return const Center(
-                                        child: CircularProgressIndicator(),
+                                        child: CircularProgressIndicator(
+                                            color: Color(0xFF3BADB7)),
                                       );
                                     },
                                   ),
@@ -294,13 +295,15 @@ class _EventdetailingState extends State<Eventdetailing> {
                                             index: index1,
                                           )));
                                 }),
-                               // divider(),
+                                // divider(),
                                 divider(),
 
-                                  extras(MdiIcons.share, "", size, () {
-                                    share(widget.model!.data[widget.indexs!].events.id.toString());
-                                  }),
-                                  divider(), //
+                                extras(MdiIcons.share, "", size, () {
+                                  share(widget
+                                      .model!.data[widget.indexs!].events.id
+                                      .toString());
+                                }),
+                                divider(), //
 
                                 // extras(MdiIcons.share,
                                 //     posts[1]['share'], size),
@@ -335,10 +338,12 @@ class _EventdetailingState extends State<Eventdetailing> {
       ),
     ));
   }
-share(String ff){
-    Share.share('check out my post https://theeventspotter.com/eventDetails/'+ff);
 
+  share(String ff) {
+    Share.share(
+        'check out my post https://theeventspotter.com/eventDetails/' + ff);
   }
+
   Widget calloflivesnaps(Size size) {
     switch (swapping) {
       case livefeed.details:
@@ -507,12 +512,11 @@ share(String ff){
                         ? Padding(
                             padding: const EdgeInsets.only(right: 6.0, top: 10),
                             child: Container(
-                              padding: const  EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 15),
                               decoration: BoxDecoration(
                                 border: Border.all(color: Colors.black12),
                                 borderRadius: BorderRadius.circular(10),
-                              
                               ),
                               child: Text(
                                   widget.model!.data[index1].events
@@ -567,7 +571,8 @@ share(String ff){
           height: 20,
         ),
         _isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)))
             : widget.model!.data[index1].events.userId == widget.id
                 ? Elevatedbutton(
                     primary: Colors.redAccent,
@@ -942,7 +947,7 @@ share(String ff){
       fit: BoxFit.cover,
       placeholder: (context, url) {
         return const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
         );
       },
     );
@@ -1124,7 +1129,7 @@ class _SnapsvideoplayerState extends State<Snapsvideoplayer> {
               // If the VideoPlayerController is still initializing, show a
               // loading spinner.
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
               );
             }
           },

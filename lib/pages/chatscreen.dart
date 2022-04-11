@@ -93,7 +93,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     if (snapshot.hasData) {
                       return IconButton(
                         icon: snapshot.data!
-                            ? const Center(child: CircularProgressIndicator())
+                            ? const Center(
+                                child: CircularProgressIndicator(
+                                    color: Color(0xFF3BADB7)))
                             : const Icon(
                                 Icons.send,
                                 color: Colors.white,

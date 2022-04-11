@@ -92,7 +92,7 @@ class _SignupState extends State<Signup> {
           backgroundColor: Colors.white,
           body: _isLoading
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
                 )
               : GestureDetector(
                   onTap: () {

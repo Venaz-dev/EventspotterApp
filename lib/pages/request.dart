@@ -48,7 +48,9 @@ class _PendingrequestsState extends State<Pendingrequests> {
             // ),
             body: Stack(children: [
               _isLoading
-                  ? const Center(child: CircularProgressIndicator())
+                  ? const Center(
+                      child:
+                          CircularProgressIndicator(color: Color(0xFF3BADB7)))
                   : data
                       ? Padding(
                           padding: const EdgeInsets.only(

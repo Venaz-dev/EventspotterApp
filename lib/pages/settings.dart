@@ -16,6 +16,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:event_spotter/widgets/topmenu.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 enum scrolling { personal, settings }
 
@@ -425,87 +426,103 @@ class _SettingsScreenState extends State<SettingsScreen> {
         const SizedBox(
           height: 30,
         ),
-        Row(
-          // mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: const [
-            Text(
-              "Privacy policy",
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Color(0xFF101010),
-                  fontWeight: FontWeight.w500),
-            ),
-            Spacer(),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: Color(0xff707070),
-              size: 22.0,
-            ),
-          ],
-        ),
+        InkWell(
+            onTap: () {
+              urllauncher("https://theeventspotter.com/privacy-policy");
+            },
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const [
+                Text(
+                  "Privacy policy",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF101010),
+                      fontWeight: FontWeight.w500),
+                ),
+                Spacer(),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Color(0xff707070),
+                  size: 22.0,
+                ),
+              ],
+            )),
         const SizedBox(
           height: 20,
         ),
-        Row(
-          // mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: const [
-            Text(
-              "Terms of service",
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Color(0xFF101010),
-                  fontWeight: FontWeight.w500),
-            ),
-            Spacer(),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: Color(0xff707070),
-              size: 22.0,
-            ),
-          ],
-        ),
+        InkWell(
+            onTap: () {
+              urllauncher("https://theeventspotter.com/terms-of-service");
+            },
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const [
+                Text(
+                  "Terms of service",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF101010),
+                      fontWeight: FontWeight.w500),
+                ),
+                Spacer(),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Color(0xff707070),
+                  size: 22.0,
+                ),
+              ],
+            )),
         const SizedBox(
           height: 20,
         ),
-        Row(
-          // mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: const [
-            Text(
-              "Disclaimer",
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Color(0xFF101010),
-                  fontWeight: FontWeight.w500),
-            ),
-            Spacer(),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: Color(0xff707070),
-              size: 22.0,
-            ),
-          ],
-        ),
+        InkWell(
+            onTap: () {
+              urllauncher("https://theeventspotter.com/disclaimer");
+            },
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const [
+                Text(
+                  "Disclaimer",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF101010),
+                      fontWeight: FontWeight.w500),
+                ),
+                Spacer(),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Color(0xff707070),
+                  size: 22.0,
+                ),
+              ],
+            )),
         const SizedBox(
           height: 20,
         ),
-        Row(
-          // mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: const [
-            Text(
-              "Cookies Policy",
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Color(0xFF101010),
-                  fontWeight: FontWeight.w500),
-            ),
-            Spacer(),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: Color(0xff707070),
-              size: 22.0,
-            ),
-          ],
-        ),
+        InkWell(
+            onTap: () {
+              urllauncher("https://theeventspotter.com/cookies-policy");
+            },
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const [
+                Text(
+                  "Cookies Policy",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF101010),
+                      fontWeight: FontWeight.w500),
+                ),
+                Spacer(),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Color(0xff707070),
+                  size: 22.0,
+                ),
+              ],
+            )),
         const SizedBox(
           height: 20,
         ),
@@ -762,5 +779,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _isLoading = false;
     }
     setState(() {});
+  }
+
+  void urllauncher(url) async {
+    if (url != null || url != "") {
+      if (url!.contains("https://")) {
+        if (await canLaunch(url!)) {
+          await launch(url!);
+        } else {
+          throw 'Could not launch settings url';
+        }
+      } else {
+        if (await canLaunch("https://" + url!)) {
+          await launch("https://" + url!);
+        } else {
+          throw 'Could not launch  settings url';
+        }
+      }
+    }
   }
 }

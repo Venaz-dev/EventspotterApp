@@ -22,13 +22,12 @@ class _EventsattendedState extends State<Eventsattended> {
     return LikeButton(
         size: 20,
         isLiked: isliked,
-       
         likeBuilder: (isliked) {
           final color = isliked ? Colors.red : Colors.grey;
           return Icon(Icons.favorite, color: color, size: 20);
         },
         countBuilder: (count, isliked, text) {
-          final color =isliked ?  Colors.red  : Colors.grey;
+          final color = isliked ? Colors.red : Colors.grey;
         });
   }
 
@@ -47,52 +46,47 @@ class _EventsattendedState extends State<Eventsattended> {
         },
         child: Scaffold(
           body: Padding(
-            padding:  EdgeInsets.only(top: 20.0, left: size.width*0.05 ),
+            padding: EdgeInsets.only(top: 20.0, left: size.width * 0.05),
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
                   Padding(
-                     padding:  EdgeInsets.only(top : size.height * 0.02 ),
-                     child: Row(
-                        children: [
-                           SizedBox(
-                             //height: size.height*0.1,
-                             width: size.width*0.8 ,
-                             child: Textform(
-                                controller: _search,
-                                icon: Icons.search,
-                                label: "Search",
-                                color: const Color(0XFFECF2F3),
-                              
+                    padding: EdgeInsets.only(top: size.height * 0.02),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          //height: size.height*0.1,
+                          width: size.width * 0.8,
+                          child: Textform(
+                            controller: _search,
+                            icon: Icons.search,
+                            label: "Search",
+                            color: const Color(0XFFECF2F3),
                           ),
-                           ),
-                           SizedBox(
-                            width: size.width*0.01,
-                          ),
-                         Smallbutton(
-                             
-
-                              
-                              icon: FontAwesomeIcons.slidersH,
-
-                              onpressed: () {
-                                setState(() {
-                                 // swap = screens.filter;
-                                });
-                              },
-                            
-                          ),
-                        ],
-                      ),
-                   ),
-                  
+                        ),
+                        SizedBox(
+                          width: size.width * 0.01,
+                        ),
+                        Smallbutton(
+                          icon: FontAwesomeIcons.slidersH,
+                          onpressed: () {
+                            setState(() {
+                              // swap = screens.filter;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                   const SizedBox(height: 30),
-                  
                   Column(
                     children: List.generate(feed.length, (index) {
                       return Padding(
-                        padding:  EdgeInsets.only(bottom : size.height * 0.01 , top : size.height*.01 , right : size.width*0.05),
+                        padding: EdgeInsets.only(
+                            bottom: size.height * 0.01,
+                            top: size.height * .01,
+                            right: size.width * 0.05),
                         child: Container(
                           height: size.height * 0.3,
                           width: size.width,
@@ -108,33 +102,35 @@ class _EventsattendedState extends State<Eventsattended> {
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.white),
                           child: Padding(
-                            padding:  EdgeInsets.only(top: size.height*0.02,right: size.width*0.02 , bottom: size.height*0.02, left:  size.width*0.02),
+                            padding: EdgeInsets.only(
+                                top: size.height * 0.02,
+                                right: size.width * 0.02,
+                                bottom: size.height * 0.02,
+                                left: size.width * 0.02),
                             child: Stack(
                               children: [
-                                 Positioned(
+                                Positioned(
                                   right: 0,
                                   top: 0,
-                                 child :  likebutton(isliked),
+                                  child: likebutton(isliked),
                                 ),
                                 SizedBox(
-                        
-                        height: size.height*0.17,
-                        width: size.width*0.3,
-                        child: ClipRRect(
-                        
-                          borderRadius: BorderRadius.circular(10),
-                          child: CachedNetworkImage(
-                            
-                            imageUrl: feed[index]['picture'],
-                            fit: BoxFit.cover,
-                          placeholder: (context , url)
-                          {
-                            return 
-                            const Center(child: CircularProgressIndicator(),);
-                          },
-                          ),
-                        ),
-                      ),
+                                  height: size.height * 0.17,
+                                  width: size.width * 0.3,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: CachedNetworkImage(
+                                      imageUrl: feed[index]['picture'],
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(
+                                              color: Color(0xFF3BADB7)),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
                                 Positioned(
                                   right: 20,
                                   left: size.width * 0.33,
@@ -147,10 +143,8 @@ class _EventsattendedState extends State<Eventsattended> {
                                   ),
                                 ),
                                 Positioned(
-                                
                                   top: size.height * 0.14,
                                   left: size.width * 0.33,
-                                  
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
@@ -179,13 +173,12 @@ class _EventsattendedState extends State<Eventsattended> {
                                         width: 5,
                                       ),
                                       Text(
-                                            posts[1]['distance'] +
-                                                " " +
-                                                " " +
-                                                "away",
-                                            style: const TextStyle(
-                                                color: Colors.black87)),
-                                      
+                                          posts[1]['distance'] +
+                                              " " +
+                                              " " +
+                                              "away",
+                                          style: const TextStyle(
+                                              color: Colors.black87)),
                                     ],
                                   ),
                                 ),
@@ -206,8 +199,7 @@ class _EventsattendedState extends State<Eventsattended> {
                                   ),
                                 ),
                                 Positioned(
-                                
-                                bottom: 0,
+                                  bottom: 0,
                                   child: Row(
                                     children: [
                                       IntrinsicHeight(

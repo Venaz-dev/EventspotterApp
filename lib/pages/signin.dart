@@ -194,7 +194,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                     if (_isLoading)
-                      const Center(child: CircularProgressIndicator()),
+                      const Center(
+                          child: CircularProgressIndicator(
+                              color: Color(0xFF3BADB7))),
                     const SizedBox(
                       height: 25,
                     ),

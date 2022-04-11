@@ -429,7 +429,6 @@ class _CreateeventState extends State<Createevent> {
                             child: Text(conditions[index].toString(),
                                 style: const TextStyle(color: Colors.white)),
                           ),
-                        
                         );
                       })),
                 const SizedBox(
@@ -504,7 +503,9 @@ class _CreateeventState extends State<Createevent> {
                   height: 20,
                 ),
                 _isloading
-                    ? const Center(child: CircularProgressIndicator())
+                    ? const Center(
+                        child:
+                            CircularProgressIndicator(color: Color(0xFF3BADB7)))
                     : Elevatedbutton(
                         text: "Create",
                         width: double.infinity,
@@ -530,7 +531,9 @@ class _CreateeventState extends State<Createevent> {
                   height: 10,
                 ),
                 _isloading1
-                    ? const Center(child: CircularProgressIndicator())
+                    ? const Center(
+                        child:
+                            CircularProgressIndicator(color: Color(0xFF3BADB7)))
                     : Elevatedbutton(
                         onpressed: () async {
                           if (eventname.text.isEmpty ||
@@ -902,7 +905,7 @@ class _VideoPlayerScree1State extends State<VideoPlayerScree1> {
               // If the VideoPlayerController is still initializing, show a
               // loading spinner.
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
               );
             }
           },

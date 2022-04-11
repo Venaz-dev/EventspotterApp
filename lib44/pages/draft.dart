@@ -98,7 +98,7 @@ class _DraftseditState extends State<Draftsedit> {
     eventDescription.dispose();
     venue.dispose();
     conditionss.dispose();
-    
+
     link.dispose();
     super.dispose();
   }
@@ -112,7 +112,8 @@ class _DraftseditState extends State<Draftsedit> {
     latt = widget.lat;
     longg = widget.log;
     public = int.parse(widget.eventprivaacy);
-    link = TextEditingController(text: widget.ticketlink);;
+    link = TextEditingController(text: widget.ticketlink);
+    ;
     //value = widget.type;
     conditions = widget.conditions;
     getEventTypes();
@@ -176,7 +177,7 @@ class _DraftseditState extends State<Draftsedit> {
                         width: double.infinity,
                         child: Column(
                           children: [
-                            VideoPlayerScree1(url: MainUrl+imagePath!.path),
+                            VideoPlayerScree1(url: MainUrl + imagePath!.path),
                             Flexible(
                               child: Padding(
                                 padding: const EdgeInsets.only(bottom: 10.0),
@@ -479,7 +480,9 @@ class _DraftseditState extends State<Draftsedit> {
                   height: 20,
                 ),
                 _isloading
-                    ? const Center(child: CircularProgressIndicator())
+                    ? const Center(
+                        child:
+                            CircularProgressIndicator(color: Color(0xFF3BADB7)))
                     : Elevatedbutton(
                         text: "Post",
                         width: double.infinity,
@@ -489,7 +492,6 @@ class _DraftseditState extends State<Draftsedit> {
                         onpressed: () async {
                           if (eventname.text.isEmpty ||
                               eventDescription.text.isEmpty ||
-                              
                               imagePath == null ||
                               conditions.isEmpty) {
                             showToaster("Please fill all the above fields");
@@ -811,7 +813,7 @@ class _VideoPlayerScree1State extends State<VideoPlayerScree1> {
               // If the VideoPlayerController is still initializing, show a
               // loading spinner.
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
               );
             }
           },

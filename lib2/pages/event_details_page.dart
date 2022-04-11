@@ -185,7 +185,8 @@ class _EventdetailingState extends State<Eventdetailing> {
                                 fit: BoxFit.fill,
                                 placeholder: (context, url) {
                                   return const Center(
-                                    child: CircularProgressIndicator(),
+                                    child: CircularProgressIndicator(
+                                        color: Color(0xFF3BADB7)),
                                   );
                                 },
                               ),
@@ -546,7 +547,8 @@ class _EventdetailingState extends State<Eventdetailing> {
           height: 20,
         ),
         _isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)))
             : widget.model!.data[index1].events.userId == widget.id
                 ? Elevatedbutton(
                     primary: Colors.redAccent,
@@ -682,7 +684,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                                               " " +
                                               "miles",
                                           style: const TextStyle(
-                                            color : Colors.white,
+                                              color: Colors.white,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 17),
                                         )),
@@ -913,7 +915,7 @@ class _EventdetailingState extends State<Eventdetailing> {
       fit: BoxFit.cover,
       placeholder: (context, url) {
         return const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
         );
       },
     );
@@ -1010,10 +1012,11 @@ class _EventdetailingState extends State<Eventdetailing> {
         } else {
           throw 'Could not launch $widget.model!.data[widget.indexs!].events.ticketLink!';
         }
-      }else{
-         if (await canLaunch(
-           "https://"+widget.model!.data[widget.indexs!].events.ticketLink!)) {
-          await launch( "https://"+widget.model!.data[widget.indexs!].events.ticketLink!);
+      } else {
+        if (await canLaunch("https://" +
+            widget.model!.data[widget.indexs!].events.ticketLink!)) {
+          await launch("https://" +
+              widget.model!.data[widget.indexs!].events.ticketLink!);
         } else {
           throw 'Could not launch $widget.model!.data[widget.indexs!].events.ticketLink!';
         }
@@ -1094,7 +1097,7 @@ class _SnapsvideoplayerState extends State<Snapsvideoplayer> {
               // If the VideoPlayerController is still initializing, show a
               // loading spinner.
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
               );
             }
           },

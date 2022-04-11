@@ -312,7 +312,7 @@ class _ExploreState extends State<Explore> {
                       padding: EdgeInsets.only(top: size.height * 0.02),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment : CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const Image(
                             image: AssetImage('Assets/images/logo.png'),
@@ -440,7 +440,8 @@ class _ExploreState extends State<Explore> {
           height: 20,
         ),
         _isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)))
             : Center(
                 child: Eventss(
                   eventsModel: eventsModel!,
