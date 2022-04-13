@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:event_spotter/pages/notification.dart';
 
 enum screens { explore, filter }
 
@@ -22,6 +23,7 @@ class Explore extends StatefulWidget {
 }
 
 class _ExploreState extends State<Explore> {
+  bool showSearch = false;
   String? latlong;
   String? Lat;
   String? _name;
@@ -63,70 +65,75 @@ class _ExploreState extends State<Explore> {
   double topbarheight = 50;
   late Map<String, double> userLocation;
   Widget searchnames() {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.2,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        boxShadow: const [
-          BoxShadow(
-            spreadRadius: 0.5,
-            blurRadius: 0.5,
-            color: Colors.black12,
-            offset: Offset(-1, 1),
+    return Positioned(
+        top: 80,
+        left: 0,
+        right: 0,
+        child: Container(
+          padding: EdgeInsets.only(top: 30),
+          height: MediaQuery.of(context).size.height * 0.8,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            // boxShadow: const [
+            //   BoxShadow(
+            //     spreadRadius: 0.5,
+            //     blurRadius: 0.5,
+            //     color: Colors.black12,
+            //     offset: Offset(-1, 1),
+            //   ),
+            //   BoxShadow(
+            //     spreadRadius: 0.5,
+            //     blurRadius: 0.5,
+            //     color: Colors.black12,
+            //     offset: Offset(1, -1),
+            //   )
+            // ],
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(0),
           ),
-          BoxShadow(
-            spreadRadius: 0.5,
-            blurRadius: 0.5,
-            color: Colors.black12,
-            offset: Offset(1, -1),
-          )
-        ],
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-            children: List.generate(search.length, (index) {
-          return Padding(
-            padding: const EdgeInsets.only(left: 15.0, top: 5, bottom: 10),
-            child: InkWell(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => Eventposterprofile(
-                          id: search[index]['id'],
-                        )));
-              },
-              child: Ink(
-                child: Row(
-                  children: [
-                    SizedBox(
-                      height: 30,
-                      width: 30,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(300),
-                        child: Image.network(
-                          MainUrl + search[index]["image"],
-                          fit: BoxFit.cover,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+                children: List.generate(search.length, (index) {
+              return Padding(
+                padding: const EdgeInsets.only(left: 15.0, top: 5, bottom: 20),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => Eventposterprofile(
+                              id: search[index]['id'],
+                            )));
+                  },
+                  child: Ink(
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          height: 42,
+                          width: 42,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(300),
+                            child: Image.network(
+                              MainUrl + search[index]["image"],
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
-                      ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Text(search[index]["name"],
+                            style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black))
+                      ],
                     ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Text(search[index]["name"],
-                        style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black))
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          );
-        })),
-      ),
-    );
+              );
+            })),
+          ),
+        ));
   }
   // Widget searchnames() {
   //   return Padding(
@@ -287,106 +294,183 @@ class _ExploreState extends State<Explore> {
           //Color(0xFF5E5E5E),
 
           body: GestureDetector(
-            onTap: () {
-              FocusScopeNode currentfocus = FocusScope.of(context);
+              onTap: () {
+                FocusScopeNode currentfocus = FocusScope.of(context);
 
-              if (!currentfocus.hasPrimaryFocus) {
-                currentfocus.unfocus();
-              }
-            },
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      //         boxShadow: [
-                      //   BoxShadow(
-                      //     color: Colors.black12,
-                      //     // spreadRadius: 2,
-                      //     // blurRadius: 0,
-                      //     // offset: Offset(0, 1),
-                      //   )
-                      // ]
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          top: size.height * 0.02, bottom: size.height * 0.02),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Image(
-                            image: AssetImage('Assets/images/logo-no-text.png'),
-                            height: 40,
-                          ),
-                          const SizedBox(
-                            // width: size.width * 0.73,
-                            width: 10,
-                          ),
-                          SizedBox(
-                            width: size.width * 0.63,
-                            // width: 50,
-                            child: Textform(
-                              onchange: (listen) {
-                                if (_search.text.length >= 3) {
-                                  searchApiCall();
-                                  if (_search.text.length == 0) {
-                                    search.clear();
-                                  }
-                                  setState(() {});
-                                }
-                                //setState(() {});
-                              },
-                              isreadonly: false,
-                              isSecure: false,
-                              controller: _search,
-                              icon: Icons.search,
-                              label: "Search",
-                              color: const Color(0XFFECF2F3),
+                if (!currentfocus.hasPrimaryFocus) {
+                  currentfocus.unfocus();
+                }
+              },
+              child: Stack(children: [
+                SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: Color(0xFFE5E7EB), width: 1))
+                            //         boxShadow: [
+                            //   BoxShadow(
+                            //     color: Colors.black12,
+                            //     // spreadRadius: 2,
+                            //     // blurRadius: 0,
+                            //     // offset: Offset(0, 1),
+                            //   )
+                            // ]
                             ),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              top: size.height * 0.015,
+                              bottom: size.height * 0.015,
+                              left: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Image(
+                                image: AssetImage(
+                                    'Assets/images/logo-no-text.png'),
+                                height: 40,
+                              ),
+                              const SizedBox(
+                                // width: size.width * 0.73,
+                                width: 20,
+                              ),
+                              // const Spacer(),
+                              showSearch ? SizedBox() : const Spacer(),
+                              showSearch
+                                  ? Stack(children: [
+                                      SizedBox(
+                                        height: 55,
+                                        width: size.width * 0.66,
+                                        // width: 50,
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(10)),
+                                                border: Border.all(
+                                                    color:
+                                                        const Color(0xffE5E7EB),
+                                                    width: 1)),
+                                            child: Textform(
+                                              onchange: (listen) {
+                                                if (_search.text.length >= 2) {
+                                                  searchApiCall();
+                                                  if (_search.text.length ==
+                                                      0) {
+                                                    search.clear();
+                                                  }
+                                                  setState(() {});
+                                                }
+                                                //setState(() {});
+                                              },
+                                              isreadonly: false,
+                                              isSecure: false,
+                                              controller: _search,
+                                              // icon: Icons.search,
+                                              label: "Search users",
+                                              color: Colors.white,
+                                            )),
+                                      ),
+                                      Positioned(
+                                          top: 5.0,
+                                          right: 0.0,
+                                          child: IconButton(
+                                            onPressed: () {
+                                              _search.text = "";
+                                              setState(() {
+                                                showSearch = false;
+                                              });
+                                            },
+                                            icon: const Icon(
+                                              FontAwesomeIcons.solidTimesCircle,
+                                              size: 25,
+                                            ),
+                                          ))
+                                    ])
+                                  :
+                                  // const SizedBox(width: 40.0),
+                                  SizedBox(
+                                      width: 55,
+                                      height: 55,
+                                      child: InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            showSearch = true;
+                                          });
+
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(
+                                          //       builder: (context) => const Noti()),
+                                          // );
+                                        },
+                                        child: Container(
+                                            child: const Center(
+                                                child: SizedBox(
+                                                    width: 30.0,
+                                                    child: Image(
+                                                        image: AssetImage(
+                                                            "Assets/icons/search.png"))))),
+                                      ),
+                                    ),
+                              SizedBox(
+                                width: 55,
+                                height: 55,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const Noti()),
+                                    );
+                                  },
+                                  child: Container(
+                                      child: const Center(
+                                          child: SizedBox(
+                                              width: 30.0,
+                                              child: Image(
+                                                  image: AssetImage(
+                                                      "Assets/icons/notification.png"))))),
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(width: 40.0),
-                          const SizedBox(
-                              width: 27.0,
-                              child: Image(
-                                  image: AssetImage(
-                                      "Assets/icons/notification.png"))),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: size.height * 0.85,
-                    decoration: const BoxDecoration(color: Color(0xFFE5E5E5)),
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          right: size.width * 0.03,
-                          left: size.width * 0.03,
-                          bottom: 10),
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Stack(
-                              children: [
-                                getpages(size),
-                                _search.text.length >= 3
-                                    ? searchnames()
-                                    : const SizedBox(),
-                              ],
-                            ),
-                          ],
                         ),
                       ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
+                      Container(
+                        height: size.height * 0.85,
+                        decoration: const BoxDecoration(
+                            color: Color.fromARGB(228, 229, 229, 229)),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              right: size.width * 0.03,
+                              left: size.width * 0.03,
+                              bottom: 50),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Stack(
+                                  children: [
+                                    getpages(size),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                _search.text.length >= 3 ? searchnames() : const SizedBox(),
+              ])),
         ),
       ),
 
@@ -452,7 +536,8 @@ class _ExploreState extends State<Explore> {
           height: 20,
         ),
         _isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)))
             : Center(
                 child: Eventss(
                   eventsModel: eventsModel!,
@@ -830,6 +915,7 @@ class Button extends StatelessWidget {
     this.radiusofbutton,
     this.profileImage = '',
     this.onpressed,
+    this.size = 32,
     required this.title,
   }) : super(key: key);
 
@@ -837,14 +923,15 @@ class Button extends StatelessWidget {
   final String? profileImage;
   final String title;
   final VoidCallback? onpressed;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Container(
-          height: 30,
-          width: 30,
+          height: size,
+          width: size,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: DecorationImage(
@@ -856,7 +943,7 @@ class Button extends StatelessWidget {
         ),
         Text(
           title,
-          style: const TextStyle(color: Colors.black, fontSize: 13),
+          style: const TextStyle(color: Colors.black, fontSize: 15),
         ),
       ],
     );

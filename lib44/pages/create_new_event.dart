@@ -502,7 +502,9 @@ class _CreateeventState extends State<Createevent> {
                   height: 20,
                 ),
                 _isloading
-                    ? const Center(child: CircularProgressIndicator())
+                    ? const Center(
+                        child:
+                            CircularProgressIndicator(color: Color(0xFF3BADB7)))
                     : Elevatedbutton(
                         text: "Create",
                         width: double.infinity,
@@ -528,7 +530,9 @@ class _CreateeventState extends State<Createevent> {
                   height: 10,
                 ),
                 _isloading1
-                    ? const Center(child: CircularProgressIndicator())
+                    ? const Center(
+                        child:
+                            CircularProgressIndicator(color: Color(0xFF3BADB7)))
                     : Elevatedbutton(
                         onpressed: () async {
                           if (eventname.text.isEmpty ||
@@ -816,7 +820,7 @@ class Elevatedbuttons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.06,
-      width : MediaQuery.of(context).size.width*0.3,
+      width: MediaQuery.of(context).size.width * 0.3,
       decoration: BoxDecoration(
         color: coloring,
         borderRadius: BorderRadius.circular(10),
@@ -894,16 +898,13 @@ class _VideoPlayerScree1State extends State<VideoPlayerScree1> {
               return SizedBox(
                 height: size.height * 0.3,
                 width: double.infinity,
-               
-                child: ClipRRect(
-                  
-                    child: VideoPlayer(_controller)),
+                child: ClipRRect(child: VideoPlayer(_controller)),
               );
             } else {
               // If the VideoPlayerController is still initializing, show a
               // loading spinner.
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
               );
             }
           },

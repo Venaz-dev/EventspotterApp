@@ -68,7 +68,8 @@ class _NotificationsState extends State<Notifications> {
           elevation: 0,
         ),
         body: _isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)))
             : Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: RefreshIndicator(
@@ -148,9 +149,9 @@ class _NotificationsState extends State<Notifications> {
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           ChatScreen(
-                                                            id: 
-                                                                data[index]
-                                                                    ["toId"].toString(),
+                                                            id: data[index]
+                                                                    ["toId"]
+                                                                .toString(),
                                                             name: data[index]
                                                                 ["name"],
                                                           )));

@@ -109,7 +109,8 @@ class _ProfileState extends State<Profile> {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: _isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)))
             : NestedScrollView(
                 headerSliverBuilder: (context, innerBoxIsScrolled) => [
                   SliverAppBar(
@@ -118,8 +119,11 @@ class _ProfileState extends State<Profile> {
                       automaticallyImplyLeading: false,
                       actions: [
                         Padding(
-                          padding:  EdgeInsets.only(
-                              top: 5.0, bottom: 5, right : size.width*0.03,),
+                          padding: EdgeInsets.only(
+                            top: 5.0,
+                            bottom: 5,
+                            right: size.width * 0.03,
+                          ),
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.red,
@@ -166,8 +170,11 @@ class _ProfileState extends State<Profile> {
                   scrollDirection: Axis.vertical,
                   child: SizedBox(
                     child: Padding(
-                      padding:  EdgeInsets.only(
-                          top: 20.0, right : size.width*0.03, left :size.width*0.03, bottom: 20),
+                      padding: EdgeInsets.only(
+                          top: 20.0,
+                          right: size.width * 0.03,
+                          left: size.width * 0.03,
+                          bottom: 20),
                       child: Column(
                         children: [
                           Container(
@@ -471,7 +478,7 @@ class _ProfileState extends State<Profile> {
         onTap: ontap,
         child: Container(
           height: size.height * 0.06,
-          width: size.width*0.3,
+          width: size.width * 0.3,
           //width: size.width*0.3,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -871,9 +878,8 @@ class _ProfileState extends State<Profile> {
     print(response.data.toString());
     if (response.data["success"] == true) {
       showToaster('Logged out');
-  
-        _isLoading = false;
-      
+
+      _isLoading = false;
     } else {
       print("error with logout");
       showToaster('Error!');
@@ -927,7 +933,7 @@ class _ProfileState extends State<Profile> {
           profile_pic =
               "https://imgr.search.brave.com/agcf_54hKLs35Jr3YaOMycn250z6b8N8p1HEYsRqi8Q/fit/980/980/ce/1/aHR0cDovL2Nkbi5v/bmxpbmV3ZWJmb250/cy5jb20vc3ZnL2lt/Z18yMTgwOTAucG5n";
         }
-       
+
         // print(MainUrl + _eventsModel.data[0].events.user.profilePicture.image);
       }
     } catch (e) {

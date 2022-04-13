@@ -38,7 +38,8 @@ class _NotiState extends State<Noti> {
     if (lenght != 0) {
       Size size = MediaQuery.of(context).size;
       return _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(
+              child: CircularProgressIndicator(color: Color(0xFF3BADB7)))
           : Scaffold(
               backgroundColor: Colors.white,
               body: NestedScrollView(

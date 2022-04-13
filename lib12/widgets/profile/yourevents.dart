@@ -63,7 +63,8 @@ class _YoureventsState extends State<Yourevents> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return _isLoading
-        ? const Center(child: CircularProgressIndicator())
+        ? const Center(
+            child: CircularProgressIndicator(color: Color(0xFF3BADB7)))
         : Column(
             children: [
               Container(
@@ -82,7 +83,11 @@ class _YoureventsState extends State<Yourevents> {
                           )),
                     ]),
                 child: Padding(
-                  padding:  EdgeInsets.only(right : size.width*0.03, left :size.width*0.03, top : 10 , bottom : 20),
+                  padding: EdgeInsets.only(
+                      right: size.width * 0.03,
+                      left: size.width * 0.03,
+                      top: 10,
+                      bottom: 20),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -384,38 +389,35 @@ class _YoureventsState extends State<Yourevents> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: List.generate(_getUserUpcomingEvents.data.length, (index) {
             return Padding(
-              padding: const EdgeInsets.only(top: 10, left: 5 , bottom: 5 , right : 5),
+              padding:
+                  const EdgeInsets.only(top: 10, left: 5, bottom: 5, right: 5),
               child: InkWell(
-                onTap: (){
-                    Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Differenteventsdetails(
-                               eventId : _getUserUpcomingEvents
-                                      .data[index].events.id.toString(),
-                                  eventpicture: _getUserUpcomingEvents
-                                      .data[index].events.eventPictures[0].imagePath
-                                      .toString(),
-                                  eventname: _getUserUpcomingEvents
-                                      .data[index].events.eventName,
-                                  conditions: _getUserUpcomingEvents
-                                      .data[index].events.conditions
-                                      .toString(),
-                                  details: _getUserUpcomingEvents
-                                      .data[index].events.eventDescription,
-                                  ticketlink: _getUserUpcomingEvents
-                                      .data[index].events.ticketLink,
-                                  distance:
-                                      _getUserUpcomingEvents.data[index].km,
-                                  date: _getUserUpcomingEvents
-                                      .data[index].events.eventDate,
-
-                                      lat : _getUserUpcomingEvents
-                                      .data[index].events.lat,
-                                      long: _getUserUpcomingEvents
-                                      .data[index].events.lng,
-
-                                      location: _getUserUpcomingEvents
-                                      .data[index].events.location,
-                                )));
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Differenteventsdetails(
+                            eventId: _getUserUpcomingEvents
+                                .data[index].events.id
+                                .toString(),
+                            eventpicture: _getUserUpcomingEvents
+                                .data[index].events.eventPictures[0].imagePath
+                                .toString(),
+                            eventname: _getUserUpcomingEvents
+                                .data[index].events.eventName,
+                            conditions: _getUserUpcomingEvents
+                                .data[index].events.conditions
+                                .toString(),
+                            details: _getUserUpcomingEvents
+                                .data[index].events.eventDescription,
+                            ticketlink: _getUserUpcomingEvents
+                                .data[index].events.ticketLink,
+                            distance: _getUserUpcomingEvents.data[index].km,
+                            date: _getUserUpcomingEvents
+                                .data[index].events.eventDate,
+                            lat: _getUserUpcomingEvents.data[index].events.lat,
+                            long: _getUserUpcomingEvents.data[index].events.lng,
+                            location: _getUserUpcomingEvents
+                                .data[index].events.location,
+                          )));
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -427,18 +429,17 @@ class _YoureventsState extends State<Yourevents> {
                             blurRadius: 10,
                             spreadRadius: 2)
                       ]),
-                  child:
-                     Padding(
+                  child: Padding(
                     padding:
                         const EdgeInsets.only(top: 20.0, left: 15, bottom: 15),
                     child: Row(
                       children: [
-                        _getUserUpcomingEvents
-                                    .data[index].events.eventPictures[0].imagePath
+                        _getUserUpcomingEvents.data[index].events
+                                    .eventPictures[0].imagePath
                                     .toString()
                                     .contains('.mp4') ||
-                                _getUserUpcomingEvents
-                                    .data[index].events.eventPictures[0].imagePath
+                                _getUserUpcomingEvents.data[index].events
+                                    .eventPictures[0].imagePath
                                     .toString()
                                     .contains('.mov')
                             ? VideoPlayerScreennn(
@@ -452,12 +453,13 @@ class _YoureventsState extends State<Yourevents> {
                                   borderRadius: BorderRadius.circular(10),
                                   child: CachedNetworkImage(
                                     imageUrl: MainUrl +
-                                        _getUserUpcomingEvents.data[index].events
-                                            .eventPictures[0].imagePath,
+                                        _getUserUpcomingEvents.data[index]
+                                            .events.eventPictures[0].imagePath,
                                     fit: BoxFit.cover,
                                     placeholder: (context, url) {
                                       return const Center(
-                                        child: CircularProgressIndicator(),
+                                        child: CircularProgressIndicator(
+                                            color: Color(0xFF3BADB7)),
                                       );
                                     },
                                   ),
@@ -493,11 +495,9 @@ class _YoureventsState extends State<Yourevents> {
                                     color: Colors.black54,
                                   ),
                                   AutoSizeText(
-                                    
-                                   time(index),
+                                    time(index),
                                     style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.black87),
+                                        fontSize: 15, color: Colors.black87),
                                     //overflow: TextOverflow.ellipsis,
                                   ),
                                 ],
@@ -516,10 +516,8 @@ class _YoureventsState extends State<Yourevents> {
                                       _getUserUpcomingEvents.data[index].km +
                                           " " +
                                           "away",
-                                      style:
-                                          const TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.black87)),
+                                      style: const TextStyle(
+                                          fontSize: 15, color: Colors.black87)),
                                 ],
                               )
                             ],
@@ -528,7 +526,6 @@ class _YoureventsState extends State<Yourevents> {
                       ],
                     ),
                   ),
-                  
                 ),
               ),
             );
@@ -548,39 +545,34 @@ class _YoureventsState extends State<Yourevents> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: List.generate(_userPastEvents.data.length, (index) {
             return Padding(
-              padding: const EdgeInsets.only(top: 10, left: 5 , bottom:5 , right : 5),
+              padding:
+                  const EdgeInsets.only(top: 10, left: 5, bottom: 5, right: 5),
               child: InkWell(
-                onTap:() {
-                    Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Differenteventsdetails(
-                                  eventpicture: _userPastEvents
-                                      .data[index].events.eventPictures[0].imagePath
-                                      .toString(),
-                                      eventId: _userPastEvents.data[index].events.id.toString(),
-                                  eventname: _userPastEvents
-                                      .data[index].events.eventName,
-                                  conditions: _userPastEvents
-                                      .data[index].events.conditions
-                                      .toString(),
-                                  details: _userPastEvents
-                                      .data[index].events.eventDescription,
-                                  ticketlink: _userPastEvents
-                                      .data[index].events.ticketLink,
-                                  distance:
-                                      _userPastEvents.data[index].km,
-                                  date: _userPastEvents
-                                      .data[index].events.eventDate,
-
-                                      lat : _userPastEvents
-                                      .data[index].events.lat,
-                                      long: _userPastEvents
-                                      .data[index].events.lng,
-
-                                      location: _userPastEvents
-                                      .data[index].events.location,
-                                      
-                                )));
-              },
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Differenteventsdetails(
+                            eventpicture: _userPastEvents
+                                .data[index].events.eventPictures[0].imagePath
+                                .toString(),
+                            eventId: _userPastEvents.data[index].events.id
+                                .toString(),
+                            eventname:
+                                _userPastEvents.data[index].events.eventName,
+                            conditions: _userPastEvents
+                                .data[index].events.conditions
+                                .toString(),
+                            details: _userPastEvents
+                                .data[index].events.eventDescription,
+                            ticketlink:
+                                _userPastEvents.data[index].events.ticketLink,
+                            distance: _userPastEvents.data[index].km,
+                            date: _userPastEvents.data[index].events.eventDate,
+                            lat: _userPastEvents.data[index].events.lat,
+                            long: _userPastEvents.data[index].events.lng,
+                            location:
+                                _userPastEvents.data[index].events.location,
+                          )));
+                },
                 child: Container(
                   // width: double.infinity,
                   decoration: BoxDecoration(
@@ -597,12 +589,12 @@ class _YoureventsState extends State<Yourevents> {
                         top: 20.0, right: 15, left: 15, bottom: 15),
                     child: Row(
                       children: [
-                        _userPastEvents
-                                    .data[index].events.eventPictures[0].imagePath
+                        _userPastEvents.data[index].events.eventPictures[0]
+                                    .imagePath
                                     .toString()
                                     .contains('.mp4') ||
-                                _userPastEvents
-                                    .data[index].events.eventPictures[0].imagePath
+                                _userPastEvents.data[index].events
+                                    .eventPictures[0].imagePath
                                     .toString()
                                     .contains('.mov')
                             ? VideoPlayerScreennn(
@@ -621,7 +613,8 @@ class _YoureventsState extends State<Yourevents> {
                                     fit: BoxFit.cover,
                                     placeholder: (context, url) {
                                       return const Center(
-                                        child: CircularProgressIndicator(),
+                                        child: CircularProgressIndicator(
+                                            color: Color(0xFF3BADB7)),
                                       );
                                     },
                                   ),
@@ -655,8 +648,9 @@ class _YoureventsState extends State<Yourevents> {
                                     color: Colors.black54,
                                   ),
                                   Text(
-                                   time3(index),
-                                    style: const TextStyle(color: Colors.black87),
+                                    time3(index),
+                                    style:
+                                        const TextStyle(color: Colors.black87),
                                   ),
                                 ],
                               ),
@@ -674,8 +668,8 @@ class _YoureventsState extends State<Yourevents> {
                                       _userPastEvents.data[index].km +
                                           " " +
                                           "away",
-                                      style:
-                                          const TextStyle(color: Colors.black87)),
+                                      style: const TextStyle(
+                                          color: Colors.black87)),
                                 ],
                               )
                             ],
@@ -707,31 +701,31 @@ class _YoureventsState extends State<Yourevents> {
             return InkWell(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Draftsedit(
-                               eventname:
-                                    _getUserDraftEvents.data[index].eventName,
-                                date: _getUserDraftEvents.data[index].eventDate,
-                                placename:
-                                    _getUserDraftEvents.data[index].location,
-                                imagepath: _getUserDraftEvents
-                                    .data[index].eventPictures[0].imagePath,
-                                videopath: _getUserDraftEvents
-                                    .data[index].eventPictures[0].imagePath,
-                                eventdescription: _getUserDraftEvents
-                                    .data[index].eventDescription,
-                                conditions:
-                                    _getUserDraftEvents.data[index].conditions,
-                                eventprivaacy:
-                                    _getUserDraftEvents.data[index].isPublic,
-                                    lat: _getUserDraftEvents.data[index].lat,
-                                    log: _getUserDraftEvents.data[index].lng,
-                                    type: _getUserDraftEvents.data[index].eventType,
-                                    ticketlink: _getUserDraftEvents.data[index].ticketLink,)));
+                    builder: (context) => Draftsedit(
+                          eventname: _getUserDraftEvents.data[index].eventName,
+                          date: _getUserDraftEvents.data[index].eventDate,
+                          placename: _getUserDraftEvents.data[index].location,
+                          imagepath: _getUserDraftEvents
+                              .data[index].eventPictures[0].imagePath,
+                          videopath: _getUserDraftEvents
+                              .data[index].eventPictures[0].imagePath,
+                          eventdescription:
+                              _getUserDraftEvents.data[index].eventDescription,
+                          conditions:
+                              _getUserDraftEvents.data[index].conditions,
+                          eventprivaacy:
+                              _getUserDraftEvents.data[index].isPublic,
+                          lat: _getUserDraftEvents.data[index].lat,
+                          log: _getUserDraftEvents.data[index].lng,
+                          type: _getUserDraftEvents.data[index].eventType,
+                          ticketlink:
+                              _getUserDraftEvents.data[index].ticketLink,
+                        )));
               },
               child: Padding(
-                padding: const EdgeInsets.only(top: 10, left: 5 , bottom: 5 , right : 5),
+                padding: const EdgeInsets.only(
+                    top: 10, left: 5, bottom: 5, right: 5),
                 child: Container(
-                 
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(15),
@@ -746,7 +740,8 @@ class _YoureventsState extends State<Yourevents> {
                         top: 20.0, right: 15, left: 15, bottom: 15),
                     child: Row(
                       children: [
-                        _getUserDraftEvents.data[index].eventPictures[0].imagePath
+                        _getUserDraftEvents
+                                    .data[index].eventPictures[0].imagePath
                                     .toString()
                                     .contains('.mp4') ||
                                 _getUserDraftEvents
@@ -769,7 +764,8 @@ class _YoureventsState extends State<Yourevents> {
                                     fit: BoxFit.cover,
                                     placeholder: (context, url) {
                                       return const Center(
-                                        child: CircularProgressIndicator(),
+                                        child: CircularProgressIndicator(
+                                            color: Color(0xFF3BADB7)),
                                       );
                                     },
                                   ),
@@ -803,8 +799,9 @@ class _YoureventsState extends State<Yourevents> {
                                     color: Colors.black54,
                                   ),
                                   Text(
-                                  time1(index),
-                                    style: const TextStyle(color: Colors.black87),
+                                    time1(index),
+                                    style:
+                                        const TextStyle(color: Colors.black87),
                                   ),
                                 ],
                               ),
@@ -843,30 +840,32 @@ class _YoureventsState extends State<Yourevents> {
     }
   }
 
-
-
-String time(int index) {
-    DateTime parseDate = DateFormat("yyyy-mm-dd")
-        .parse( _getUserUpcomingEvents
-                                        .data[index].events.eventDate,);
+  String time(int index) {
+    DateTime parseDate = DateFormat("yyyy-mm-dd").parse(
+      _getUserUpcomingEvents.data[index].events.eventDate,
+    );
     var inputDate = DateTime.parse(parseDate.toString());
     var outputFormat = DateFormat('mm/dd/yyyy');
     var outputDate = outputFormat.format(inputDate);
 
     return outputDate;
   }
+
   String time1(int index) {
-    DateTime parseDate = DateFormat("yyyy-mm-dd")
-        .parse(              _getUserDraftEvents.data[index].eventDate,);
+    DateTime parseDate = DateFormat("yyyy-mm-dd").parse(
+      _getUserDraftEvents.data[index].eventDate,
+    );
     var inputDate = DateTime.parse(parseDate.toString());
     var outputFormat = DateFormat('mm/dd/yyyy');
     var outputDate = outputFormat.format(inputDate);
 
     return outputDate;
   }
+
   String time3(int index) {
-    DateTime parseDate = DateFormat("yyyy-mm-dd")
-        .parse( _userPastEvents.data[index].events.eventDate,);
+    DateTime parseDate = DateFormat("yyyy-mm-dd").parse(
+      _userPastEvents.data[index].events.eventDate,
+    );
     var inputDate = DateTime.parse(parseDate.toString());
     var outputFormat = DateFormat('mm/dd/yyyy');
     var outputDate = outputFormat.format(inputDate);
@@ -874,11 +873,6 @@ String time(int index) {
     return outputDate;
   }
 }
-
-
-
-
-
 
 // ignore: must_be_immutable
 class VideoPlayerScreennn extends StatefulWidget {
@@ -958,7 +952,7 @@ class _VideoPlayerScreennnState extends State<VideoPlayerScreennn> {
               // If the VideoPlayerController is still initializing, show a
               // loading spinner.
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
               );
             }
           },

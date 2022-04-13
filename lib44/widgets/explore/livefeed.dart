@@ -42,24 +42,23 @@ class _LivefeedsState extends State<Livefeeds> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-         const SizedBox(
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Event live feed",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 17),
+          const SizedBox(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Event live feed",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 17),
+              ),
             ),
           ),
-        ),
           Padding(
-            padding: const EdgeInsets.only(top : 8.0),
+            padding: const EdgeInsets.only(top: 8.0),
             child: Container(
               width: double.infinity,
-              decoration: const BoxDecoration(
-                color :  Colors.white,
+              decoration: const BoxDecoration(color: Colors.white,
                   //   border: Border.all(color: Colors.black45,),
 
                   boxShadow: [
@@ -75,14 +74,14 @@ class _LivefeedsState extends State<Livefeeds> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                   
                     const SizedBox(
                       height: 10,
                     ),
                     widget.eventsLiveFeeds.isEmpty
                         ? const SizedBox(
-                          child: Center(child : Text("No live feed available")),
-                        )
+                            child:
+                                Center(child: Text("No live feed available")),
+                          )
                         : SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(
@@ -90,8 +89,7 @@ class _LivefeedsState extends State<Livefeeds> {
                                     widget.eventsLiveFeeds.length, (index) {
                               return Padding(
                                 padding: const EdgeInsets.only(
-                                  right: 5.0,bottom: 3 , top : 3
-                                ),
+                                    right: 5.0, bottom: 3, top: 3),
                                 child: Container(
                                   height: size.height * 0.24,
                                   width: size.width * 0.3,
@@ -138,17 +136,15 @@ class _LivefeedsState extends State<Livefeeds> {
                                                     widget.eventsLiveFeeds[
                                                         index]['img'])
                                             : Container(
-                                               height: size.height*0.21,
+                                                height: size.height * 0.21,
                                                 width: size.width * 0.3,
                                                 decoration: BoxDecoration(
-
                                                   // color: Colors.red,
                                                   borderRadius:
                                                       BorderRadius.circular(15),
                                                 ),
                                                 child: ClipRRect(
                                                     borderRadius:
-
                                                         BorderRadius.circular(
                                                             15),
                                                     child: buildimage(index)),
@@ -161,7 +157,7 @@ class _LivefeedsState extends State<Livefeeds> {
                                                   " " +
                                                   "miles",
                                               style: const TextStyle(
-                                                color : Colors.black,
+                                                  color: Colors.black,
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: 17),
                                             )),
@@ -205,7 +201,7 @@ class _LivefeedsState extends State<Livefeeds> {
       fit: BoxFit.cover,
       placeholder: (context, url) {
         return const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
         );
       },
     );
@@ -278,7 +274,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               // If the VideoPlayerController is still initializing, show a
               // loading spinner.
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
               );
             }
           },

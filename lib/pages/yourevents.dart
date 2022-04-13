@@ -7,6 +7,7 @@ import 'package:event_spotter/pages/create_new_event.dart';
 import 'package:event_spotter/pages/differenteventsdetaisl.dart';
 import 'package:event_spotter/pages/draft.dart';
 import 'package:event_spotter/widgets/profile/yourevents.dart';
+import 'package:event_spotter/widgets/topmenu.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -81,20 +82,25 @@ class _YeventsState extends State<Yevents> {
           backgroundColor: Colors.white,
           // appBar: PreferredSize(
           //  child: getAppBar(), preferredSize: Size.fromHeight(100)),
-          body: Padding(
-            padding: EdgeInsets.only(
-                top: 10.0, left: size.width * 0.03, right: size.width * 0.03),
-            child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    getwidgets(size),
-                  ],
-                )),
-          ),
+          body: Stack(children: [
+            Padding(
+              padding: EdgeInsets.only(
+                  top: 60.0, left: size.width * 0.03, right: size.width * 0.03),
+              child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      getwidgets(size),
+                    ],
+                  )),
+            ),
+            const Topmenu(
+              title: "Your Events",
+            )
+          ]),
         ),
       ),
     );
@@ -192,15 +198,28 @@ class _YeventsState extends State<Yevents> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FittedBox(
-          child: Row(
+        Container(
+          // height: 80,
+          padding: const EdgeInsets.only(
+              // right: size.width * 0.03,
+              // left: size.width * 0.03,
+              left: 10,
+              right: 10,
+              top: 5,
+              bottom: 5),
+          decoration: const BoxDecoration(
+            color: Color(0XFFE5E7EB),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          child: FittedBox(
+              child: Row(
             children: [
               Elevatedbuttons(
-                sidecolor: Colors.transparent,
+                sidecolor: Colors.white,
                 text: "Upcoming",
-                textColor: Colors.white,
+                textColor: const Color(0xFF101010),
                 coloring: const Color(0XFF38888F),
-                primary: const Color(0XFF38888F),
+                primary: Colors.white,
                 onpressed: () {
                   setState(() {
                     scroll = yourevents.upcoming;
@@ -211,11 +230,12 @@ class _YeventsState extends State<Yevents> {
                 width: 10,
               ),
               Elevatedbuttons(
-                sidecolor: Colors.black,
+                shadowColor: const Color(0XFF00000000),
+                sidecolor: const Color(0XFFE5E7EB),
+                primary: const Color(0XFFE5E7EB),
                 text: "Past Events",
-                textColor: Colors.black,
+                textColor: const Color(0xFF101010),
                 coloring: Colors.white,
-                primary: Colors.white,
                 onpressed: () {
                   setState(() {
                     scroll = yourevents.past;
@@ -226,11 +246,12 @@ class _YeventsState extends State<Yevents> {
                 width: 10,
               ),
               Elevatedbuttons(
-                sidecolor: Colors.black,
+                shadowColor: const Color(0xff00000000),
+                sidecolor: const Color(0XFFE5E7EB),
+                primary: const Color(0XFFE5E7EB),
                 text: "Drafts",
-                textColor: Colors.black,
+                textColor: const Color(0xFF101010),
                 coloring: Colors.white,
-                primary: Colors.white,
                 onpressed: () {
                   setState(() {
                     scroll = yourevents.draft;
@@ -238,213 +259,230 @@ class _YeventsState extends State<Yevents> {
                 },
               ),
             ],
-          ),
+          )),
         ),
         const SizedBox(height: 10),
         test
             ? Column(
                 children:
                     List.generate(_getUserUpcomingEvents.data.length, (index) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => Differenteventsdetails(
-                                eventpicture: _getUserUpcomingEvents.data[index]
-                                    .events.eventPictures[0].imagePath
-                                    .toString(),
-                                eventname: _getUserUpcomingEvents
-                                    .data[index].events.eventName,
-                                conditions: _getUserUpcomingEvents
-                                    .data[index].events.conditions
-                                    .toString(),
-                                details: _getUserUpcomingEvents
-                                    .data[index].events.eventDescription,
-                                ticketlink: _getUserUpcomingEvents
-                                    .data[index].events.ticketLink,
-                                distance: _getUserUpcomingEvents.data[index].km,
-                                date: _getUserUpcomingEvents
-                                    .data[index].events.eventDate,
-                                lat: _getUserUpcomingEvents
-                                    .data[index].events.lat,
-                                long: _getUserUpcomingEvents
-                                    .data[index].events.lng,
-                                location: _getUserUpcomingEvents
-                                    .data[index].events.location,
-                                eventId: _getUserUpcomingEvents
-                                    .data[index].events.id
-                                    .toString(),
-                              )));
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          top: size.height * .01, left: 2, right: 2),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: const [
-                              BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 1,
-                                  spreadRadius: 1)
-                            ]),
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              bottom: size.height * 0.07,
-                              right: size.width * 0.005,
-                              child: FittedBox(
-                                fit : BoxFit.cover,
-                                  child: Container(
-                                    alignment: Alignment.centerRight,
-                                height: size.height * 0.1,
-                                width: size.width * 0.25,
-                               
-                                child: Column(
+                  return Container(
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  color: Color(0xFFE5E7EB), width: 1))),
+                      child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10, left: 5, bottom: 5, right: 5),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => Differenteventsdetails(
+                                        eventpicture: _getUserUpcomingEvents
+                                            .data[index]
+                                            .events
+                                            .eventPictures[0]
+                                            .imagePath
+                                            .toString(),
+                                        eventname: _getUserUpcomingEvents
+                                            .data[index].events.eventName,
+                                        conditions: _getUserUpcomingEvents
+                                            .data[index].events.conditions
+                                            .toString(),
+                                        details: _getUserUpcomingEvents
+                                            .data[index]
+                                            .events
+                                            .eventDescription,
+                                        ticketlink: _getUserUpcomingEvents
+                                            .data[index].events.ticketLink,
+                                        distance: _getUserUpcomingEvents
+                                            .data[index].km,
+                                        date: _getUserUpcomingEvents
+                                            .data[index].events.eventDate,
+                                        lat: _getUserUpcomingEvents
+                                            .data[index].events.lat,
+                                        long: _getUserUpcomingEvents
+                                            .data[index].events.lng,
+                                        location: _getUserUpcomingEvents
+                                            .data[index].events.location,
+                                        eventId: _getUserUpcomingEvents
+                                            .data[index].events.id
+                                            .toString(),
+                                      )));
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+
+                                // boxShadow: const [
+                                //   BoxShadow(
+                                //       color: Colors.black12,
+                                //       blurRadius: 10,
+                                //       spreadRadius: 2)
+                                // ]
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 20.0, left: 10, bottom: 15),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: const AutoSizeText(
-                                        "Event Type",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                 
-                                   maxFontSize: 16,
-                                            minFontSize: 14,
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 0.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: size.width * 0.45,
+                                            child: AutoSizeText(
+                                              _getUserUpcomingEvents
+                                                  .data[index].events.eventName,
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 18),
+                                              maxFontSize: 18,
+                                              minFontSize: 15,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.fade,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          SizedBox(
+                                              height: 15,
+                                              child: Row(
+                                                children: [
+                                                  // const Icon(
+                                                  //   FontAwesomeIcons.calendar,
+                                                  //   size: 15,
+                                                  //   color: Colors.black54,
+                                                  // ),
+                                                  AutoSizeText(
+                                                    time(index),
+                                                    style: const TextStyle(
+                                                        fontSize: 13,
+                                                        color:
+                                                            Color(0xFF606060)),
+                                                    //overflow: TextOverflow.ellipsis,
+                                                  ),
+
+                                                  const VerticalDivider(
+                                                    color: Color(0xFF606060),
+                                                    thickness: 1,
+                                                  ),
+                                                  AutoSizeText(
+                                                    _getUserUpcomingEvents
+                                                            .data[index].km +
+                                                        " " +
+                                                        "away",
+                                                    style: const TextStyle(
+                                                        fontSize: 13,
+                                                        color:
+                                                            Color(0xFF606060)),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ],
+                                              )),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          SizedBox(
+                                            width: size.width * 0.45,
+                                            child: Text(
+                                              _getUserUpcomingEvents.data[index]
+                                                  .events.eventDescription,
+                                              style: const TextStyle(
+                                                  fontSize: 13,
+                                                  color: Color(0xFF606060)),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                          // Row(
+                                          //   children: [
+                                          //     // const Icon(
+                                          //     //   FontAwesomeIcons.mapMarkerAlt,
+                                          //     //   size: 15,
+                                          //     //   color: Colors.black54,
+                                          //     // ),
+                                          //     Text(
+                                          //         _getUserUpcomingEvents
+                                          //                 .data[index].km +
+                                          //             " " +
+                                          //             "away",
+                                          //         style: const TextStyle(
+                                          //             fontSize: 13,
+                                          //             color: Color(0xFF606060))),
+                                          //   ],
+                                          // )
+                                        ],
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: 2,
-                                    ),
-                                 Container(
-                                   alignment: Alignment.center,
-                                   child: AutoSizeText(
-                                     
+                                    _getUserUpcomingEvents.data[index].events
+                                                .eventPictures[0].imagePath
+                                                .toString()
+                                                .contains('.mp4') ||
                                             _getUserUpcomingEvents
-                                                .data[index].events.eventType,
-                                            maxFontSize: 15,
-                                            minFontSize: 13,
-                                           
+                                                .data[index]
+                                                .events
+                                                .eventPictures[0]
+                                                .imagePath
+                                                .toString()
+                                                .contains('.mov')
+                                        ? VideoPlayerScreennn(
+                                            url: MainUrl +
+                                                _getUserUpcomingEvents
+                                                    .data[index]
+                                                    .events
+                                                    .eventPictures[0]
+                                                    .imagePath)
+                                        : SizedBox(
+                                            height: size.width * 0.3,
+                                            width: size.width * 0.3,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: CachedNetworkImage(
+                                                imageUrl: MainUrl +
+                                                    _getUserUpcomingEvents
+                                                        .data[index]
+                                                        .events
+                                                        .eventPictures[0]
+                                                        .imagePath,
+                                                fit: BoxFit.cover,
+                                                placeholder: (context, url) {
+                                                  return ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      child: Container(
+                                                          color: const Color(
+                                                              0xFFC8C8C8),
+                                                          height:
+                                                              size.width * 0.3,
+                                                          width:
+                                                              size.width * 0.3,
+                                                          child: const Center(
+                                                            child: CircularProgressIndicator(
+                                                                color: Color(
+                                                                    0xFF3BADB7)),
+                                                          )));
+                                                },
+                                              ),
+                                            ),
                                           ),
-                                 ),
                                   ],
                                 ),
-                              )),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 20.0, left: 15, bottom: 15),
-                              child: Row(
-                                children: [
-                                  _getUserUpcomingEvents.data[index].events
-                                              .eventPictures[0].imagePath
-                                              .toString()
-                                              .contains('.mp4') ||
-                                          _getUserUpcomingEvents.data[index]
-                                              .events.eventPictures[0].imagePath
-                                              .toString()
-                                              .contains('.mov')
-                                      ? VideoPlayerScreennn(
-                                          url: MainUrl +
-                                              _getUserUpcomingEvents
-                                                  .data[index]
-                                                  .events
-                                                  .eventPictures[0]
-                                                  .imagePath)
-                                      : SizedBox(
-                                          height: size.height * 0.17,
-                                          width: size.width * 0.3,
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            child: CachedNetworkImage(
-                                              imageUrl: MainUrl +
-                                                  _getUserUpcomingEvents
-                                                      .data[index]
-                                                      .events
-                                                      .eventPictures[0]
-                                                      .imagePath,
-                                              fit: BoxFit.cover,
-                                              placeholder: (context, url) {
-                                                return const Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                        ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 10.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: size.width * 0.3,
-                                          child: AutoSizeText(
-                                            _getUserUpcomingEvents
-                                                .data[index].events.eventName,
-                                            style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 18),
-                                            maxFontSize: 19,
-                                            minFontSize: 15,
-                                            overflow: TextOverflow.fade,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Row(
-                                          children: [
-                                            const Icon(
-                                              FontAwesomeIcons.calendar,
-                                              size: 15,
-                                              color: Colors.black54,
-                                            ),
-                                            AutoSizeText(
-                                              time(index),
-                                              style: const TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.black87),
-                                              //overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Row(
-                                          children: [
-                                            const Icon(
-                                              FontAwesomeIcons.mapMarkerAlt,
-                                              size: 15,
-                                              color: Colors.black54,
-                                            ),
-                                            Text(
-                                                _getUserUpcomingEvents
-                                                        .data[index].km +
-                                                    " " +
-                                                    "away",
-                                                style: const TextStyle(
-                                                    fontSize: 15,
-                                                    color: Colors.black87)),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
+                          )));
                 }),
               )
             : const Center(child: Text("No upcoming events")),
@@ -488,147 +526,212 @@ class _YeventsState extends State<Yevents> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FittedBox(
-          child: Row(
-            children: [
-              Elevatedbuttons(
-                sidecolor: Colors.black,
-                text: "Upcoming",
-                textColor: Colors.black,
-                coloring: Colors.white,
-                primary: Colors.white,
-                onpressed: () {
-                  setState(() {
-                    scroll = yourevents.upcoming;
-                  });
-                },
+        Container(
+            // height: 80,
+            padding: const EdgeInsets.only(
+                // right: size.width * 0.03,
+                // left: size.width * 0.03,
+                left: 10,
+                right: 10,
+                top: 5,
+                bottom: 5),
+            decoration: const BoxDecoration(
+              color: Color(0XFFE5E7EB),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            child: FittedBox(
+              child: Row(
+                children: [
+                  Elevatedbuttons(
+                    shadowColor: const Color(0xff00000000),
+                    sidecolor: const Color(0XFFE5E7EB),
+                    primary: const Color(0XFFE5E7EB),
+                    text: "Upcoming",
+                    textColor: const Color(0xFF101010),
+                    coloring: Colors.white,
+                    onpressed: () {
+                      setState(() {
+                        scroll = yourevents.upcoming;
+                      });
+                    },
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Elevatedbuttons(
+                    sidecolor: Colors.white,
+                    primary: Colors.white,
+                    text: "Past Events",
+                    textColor: const Color(0xFF101010),
+                    coloring: const Color(0XFF38888F),
+                    onpressed: () {
+                      setState(() {
+                        scroll = yourevents.past;
+                      });
+                    },
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Elevatedbuttons(
+                    shadowColor: const Color(0xff00000000),
+                    sidecolor: const Color(0XFFE5E7EB),
+                    primary: const Color(0XFFE5E7EB),
+                    text: "Drafts",
+                    textColor: const Color(0xFF101010),
+                    coloring: Colors.white,
+                    onpressed: () {
+                      setState(() {
+                        scroll = yourevents.draft;
+                      });
+                    },
+                  ),
+                ],
               ),
-              const SizedBox(
-                width: 10,
-              ),
-              Elevatedbuttons(
-                sidecolor: Colors.transparent,
-                text: "Past Events",
-                textColor: Colors.white,
-                coloring: const Color(0XFF38888F),
-                primary: const Color(0XFF38888F),
-                onpressed: () {
-                  setState(() {
-                    scroll = yourevents.past;
-                  });
-                },
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Elevatedbuttons(
-                sidecolor: Colors.black,
-                text: "Drafts",
-                textColor: Colors.black,
-                coloring: Colors.white,
-                primary: Colors.white,
-                onpressed: () {
-                  setState(() {
-                    scroll = yourevents.draft;
-                  });
-                },
-              ),
-            ],
-          ),
-        ),
+            )),
         const SizedBox(height: 10),
         test1
             ? Column(
                 children: List.generate(_userPastEvents.data.length, (index) {
-                  return Padding(
-                    padding: EdgeInsets.only(top: size.height * .01, left: 2 , right : 2),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Differenteventsdetails(
-                                  eventpicture: _userPastEvents.data[index]
-                                      .events.eventPictures[0].imagePath
-                                      .toString(),
-                                  eventname: _userPastEvents
-                                      .data[index].events.eventName,
-                                  conditions: _userPastEvents
-                                      .data[index].events.conditions
-                                      .toString(),
-                                  details: _userPastEvents
-                                      .data[index].events.eventDescription,
-                                  ticketlink: _userPastEvents
-                                      .data[index].events.ticketLink,
-                                  distance: _userPastEvents.data[index].km,
-                                  date: _userPastEvents
-                                      .data[index].events.eventDate,
-                                  eventId: _userPastEvents.data[index].events.id
-                                      .toString(),
-                                  lat: _userPastEvents.data[index].events.lat,
-                                  long: _userPastEvents.data[index].events.lng,
-                                  location: _userPastEvents
-                                      .data[index].events.location,
-                                )));
-                      },
-                      child: Container(
-                        // width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: const [
-                              BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 1,
-                                  spreadRadius: 1)
-                            ]),
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              bottom: size.height * 0.07,
-                              right: size.width * 0.005,
-                              child: FittedBox(
-                                fit : BoxFit.cover,
-                                  child: Container(
-                                    alignment: Alignment.centerRight,
-                                height: size.height * 0.1,
-                                width: size.width * 0.25,
-                               
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: const AutoSizeText(
-                                        "Event Type",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                 
-                                   maxFontSize: 16,
-                                            minFontSize: 14,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 2,
-                                    ),
-                                 Container(
-                                   alignment: Alignment.center,
-                                   child: AutoSizeText(
-                                     
-                                            _userPastEvents
-                                                .data[index].events.eventType,
-                                            maxFontSize: 15,
-                                            minFontSize: 13,
-                                           
-                                          ),
-                                 ),
-                                  ],
-                                ),
-                              )),
+                  return Container(
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  color: Color(0xFFE5E7EB), width: 1))),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: 10, left: 15, bottom: 5, right: 5),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => Differenteventsdetails(
+                                      eventpicture: _userPastEvents.data[index]
+                                          .events.eventPictures[0].imagePath
+                                          .toString(),
+                                      eventname: _userPastEvents
+                                          .data[index].events.eventName,
+                                      conditions: _userPastEvents
+                                          .data[index].events.conditions
+                                          .toString(),
+                                      details: _userPastEvents
+                                          .data[index].events.eventDescription,
+                                      ticketlink: _userPastEvents
+                                          .data[index].events.ticketLink,
+                                      distance: _userPastEvents.data[index].km,
+                                      date: _userPastEvents
+                                          .data[index].events.eventDate,
+                                      eventId: _userPastEvents
+                                          .data[index].events.id
+                                          .toString(),
+                                      lat: _userPastEvents
+                                          .data[index].events.lat,
+                                      long: _userPastEvents
+                                          .data[index].events.lng,
+                                      location: _userPastEvents
+                                          .data[index].events.location,
+                                    )));
+                          },
+                          child: Container(
+                            // width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                              // boxShadow: const [
+                              //   BoxShadow(
+                              //       color: Colors.black12,
+                              //       blurRadius: 10,
+                              //       spreadRadius: 2)
+                              // ]
                             ),
-                            Padding(
+                            child: Padding(
                               padding: const EdgeInsets.only(
-                                  top: 20.0, right: 15, left: 15, bottom: 15),
+                                  top: 20.0, right: 0, left: 0, bottom: 15),
                               child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 0.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width: size.width * 0.45,
+                                          child: AutoSizeText(
+                                            _userPastEvents
+                                                .data[index].events.eventName,
+                                            style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 18),
+                                            maxFontSize: 18,
+                                            minFontSize: 15,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        SizedBox(
+                                            height: 15,
+                                            child: Row(
+                                              children: [
+                                                // const Icon(
+                                                //   FontAwesomeIcons.calendar,
+                                                //   size: 15,
+                                                //   color: Colors.black54,
+                                                // ),
+                                                // Text(
+                                                //   time3(index),
+                                                //   style: const TextStyle(
+                                                //       color: Colors.black87),
+                                                // ),
+                                                AutoSizeText(
+                                                  time2(index),
+                                                  style: const TextStyle(
+                                                      fontSize: 13,
+                                                      color: Color(0xFF606060)),
+                                                  //overflow: TextOverflow.ellipsis,
+                                                ),
+
+                                                const VerticalDivider(
+                                                  color: Color(0xFF606060),
+                                                  thickness: 1,
+                                                ),
+                                                AutoSizeText(
+                                                  _userPastEvents
+                                                          .data[index].km +
+                                                      " " +
+                                                      "away",
+                                                  style: const TextStyle(
+                                                      fontSize: 13,
+                                                      color: Color(0xFF606060)),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ],
+                                            )),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        SizedBox(
+                                          width: size.width * 0.45,
+                                          child: Text(
+                                            _userPastEvents.data[index].events
+                                                .eventDescription,
+                                            style: const TextStyle(
+                                                fontSize: 13,
+                                                color: Color(0xFF606060)),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                   _userPastEvents.data[index].events
                                               .eventPictures[0].imagePath
                                               .toString()
@@ -642,7 +745,7 @@ class _YeventsState extends State<Yevents> {
                                               _userPastEvents.data[index].events
                                                   .eventPictures[0].imagePath)
                                       : SizedBox(
-                                          height: size.height * 0.17,
+                                          height: size.width * 0.3,
                                           width: size.width * 0.3,
                                           child: ClipRRect(
                                             borderRadius:
@@ -656,82 +759,31 @@ class _YeventsState extends State<Yevents> {
                                                       .imagePath,
                                               fit: BoxFit.cover,
                                               placeholder: (context, url) {
-                                                return const Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                );
+                                                return ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    child: Container(
+                                                        color: const Color(
+                                                            0xFFC8C8C8),
+                                                        height:
+                                                            size.width * 0.3,
+                                                        width: size.width * 0.3,
+                                                        child: const Center(
+                                                          child: CircularProgressIndicator(
+                                                              color: Color(
+                                                                  0xFF3BADB7)),
+                                                        )));
                                               },
                                             ),
                                           ),
                                         ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 10.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: size.width * 0.3,
-                                          child: AutoSizeText(
-                                            _userPastEvents
-                                                .data[index].events.eventName,
-                                            style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 18),
-                                            maxFontSize: 19,
-                                            minFontSize: 15,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Row(
-                                          children: [
-                                            const Icon(
-                                              FontAwesomeIcons.calendar,
-                                              size: 18,
-                                              color: Colors.black54,
-                                            ),
-                                            const SizedBox(
-                                              width: 3,
-                                            ),
-                                            Text(
-                                              time2(index),
-                                              style: const TextStyle(
-                                                  color: Colors.black87),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Row(
-                                          children: [
-                                            const Icon(
-                                              FontAwesomeIcons.mapMarkerAlt,
-                                              size: 15,
-                                              color: Colors.black54,
-                                            ),
-                                            Text(
-                                                _userPastEvents.data[index].km +
-                                                    " " +
-                                                    "away",
-                                                style: const TextStyle(
-                                                    color: Colors.black87)),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
                                 ],
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  );
+                      ));
                 }),
               )
             : const Center(
@@ -745,15 +797,29 @@ class _YeventsState extends State<Yevents> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FittedBox(
-          child: Row(
+        Container(
+          // height: 80,
+          padding: const EdgeInsets.only(
+              // right: size.width * 0.03,
+              // left: size.width * 0.03,
+              left: 10,
+              right: 10,
+              top: 5,
+              bottom: 5),
+          decoration: const BoxDecoration(
+            color: Color(0XFFE5E7EB),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          child: FittedBox(
+              child: Row(
             children: [
               Elevatedbuttons(
-                sidecolor: Colors.black,
+                shadowColor: const Color(0xff00000000),
+                sidecolor: const Color(0XFFE5E7EB),
+                primary: const Color(0XFFE5E7EB),
                 text: "Upcoming",
-                textColor: Colors.black,
+                textColor: const Color(0xFF101010),
                 coloring: Colors.white,
-                primary: Colors.white,
                 onpressed: () {
                   setState(() {
                     scroll = yourevents.upcoming;
@@ -764,11 +830,12 @@ class _YeventsState extends State<Yevents> {
                 width: 10,
               ),
               Elevatedbuttons(
-                sidecolor: Colors.black,
+                shadowColor: const Color(0xff00000000),
+                sidecolor: const Color(0XFFE5E7EB),
+                primary: const Color(0XFFE5E7EB),
                 text: "Past Events",
-                textColor: Colors.black,
+                textColor: const Color(0xFF101010),
                 coloring: Colors.white,
-                primary: Colors.white,
                 onpressed: () {
                   setState(() {
                     scroll = yourevents.past;
@@ -779,11 +846,11 @@ class _YeventsState extends State<Yevents> {
                 width: 10,
               ),
               Elevatedbuttons(
-                sidecolor: Colors.transparent,
+                sidecolor: Colors.white,
+                primary: Colors.white,
                 text: "Drafts",
-                textColor: Colors.white,
-                coloring: const Color(0XFF38888F),
-                primary: const Color(0XFF38888F),
+                textColor: const Color(0xFF101010),
+                coloring: Colors.white,
                 onpressed: () {
                   setState(() {
                     scroll = yourevents.draft;
@@ -791,209 +858,204 @@ class _YeventsState extends State<Yevents> {
                 },
               ),
             ],
-          ),
+          )),
         ),
         const SizedBox(height: 10),
         test2
             ? Column(
                 children:
                     List.generate(_getUserDraftEvents.data.length, (index) {
-                  return Padding(
-                    padding: EdgeInsets.only(top: size.height * .01, left: 2 , right: 2),
-                    child: InkWell(
-                      onTap: () {
-                        // print("object");
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Draftsedit(
-                                  eventname:
-                                      _getUserDraftEvents.data[index].eventName,
-                                  date:
-                                      _getUserDraftEvents.data[index].eventDate,
-                                  placename:
-                                      _getUserDraftEvents.data[index].location,
-                                  imagepath: _getUserDraftEvents
-                                      .data[index].eventPictures[0].imagePath,
-                                  videopath: _getUserDraftEvents
-                                      .data[index].eventPictures[0].imagePath,
-                                  eventdescription: _getUserDraftEvents
-                                      .data[index].eventDescription,
-                                  conditions: _getUserDraftEvents
-                                      .data[index].conditions,
-                                  eventprivaacy:
-                                      _getUserDraftEvents.data[index].isPublic,
-                                  lat: _getUserDraftEvents.data[index].lat,
-                                  log: _getUserDraftEvents.data[index].lng,
-                                  type:
-                                      _getUserDraftEvents.data[index].eventType,
-                                  ticketlink: _getUserDraftEvents
-                                      .data[index].ticketLink,
-                                )));
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: const [
-                              BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 1,
-                                  spreadRadius: 1)
-                            ]),
-                        child: Stack(
-                          children: [
-                            Positioned(
-                               bottom: size.height * 0.07,
-                              right: size.width * 0.005,
-                               child: FittedBox(
-                                fit : BoxFit.cover,
-                                  child: Container(
-                                    alignment: Alignment.centerRight,
-                                height: size.height * 0.1,
-                                width: size.width * 0.25,
-                               
-                                child: Column(
+                  return Container(
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  color: Color(0xFFE5E7EB), width: 1))),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10, left: 5, bottom: 5, right: 0),
+                        child: InkWell(
+                          onTap: () {
+                            // print("object");
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => Draftsedit(
+                                      eventname: _getUserDraftEvents
+                                          .data[index].eventName,
+                                      date: _getUserDraftEvents
+                                          .data[index].eventDate,
+                                      placename: _getUserDraftEvents
+                                          .data[index].location,
+                                      imagepath: _getUserDraftEvents.data[index]
+                                          .eventPictures[0].imagePath,
+                                      videopath: _getUserDraftEvents.data[index]
+                                          .eventPictures[0].imagePath,
+                                      eventdescription: _getUserDraftEvents
+                                          .data[index].eventDescription,
+                                      conditions: _getUserDraftEvents
+                                          .data[index].conditions,
+                                      eventprivaacy: _getUserDraftEvents
+                                          .data[index].isPublic,
+                                      lat: _getUserDraftEvents.data[index].lat,
+                                      log: _getUserDraftEvents.data[index].lng,
+                                      type: _getUserDraftEvents
+                                          .data[index].eventType,
+                                      ticketlink: _getUserDraftEvents
+                                          .data[index].ticketLink,
+                                    )));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 0, left: 5, bottom: 0, right: 5),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                                // boxShadow: const [
+                                //   BoxShadow(
+                                //       color: Colors.black12,
+                                //       blurRadius: 10,
+                                //       spreadRadius: 2)
+                                // ]
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 20.0, right: 0, left: 0, bottom: 15),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: const AutoSizeText(
-                                        "Event Type",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                 
-                                   maxFontSize: 16,
-                                            minFontSize: 14,
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 10.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: size.width * 0.45,
+                                            child: AutoSizeText(
+                                              _getUserDraftEvents
+                                                  .data[index].eventName,
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 18),
+                                              maxFontSize: 18,
+                                              minFontSize: 15,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          SizedBox(
+                                              height: 15,
+                                              width: size.width * 0.45,
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  const Icon(
+                                                    FontAwesomeIcons.calendar,
+                                                    size: 15,
+                                                    color: Color(0xFF606060),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 7,
+                                                  ),
+                                                  AutoSizeText(
+                                                    "Created: " + time3(index),
+                                                    style: const TextStyle(
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color:
+                                                            Color(0xFF606060)),
+                                                  ),
+                                                  // const VerticalDivider(
+                                                  //   color: Color(0xFF606060),
+                                                  //   thickness: 1,
+                                                  // ),
+                                                  // AutoSizeText(
+                                                  //   _getUserDraftEvents
+                                                  //       .data[index].location,
+                                                  //   style: const TextStyle(
+                                                  //       fontSize: 13,
+                                                  //       color: Color(0xFF606060)),
+                                                  //   overflow: TextOverflow.ellipsis,
+                                                  // )
+                                                ],
+                                              )),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          SizedBox(
+                                            width: size.width * 0.45,
+                                            child: Text(
+                                              _getUserDraftEvents
+                                                  .data[index].location,
+                                              style: const TextStyle(
+                                                  fontSize: 13,
+                                                  color: Color(0xFF606060)),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: 2,
-                                    ),
-                                 Container(
-                                   alignment: Alignment.center,
-                                   child: AutoSizeText(
-                                     
-                                            _getUserDraftEvents
-                                                .data[index].eventType,
-                                            maxFontSize: 15,
-                                            minFontSize: 13,
-                                           
-                                          ),
-                                 ),
-                                  ],
-                                ),
-                              )),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 20.0, right: 15, left: 15, bottom: 15),
-                              child: Row(
-                                children: [
-                                  _getUserDraftEvents.data[index]
-                                              .eventPictures[0].imagePath
-                                              .toString()
-                                              .contains('.mp4') ||
-                                          _getUserDraftEvents.data[index]
-                                              .eventPictures[0].imagePath
-                                              .toString()
-                                              .contains('.mov')
-                                      ? VideoPlayerScreennn(
-                                          url: MainUrl +
-                                              _getUserDraftEvents.data[index]
-                                                  .eventPictures[0].imagePath)
-                                      : SizedBox(
-                                          height: size.height * 0.17,
-                                          width: size.width * 0.3,
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            child: CachedNetworkImage(
-                                              imageUrl: MainUrl +
-                                                  _getUserDraftEvents
-                                                      .data[index]
-                                                      .eventPictures[0]
-                                                      .imagePath,
-                                              fit: BoxFit.cover,
-                                              placeholder: (context, url) {
-                                                return const Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                        ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 10.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: size.width * 0.3,
-                                          child: AutoSizeText(
-                                            _getUserDraftEvents
-                                                .data[index].eventName,
-                                            style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 18),
-                                            maxFontSize: 16,
-                                            minFontSize: 15,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Row(
-                                          children: [
-                                            const Icon(
-                                              FontAwesomeIcons.calendar,
-                                              size: 15,
-                                              color: Colors.black54,
-                                            ),
-                                            Text(
-                                              time3(index),
-                                              style: const TextStyle(
-                                                  color: Colors.black87),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Row(
-                                          children: [
-                                            const Icon(
-                                              FontAwesomeIcons.mapMarkerAlt,
-                                              size: 15,
-                                              color: Colors.black54,
-                                            ),
-                                            Container(
-                                              width: size.width * 0.25,
-                                              height: size.height * 0.1,
-                                              alignment: Alignment.center,
-                                              child: AutoSizeText(
-                                                _getUserDraftEvents
-                                                        .data[index].location ,
-                                                style: const TextStyle(
-                                                    color: Colors.black87),
-                                                maxFontSize: 17,
-                                                minFontSize: 10,
+                                    _getUserDraftEvents.data[index]
+                                                .eventPictures[0].imagePath
+                                                .toString()
+                                                .contains('.mp4') ||
+                                            _getUserDraftEvents.data[index]
+                                                .eventPictures[0].imagePath
+                                                .toString()
+                                                .contains('.mov')
+                                        ? VideoPlayerScreennn(
+                                            url: MainUrl +
+                                                _getUserDraftEvents.data[index]
+                                                    .eventPictures[0].imagePath)
+                                        : SizedBox(
+                                            height: size.width * 0.3,
+                                            width: size.width * 0.3,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: CachedNetworkImage(
+                                                imageUrl: MainUrl +
+                                                    _getUserDraftEvents
+                                                        .data[index]
+                                                        .eventPictures[0]
+                                                        .imagePath,
+                                                fit: BoxFit.cover,
+                                                placeholder: (context, url) {
+                                                  return ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      child: Container(
+                                                          color: const Color(
+                                                              0xFFC8C8C8),
+                                                          height:
+                                                              size.width * 0.3,
+                                                          width:
+                                                              size.width * 0.3,
+                                                          child: const Center(
+                                                            child: CircularProgressIndicator(
+                                                                color: Color(
+                                                                    0xFF3BADB7)),
+                                                          )));
+                                                },
                                               ),
                                             ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                          ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  );
+                      ));
                 }),
               )
             : const Center(

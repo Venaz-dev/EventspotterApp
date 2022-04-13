@@ -68,14 +68,18 @@ class _EventposterprofileState extends State<Eventposterprofile> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(
+              child: CircularProgressIndicator(color: Color(0xFF3BADB7)))
           : SafeArea(
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: SizedBox(
                   child: Padding(
-                    padding:  EdgeInsets.only(
-                        top: 20.0, right : size.width*0.03, left :size.width*0.03, bottom: 20),
+                    padding: EdgeInsets.only(
+                        top: 20.0,
+                        right: size.width * 0.03,
+                        left: size.width * 0.03,
+                        bottom: 20),
                     child: Column(
                       children: [
                         Container(
@@ -138,8 +142,7 @@ class _EventposterprofileState extends State<Eventposterprofile> {
                                         children: [
                                           SizedBox(
                                             width: size.width * 0.4,
-                                            child:  AutoSizeText(
-                                             
+                                            child: AutoSizeText(
                                               _getUserFollowingStatus.data.name,
                                               style: const TextStyle(
                                                   fontSize: 20,

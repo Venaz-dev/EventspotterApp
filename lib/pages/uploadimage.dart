@@ -5,6 +5,7 @@ import 'package:event_spotter/widgets/elevatedbutton.dart';
 import 'package:event_spotter/widgets/smallButton.dart';
 import 'package:event_spotter/widgets/textformfield.dart';
 import 'package:event_spotter/widgets/toaster.dart';
+import 'package:event_spotter/widgets/topmenu.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -31,7 +32,8 @@ class _UploadimageState extends State<Uploadimage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return GestureDetector(
+    return SafeArea(
+        child: GestureDetector(
       onTap: () {
         FocusScopeNode currentfocus = FocusScope.of(context);
 
@@ -40,70 +42,85 @@ class _UploadimageState extends State<Uploadimage> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "Upload a live snap",
-            style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.black87,
-                fontSize: 20),
-          ),
-          centerTitle: true,
-          elevation: 0,
-          backgroundColor: Colors.white,
-          leading: Smallbutton(
-            height: size.height * 0.06,
-            icon: FontAwesomeIcons.arrowLeft,
-            onpressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ),
-        body: SingleChildScrollView(
+          // appBar: AppBar(
+          //   title: const Text(
+          //     "Upload a live snap",
+          //     style: TextStyle(
+          //         fontWeight: FontWeight.w500,
+          //         color: Colors.black87,
+          //         fontSize: 20),
+          //   ),
+          //   centerTitle: true,
+          //   elevation: 0,
+          //   backgroundColor: Colors.white,
+          //   leading: Smallbutton(
+          //     height: size.height * 0.06,
+          //     icon: FontAwesomeIcons.arrowLeft,
+          //     onpressed: () {
+          //       Navigator.of(context).pop();
+          //     },
+          //   ),
+          // ),
+          body: Stack(children: [
+        SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Padding(
-            padding: const EdgeInsets.only(right: 40.0, left: 40, top: 20),
+            padding: const EdgeInsets.only(right: 20, left: 20, top: 80),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               imagePath == null
                   ? Container(
-                      height: size.height * 0.35,
+                      //height: size.height * 0.35,
                       width: size.width * double.infinity,
                       decoration: const BoxDecoration(
-                        border: Border(
-                            top: BorderSide(color: Colors.black54),
-                            left: BorderSide(color: Colors.black54),
-                            right: BorderSide(color: Colors.black54),
-                            bottom: BorderSide(color: Colors.black54)),
+                        color: Color(0xFFF3F4F6),
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        // border: Border(
+                        //     top: BorderSide(color: Colors.black54),
+                        //     left: BorderSide(color: Colors.black54),
+                        //     right: BorderSide(color: Colors.black54),
+                        //     bottom: BorderSide(color: Colors.black54)),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 20.0, left: 20),
-                        child: Column(children: [
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          SizedBox(
-                              height: size.height * 0.22,
-                              child: Image.asset('Assets/images/upload.jpeg')),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Elevatedbutton(
-                              primary: const Color(0xFF304747),
-                              text: "Upload Picture/Video",
-                              width: double.infinity,
-                              coloring: const Color(0xFF304747),
-                              onpressed: () {
-                                setState(() {
-                                  _selectPhoto();
-                                });
-                              }),
-                        ]),
-                      ),
-                    )
+                      child: InkWell(
+                        onTap: () {
+                          _selectPhoto();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              right: 20.0, left: 20, bottom: 40),
+                          child: Column(children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            SizedBox(
+                                height: size.height * 0.15,
+                                child: Image.asset('Assets/icons/camera.png')),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const Text(
+                              "Tap to upload a picture or a video",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400),
+                              maxLines: 1,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            // Elevatedbutton(
+                            //     primary: const Color(0xFF304747),
+                            //     text: "Upload Picture/Video",
+                            //     width: double.infinity,
+                            //     coloring: const Color(0xFF304747),
+                            //     onpressed: () {
+                            //       _selectPhoto(); // Navigator.of(context).push(MaterialPageRoute(
+                            //       //     builder: (context) => const Uploadimage()));
+                            //     }),
+                          ]),
+                        ),
+                      ))
                   : (imagePath!.path.toString().contains('.mp4') ||
                           imagePath!.path.toString().contains('.mov'))
                       ? SizedBox(
@@ -112,8 +129,8 @@ class _UploadimageState extends State<Uploadimage> {
                             children: [
                               VideoPlayerScree1(url: imagePath!),
                               const SizedBox(
-                            height: 10,
-                          ),
+                                height: 10,
+                              ),
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 10.0),
                                 child: Elevatedbutton(
@@ -130,21 +147,28 @@ class _UploadimageState extends State<Uploadimage> {
                           ))
                       : Column(
                           children: [
-                            SizedBox(
-                              //color: Colors.red,
-                              height: size.height * 0.35,
-                              width: size.width * double.infinity,
-                              child: Image.file(
-                                imagePath!,
-                                fit: BoxFit.fill,
-                              ),
-                            ),
+                            InkWell(
+                                onTap: () {
+                                  _selectPhoto();
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  //color: Colors.red,
+                                  height: size.height * 0.3,
+                                  width: size.width * double.infinity,
+                                  child: Image.file(
+                                    imagePath!,
+                                    fit: BoxFit.contain,
+                                  ),
+                                )),
                             const SizedBox(
                               height: 10,
                             ),
                             Elevatedbutton(
                                 primary: const Color(0xFF304747),
-                                text: "Upload Picture/Video",
+                                text: "Change Picture/Video",
                                 width: double.infinity,
                                 coloring: const Color(0xFF304747),
                                 onpressed: () {
@@ -156,14 +180,24 @@ class _UploadimageState extends State<Uploadimage> {
               const SizedBox(
                 height: 20,
               ),
-              Textform(
-                  isSecure: false,
-                isreadonly: false,
-                input: true,
-                label: "Snap Description",
-                controller: _snapdescription,
-                color: const Color(0XFFEBF2F2),
+              const Text("Snap Description"),
+              const SizedBox(
+                height: 10,
               ),
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    border:
+                        Border.all(color: const Color(0xffE5E7EB), width: 2)),
+                child: Textform(
+                  isreadonly: false,
+                  controller: _snapdescription,
+                  label: "Enter Snap Description",
+                  color: Colors.white,
+                  isSecure: false,
+                ),
+              ),
+
               const SizedBox(
                 height: 20,
               ),
@@ -188,15 +222,16 @@ class _UploadimageState extends State<Uploadimage> {
                   ? const SizedBox(
                       child: Center(
                         child: CircularProgressIndicator(
-                          color: Color(0XFF368890),
+                          color: Color(0XFF3BADB7),
                         ),
                       ),
                     )
                   : Elevatedbutton(
-                      primary: const Color(0xFF304747),
                       text: "Upload",
                       width: double.infinity,
                       coloring: const Color(0xFF304747),
+                      textColor: const Color(0XFFFFFFFF),
+                      primary: const Color(0xFF3BADB7),
                       onpressed: () async {
                         if (imagePath == null) {
                           showToaster("Please upload a snap");
@@ -211,8 +246,11 @@ class _UploadimageState extends State<Uploadimage> {
             ]),
           ),
         ),
-      ),
-    );
+        Topmenu(
+          title: "Upload a live snap",
+        )
+      ])),
+    ));
   }
 
   Future _selectPhoto() async {

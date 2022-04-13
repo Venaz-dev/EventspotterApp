@@ -201,7 +201,8 @@ class _EventssState extends State<Eventss> {
                                           .eventPictures[0].imagePath,
                                   placeholder: (context, url) {
                                     return const Center(
-                                      child: CircularProgressIndicator(),
+                                      child: CircularProgressIndicator(
+                                          color: Color(0xFF3BADB7)),
                                     );
                                   },
                                 ),
@@ -337,7 +338,9 @@ class _EventssState extends State<Eventss> {
                                   divider(),
 
                                   extras(MdiIcons.share, "", size, () {
-                                    share(widget.eventsModel.data[index].events.id.toString());
+                                    share(widget
+                                        .eventsModel.data[index].events.id
+                                        .toString());
                                   }),
                                   divider(), //no inculded
                                   extras(
@@ -363,10 +366,12 @@ class _EventssState extends State<Eventss> {
       ],
     );
   }
-  share(String ff){
-    Share.share('check out my post https://theeventspotter.com/eventDetails/'+ff);
 
+  share(String ff) {
+    Share.share(
+        'check out my post https://theeventspotter.com/eventDetails/' + ff);
   }
+
   VerticalDivider divider() {
     return const VerticalDivider(
       thickness: 1,
@@ -598,7 +603,7 @@ class _VideoPlayerScreennState extends State<VideoPlayerScreenn> {
               // If the VideoPlayerController is still initializing, show a
               // loading spinner.
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
               );
             }
           },

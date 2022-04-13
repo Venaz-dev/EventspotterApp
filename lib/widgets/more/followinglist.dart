@@ -39,74 +39,106 @@ class _FollowinglistState extends State<Followinglist> {
           return Container(
             width: double.infinity,
             decoration: const BoxDecoration(
-              border: Border(
-                  top: BorderSide(color: Colors.white),
-                  left: BorderSide(color: Colors.white),
-                  right: BorderSide(color: Colors.white),
-                  bottom: BorderSide(color: Colors.black26)),
-            ),
+                // border: Border(
+                //     top: BorderSide(color: Colors.white),
+                //     left: BorderSide(color: Colors.white),
+                //     right: BorderSide(color: Colors.white),
+                //     bottom: BorderSide(color: Colors.black26)),
+                ),
             child: Padding(
               padding: const EdgeInsets.only(bottom: 20, top: 10),
-              child: Column(
+              child: Row(
                 children: [
+                  Container(
+                    height: 48,
+                    width: 48,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: CachedNetworkImageProvider(MainUrl +
+                              widget.followingListModel.data[index]
+                                  .followingUser.profilePicture.image),
+                          fit: BoxFit.cover,
+                        )),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    widget.followingListModel.data[index].followingUser.name,
+                    style: const TextStyle(
+                      color: Color(0xFF101010),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const Spacer(),
                   InkWell(
                     onTap: () {
                       unfollow(index);
                     },
                     child: Row(
                       children: [
-                        const Spacer(),
-                        IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.block,
+                        // const Spacer(),
+                        // IconButton(
+                        //     onPressed: () {},
+                        //     icon: const Icon(
+                        //       Icons.block,
+                        //     )),
+                        Container(
+                            padding: const EdgeInsets.only(
+                                top: 6, right: 8, left: 8, bottom: 6),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFEBEBEB),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: const Text(
+                              "Unfollow",
+                              style: TextStyle(
+                                color: Color(0xFF101010),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
                             )),
-                        const Text(
-                          "UnFollow",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
                       ],
                     ),
                   ),
-                  Row(
-                    children: [
-                      Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: CachedNetworkImageProvider(MainUrl +
-                                  widget.followingListModel.data[index]
-                                      .followingUser.profilePicture.image),
-                              fit: BoxFit.cover,
-                            )),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.followingListModel.data[index]
-                                  .followingUser.name,
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            time(index),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   children: [
+                  //     Container(
+                  //       height: 40,
+                  //       width: 40,
+                  //       decoration: BoxDecoration(
+                  //           shape: BoxShape.circle,
+                  //           image: DecorationImage(
+                  //             image: CachedNetworkImageProvider(MainUrl +
+                  //                 widget.followingListModel.data[index]
+                  //                     .followingUser.profilePicture.image),
+                  //             fit: BoxFit.cover,
+                  //           )),
+                  //     ),
+                  //     const SizedBox(
+                  //       width: 10,
+                  //     ),
+                  //     Expanded(
+                  //       child: Column(
+                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                  //         children: [
+                  //           Text(
+                  //             widget.followingListModel.data[index]
+                  //                 .followingUser.name,
+                  //             style: const TextStyle(
+                  //               color: Color(0xFF101010),
+                  //               fontSize: 18,
+                  //               fontWeight: FontWeight.w500,
+                  //             ),
+                  //           ),
+                  //           // time(index),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                 ],
               ),
             ),

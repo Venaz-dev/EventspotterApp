@@ -77,8 +77,7 @@ class _EventssState extends State<Eventss> {
 
     // String description = "new year party at local park";
 
-    return
-    Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Livefeeds(
@@ -116,24 +115,20 @@ class _EventssState extends State<Eventss> {
                           )));
                 },
                 child: Container(
-                
                   decoration: const BoxDecoration(
-                    color:  Colors.white,
+                    color: Colors.white,
                     // borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(
-                          spreadRadius: 3,
-                          blurRadius: 3,
-                          color: Colors.black12,
-                         
-                          ),
-                      
+                        spreadRadius: 3,
+                        blurRadius: 3,
+                        color: Colors.black12,
+                      ),
                     ],
                   ),
                   child: Column(children: [
                     Padding(
-                      padding:
-                          const EdgeInsets.only(right: 5, left: 5, top: 5),
+                      padding: const EdgeInsets.only(right: 5, left: 5, top: 5),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -145,8 +140,8 @@ class _EventssState extends State<Eventss> {
                                               .events.user.id,
                                         )));
                               },
-                              title: widget.eventsModel.data[index].events
-                                  .user.name, //new
+                              title: widget.eventsModel.data[index].events.user
+                                  .name, //new
                               radiusofbutton: BorderRadius.circular(20),
                               profileImage: MainUrl +
                                   widget.eventsModel.data[index].events.user
@@ -182,7 +177,6 @@ class _EventssState extends State<Eventss> {
                           ),
                       width: size.width * double.infinity,
                       child: Stack(children: [
-                        
                         widget.eventsModel.data[index].events.eventPictures[0]
                                     .imagePath
                                     .toString()
@@ -195,10 +189,6 @@ class _EventssState extends State<Eventss> {
                                 url: MainUrl +
                                     widget.eventsModel.data[index].events
                                         .eventPictures[0].imagePath)
-
-                                      
-
-                                        
                             : Container(
                                 height: size.height * 0.4,
                                 width: double.infinity,
@@ -206,15 +196,15 @@ class _EventssState extends State<Eventss> {
                                     // borderRadius: BorderRadius.circular(20)
                                     ),
                                 child: CachedNetworkImage(
-                                
-                                  alignment : Alignment.center,
+                                  alignment: Alignment.center,
                                   imageUrl: MainUrl +
                                       widget.eventsModel.data[index].events
                                           .eventPictures[0].imagePath,
                                   fit: BoxFit.fill,
                                   placeholder: (context, url) {
                                     return const Center(
-                                      child: CircularProgressIndicator(),
+                                      child: CircularProgressIndicator(
+                                          color: Color(0xFF3BADB7)),
                                     );
                                   },
                                 ),
@@ -228,14 +218,14 @@ class _EventssState extends State<Eventss> {
                                     widget.favourite[index] = 0;
                                     PostDislike(
                                         index,
-                                        widget.eventsModel.data[index].events
-                                            .id);
+                                        widget
+                                            .eventsModel.data[index].events.id);
                                   } else {
                                     widget.favourite[index] = 1;
                                     PostLike(
                                         index,
-                                        widget.eventsModel.data[index].events
-                                            .id);
+                                        widget
+                                            .eventsModel.data[index].events.id);
                                   }
                                   setState(() {});
                                 },
@@ -262,8 +252,7 @@ class _EventssState extends State<Eventss> {
                               ),
                             ),
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.only(right: 8, left: 8),
+                              padding: const EdgeInsets.only(right: 8, left: 8),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -271,12 +260,11 @@ class _EventssState extends State<Eventss> {
                                   Buttonicon(
                                     radiusofbutton: BorderRadius.circular(20),
                                     icon: FontAwesomeIcons.userPlus,
-                                    title: widget.eventsModel.data[index]
-                                            .events.user.followers.length
+                                    title: widget.eventsModel.data[index].events
+                                            .user.followers.length
                                             .toString() +
                                         " " "Followers",
                                   ),
-                               
                                   Row(
                                     children: [
                                       const Icon(
@@ -284,7 +272,7 @@ class _EventssState extends State<Eventss> {
                                         size: 13,
                                         color: Colors.black54,
                                       ),
-                                      const   SizedBox(width : 5),
+                                      const SizedBox(width: 5),
                                       Text(
                                         time(index),
                                         style: const TextStyle(
@@ -292,23 +280,20 @@ class _EventssState extends State<Eventss> {
                                       ),
                                     ],
                                   ),
-                                 
-                                  Row(
-                                    children : [
-                                  const Icon(
-                                    FontAwesomeIcons.mapMarkerAlt,
-                                    size: 15,
-                                    color: Colors.black54,
-                                  ),
-                                  Text(
-                                      widget.eventsModel.data[index].km
-                                              .toString() +
-                                          " " +
-                                          "away",
-                                      style: const TextStyle(
-                                          color: Colors.black87)),
-                                    ]
-                                  )
+                                  Row(children: [
+                                    const Icon(
+                                      FontAwesomeIcons.mapMarkerAlt,
+                                      size: 15,
+                                      color: Colors.black54,
+                                    ),
+                                    Text(
+                                        widget.eventsModel.data[index].km
+                                                .toString() +
+                                            " " +
+                                            "away",
+                                        style: const TextStyle(
+                                            color: Colors.black87)),
+                                  ])
                                 ],
                               ),
                             ),
@@ -344,10 +329,9 @@ class _EventssState extends State<Eventss> {
                                           .comment.length
                                           .toString(),
                                       size, () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                Commentofuser(
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) => Commentofuser(
                                                   eventsModel:
                                                       widget.eventsModel,
                                                   index: index,
@@ -379,7 +363,6 @@ class _EventssState extends State<Eventss> {
           }),
         ),
       ],
-    
     );
   }
 
@@ -589,7 +572,7 @@ class _EventssState extends State<Eventss> {
     DateTime parseDate = DateFormat("yyyy-mm-dd")
         .parse(widget.eventsModel.data[index].events.eventDate);
     var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('MM/dd/yyyy');
+    var outputFormat = DateFormat('mm/dd/yyyy');
     var outputDate = outputFormat.format(inputDate);
 
     return outputDate;
@@ -670,7 +653,7 @@ class _VideoPlayerScreennState extends State<VideoPlayerScreenn> {
               // If the VideoPlayerController is still initializing, show a
               // loading spinner.
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
               );
             }
           },

@@ -10,7 +10,9 @@ import 'package:event_spotter/pages/uploadimage.dart';
 import 'package:event_spotter/widgets/elevatedbutton.dart';
 import 'package:event_spotter/widgets/explore/events.dart';
 import 'package:event_spotter/widgets/explore/livefeed.dart';
+import 'package:event_spotter/pages/differentlivesnaps.dart';
 import 'package:event_spotter/widgets/smallbutton.dart';
+import 'package:event_spotter/widgets/topmenu.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -88,689 +90,812 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
-      child: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Scaffold(
-              backgroundColor: Colors.white,
-              appBar: AppBar(
-                backgroundColor: Colors.white,
-                elevation: 0,
-                leading: Padding(
-                  padding: const EdgeInsets.only(left: 8.0, top: 8),
-                  child: Smallbutton(
-                    icon: FontAwesomeIcons.arrowLeft,
-                    onpressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ),
-              ),
-              body: Padding(
-                padding: EdgeInsets.only(
-                  right: size.width * 0.02,
-                  left: size.width * 0.02,
-                  top: 10,
-                ),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 3.0, right: 3),
-                          child: Container(
-                            width: size.width * double.infinity,
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              // borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  spreadRadius: 3,
-                                  blurRadius: 3,
-                                  color: Colors.black12,
+      child: Scaffold(
+          backgroundColor: Colors.white,
+          // appBar: AppBar(
+          //   backgroundColor: Colors.white,
+          //   elevation: 0,
+          //   leading: Padding(
+          //     padding: const EdgeInsets.only(left: 8.0, top: 8),
+          //     child: Smallbutton(
+          //       icon: FontAwesomeIcons.arrowLeft,
+          //       onpressed: () {
+          //         Navigator.of(context).pop();
+          //       },
+          //     ),
+          //   ),
+          // ),
+          body: Stack(children: [
+            _isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(color: Color(0xFF3BADB7)))
+                : Padding(
+                    padding: const EdgeInsets.only(
+                      top: 60,
+                    ),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 0, right: 0),
+                              child: Container(
+                                width: size.width * double.infinity,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  // borderRadius: BorderRadius.circular(15),
                                 ),
-                              ],
-                            ),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                child: Column(
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 3.0,
-                                          right: 8,
-                                          top: 3,
-                                          bottom: 3),
-                                      child: Button(
-                                        onpressed: () {},
-                                        title: name1,
-                                        // widget.eventsModel.data[index].events
-                                        //     .user.name, //new
-                                        radiusofbutton:
-                                            BorderRadius.circular(20),
-                                        profileImage: MainUrl + profile_pic!,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 8.0, right: 8, top: 3, bottom: 3),
-                                  child: Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: AutoSizeText(
-                                      widget.eventname!,
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 17),
-                                      maxFontSize: 17,
-                                      minFontSize: 10,
-                                      maxLines: 5,
-                                    ),
-                                  ),
-                                ),
-                                (widget.eventpicture.contains('.mp4') ||
-                                        widget.eventpicture.contains('.mov'))
-                                    ? VideoPlayerScreenn(
-                                        url: MainUrl + widget.eventpicture)
-                                    : SizedBox(
-                                        //color: Colors.red,
-                                     
-                                       width: double.infinity,
-                                        child: Center(
-                                          child: CachedNetworkImage(
-                                            imageUrl:
-                                                MainUrl + widget.eventpicture,
-                                                fit : BoxFit.cover,
-                                            //  getUpComingEventUrl + imagePath!.path
-                                          ),
-                                        ),
-                                      ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 3.0, left: 3),
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Buttonicon(
-                                          radiusofbutton:
-                                              BorderRadius.circular(20),
-                                          icon: FontAwesomeIcons.userPlus,
-                                          title:
-                                              followersCount + " " "Followers",
-                                        ),
-                                        SizedBox(
-                                          child: Row(
-                                            children: [
-                                              const Icon(
-                                                FontAwesomeIcons.calendar,
-                                                size: 13,
-                                                color: Colors.black54,
-                                              ),
-                                              Text(
-                                                time(),
-                                                style: const TextStyle(
-                                                    color: Colors.black87),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          child: Row(
-                                            children: [
-                                              const Icon(
-                                                FontAwesomeIcons.mapMarkerAlt,
-                                                size: 15,
-                                                color: Colors.black54,
-                                              ),
-                                              Text(
-                                                  widget.distance! +
-                                                      " " +
-                                                      "away",
-                                                  style: const TextStyle(
-                                                      color: Colors.black87)),
-                                            ],
-                                          ),
-                                        ),
-                                      ]),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Container(
-                                  decoration: const BoxDecoration(
-                                    border: Border(
-                                      top: BorderSide(color: Colors.black12),
-                                    ),
-                                  ),
-                                  child: IntrinsicHeight(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        extras(
-                                          FontAwesomeIcons.thumbsUp,
-                                          totalLike.toString(),
-                                          size,
-                                          () {},
-                                        ),
+                                    (widget.eventpicture.contains('.mp4') ||
+                                            widget.eventpicture
+                                                .contains('.mov'))
+                                        ? VideoPlayerScreenn(
+                                            url: MainUrl + widget.eventpicture)
+                                        : SizedBox(
+                                            //color: Colors.red,
 
-                                        divider(),
-                                        extras(
-                                            Icons.comment,
-                                            comments.length.toString(),
-                                            size, () {
-                                          Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                                  builder: (context) => comment(
-                                                        eventPicture:
-                                                            widget.eventpicture,
-                                                        userName: name1,
-                                                        userProfile:
-                                                            profile_pic,
-                                                        date: widget.date,
-                                                        distance:
-                                                            widget.distance,
-                                                        eventName:
-                                                            widget.eventname,
-                                                        likeTotal: totalLike
-                                                            .toString(),
-                                                        commentTotal: comments
-                                                            .length
-                                                            .toString(),
-                                                        totalLive: livefeeds
-                                                            .length
-                                                            .toString(),
-                                                        eventId: widget.eventId,
-                                                        commentList: comments,
-                                                      )));
-                                        }),
-                                        divider(),
-
-                                        // extras(MdiIcons.share,
-                                        //     posts[1]['share'], size),
-                                        // divider(),                           //no inculded
-                                        extras(
-                                            Icons.play_arrow_sharp,
-                                            livefeeds.length.toString(),
-                                            size, () {
-                                          setState(() {
-                                            issnaps = !issnaps;
-                                          });
-                                        }),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        !issnaps
-                            ? Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 3.0, left: 3),
-                                    child: Container(
-                                      width: double.infinity,
+                                            width: double.infinity,
+                                            child: Center(
+                                              child: CachedNetworkImage(
+                                                imageUrl: MainUrl +
+                                                    widget.eventpicture,
+                                                fit: BoxFit.cover,
+                                                //  getUpComingEventUrl + imagePath!.path
+                                              ),
+                                            ),
+                                          ),
+                                    Container(
+                                      padding: const EdgeInsets.only(right: 10),
                                       decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black12,
-                                            spreadRadius: 0.5,
-                                            blurRadius: 0.5,
-                                            offset: Offset(
-                                              0,
-                                              0,
-                                            ),
-                                          ),
-                                          BoxShadow(
-                                            color: Colors.black12,
-                                            spreadRadius: 0.5,
-                                            blurRadius: 0.5,
-                                            offset: Offset(
-                                              0,
-                                              0,
-                                            ),
-                                          )
-                                        ],
+                                        border: Border(
+                                          top:
+                                              BorderSide(color: Colors.black12),
+                                        ),
                                       ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                      child: IntrinsicHeight(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
                                           children: [
-                                            const Text(
-                                              "Details",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w500),
+                                            extras(
+                                              FontAwesomeIcons.heart,
+                                              totalLike.toString(),
+                                              size,
+                                              () {},
                                             ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(
-                                              widget.details!,
-                                              style: const TextStyle(
-                                                  color: Colors.black54,
-                                                  fontSize: 16),
-                                            ),
+
+                                            // divider(),
+                                            extras(
+                                                FontAwesomeIcons.commentDots,
+                                                comments.length.toString(),
+                                                size, () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          comment(
+                                                            eventPicture: widget
+                                                                .eventpicture,
+                                                            userName: name1,
+                                                            userProfile:
+                                                                profile_pic,
+                                                            date: widget.date,
+                                                            distance:
+                                                                widget.distance,
+                                                            eventName: widget
+                                                                .eventname,
+                                                            likeTotal: totalLike
+                                                                .toString(),
+                                                            commentTotal:
+                                                                comments.length
+                                                                    .toString(),
+                                                            totalLive: livefeeds
+                                                                .length
+                                                                .toString(),
+                                                            eventId:
+                                                                widget.eventId,
+                                                            commentList:
+                                                                comments,
+                                                          )));
+                                            }),
+                                            // divider(),
+
+                                            // extras(MdiIcons.share,
+                                            //     posts[1]['share'], size),
+                                            // divider(),                           //no inculded
+                                            extras(
+                                                FontAwesomeIcons.playCircle,
+                                                livefeeds.length.toString() +
+                                                    " " +
+                                                    "Live snaps",
+                                                size, () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          Differentlivesnaps(
+                                                            eventpicture: widget
+                                                                .eventpicture,
+                                                            eventId:
+                                                                widget.eventId,
+                                                            eventname: widget
+                                                                .eventname,
+                                                            conditions: widget
+                                                                .conditions,
+                                                            details:
+                                                                widget.details,
+                                                            ticketlink: widget
+                                                                .ticketlink,
+                                                            distance:
+                                                                widget.distance,
+                                                            date: widget.date,
+                                                            lat: widget.lat,
+                                                            long: widget.long,
+                                                            location:
+                                                                widget.location,
+                                                          )));
+                                              // Navigator.of(context).push(
+                                              //     MaterialPageRoute(
+                                              //         builder: (context) =>
+                                              //             Livesnaps(
+                                              //               model: widget.model,
+                                              //               indexs:
+                                              //                   widget.indexs,
+                                              //               id: widget.eventId,
+                                              //             )));
+                                              //             setState(() {
+                                              //               issnaps = !issnaps;
+                                              //             });
+                                            }),
                                           ],
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 7,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 3.0, left: 3),
-                                    child: Container(
-                                      width: double.infinity,
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black12,
-                                            spreadRadius: 0.5,
-                                            blurRadius: 0.5,
-                                            offset: Offset(
-                                              0,
-                                              0,
-                                            ),
-                                          ),
-                                          BoxShadow(
-                                            color: Colors.black12,
-                                            spreadRadius: 0.5,
-                                            blurRadius: 0.5,
-                                            offset: Offset(
-                                              0,
-                                              0,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const Text(
-                                              "Ticket link",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            widget.ticketlink == null
-                                                ? const Text("")
-                                                : InkWell(
-                                                    onTap: () {
-                                                      urllauncher();
-                                                    },
-                                                    child: Text(
-                                                      widget.ticketlink!,
-                                                      style: const TextStyle(
-                                                          color: Colors.black54,
-                                                          fontSize: 16),
-                                                    ),
-                                                  ),
-                                          ],
-                                        ),
-                                      ),
+                                    const SizedBox(
+                                      height: 20,
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 7,
-                                  ),
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: const Text(
-                                      "Location",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: size.height * 0.15,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(15),
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          color: Colors.black12,
-                                          spreadRadius: 2,
-                                          blurRadius: 2,
-                                          offset: Offset(
-                                            2,
-                                            2,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    child: Map(
-                                        lat: widget.lat!, long: widget.long),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    widget.location!,
-                                    style: const TextStyle(
-                                        color: Colors.black54, fontSize: 16),
-                                  ),
-                                ],
-                              )
-                            : Padding(
-                                padding: const EdgeInsets.only(bottom: 20.0),
-                                child: Container(
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black12,
-                                        spreadRadius: 3,
-                                        blurRadius: 3,
-                                        offset: Offset(0, 0),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 5, right: 5, top: 5),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          "Livefeed",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
-                                        livefeeds.isEmpty
-                                            ? const Center(
-                                                child: Text("No Live Feeds"))
-                                            : SingleChildScrollView(
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                child: Row(
-                                                    children: List.generate(
-                                                        livefeeds.length,
-                                                        (index) {
-                                                  return Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                      right: 10.0,
-                                                    ),
-                                                    child: Container(
-                                                      height:
-                                                          size.height * 0.24,
-                                                      width: size.width * 0.3,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        boxShadow: const [
-                                                          BoxShadow(
-                                                            color:
-                                                                Colors.black12,
-                                                            spreadRadius: 1,
-                                                            blurRadius: 1,
-                                                          )
-                                                        ],
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15),
-                                                        //  color: Colors.red,
+                                    !issnaps
+                                        ? Column(children: [
+                                            Container(
+                                                child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 15, left: 15),
+                                              child: Container(
+                                                padding: const EdgeInsets.only(
+                                                    top: 15,
+                                                    bottom: 15,
+                                                    left: 15,
+                                                    right: 15),
+                                                width: size.width *
+                                                    double.infinity,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                    border: Border.all(
+                                                        color: const Color(
+                                                            0xffE5E7EB),
+                                                        width: 2)),
+                                                // boxShadow: [
+                                                //   BoxShadow(
+                                                //     spreadRadius: 3,
+                                                //     blurRadius: 3,
+                                                //     color: Colors.black12,
+                                                //   ),
+                                                // ],
+
+                                                child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                right: 5,
+                                                                left: 2,
+                                                                top: 2),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Button(
+                                                                size: 48,
+                                                                onpressed:
+                                                                    () {},
+                                                                title: name1,
+                                                                // widget.eventsModel.data[index].events
+                                                                //     .user.name, //new
+                                                                radiusofbutton:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            50),
+                                                                profileImage:
+                                                                    MainUrl +
+                                                                        profile_pic!),
+                                                          ],
+                                                        ),
                                                       ),
-                                                      child: Stack(
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+                                                      Text(
+                                                        widget.details!,
+                                                        style: const TextStyle(
+                                                            color: Color(
+                                                                0xFF333333),
+                                                            fontSize: 16),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                      const Text(
+                                                        "Event Details",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xFF333333),
+                                                            fontSize: 17,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+                                                      Row(
                                                         children: [
-                                                          livefeeds[index][
-                                                                          'img']
-                                                                      //////////////////////////
-                                                                      .toString()
-                                                                      .contains(
-                                                                          '.mp4') ||
-                                                                  livefeeds[index]
-                                                                          [
-                                                                          'img']
-                                                                      //////////////////////////
-                                                                      .toString()
-                                                                      .contains(
-                                                                          '.mov')
-                                                              ? VideoPlayerScreen(
-                                                                  url: MainUrl +
-                                                                      livefeeds[index]
-                                                                              [
-                                                                              'img']
-                                                                          .toString())
-                                                              : Container(
-                                                                  height:
-                                                                      size.height *
-                                                                          0.21,
-                                                                  width:
-                                                                      size.width *
-                                                                          0.3,
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    // color: Colors.red,
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            20),
-                                                                  ),
-                                                                  child: ClipRRect(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              20),
-                                                                      child: buildimage(
-                                                                          index)),
-                                                                ),
-                                                          Align(
-                                                              alignment: Alignment
-                                                                  .bottomCenter,
+                                                          const SizedBox(
+                                                              width: 35.0,
+                                                              child: Image(
+                                                                  image: AssetImage(
+                                                                      "Assets/icons/details-distance.png"))),
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Column(children: [
+                                                            SizedBox(
+                                                              width:
+                                                                  size.width *
+                                                                      0.7,
                                                               child: Text(
                                                                 widget.distance! +
                                                                     " " +
-                                                                    "miles",
+                                                                    "miles away",
+                                                                maxLines: 2,
                                                                 style: const TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
+                                                                    color: Color(
+                                                                        0xFF242424),
                                                                     fontSize:
-                                                                        17),
-                                                              )),
+                                                                        16),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              width:
+                                                                  size.width *
+                                                                      0.7,
+                                                              child: const Text(
+                                                                "Distance from your location",
+                                                                style: TextStyle(
+                                                                    color: Color(
+                                                                        0xFF707070),
+                                                                    fontSize:
+                                                                        14),
+                                                              ),
+                                                            ),
+                                                          ]),
                                                         ],
                                                       ),
-                                                    ),
-                                                  );
-
-                                                  // } else {
-                                                  //   //index = index + 1;
-                                                  //   return const SizedBox();
-                                                  // }
-                                                })),
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          const SizedBox(
+                                                              width: 35.0,
+                                                              child: Image(
+                                                                  image: AssetImage(
+                                                                      "Assets/icons/details-date.png"))),
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Column(children: [
+                                                            SizedBox(
+                                                              width:
+                                                                  size.width *
+                                                                      0.7,
+                                                              child: Text(
+                                                                time(),
+                                                                maxLines: 2,
+                                                                style: const TextStyle(
+                                                                    color: Color(
+                                                                        0xFF242424),
+                                                                    fontSize:
+                                                                        16),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              width:
+                                                                  size.width *
+                                                                      0.7,
+                                                              child: const Text(
+                                                                "Event date",
+                                                                style: TextStyle(
+                                                                    color: Color(
+                                                                        0xFF707070),
+                                                                    fontSize:
+                                                                        14),
+                                                              ),
+                                                            ),
+                                                          ]),
+                                                        ],
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          const SizedBox(
+                                                              width: 35.0,
+                                                              child: Image(
+                                                                  image: AssetImage(
+                                                                      "Assets/icons/details-link.png"))),
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Column(children: [
+                                                            SizedBox(
+                                                              width:
+                                                                  size.width *
+                                                                      0.7,
+                                                              child: InkWell(
+                                                                onTap: () {
+                                                                  urllauncher();
+                                                                },
+                                                                child: Text(
+                                                                  widget.ticketlink !=
+                                                                          null
+                                                                      ? widget
+                                                                          .ticketlink!
+                                                                          .toString()
+                                                                      : "No ticket link",
+                                                                  style: const TextStyle(
+                                                                      color: Color(
+                                                                          0xFF242424),
+                                                                      fontSize:
+                                                                          16),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              width:
+                                                                  size.width *
+                                                                      0.7,
+                                                              child: const Text(
+                                                                "Ticket link",
+                                                                style: TextStyle(
+                                                                    color: Color(
+                                                                        0xFF707070),
+                                                                    fontSize:
+                                                                        14),
+                                                              ),
+                                                            ),
+                                                          ]),
+                                                        ],
+                                                      ),
+                                                    ]),
                                               ),
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
-                                        const Text(
-                                          "Snaps",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 19),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        livefeeds.length > 0
-                                            ? Column(
-                                                children: List.generate(
-                                                    livefeeds.length, (index) {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 15.0),
-                                                  child: Container(
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                              color:
-                                                                  Colors.white,
-                                                              boxShadow: [
+                                            )),
+                                            const SizedBox(
+                                              height: 30,
+                                            ),
+                                            Container(
+                                                child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                right: 15,
+                                                left: 15,
+                                              ),
+                                              child: Container(
+                                                padding: const EdgeInsets.only(
+                                                    top: 15,
+                                                    bottom: 15,
+                                                    left: 15,
+                                                    right: 15),
+                                                width: size.width *
+                                                    double.infinity,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                    border: Border.all(
+                                                        color: const Color(
+                                                            0xffE5E7EB),
+                                                        width: 2)),
+                                                // boxShadow: [
+                                                //   BoxShadow(
+                                                //     spreadRadius: 3,
+                                                //     blurRadius: 3,
+                                                //     color: Colors.black12,
+                                                //   ),
+                                                // ],
+
+                                                child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+                                                      const Text(
+                                                        "Event Location",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xFF333333),
+                                                            fontSize: 17,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+                                                      Container(
+                                                        height:
+                                                            size.height * 0.15,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.white,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                          boxShadow: const [
                                                             BoxShadow(
                                                               color: Colors
                                                                   .black12,
-                                                              spreadRadius: 1,
-                                                              blurRadius: 1,
-                                                            ),
-                                                          ]),
-                                                      child: Column(children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                            top: 10.0,
-                                                            left: 10,
-                                                            right: 10,
+                                                              spreadRadius: 2,
+                                                              blurRadius: 2,
+                                                              offset: Offset(
+                                                                2,
+                                                                2,
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        child: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                            child: Map(
+                                                              lat: widget.lat!,
+                                                              long: widget.long,
+                                                            )),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Text(
+                                                        widget.location!,
+                                                        style: const TextStyle(
+                                                            color: Color(
+                                                                0xFF333333),
+                                                            fontSize: 16),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                    ]),
+                                              ),
+                                            )),
+                                          ])
+                                        : SizedBox()
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            !issnaps
+                                ? const SizedBox()
+                                : Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 20.0),
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black12,
+                                            spreadRadius: 3,
+                                            blurRadius: 3,
+                                            offset: Offset(0, 0),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 5, right: 5, top: 5),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text(
+                                              "Livefeed",
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            livefeeds.isEmpty
+                                                ? const Center(
+                                                    child:
+                                                        Text("No Live Feeds"))
+                                                : SingleChildScrollView(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    child: Row(
+                                                        children: List.generate(
+                                                            livefeeds.length,
+                                                            (index) {
+                                                      return Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                          right: 10.0,
+                                                        ),
+                                                        child: Container(
+                                                          height: size.height *
+                                                              0.24,
+                                                          width:
+                                                              size.width * 0.3,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors.white,
+                                                            boxShadow: const [
+                                                              BoxShadow(
+                                                                color: Colors
+                                                                    .black12,
+                                                                spreadRadius: 1,
+                                                                blurRadius: 1,
+                                                              )
+                                                            ],
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15),
+                                                            //  color: Colors.red,
                                                           ),
-                                                          child: Row(
+                                                          child: Stack(
                                                             children: [
-                                                              SizedBox(
-                                                                height: 40,
-                                                                width: 40,
-                                                                child:
-                                                                    ClipRRect(
+                                                              livefeeds[index][
+                                                                              'img']
+                                                                          //////////////////////////
+                                                                          .toString()
+                                                                          .contains(
+                                                                              '.mp4') ||
+                                                                      livefeeds[index]
+                                                                              [
+                                                                              'img']
+                                                                          //////////////////////////
+                                                                          .toString()
+                                                                          .contains(
+                                                                              '.mov')
+                                                                  ? VideoPlayerScreen(
+                                                                      url: MainUrl +
+                                                                          livefeeds[index]['img']
+                                                                              .toString())
+                                                                  : Container(
+                                                                      height: size
+                                                                              .height *
+                                                                          0.21,
+                                                                      width: size
+                                                                              .width *
+                                                                          0.3,
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        // color: Colors.red,
                                                                         borderRadius:
-                                                                            BorderRadius.circular(
-                                                                                300.0),
-                                                                        child:
-                                                                            CachedNetworkImage(
-                                                                          imageUrl:
-                                                                              MainUrl + profile_pic!,
-                                                                          fit: BoxFit
-                                                                              .cover,
-                                                                        )),
-                                                              ),
-                                                              const SizedBox(
-                                                                  width: 10),
-                                                              Text(
-                                                                name1,
-                                                                style: const TextStyle(
-                                                                    color: Colors
-                                                                        .black),
-                                                              ),
-                                                              const Spacer(),
-                                                              time1(index),
-                                                              // ignore: unrelated_type_equality_checks
-                                                              // name ==
-                                                              //         _id
-                                                              //     ? IconButton(
-                                                              //         onPressed: () async {
-                                                              //           await showpopup(index);
-                                                              //         },
-                                                              //         icon: const Icon(Icons.delete,
-                                                              //             size: 20,
-                                                              //             color: Color(0XFF368890)),
-                                                              //       )
-                                                              //     : const SizedBox(),
+                                                                            BorderRadius.circular(20),
+                                                                      ),
+                                                                      child: ClipRRect(
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              20),
+                                                                          child:
+                                                                              buildimage(index)),
+                                                                    ),
+                                                              Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .bottomCenter,
+                                                                  child: Text(
+                                                                    widget.distance! +
+                                                                        " " +
+                                                                        "miles",
+                                                                    style: const TextStyle(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w400,
+                                                                        fontSize:
+                                                                            17),
+                                                                  )),
                                                             ],
                                                           ),
                                                         ),
-                                                        const SizedBox(
-                                                          height: 5,
-                                                        ),
-                                                        livefeeds[index]['img']
-                                                                    //////////////////////////
-                                                                    .toString()
-                                                                    .contains(
-                                                                        '.mp4') ||
-                                                                livefeeds[index]
-                                                                        ['img']
-                                                                    //////////////////////////
-                                                                    .toString()
-                                                                    .contains(
-                                                                        '.mov')
-                                                            ? Snapsvideoplayer(
-                                                                url: MainUrl +
-                                                                    livefeeds[index]
-                                                                            [
-                                                                            'img']
-                                                                        .toString())
-                                                            : SizedBox(
-                                                                height:
-                                                                    size.height *
-                                                                        0.6,
-                                                                width: double
-                                                                    .infinity,
-                                                                child:
-                                                                    CachedNetworkImage(
-                                                                  imageUrl: MainUrl +
-                                                                      livefeeds[
-                                                                              index]
-                                                                          [
-                                                                          "img"],
-                                                                  fit: BoxFit
-                                                                      .fill,
-                                                                ),
-                                                              ),
-                                                      ])),
-                                                );
-                                              }))
-                                            : const Center(
-                                                child: Text("No Snaps"),
-                                              ),
-                                        const SizedBox(
-                                          height: 15,
+                                                      );
+
+                                                      // } else {
+                                                      //   //index = index + 1;
+                                                      //   return const SizedBox();
+                                                      // }
+                                                    })),
+                                                  ),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            const Text(
+                                              "Snaps",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 19),
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            // livefeeds.length > 0
+                                            //     ? Column(
+                                            //         children: List.generate(
+                                            //             livefeeds.length,
+                                            //             (index) {
+                                            //         return Padding(
+                                            //           padding:
+                                            //               const EdgeInsets.only(
+                                            //                   bottom: 15.0),
+                                            //           child: Container(
+                                            //               decoration:
+                                            //                   const BoxDecoration(
+                                            //                       color: Colors
+                                            //                           .white,
+                                            //                       boxShadow: [
+                                            //                     BoxShadow(
+                                            //                       color: Colors
+                                            //                           .black12,
+                                            //                       spreadRadius:
+                                            //                           1,
+                                            //                       blurRadius: 1,
+                                            //                     ),
+                                            //                   ]),
+                                            //               child: Column(
+                                            //                   children: [
+                                            //                     Padding(
+                                            //                       padding:
+                                            //                           const EdgeInsets
+                                            //                               .only(
+                                            //                         top: 10.0,
+                                            //                         left: 10,
+                                            //                         right: 10,
+                                            //                       ),
+                                            //                       child: Row(
+                                            //                         children: [
+                                            //                           SizedBox(
+                                            //                             height:
+                                            //                                 40,
+                                            //                             width:
+                                            //                                 40,
+                                            //                             child: ClipRRect(
+                                            //                                 borderRadius: BorderRadius.circular(300.0),
+                                            //                                 child: CachedNetworkImage(
+                                            //                                   imageUrl: MainUrl + profile_pic!,
+                                            //                                   fit: BoxFit.cover,
+                                            //                                 )),
+                                            //                           ),
+                                            //                           const SizedBox(
+                                            //                               width:
+                                            //                                   10),
+                                            //                           Text(
+                                            //                             name1,
+                                            //                             style: const TextStyle(
+                                            //                                 color:
+                                            //                                     Colors.black),
+                                            //                           ),
+                                            //                           const Spacer(),
+                                            //                           time1(
+                                            //                               index),
+                                            //                           // ignore: unrelated_type_equality_checks
+                                            //                           // name ==
+                                            //                           //         _id
+                                            //                           //     ? IconButton(
+                                            //                           //         onPressed: () async {
+                                            //                           //           await showpopup(index);
+                                            //                           //         },
+                                            //                           //         icon: const Icon(Icons.delete,
+                                            //                           //             size: 20,
+                                            //                           //             color: Color(0XFF368890)),
+                                            //                           //       )
+                                            //                           //     : const SizedBox(),
+                                            //                         ],
+                                            //                       ),
+                                            //                     ),
+                                            //                     const SizedBox(
+                                            //                       height: 5,
+                                            //                     ),
+                                            //                     livefeeds[index][
+                                            //                                     'img']
+                                            //                                 //////////////////////////
+                                            //                                 .toString()
+                                            //                                 .contains(
+                                            //                                     '.mp4') ||
+                                            //                             livefeeds[index][
+                                            //                                     'img']
+                                            //                                 //////////////////////////
+                                            //                                 .toString()
+                                            //                                 .contains(
+                                            //                                     '.mov')
+                                            //                         ? Snapsvideoplayer(
+                                            //                             url: MainUrl +
+                                            //                                 livefeeds[index]['img'].toString())
+                                            //                         : SizedBox(
+                                            //                             height: size.height *
+                                            //                                 0.6,
+                                            //                             width: double
+                                            //                                 .infinity,
+                                            //                             child:
+                                            //                                 CachedNetworkImage(
+                                            //                               imageUrl:
+                                            //                                   MainUrl + livefeeds[index]["img"],
+                                            //                               fit: BoxFit
+                                            //                                   .fill,
+                                            //                             ),
+                                            //                           ),
+                                            //                   ])),
+                                            //         );
+                                            //       }))
+                                            //     : const Center(
+                                            //         child: Text("No Snaps"),
+                                            //       ),
+                                            const SizedBox(
+                                              height: 15,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 10.0,
+                                                  right: 30,
+                                                  left: 30),
+                                              child: Elevatedbutton(
+                                                  primary:
+                                                      const Color(0xFF304747),
+                                                  text: "Upload Picture/Video",
+                                                  width: double.infinity,
+                                                  coloring:
+                                                      const Color(0xFF304747),
+                                                  onpressed: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    Uploadimage(
+                                                                      eventId: widget
+                                                                              .eventId
+                                                                          as int,
+                                                                    )));
+                                                  }),
+                                            )
+                                          ],
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 10.0,
-                                              right: 30,
-                                              left: 30),
-                                          child: Elevatedbutton(
-                                              primary: const Color(0xFF304747),
-                                              text: "Upload Picture/Video",
-                                              width: double.infinity,
-                                              coloring: const Color(0xFF304747),
-                                              onpressed: () {
-                                                Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            Uploadimage(
-                                                              eventId:
-                                                                  widget.eventId
-                                                                      as int,
-                                                            )));
-                                              }),
-                                        )
-                                      ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                      ]),
-                ),
-              ),
-            ),
+                          ]),
+                    ),
+                  ),
+            Topmenu(title: widget.eventname!)
+          ])),
     );
   }
 
@@ -780,7 +905,7 @@ class _DifferenteventsdetailsState extends State<Differenteventsdetails> {
       fit: BoxFit.cover,
       placeholder: (context, url) {
         return const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
         );
       },
     );

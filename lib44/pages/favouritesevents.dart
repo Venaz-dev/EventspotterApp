@@ -74,9 +74,13 @@ class _FeventsState extends State<Fevents> {
         },
         child: Scaffold(
           body: _isLoading
-              ? const Center(child: CircularProgressIndicator())
+              ? const Center(
+                  child: CircularProgressIndicator(color: Color(0xFF3BADB7)))
               : Padding(
-                  padding: EdgeInsets.only(top: 10.0, left: size.width * 0.03 , right : size.width * 0.03 ),
+                  padding: EdgeInsets.only(
+                      top: 10.0,
+                      left: size.width * 0.03,
+                      right: size.width * 0.03),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Column(
@@ -261,19 +265,16 @@ class _FeventsState extends State<Fevents> {
       // ignore: prefer_is_empty
       if (_favouriteUpcomingEventsModel.data.length > 0) {
         return Column(
-          children: List.generate(_favouriteUpcomingEventsModel.data.length,
-              (index) {
+          children:
+              List.generate(_favouriteUpcomingEventsModel.data.length, (index) {
             return Padding(
-              padding: EdgeInsets.only(top: size.height * .01 , left: 2),
+              padding: EdgeInsets.only(top: size.height * .01, left: 2),
               child: InkWell(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => Differenteventsdetails(
                             eventpicture: _favouriteUpcomingEventsModel
-                                .data[index]
-                                .events
-                                .eventPictures[0]
-                                .imagePath,
+                                .data[index].events.eventPictures[0].imagePath,
                             eventId: _favouriteUpcomingEventsModel
                                 .data[index].events.id
                                 .toString(),
@@ -286,8 +287,8 @@ class _FeventsState extends State<Fevents> {
                                 .data[index].events.eventDescription,
                             ticketlink: _favouriteUpcomingEventsModel
                                 .data[index].events.ticketLink,
-                            distance: _favouriteUpcomingEventsModel
-                                .data[index].km,
+                            distance:
+                                _favouriteUpcomingEventsModel.data[index].km,
                             date: _favouriteUpcomingEventsModel
                                 .data[index].events.eventDate,
                             lat: _favouriteUpcomingEventsModel
@@ -317,46 +318,42 @@ class _FeventsState extends State<Fevents> {
                         child: likebutton(),
                       ),
                       Positioned(
-                          bottom: size.height * 0.07,
-                              right: size.width * 0.005,
+                        bottom: size.height * 0.07,
+                        right: size.width * 0.005,
                         child: FittedBox(
-                                fit : BoxFit.cover,
-                                  child: Container(
-                                    alignment: Alignment.centerRight,
-                                height: size.height * 0.1,
-                                width: size.width * 0.25,
-                               
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: const AutoSizeText(
-                                        "Event Type",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                 
-                                   maxFontSize: 16,
-                                            minFontSize: 14,
-                                      ),
+                            fit: BoxFit.cover,
+                            child: Container(
+                              alignment: Alignment.centerRight,
+                              height: size.height * 0.1,
+                              width: size.width * 0.25,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: const AutoSizeText(
+                                      "Event Type",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                      maxFontSize: 16,
+                                      minFontSize: 14,
                                     ),
-                                    const SizedBox(
-                                      height: 2,
+                                  ),
+                                  const SizedBox(
+                                    height: 2,
+                                  ),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    child: AutoSizeText(
+                                      _favouriteUpcomingEventsModel
+                                          .data[index].events.eventType,
+                                      maxFontSize: 15,
+                                      minFontSize: 13,
                                     ),
-                                 Container(
-                                   alignment: Alignment.center,
-                                   child: AutoSizeText(
-                                     
-                                            _favouriteUpcomingEventsModel
-                                                .data[index].events.eventType,
-                                            maxFontSize: 15,
-                                            minFontSize: 13,
-                                           
-                                          ),
-                                 ),
-                                  ],
-                                ),
-                              )),
+                                  ),
+                                ],
+                              ),
+                            )),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
@@ -367,11 +364,8 @@ class _FeventsState extends State<Fevents> {
                                         .eventPictures[0].imagePath
                                         .toString()
                                         .contains('.mp4') ||
-                                    _favouriteUpcomingEventsModel
-                                        .data[index]
-                                        .events
-                                        .eventPictures[0]
-                                        .imagePath
+                                    _favouriteUpcomingEventsModel.data[index]
+                                        .events.eventPictures[0].imagePath
                                         .toString()
                                         .contains('.mov')
                                 ? VideoPlayerScreemm(
@@ -385,8 +379,7 @@ class _FeventsState extends State<Fevents> {
                                     height: size.height * 0.17,
                                     width: size.width * 0.3,
                                     child: ClipRRect(
-                                      borderRadius:
-                                          BorderRadius.circular(10),
+                                      borderRadius: BorderRadius.circular(10),
                                       child: CachedNetworkImage(
                                         imageUrl: MainUrl +
                                             _favouriteUpcomingEventsModel
@@ -397,8 +390,8 @@ class _FeventsState extends State<Fevents> {
                                         fit: BoxFit.cover,
                                         placeholder: (context, url) {
                                           return const Center(
-                                            child:
-                                                CircularProgressIndicator(),
+                                            child: CircularProgressIndicator(
+                                                color: Color(0xFF3BADB7)),
                                           );
                                         },
                                       ),
@@ -407,8 +400,7 @@ class _FeventsState extends State<Fevents> {
                             Padding(
                               padding: const EdgeInsets.only(left: 10.0),
                               child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(
                                     width: size.width * 0.3,
@@ -488,16 +480,14 @@ class _FeventsState extends State<Fevents> {
           children:
               List.generate(_favouritePastEventsModel.data.length, (index) {
             return Padding(
-              padding: EdgeInsets.only(top: size.height * .01  , left : 2 , right: 2),
+              padding:
+                  EdgeInsets.only(top: size.height * .01, left: 2, right: 2),
               child: InkWell(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => Differenteventsdetails(
                             eventpicture: _favouritePastEventsModel
-                                .data[index]
-                                .events
-                                .eventPictures[0]
-                                .imagePath
+                                .data[index].events.eventPictures[0].imagePath
                                 .toString(),
                             eventId: _favouritePastEventsModel
                                 .data[index].events.id
@@ -511,8 +501,7 @@ class _FeventsState extends State<Fevents> {
                                 .data[index].events.eventDescription,
                             ticketlink: _favouritePastEventsModel
                                 .data[index].events.ticketLink,
-                            distance:
-                                _favouritePastEventsModel.data[index].km,
+                            distance: _favouritePastEventsModel.data[index].km,
                             date: _favouritePastEventsModel
                                 .data[index].events.eventDate,
                             lat: _favouritePastEventsModel
@@ -541,48 +530,43 @@ class _FeventsState extends State<Fevents> {
                         top: 10,
                         child: likebutton(),
                       ),
-
-                     Positioned(
-                          bottom: size.height * 0.07,
-                              right: size.width * 0.005,
+                      Positioned(
+                        bottom: size.height * 0.07,
+                        right: size.width * 0.005,
                         child: FittedBox(
-                                fit : BoxFit.cover,
-                                  child: Container(
-                                    alignment: Alignment.centerRight,
-                                height: size.height * 0.1,
-                                width: size.width * 0.25,
-                               
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: const AutoSizeText(
-                                        "Event Type",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                 
-                                   maxFontSize: 16,
-                                            minFontSize: 14,
-                                      ),
+                            fit: BoxFit.cover,
+                            child: Container(
+                              alignment: Alignment.centerRight,
+                              height: size.height * 0.1,
+                              width: size.width * 0.25,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: const AutoSizeText(
+                                      "Event Type",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                      maxFontSize: 16,
+                                      minFontSize: 14,
                                     ),
-                                    const SizedBox(
-                                      height: 2,
+                                  ),
+                                  const SizedBox(
+                                    height: 2,
+                                  ),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    child: AutoSizeText(
+                                      _favouritePastEventsModel
+                                          .data[index].events.eventType,
+                                      maxFontSize: 15,
+                                      minFontSize: 13,
                                     ),
-                                 Container(
-                                   alignment: Alignment.center,
-                                   child: AutoSizeText(
-                                     
-                                            _favouritePastEventsModel
-                                                .data[index].events.eventType,
-                                            maxFontSize: 15,
-                                            minFontSize: 13,
-                                           
-                                          ),
-                                 ),
-                                  ],
-                                ),
-                              )),
+                                  ),
+                                ],
+                              ),
+                            )),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
@@ -593,23 +577,19 @@ class _FeventsState extends State<Fevents> {
                                         .eventPictures[0].imagePath
                                         .toString()
                                         .contains('.mp4') ||
-                                    _favouritePastEventsModel.data[index]
-                                        .events.eventPictures[0].imagePath
+                                    _favouritePastEventsModel.data[index].events
+                                        .eventPictures[0].imagePath
                                         .toString()
                                         .contains('.mov')
                                 ? VideoPlayerScreemm(
                                     url: MainUrl +
-                                        _favouritePastEventsModel
-                                            .data[index]
-                                            .events
-                                            .eventPictures[0]
-                                            .imagePath)
+                                        _favouritePastEventsModel.data[index]
+                                            .events.eventPictures[0].imagePath)
                                 : SizedBox(
                                     height: size.height * 0.17,
                                     width: size.width * 0.3,
                                     child: ClipRRect(
-                                      borderRadius:
-                                          BorderRadius.circular(10),
+                                      borderRadius: BorderRadius.circular(10),
                                       child: CachedNetworkImage(
                                         imageUrl: MainUrl +
                                             _favouritePastEventsModel
@@ -620,8 +600,8 @@ class _FeventsState extends State<Fevents> {
                                         fit: BoxFit.cover,
                                         placeholder: (context, url) {
                                           return const Center(
-                                            child:
-                                                CircularProgressIndicator(),
+                                            child: CircularProgressIndicator(
+                                                color: Color(0xFF3BADB7)),
                                           );
                                         },
                                       ),
@@ -630,8 +610,7 @@ class _FeventsState extends State<Fevents> {
                             Padding(
                               padding: const EdgeInsets.only(left: 10.0),
                               child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(
                                     width: size.width * 0.3,
@@ -656,11 +635,13 @@ class _FeventsState extends State<Fevents> {
                                         size: 18,
                                         color: Colors.black54,
                                       ),
-                                      const SizedBox(width: 3,),
+                                      const SizedBox(
+                                        width: 3,
+                                      ),
                                       Text(
                                         pastdates(index),
                                         style: const TextStyle(
-                                          fontSize: 15,
+                                            fontSize: 15,
                                             color: Colors.black87),
                                       ),
                                     ],
@@ -674,19 +655,20 @@ class _FeventsState extends State<Fevents> {
                                         FontAwesomeIcons.mapMarkerAlt,
                                         size: 15,
                                         color: Colors.black54,
-                                      ),  const SizedBox(width: 3,),
+                                      ),
+                                      const SizedBox(
+                                        width: 3,
+                                      ),
                                       Text(
                                           _favouritePastEventsModel
                                                   .data[index].km +
                                               " " +
                                               "away",
                                           style: const TextStyle(
-                                            fontSize: 15,
+                                              fontSize: 15,
                                               color: Colors.black87)),
                                     ],
                                   ),
-
-                                
                                 ],
                               ),
                             ),
@@ -796,7 +778,7 @@ class _VideoPlayerScreemmState extends State<VideoPlayerScreemm> {
               // If the VideoPlayerController is still initializing, show a
               // loading spinner.
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
               );
             }
           },

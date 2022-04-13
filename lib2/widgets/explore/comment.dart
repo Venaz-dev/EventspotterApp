@@ -41,8 +41,11 @@ class _CommentofuserState extends State<Commentofuser> {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding:
-               EdgeInsets.only( right : size.width*0.03, left :size.width*0.03, top: 20, bottom: 30),
+          padding: EdgeInsets.only(
+              right: size.width * 0.03,
+              left: size.width * 0.03,
+              top: 20,
+              bottom: 30),
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
@@ -57,16 +60,16 @@ class _CommentofuserState extends State<Commentofuser> {
                   height: 20,
                 ),
                 Container(
-                  
                   width: size.width * double.infinity,
                   decoration: BoxDecoration(
-                    color : Colors.white,
-                  boxShadow: const [BoxShadow(
-                    color: Colors.black12,
-                    spreadRadius: 2,
-                    blurRadius: 2,
-                  )],
-                   
+                    color: Colors.white,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black12,
+                        spreadRadius: 2,
+                        blurRadius: 2,
+                      )
+                    ],
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Column(children: [
@@ -106,14 +109,14 @@ class _CommentofuserState extends State<Commentofuser> {
                                     fit: BoxFit.cover,
                                     placeholder: (context, url) {
                                       return const Center(
-                                        child: CircularProgressIndicator(),
+                                        child: CircularProgressIndicator(
+                                            color: Color(0xFF3BADB7)),
                                       );
                                     },
                                   ),
                                 ),
                               ),
-                        
-                     Positioned(
+                        Positioned(
                           bottom: 0,
                           right: size.width * 0.02,
                           left: size.width * 0.02,
@@ -121,7 +124,7 @@ class _CommentofuserState extends State<Commentofuser> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Button(
-                                onpressed: (){},
+                                onpressed: () {},
                                 title: widget.eventsModel.data[widget.index]
                                     .events.user.name,
                                 // widget.model!.data[widget.indexs!].events
@@ -152,7 +155,7 @@ class _CommentofuserState extends State<Commentofuser> {
                         ),
                       ]),
                     ),
-                  const   SizedBox(height : 5),
+                    const SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -165,8 +168,8 @@ class _CommentofuserState extends State<Commentofuser> {
                           width: 2,
                         ),
                         Text(
-                          widget.eventsModel.data[widget.index].events
-                              .eventDate,
+                          widget
+                              .eventsModel.data[widget.index].events.eventDate,
                           // widget.model!.data[widget.indexs!].events
                           //     .eventDate,
                           style: const TextStyle(color: Colors.black87),
@@ -189,18 +192,16 @@ class _CommentofuserState extends State<Commentofuser> {
                     Padding(
                       padding: const EdgeInsets.only(left: 20.0),
                       child: Container(
-                        
                         alignment: Alignment.centerLeft,
                         child: AutoSizeText(
-                        
-                          widget.eventsModel.data[widget.index].events
-                              .eventName,
+                          widget
+                              .eventsModel.data[widget.index].events.eventName,
                           style: const TextStyle(
                               fontSize: 20,
                               color: Colors.black,
                               fontWeight: FontWeight.w400),
-                              minFontSize: 17,
-                              maxFontSize: 20,
+                          minFontSize: 17,
+                          maxFontSize: 20,
                         ),
                       ),
                     ),
@@ -209,13 +210,11 @@ class _CommentofuserState extends State<Commentofuser> {
                     ),
                     IntrinsicHeight(
                       child: Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           extras(
                               FontAwesomeIcons.thumbsUp,
-                              widget.eventsModel.data[widget.index]
-                                  .isLiked
+                              widget.eventsModel.data[widget.index].isLiked
                                   .toString(),
                               // widget
                               //     .model!.data[widget.indexs!].isLiked
@@ -228,13 +227,12 @@ class _CommentofuserState extends State<Commentofuser> {
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.green,
                                   shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(15))),
+                                      borderRadius: BorderRadius.circular(15))),
                               onPressed: () {},
                               child: extras(
                                   Icons.comment,
-                                  widget.eventsModel.data[widget.index]
-                                      .events.comment.length
+                                  widget.eventsModel.data[widget.index].events
+                                      .comment.length
                                       .toString(),
                                   // widget.model!.data[widget.indexs!]
                                   //     .events.comment.length
@@ -417,8 +415,8 @@ class _CommentbypersonState extends State<Commentbyperson> {
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                  image: CachedNetworkImageProvider(MainUrl +
-                                      listcomments[index]['img']),
+                                  image: CachedNetworkImageProvider(
+                                      MainUrl + listcomments[index]['img']),
                                   fit: BoxFit.cover)),
                         ),
                         const SizedBox(
@@ -426,7 +424,6 @@ class _CommentbypersonState extends State<Commentbyperson> {
                         ),
                         Text(
                           listcomments[index]['name'],
-                              
                           style: TextStyle(fontSize: 18),
                         ),
                         const Spacer(),
@@ -472,7 +469,7 @@ class _CommentbypersonState extends State<Commentbyperson> {
                       } else {
                         await PostComment(widget.eventId);
                         clearText();
-                       // Navigator.pop(context);
+                        // Navigator.pop(context);
                       }
                     },
                     child: const Text('Comment')),
@@ -529,36 +526,34 @@ class _CommentbypersonState extends State<Commentbyperson> {
       "comment": _comment.text,
     });
     _dio.options.headers["Authorization"] = "Bearer ${_token}";
-    try{
-    await _dio.post(postCommenturl, data: formData).then((value) {
-      print(value.data.toString());
-      if (value.data['success'] == true) {
-        print(value.data);
-        showToaster("Comment Sent");
+    try {
+      await _dio.post(postCommenturl, data: formData).then((value) {
+        print(value.data.toString());
+        if (value.data['success'] == true) {
+          print(value.data);
+          showToaster("Comment Sent");
 
-        var text = value.data["data"]["comment"];
-        var text1 = value.data["data"]["created_at"];
-        // print(text);
-        // print(created);
-        var js = {
-          'name': _name,
-          'img': _picture,
-          'comment': _comment.text,
-          'createdAt': text1
-        };
-        listcomments.add(js);
-        setState(() {});
-        print("////////////");
-        // listcomments.add(text);
-        createdAt.add(text1);
-      } else {
-        showToaster("error");
-        //text = " ";
-      }
-    }
-   
-    );
-     }catch(e){
+          var text = value.data["data"]["comment"];
+          var text1 = value.data["data"]["created_at"];
+          // print(text);
+          // print(created);
+          var js = {
+            'name': _name,
+            'img': _picture,
+            'comment': _comment.text,
+            'createdAt': text1
+          };
+          listcomments.add(js);
+          setState(() {});
+          print("////////////");
+          // listcomments.add(text);
+          createdAt.add(text1);
+        } else {
+          showToaster("error");
+          //text = " ";
+        }
+      });
+    } catch (e) {
       print(e.toString());
     }
     //  print(text);
@@ -633,7 +628,7 @@ class _VideoPlayerScreennnnState extends State<VideoPlayerScreennnn> {
               // If the VideoPlayerController is still initializing, show a
               // loading spinner.
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
               );
             }
           },

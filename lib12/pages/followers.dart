@@ -49,7 +49,9 @@ class _FollowingState extends State<Following> {
               padding: const EdgeInsets.only(
                   top: 20, right: 20, left: 20, bottom: 20),
               child: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
+                  ? const Center(
+                      child:
+                          CircularProgressIndicator(color: Color(0xFF3BADB7)))
                   : Column(
                       children: [
                         // Textform(

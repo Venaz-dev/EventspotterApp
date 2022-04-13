@@ -15,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:event_spotter/widgets/topmenu.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 enum scrolling { personal, settings }
 
@@ -100,7 +102,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return GestureDetector(
+    return SafeArea(
+        child: GestureDetector(
       onTap: () {
         FocusScopeNode currentfocus = FocusScope.of(context);
 
@@ -118,12 +121,43 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: _isLoading
-                      ? SizedBox(
-                          height: size.height * 0.9,
-                          child: const Center(
-                              child: CircularProgressIndicator(
-                            color: Color(0xFF3BADB7),
-                          )))
+                      ? Container(
+                          // color: Colors.red,
+                          margin: const EdgeInsets.only(top: 120),
+                          height: size.height * 0.7,
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                    height: size.height * 0.65,
+                                    child: const Center(
+                                        child: CircularProgressIndicator(
+                                      color: Color(0xFF3BADB7),
+                                    ))),
+                                //Log out
+                                InkWell(
+                                  onTap: () {
+                                    // setState(() {
+                                    //   _isLoading = true;
+                                    // });
+                                    LogoutapiCall();
+                                    _sharedPreferences.clear();
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LandingScreen()),
+                                        (route) => false);
+                                  },
+                                  child: const Text(
+                                    "Log out",
+                                    style: TextStyle(
+                                        color: Color(0xFfEB5757),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                              ]))
                       : SizedBox(
                           child: Padding(
                             padding: const EdgeInsets.only(
@@ -209,63 +243,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                 ),
               ),
-              Positioned(
-                top: 0.0,
-                left: 0.0,
-                right: 0.0,
-                child: Container(
-                    height: 60,
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        border: Border(
-                            bottom: BorderSide(
-                                color: Color(0xFFE5E7EB), width: 1))),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0, right: 20),
-                      child: Row(
-                        children: const [
-                          Spacer(),
-                          Text(
-                            "Settings",
-                            style: TextStyle(
-                                color: Color(0xff222222),
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500),
-                            textAlign: TextAlign.center,
-                          ),
-                          Spacer(),
-                        ],
-                      ),
-                    )),
-              ),
-              Positioned(
-                  top: 0.0,
-                  left: 20.0,
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                          height: 60,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: const [
-                              Icon(
-                                Icons.arrow_back_ios,
-                                color: Color(0xff101010),
-                                size: 22.0,
-                              ),
-                              Text(
-                                "Back",
-                                style: TextStyle(
-                                    color: Color(0xff222222), fontSize: 16),
-                                textAlign: TextAlign.left,
-                              ),
-                            ],
-                          )))),
+              const Topmenu(title: "Settings"),
             ],
           )),
-    );
+    ));
   }
 
   Future _selectPhoto() async {
@@ -445,87 +426,103 @@ class _SettingsScreenState extends State<SettingsScreen> {
         const SizedBox(
           height: 30,
         ),
-        Row(
-          // mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: const [
-            Text(
-              "Privacy policy",
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Color(0xFF101010),
-                  fontWeight: FontWeight.w500),
-            ),
-            Spacer(),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: Color(0xff707070),
-              size: 22.0,
-            ),
-          ],
-        ),
+        InkWell(
+            onTap: () {
+              urllauncher("https://theeventspotter.com/privacy-policy");
+            },
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const [
+                Text(
+                  "Privacy policy",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF101010),
+                      fontWeight: FontWeight.w500),
+                ),
+                Spacer(),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Color(0xff707070),
+                  size: 22.0,
+                ),
+              ],
+            )),
         const SizedBox(
           height: 20,
         ),
-        Row(
-          // mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: const [
-            Text(
-              "Terms of service",
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Color(0xFF101010),
-                  fontWeight: FontWeight.w500),
-            ),
-            Spacer(),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: Color(0xff707070),
-              size: 22.0,
-            ),
-          ],
-        ),
+        InkWell(
+            onTap: () {
+              urllauncher("https://theeventspotter.com/terms-of-service");
+            },
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const [
+                Text(
+                  "Terms of service",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF101010),
+                      fontWeight: FontWeight.w500),
+                ),
+                Spacer(),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Color(0xff707070),
+                  size: 22.0,
+                ),
+              ],
+            )),
         const SizedBox(
           height: 20,
         ),
-        Row(
-          // mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: const [
-            Text(
-              "Disclaimer",
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Color(0xFF101010),
-                  fontWeight: FontWeight.w500),
-            ),
-            Spacer(),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: Color(0xff707070),
-              size: 22.0,
-            ),
-          ],
-        ),
+        InkWell(
+            onTap: () {
+              urllauncher("https://theeventspotter.com/disclaimer");
+            },
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const [
+                Text(
+                  "Disclaimer",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF101010),
+                      fontWeight: FontWeight.w500),
+                ),
+                Spacer(),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Color(0xff707070),
+                  size: 22.0,
+                ),
+              ],
+            )),
         const SizedBox(
           height: 20,
         ),
-        Row(
-          // mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: const [
-            Text(
-              "Cookies Policy",
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Color(0xFF101010),
-                  fontWeight: FontWeight.w500),
-            ),
-            Spacer(),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: Color(0xff707070),
-              size: 22.0,
-            ),
-          ],
-        ),
+        InkWell(
+            onTap: () {
+              urllauncher("https://theeventspotter.com/cookies-policy");
+            },
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const [
+                Text(
+                  "Cookies Policy",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF101010),
+                      fontWeight: FontWeight.w500),
+                ),
+                Spacer(),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Color(0xff707070),
+                  size: 22.0,
+                ),
+              ],
+            )),
         const SizedBox(
           height: 20,
         ),
@@ -782,5 +779,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _isLoading = false;
     }
     setState(() {});
+  }
+
+  void urllauncher(url) async {
+    if (url != null || url != "") {
+      if (url!.contains("https://")) {
+        if (await canLaunch(url!)) {
+          await launch(url!);
+        } else {
+          throw 'Could not launch settings url';
+        }
+      } else {
+        if (await canLaunch("https://" + url!)) {
+          await launch("https://" + url!);
+        } else {
+          throw 'Could not launch  settings url';
+        }
+      }
+    }
   }
 }

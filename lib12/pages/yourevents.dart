@@ -294,43 +294,39 @@ class _YeventsState extends State<Yevents> {
                               bottom: size.height * 0.07,
                               right: size.width * 0.005,
                               child: FittedBox(
-                                fit : BoxFit.cover,
+                                  fit: BoxFit.cover,
                                   child: Container(
                                     alignment: Alignment.centerRight,
-                                height: size.height * 0.1,
-                                width: size.width * 0.25,
-                               
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: const AutoSizeText(
-                                        "Event Type",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                 
-                                   maxFontSize: 16,
+                                    height: size.height * 0.1,
+                                    width: size.width * 0.25,
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: const AutoSizeText(
+                                            "Event Type",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
+                                            maxFontSize: 16,
                                             minFontSize: 14,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 2,
-                                    ),
-                                 Container(
-                                   alignment: Alignment.center,
-                                   child: AutoSizeText(
-                                     
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 2,
+                                        ),
+                                        Container(
+                                          alignment: Alignment.center,
+                                          child: AutoSizeText(
                                             _getUserUpcomingEvents
                                                 .data[index].events.eventType,
                                             maxFontSize: 15,
                                             minFontSize: 13,
-                                           
                                           ),
-                                 ),
-                                  ],
-                                ),
-                              )),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(
@@ -369,7 +365,9 @@ class _YeventsState extends State<Yevents> {
                                               placeholder: (context, url) {
                                                 return const Center(
                                                   child:
-                                                      CircularProgressIndicator(),
+                                                      CircularProgressIndicator(
+                                                          color: Color(
+                                                              0xFF3BADB7)),
                                                 );
                                               },
                                             ),
@@ -541,7 +539,8 @@ class _YeventsState extends State<Yevents> {
             ? Column(
                 children: List.generate(_userPastEvents.data.length, (index) {
                   return Padding(
-                    padding: EdgeInsets.only(top: size.height * .01, left: 2 , right : 2),
+                    padding: EdgeInsets.only(
+                        top: size.height * .01, left: 2, right: 2),
                     child: InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
@@ -586,43 +585,39 @@ class _YeventsState extends State<Yevents> {
                               bottom: size.height * 0.07,
                               right: size.width * 0.005,
                               child: FittedBox(
-                                fit : BoxFit.cover,
+                                  fit: BoxFit.cover,
                                   child: Container(
                                     alignment: Alignment.centerRight,
-                                height: size.height * 0.1,
-                                width: size.width * 0.25,
-                               
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: const AutoSizeText(
-                                        "Event Type",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                 
-                                   maxFontSize: 16,
+                                    height: size.height * 0.1,
+                                    width: size.width * 0.25,
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: const AutoSizeText(
+                                            "Event Type",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
+                                            maxFontSize: 16,
                                             minFontSize: 14,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 2,
-                                    ),
-                                 Container(
-                                   alignment: Alignment.center,
-                                   child: AutoSizeText(
-                                     
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 2,
+                                        ),
+                                        Container(
+                                          alignment: Alignment.center,
+                                          child: AutoSizeText(
                                             _userPastEvents
                                                 .data[index].events.eventType,
                                             maxFontSize: 15,
                                             minFontSize: 13,
-                                           
                                           ),
-                                 ),
-                                  ],
-                                ),
-                              )),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(
@@ -658,7 +653,9 @@ class _YeventsState extends State<Yevents> {
                                               placeholder: (context, url) {
                                                 return const Center(
                                                   child:
-                                                      CircularProgressIndicator(),
+                                                      CircularProgressIndicator(
+                                                          color: Color(
+                                                              0xFF3BADB7)),
                                                 );
                                               },
                                             ),
@@ -799,7 +796,8 @@ class _YeventsState extends State<Yevents> {
                 children:
                     List.generate(_getUserDraftEvents.data.length, (index) {
                   return Padding(
-                    padding: EdgeInsets.only(top: size.height * .01, left: 2 , right: 2),
+                    padding: EdgeInsets.only(
+                        top: size.height * .01, left: 2, right: 2),
                     child: InkWell(
                       onTap: () {
                         // print("object");
@@ -842,46 +840,42 @@ class _YeventsState extends State<Yevents> {
                         child: Stack(
                           children: [
                             Positioned(
-                               bottom: size.height * 0.07,
+                              bottom: size.height * 0.07,
                               right: size.width * 0.005,
-                               child: FittedBox(
-                                fit : BoxFit.cover,
+                              child: FittedBox(
+                                  fit: BoxFit.cover,
                                   child: Container(
                                     alignment: Alignment.centerRight,
-                                height: size.height * 0.1,
-                                width: size.width * 0.25,
-                               
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: const AutoSizeText(
-                                        "Event Type",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                 
-                                   maxFontSize: 16,
+                                    height: size.height * 0.1,
+                                    width: size.width * 0.25,
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: const AutoSizeText(
+                                            "Event Type",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
+                                            maxFontSize: 16,
                                             minFontSize: 14,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 2,
-                                    ),
-                                 Container(
-                                   alignment: Alignment.center,
-                                   child: AutoSizeText(
-                                     
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 2,
+                                        ),
+                                        Container(
+                                          alignment: Alignment.center,
+                                          child: AutoSizeText(
                                             _getUserDraftEvents
                                                 .data[index].eventType,
                                             maxFontSize: 15,
                                             minFontSize: 13,
-                                           
                                           ),
-                                 ),
-                                  ],
-                                ),
-                              )),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(
@@ -916,7 +910,9 @@ class _YeventsState extends State<Yevents> {
                                               placeholder: (context, url) {
                                                 return const Center(
                                                   child:
-                                                      CircularProgressIndicator(),
+                                                      CircularProgressIndicator(
+                                                          color: Color(
+                                                              0xFF3BADB7)),
                                                 );
                                               },
                                             ),
@@ -974,7 +970,7 @@ class _YeventsState extends State<Yevents> {
                                               alignment: Alignment.center,
                                               child: AutoSizeText(
                                                 _getUserDraftEvents
-                                                        .data[index].location ,
+                                                    .data[index].location,
                                                 style: const TextStyle(
                                                     color: Colors.black87),
                                                 maxFontSize: 17,

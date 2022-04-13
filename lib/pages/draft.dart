@@ -16,6 +16,7 @@ import 'package:intl/intl.dart';
 // import 'package:place_picker/widgets/place_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
+import 'package:event_spotter/widgets/topmenu.dart';
 
 class Draftsedit extends StatefulWidget {
   const Draftsedit(
@@ -98,7 +99,7 @@ class _DraftseditState extends State<Draftsedit> {
     eventDescription.dispose();
     venue.dispose();
     conditionss.dispose();
-    
+
     link.dispose();
     super.dispose();
   }
@@ -112,7 +113,8 @@ class _DraftseditState extends State<Draftsedit> {
     latt = widget.lat;
     longg = widget.log;
     public = int.parse(widget.eventprivaacy);
-    link = TextEditingController(text: widget.ticketlink);;
+    link = TextEditingController(text: widget.ticketlink);
+    ;
     //value = widget.type;
     conditions = widget.conditions;
     getEventTypes();
@@ -125,7 +127,8 @@ class _DraftseditState extends State<Draftsedit> {
     String newValue;
 
     Size size = MediaQuery.of(context).size;
-    return GestureDetector(
+    return SafeArea(
+        child: GestureDetector(
       onTap: () {
         FocusScopeNode currentfocus = FocusScope.of(context);
 
@@ -135,127 +138,160 @@ class _DraftseditState extends State<Draftsedit> {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: const Text(
-            "Drafts events",
-            style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.black87,
-                fontSize: 20),
-          ),
-          centerTitle: true,
-          elevation: 0,
-          backgroundColor: Colors.white,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.info_outline_rounded),
-              onPressed: () {},
-              color: Colors.black38,
-            )
-          ],
-          leading: Smallbutton(
-            height: size.height * 0.06,
-            icon: FontAwesomeIcons.arrowLeft,
-            onpressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ),
-        body: Padding(
-          padding:
-              const EdgeInsets.only(right: 40.0, left: 40, top: 20, bottom: 20),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                (imagePath!.path.toString().contains('.mp4') ||
-                        imagePath!.path.toString().contains('.mov'))
-                    ? SizedBox(
-                        height: size.height * 0.3,
-                        width: double.infinity,
-                        child: Column(
-                          children: [
-                            VideoPlayerScree1(url: MainUrl+imagePath!.path),
-                            Flexible(
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 10.0),
-                                child: Elevatedbutton(
-                                    primary: const Color(0xFF304747),
-                                    text: "Upload Picture/Video",
-                                    width: double.infinity,
-                                    coloring: const Color(0xFF304747),
-                                    onpressed: () {
-                                      _selectPhoto(); // Navigator.of(context).push(MaterialPageRoute(
-                                      //     builder: (context) => const Uploadimage()));
-                                    }),
-                              ),
-                            )
-                          ],
-                        ))
-                    : Column(
-                        children: [
+        // appBar: AppBar(
+        //   title: const Text(
+        //     "Drafts events",
+        //     style: TextStyle(
+        //         fontWeight: FontWeight.w500,
+        //         color: Colors.black87,
+        //         fontSize: 20),
+        //   ),
+        //   centerTitle: true,
+        //   elevation: 0,
+        //   backgroundColor: Colors.white,
+        //   actions: [
+        //     IconButton(
+        //       icon: const Icon(Icons.info_outline_rounded),
+        //       onPressed: () {},
+        //       color: Colors.black38,
+        //     )
+        //   ],
+        //   leading: Smallbutton(
+        //     height: size.height * 0.06,
+        //     icon: FontAwesomeIcons.arrowLeft,
+        //     onpressed: () {
+        //       Navigator.of(context).pop();
+        //     },
+        //   ),
+        // ),
+        body: Stack(children: [
+          Padding(
+            padding: const EdgeInsets.only(
+                right: 20.0, left: 20, top: 80, bottom: 20),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  (imagePath!.path.toString().contains('.mp4') ||
+                          imagePath!.path.toString().contains('.mov'))
+                      ? Column(children: [
                           Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            //color: Colors.red,
                             height: size.height * 0.3,
-                            width: size.width * double.infinity,
-                            child: Image.network(MainUrl + widget.imagepath),
+                            width: double.infinity,
+                            child: VideoPlayerScree1(
+                                url: MainUrl + imagePath!.path),
                           ),
                           const SizedBox(
                             height: 10,
                           ),
-                          Elevatedbutton(
-                              primary: const Color(0xFF304747),
-                              text: "Upload Picture/Video",
-                              width: double.infinity,
-                              coloring: const Color(0xFF304747),
-                              onpressed: () {
-                                _selectPhoto(); // Navigator.of(context).push(MaterialPageRoute(
-                                //     builder: (context) => const Uploadimage()));
-                              }),
-                        ],
-                      ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Textform(
-                  isreadonly: false,
-                  controller: eventname,
-                  label: widget.eventname,
-                  color: const Color(0XFFEBF2F2),
-                  isSecure: false,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Textform(
-                  controller: eventDescription,
-                  maxlines: 4,
-                  label: "Event Description",
-                  isSecure: false,
-                  isreadonly: false,
-                  color: const Color(0XFFEBF2F2),
-                  width: 30,
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Center(
-                  child: Container(
-                    //  margin:  EdgeInsets.all(10),
-                    height: MediaQuery.of(context).size.height * 0.06,
-                    //width: size.width*0.5,
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 10.0),
+                            child: Elevatedbutton(
+                                primary: const Color(0xFF304747),
+                                text: "Upload Picture/Video",
+                                width: double.infinity,
+                                coloring: const Color(0xFF304747),
+                                onpressed: () {
+                                  _selectPhoto(); // Navigator.of(context).push(MaterialPageRoute(
+                                  //     builder: (context) => const Uploadimage()));
+                                }),
+                          ),
+                        ])
+                      : Column(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              //color: Colors.red,
+                              height: size.height * 0.3,
+                              width: size.width * double.infinity,
+                              child: Image.network(MainUrl + widget.imagepath),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Elevatedbutton(
+                                primary: const Color(0xFF304747),
+                                text: "Upload Picture/Video",
+                                width: double.infinity,
+                                coloring: const Color(0xFF304747),
+                                onpressed: () {
+                                  _selectPhoto(); // Navigator.of(context).push(MaterialPageRoute(
+                                  //     builder: (context) => const Uploadimage()));
+                                }),
+                          ],
+                        ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text("Event name"),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
                     decoration: BoxDecoration(
-                      color: const Color(0XFFECF2F2),
-                      borderRadius: BorderRadius.circular(15),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
+                        border: Border.all(
+                            color: const Color(0xffE5E7EB), width: 2)),
+                    child: Textform(
+                      isreadonly: false,
+                      controller: eventname,
+                      label: widget.eventname,
+                      color: Colors.white,
+                      isSecure: false,
                     ),
-                    child: DropdownButtonHideUnderline(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 10.0, left: 10),
-                        child: DropdownButton<String>(
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text("Event Description"),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
+                        border: Border.all(
+                            color: const Color(0xffE5E7EB), width: 2)),
+                    child: Textform(
+                      controller: eventDescription,
+                      maxlines: 4,
+                      label: "Enter Event Description",
+                      isSecure: false,
+                      isreadonly: false,
+                      color: Colors.white,
+                      width: 30,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  const Text("Event Type"),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                    child: Container(
+                      //  margin:  EdgeInsets.all(10),
+                      height: 52,
+                      // height: MediaQuery.of(context).size.height * 0.06,
+                      //width: size.width*0.5,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                            color: const Color(0xffE5E7EB), width: 2),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 10.0, left: 15),
+                          child: DropdownButton<String>(
+                            borderRadius: BorderRadius.circular(10),
+                            autofocus: false,
                             isExpanded: true,
                             value: value,
                             items: eventtypes.map(buildMenuItem).toList(),
@@ -263,253 +299,381 @@ class _DraftseditState extends State<Draftsedit> {
                               setState(() {
                                 this.value = value;
                               });
-                            }),
+                            },
+                            style: const TextStyle(color: Color(0xFF101010)),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const Text("Event date"),
-                const SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.06,
-                  width: MediaQuery.of(context).size.width,
-                  child: ElevatedButton(
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text("Event date"),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      // color: Colors.red,
+                      borderRadius: BorderRadius.circular(10),
+                      border:
+                          Border.all(color: const Color(0xffE5E7EB), width: 1),
+                    ),
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      width: MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                        child: Row(
+                          children: [
+                            const SizedBox(
+                              width: 0,
+                            ),
+                            Text(
+                              formatted,
+                              style: const TextStyle(
+                                  color: Color(0xFF101010),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400),
+                              textAlign: TextAlign.center,
+                            ),
+                            const Spacer(),
+                            const Icon(
+                              FontAwesomeIcons.calendar,
+                              color: Color(0xFF101010),
+                              size: 20,
+                            ),
+                          ],
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          shadowColor: Colors.transparent,
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                          primary: Colors.white,
+                        ),
+                        onPressed: () {
+                          DatePicker.showDatePicker(
+                            context,
+                            showTitleActions: true,
+                            minTime: DateTime(2021, 1, 1),
+                            maxTime: DateTime(2025, 6, 7),
+                            onConfirm: (date) {
+                              print('confirm $date');
+                              newValue = newValues.format(date);
+                              formatted = newValue;
+                              setState(() {});
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text("Event venue"),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      // color: Colors.red,
+                      borderRadius: BorderRadius.circular(10),
+                      border:
+                          Border.all(color: const Color(0xffE5E7EB), width: 1),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10.0, left: 5),
+                      child: Textform(
+                        input: false,
+                        isSecure: false,
+                        isreadonly: false,
+                        controller: venue,
+                        // suffix: FontAwesomeIcons.crosshairs,
+                        suffix: FontAwesomeIcons.mapMarkerAlt,
+                        iconSize: 20,
+                        iconColor: const Color(0xFF606060),
+                        label: widget.placename,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text("Event link"),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      // color: Colors.red,
+                      borderRadius: BorderRadius.circular(10),
+                      border:
+                          Border.all(color: const Color(0xffE5E7EB), width: 2),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10.0, left: 5),
+                      child: Textform(
+                        controller: link,
+                        isSecure: false,
+                        suffix: FontAwesomeIcons.link,
+                        iconSize: 20,
+                        isreadonly: false,
+                        label: "Enter Ticket link",
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text("Event Conditions"),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  conditions.isEmpty
+                      // ? const Center(child: Text("No Conditions"))
+                      ? const SizedBox()
+                      : Column(
+
+                          ////////////////////////////////////////////////////////////////////
+                          ///
+                          ///
+                          children: List.generate(conditions.length, (index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 6.0, top: 10),
+                            child: Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 15),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: const Color(0xFFf9f9f9),
+                              ),
+                              child: Text(conditions[index].toString(),
+                                  style: const TextStyle(
+                                      color: Color(0xFF101010), fontSize: 16)),
+                            ),
+                          );
+                        })),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    height: 52,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      //color: const Color(0XFFEBF2F2),
+                      borderRadius: BorderRadius.circular(10),
+                      border:
+                          Border.all(color: const Color(0xffE5E7EB), width: 2),
+                    ),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Icon(FontAwesomeIcons.calendar),
-                        const SizedBox(
-                          width: 20,
+                        SizedBox(
+                          height: 100,
+                          width: size.width * 0.7,
+                          child: Textform(
+                            isSecure: false,
+                            isreadonly: false,
+                            controller: conditionss,
+                            // icon: FontAwesomeIcons.,
+                            label: "Add an event condition",
+                            color: Colors.white,
+                          ),
                         ),
-                        Text(
-                          formatted,
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 18),
-                          textAlign: TextAlign.center,
-                        ),
+                        InkWell(
+                            onTap: () {
+                              if (conditionss.text == "") {
+                                setState(() {
+                                  showToaster("Add Conditions");
+                                });
+                              } else {
+                                setState(() {
+                                  addConditionsList();
+                                  conditionss.clear();
+                                });
+                              }
+                            },
+                            child: Row(
+                              children: const [
+                                SizedBox(
+                                    width: 30.0,
+                                    child: Image(
+                                        image: AssetImage(
+                                            "Assets/icons/plus.png"))),
+                                SizedBox(
+                                  width: 15,
+                                )
+                              ],
+                            )),
                       ],
                     ),
-                    style: ElevatedButton.styleFrom(
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      primary: const Color(0XFF368890),
-                    ),
-                    onPressed: () {
-                      DatePicker.showDatePicker(
-                        context,
-                        showTitleActions: true,
-                        minTime: DateTime(2021, 1, 1),
-                        maxTime: DateTime(2025, 6, 7),
-                        onConfirm: (date) {
-                          print('confirm $date');
-                          newValue = newValues.format(date);
-                          formatted = newValue;
-                          setState(() {});
-                        },
-                      );
-                    },
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Textform(
-                  input: false,
-                  isSecure: false,
-                  isreadonly: false,
-                  controller: venue,
-                  icon: FontAwesomeIcons.mapMarkerAlt,
-                  label: widget.placename,
-                  color: const Color(0XFFEBF2F2),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Textform(
-                  controller: link,
-                  isSecure: false,
-                  icon: FontAwesomeIcons.link,
-                  isreadonly: false,
-                  label: "Ticket link",
-                  color: const Color(0XFFEBF2F2),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text("Event Conditions"),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  height: size.height * 0.055,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    //color: const Color(0XFFEBF2F2),
-                    borderRadius: BorderRadius.circular(15),
+                  const SizedBox(
+                    height: 20,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                  Row(
+                    children: const [
+                      // Icon(Icons.visibility),
                       SizedBox(
-                        height: 100,
-                        width: size.width * 0.6,
-                        child: Textform(
-                          isSecure: false,
-                          isreadonly: false,
-                          controller: conditionss,
-                          // icon: FontAwesomeIcons.,
-                          label: "Add Conditions",
-                          color: const Color(0XFFEBF2F2),
-                        ),
+                        width: 10,
                       ),
-                      Container(
-                          height: 50,
-                          width: 50,
-                          decoration: const BoxDecoration(
-                              color: Color(0XFF368890), shape: BoxShape.circle),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: IconButton(
-                                onPressed: () {
-                                  if (conditionss.text == "") {
-                                    setState(() {
-                                      showToaster("Add Conditions");
-                                    });
-                                  } else {
-                                    setState(() {
-                                      addConditionsList();
-                                      conditionss.clear();
-                                    });
-                                  }
-                                },
-                                icon: const Icon(
-                                  Icons.add,
-                                  color: Colors.white,
-                                )),
-                          )),
+                      AutoSizeText("Event Privacy"),
                     ],
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                conditions.isEmpty
-                    ? const Center(child: Text("No Conditions"))
-                    : Wrap(
-                        children: List.generate(conditions.length, (index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 6.0, top: 10),
-                          child: Elevatedbuttons(
-                            sidecolor: Colors.white,
-                            width: size.width * 0.4,
-                            coloring: const Color(0XFF368890),
-                            text: conditions[index].toString(),
-                            textColor: const Color(0XFFFFFFFF),
-                          ),
-                        );
-                      })),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  children: const [
-                    Icon(Icons.visibility),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    AutoSizeText("Event Privacy"),
-                  ],
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  children: [
-                    Elevatedbuttons(
-                      sidecolor: Colors.white,
-                      textColor:
-                          _ispublic ? const Color(0XFFFFFFFF) : Colors.black,
-                      text: "Public",
-                      coloring: _ispublic
-                          ? const Color(0XFF368890)
-                          : const Color(0XFFFFFFFF),
-                      width: size.width * double.infinity,
-                      primary: _ispublic
-                          ? const Color(0XFF368890)
-                          : const Color(0XFFFFFFFF),
-                      onpressed: () {
-                        setState(() {
-                          _ispublic = !_ispublic;
-                          publicevent();
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Elevatedbuttons(
-                      onpressed: () {
-                        public = 0;
-                        setState(() {
-                          _ispublic = !_ispublic;
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          public = 1;
 
-                          privateevent();
-                        });
-                      },
-                      sidecolor: Colors.white,
-                      coloring: !_ispublic
-                          ? const Color(0XFF368890)
-                          : const Color(0XFFFFFFFF),
-                      width: size.width * double.infinity,
-                      text: "Private",
-                      textColor:
-                          !_ispublic ? const Color(0XFFFFFFFF) : Colors.black,
-                      primary: !_ispublic
-                          ? const Color(0XFF368890)
-                          : const Color(0XFFFFFFFF),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                !_ispublic ? privateevent() : publicevent(),
-                const SizedBox(
-                  height: 20,
-                ),
-                _isloading
-                    ? const Center(child: CircularProgressIndicator())
-                    : Elevatedbutton(
-                        text: "Post",
-                        width: double.infinity,
-                        coloring: const Color(0xFF304747),
-                        textColor: const Color(0XFFFFFFFF),
-                        primary: const Color(0xFF304747),
-                        onpressed: () async {
-                          if (eventname.text.isEmpty ||
-                              eventDescription.text.isEmpty ||
-                              
-                              imagePath == null ||
-                              conditions.isEmpty) {
-                            showToaster("Please fill all the above fields");
-                          } else {
-                            setState(() {
-                              _isloading = !_isloading;
-                            });
+                          setState(() {
+                            _ispublic = !_ispublic;
+                            publicevent();
+                          });
+                        },
+                        child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: _ispublic
+                                  ? Colors.white
+                                  : const Color(0XFFf8f8f8),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                  color: _ispublic
+                                      ? const Color(0xff3BADB7)
+                                      : const Color(0XFFf8f8f8),
+                                  width: 2),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 10.0, left: 10, top: 10, bottom: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: const [
+                                  Text(
+                                    "Public",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xFF101010),
+                                        fontWeight: FontWeight.w500),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    "Everyone will be able to see this event details.",
+                                    style: TextStyle(
+                                        fontSize: 12, color: Color(0xFF808080)),
+                                  )
+                                ],
+                              ),
+                            )),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          public = 0;
+                          setState(() {
+                            _ispublic = !_ispublic;
 
-                            await postCreatEvent();
-                          }
-                        }),
-                const SizedBox(
-                  height: 10,
-                ),
-              ],
+                            privateevent();
+                          });
+                        },
+                        child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: !_ispublic
+                                  ? Colors.white
+                                  : const Color(0XFFf8f8f8),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                  color: !_ispublic
+                                      ? const Color(0xff3BADB7)
+                                      : const Color(0XFFf8f8f8),
+                                  width: 2),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 10.0, left: 10, top: 10, bottom: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: const [
+                                  Text(
+                                    "Private",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xFF101010),
+                                        fontWeight: FontWeight.w500),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    "Only your followers or your following can see this event",
+                                    style: TextStyle(
+                                        fontSize: 12, color: Color(0xFF808080)),
+                                  )
+                                ],
+                              ),
+                            )),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  // !_ispublic ? privateevent() : publicevent(),
+
+                  _isloading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                              color: Color(0xFF3BADB7)))
+                      : Elevatedbutton(
+                          text: "Post",
+                          width: double.infinity,
+                          coloring: const Color(0xFF304747),
+                          textColor: const Color(0XFFFFFFFF),
+                          primary: const Color(0xFF3BADB7),
+                          onpressed: () async {
+                            if (eventname.text.isEmpty ||
+                                eventDescription.text.isEmpty ||
+                                imagePath == null ||
+                                conditions.isEmpty) {
+                              showToaster("Please fill all the above fields");
+                            } else {
+                              setState(() {
+                                _isloading = !_isloading;
+                              });
+
+                              await postCreatEvent();
+                            }
+                          }),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
+          const Topmenu(title: "Draft event"),
+        ]),
       ),
-    );
+    ));
   }
 
   AutoSizeText privateevent() {
@@ -623,7 +787,7 @@ class _DraftseditState extends State<Draftsedit> {
       value: item,
       child: Text(
         item,
-        style: const TextStyle(color: Color(0XFF74AAB0), fontSize: 16),
+        style: const TextStyle(color: Color(0XFF101010), fontSize: 16),
       ));
 
   Future _selectPhoto() async {
@@ -800,6 +964,8 @@ class _VideoPlayerScree1State extends State<VideoPlayerScree1> {
               return Container(
                 height: size.height * 0.3,
                 width: double.infinity,
+
+                /// something here
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                 ),
@@ -811,7 +977,7 @@ class _VideoPlayerScree1State extends State<VideoPlayerScree1> {
               // If the VideoPlayerController is still initializing, show a
               // loading spinner.
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
               );
             }
           },

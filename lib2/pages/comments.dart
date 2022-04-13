@@ -120,7 +120,8 @@ class _commentState extends State<comment> {
                                     fit: BoxFit.cover,
                                     placeholder: (context, url) {
                                       return const Center(
-                                        child: CircularProgressIndicator(),
+                                        child: CircularProgressIndicator(
+                                            color: Color(0xFF3BADB7)),
                                       );
                                     },
                                   ),
@@ -407,8 +408,8 @@ class _CommentbypersonState extends State<Commentbyperson> {
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                  image: CachedNetworkImageProvider(MainUrl +
-                                      comments[index]['profile_pic']),
+                                  image: CachedNetworkImageProvider(
+                                      MainUrl + comments[index]['profile_pic']),
                                   fit: BoxFit.cover)),
                         ),
                         const SizedBox(
@@ -479,8 +480,7 @@ class _CommentbypersonState extends State<Commentbyperson> {
       child: Align(
         alignment: Alignment.bottomRight,
         child: Text(
-          TimeAgo.displayTimeAgoFromTimestamp(
-              comments[index]['createdAt']),
+          TimeAgo.displayTimeAgoFromTimestamp(comments[index]['createdAt']),
           style: const TextStyle(fontSize: 15, color: Colors.black45),
         ),
       ),
@@ -600,7 +600,7 @@ class _VideoPlayerScreennnnState extends State<VideoPlayerScreennnn> {
               // If the VideoPlayerController is still initializing, show a
               // loading spinner.
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
               );
             }
           },

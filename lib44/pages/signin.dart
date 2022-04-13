@@ -202,7 +202,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     if (_isLoading)
-                      const Center(child: CircularProgressIndicator()),
+                      const Center(
+                          child: CircularProgressIndicator(
+                              color: Color(0xFF3BADB7))),
                     const SizedBox(
                       height: 20,
                     ),
@@ -290,8 +292,10 @@ class _LoginScreenState extends State<LoginScreen> {
         await _sharedPreferences.setString(
             'phone', _loginResponse.user.phoneNumber);
         String _id = _sharedPreferences.getString('id')!;
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => Dashboard(id: _id,)));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => Dashboard(
+                  id: _id,
+                )));
       } else {
         showToaster('Invalid Credentials');
       }
@@ -306,11 +310,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   getInitializedSharedPref() async {
     _sharedPreferences = await SharedPreferences.getInstance();
-   
+
     if (_sharedPreferences.containsKey('email')) {
-       String? _id = _sharedPreferences.getString('id');
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => Dashboard(id: _id!,)));
+      String? _id = _sharedPreferences.getString('id');
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => Dashboard(
+                id: _id!,
+              )));
     }
   }
 }

@@ -3,6 +3,7 @@ import 'package:event_spotter/models/getfollowerlistmodel.dart';
 import 'package:event_spotter/widgets/more/followers.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:event_spotter/widgets/topmenu.dart';
 
 class Following extends StatefulWidget {
   const Following({Key? key}) : super(key: key);
@@ -32,90 +33,88 @@ class _FollowingState extends State<Following> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
-      child: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            elevation: 0,
-            title: const Text(
-              "Followers",
-              style: TextStyle(color: Colors.black),
-            ),
-            centerTitle: true,
-          ),
-          body: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 20, right: 20, left: 20, bottom: 20),
-              child: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : Column(
-                      children: [
-                        // Textform(
-                        //   controller: _search,
-                        //   icon: Icons.search,
-                        //   label: "Search",
-                        //   color: const Color(0XFFECF2F3),
-                        // ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        test != false
-                            ? Container(
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                          color: Colors.black12,
-                                          blurRadius: 2,
-                                          spreadRadius: 2,
-                                          offset: Offset(2, 2))
-                                    ]),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 20, right: 20, left: 20),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            "Your Followers",
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.black54),
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            _followerListModel.data.length
-                                                .toString(),
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
-                                      ),
-                                      Followerlist(
-                                        size: size,
-                                        followerListModel: _followerListModel,
-                                      )
-                                    ],
-                                  ),
+        child: Scaffold(
+      backgroundColor: Colors.white,
+      // appBar: AppBar(
+      //   backgroundColor: Colors.white,
+      //   elevation: 0,
+      //   title: const Text(
+      //     "Followers",
+      //     style: TextStyle(color: Colors.black),
+      //   ),
+      //   centerTitle: true,
+      // ),
+      body: Stack(children: [
+        SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Padding(
+            padding:
+                const EdgeInsets.only(top: 80, right: 20, left: 20, bottom: 20),
+            child: _isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(color: Color(0xFF3BADB7)))
+                : Column(
+                    children: [
+                      // Textform(
+                      //   controller: _search,
+                      //   icon: Icons.search,
+                      //   label: "Search",
+                      //   color: const Color(0XFFECF2F3),
+                      // ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      test != false
+                          ? Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 20, right: 0, left: 0),
+                                child: Column(
+                                  children: [
+                                    // Row(
+                                    //   children: [
+                                    //     const Text(
+                                    //       "Your Followers",
+                                    //       style: TextStyle(
+                                    //           fontSize: 15,
+                                    //           color: Colors.black54),
+                                    //     ),
+                                    //     const SizedBox(
+                                    //       width: 10,
+                                    //     ),
+                                    //     Text(
+                                    //       _followerListModel.data.length
+                                    //           .toString(),
+                                    //       style: const TextStyle(
+                                    //           fontSize: 16,
+                                    //           color: Colors.black,
+                                    //           fontWeight: FontWeight.w500),
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                    Followerlist(
+                                      size: size,
+                                      followerListModel: _followerListModel,
+                                    )
+                                  ],
                                 ),
-                              )
-                            : const Center(
-                                child: Text("You have no followers"),
-                              )
-                      ],
-                    ),
-            ),
-          )),
-    );
+                              ),
+                            )
+                          : const Center(
+                              child: Text("You have no followers"),
+                            )
+                    ],
+                  ),
+          ),
+        ),
+        const Topmenu(title: "Followers"),
+      ]),
+    ));
   }
 
   getFollower() async {

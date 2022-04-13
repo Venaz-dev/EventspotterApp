@@ -92,7 +92,7 @@ class _SignupState extends State<Signup> {
           backgroundColor: Colors.white,
           body: _isLoading
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
                 )
               : GestureDetector(
                   onTap: () {
@@ -175,7 +175,7 @@ class _SignupState extends State<Signup> {
                                 validator: (password) {
                                   if (password!.isEmpty) {
                                     return 'Please enter the password';
-                                  } else if (password.length <8) {
+                                  } else if (password.length < 8) {
                                     return 'Enter minimum 8 digits';
                                   } else {
                                     return null;
@@ -439,7 +439,7 @@ class _SignupState extends State<Signup> {
       "password": _password.text
     });
     Response response = await _dio.post(Url, data: formData);
-       print(response.data.toString());
+    print(response.data.toString());
 
     if (response.data['access_token'].toString().isEmpty) {
     } else {

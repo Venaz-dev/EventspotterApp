@@ -81,7 +81,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     if (snapshot.hasData) {
                       return IconButton(
                         icon: snapshot.data!
-                            ? const Center(child: CircularProgressIndicator())
+                            ? const Center(
+                                child: CircularProgressIndicator(
+                                    color: Color(0xFF3BADB7)))
                             : const Icon(
                                 Icons.send,
                                 color: Colors.white,
@@ -178,14 +180,18 @@ class _ChatScreenState extends State<ChatScreen> {
                                   return const Text('error');
                                 } else if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
-                                  return const CircularProgressIndicator();
+                                  return const CircularProgressIndicator(
+                                      color: Color(0xFF3BADB7));
                                 }
 
                                 return Column(
                                     children:
                                         List.generate(chatList.length, (index) {
-                                  return !(chatList[index]['content'] != null) ||
-                                          chatList[index]['content'].toString() !=""
+                                  return !(chatList[index]['content'] !=
+                                              null) ||
+                                          chatList[index]['content']
+                                                  .toString() !=
+                                              ""
                                       ? ChatBubble(
                                           clipper: ChatBubbleClipper6(
                                             type: chatList[index]['toUserId'] ==

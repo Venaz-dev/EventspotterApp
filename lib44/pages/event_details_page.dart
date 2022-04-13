@@ -181,7 +181,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                               child: Center(
                                 child: Container(
                                   height: size.height * 0.4,
-                                       width: double.infinity,
+                                  width: double.infinity,
                                   child: CachedNetworkImage(
                                     imageUrl: MainUrl +
                                         widget.model!.data[index1].events
@@ -189,7 +189,8 @@ class _EventdetailingState extends State<Eventdetailing> {
                                     fit: BoxFit.cover,
                                     placeholder: (context, url) {
                                       return const Center(
-                                        child: CircularProgressIndicator(),
+                                        child: CircularProgressIndicator(
+                                            color: Color(0xFF3BADB7)),
                                       );
                                     },
                                   ),
@@ -552,7 +553,8 @@ class _EventdetailingState extends State<Eventdetailing> {
           height: 20,
         ),
         _isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)))
             : widget.model!.data[index1].events.userId == widget.id
                 ? Elevatedbutton(
                     primary: Colors.redAccent,
@@ -638,12 +640,14 @@ class _EventdetailingState extends State<Eventdetailing> {
                             height: size.height * 0.24,
                             width: size.width * 0.3,
                             decoration: BoxDecoration(
-                              color : Colors.white,
-                               boxShadow: const [BoxShadow (
-                                                        color: Colors.black12,
-                                                        spreadRadius: 1,
-                                                        blurRadius: 1,
-                                                      )],
+                              color: Colors.white,
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  spreadRadius: 1,
+                                  blurRadius: 1,
+                                )
+                              ],
                               borderRadius: BorderRadius.circular(15),
                               //  color: Colors.red,
                             ),
@@ -694,7 +698,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                                               " " +
                                               "miles",
                                           style: const TextStyle(
-                                            color : Colors.black,
+                                              color: Colors.black,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 17),
                                         )),
@@ -725,7 +729,6 @@ class _EventdetailingState extends State<Eventdetailing> {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 15.0),
                         child: Container(
-                        
                             decoration: const BoxDecoration(
                                 color: Colors.white,
                                 boxShadow: [
@@ -763,7 +766,7 @@ class _EventdetailingState extends State<Eventdetailing> {
                                             fit: BoxFit.cover,
                                           )),
                                     ),
-                                  const  SizedBox(width : 10),
+                                    const SizedBox(width: 10),
                                     Text(
                                       widget
                                           .model!.data[index1].events.user.name,
@@ -926,7 +929,7 @@ class _EventdetailingState extends State<Eventdetailing> {
       fit: BoxFit.cover,
       placeholder: (context, url) {
         return const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
         );
       },
     );
@@ -1023,10 +1026,11 @@ class _EventdetailingState extends State<Eventdetailing> {
         } else {
           throw 'Could not launch $widget.model!.data[widget.indexs!].events.ticketLink!';
         }
-      }else{
-         if (await canLaunch(
-           "https://"+widget.model!.data[widget.indexs!].events.ticketLink!)) {
-          await launch( "https://"+widget.model!.data[widget.indexs!].events.ticketLink!);
+      } else {
+        if (await canLaunch("https://" +
+            widget.model!.data[widget.indexs!].events.ticketLink!)) {
+          await launch("https://" +
+              widget.model!.data[widget.indexs!].events.ticketLink!);
         } else {
           throw 'Could not launch $widget.model!.data[widget.indexs!].events.ticketLink!';
         }
@@ -1107,7 +1111,7 @@ class _SnapsvideoplayerState extends State<Snapsvideoplayer> {
               // If the VideoPlayerController is still initializing, show a
               // loading spinner.
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
               );
             }
           },

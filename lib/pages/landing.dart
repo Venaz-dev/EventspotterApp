@@ -22,7 +22,7 @@ class LandingScreen extends StatefulWidget {
 
 class _LandingScreenState extends State<LandingScreen> {
   bool _isLoading = false;
-
+  late SharedPreferences _sharedPreferences;
   @override
   void initState() {
     getInitializedSharedPref();
@@ -119,7 +119,9 @@ class _LandingScreenState extends State<LandingScreen> {
                         ),
                       ),
                     if (_isLoading)
-                      const Center(child: CircularProgressIndicator()),
+                      const Center(
+                          child: CircularProgressIndicator(
+                              color: Color(0xFF3BADB7))),
                     const SizedBox(
                       height: 20,
                     ),
@@ -162,5 +164,15 @@ class _LandingScreenState extends State<LandingScreen> {
     );
   }
 
-  getInitializedSharedPref() async {}
+  getInitializedSharedPref() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+
+    if (_sharedPreferences.containsKey('email')) {
+      String? _id = _sharedPreferences.getString('id');
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => Dashboard(
+                id: _id!,
+              )));
+    }
+  }
 }

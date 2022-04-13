@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'chatscreen.dart';
+import 'package:event_spotter/pages/notification.dart';
 
 class Notifications extends StatefulWidget {
   Notifications({
@@ -69,7 +70,8 @@ class _NotificationsState extends State<Notifications> {
           //   elevation: 0,
           // ),
           body: _isLoading
-              ? const Center(child: CircularProgressIndicator())
+              ? const Center(
+                  child: CircularProgressIndicator(color: Color(0xFF3BADB7)))
               : Stack(
                   children: [
                     Padding(
@@ -286,20 +288,35 @@ class _NotificationsState extends State<Notifications> {
                                       color: Color(0xFFE5E7EB), width: 1))),
                           child: Padding(
                             padding:
-                                const EdgeInsets.only(left: 20.0, right: 20),
+                                const EdgeInsets.only(left: 20.0, right: 5),
                             child: Row(
-                              children: const [
-                                SizedBox(
+                              children: [
+                                const SizedBox(
                                     width: 35.0,
                                     child: Image(
                                         image: AssetImage(
                                             "Assets/images/logo-no-text.png"))),
-                                Spacer(),
+                                const Spacer(),
                                 SizedBox(
-                                    width: 35.0,
-                                    child: Image(
-                                        image: AssetImage(
-                                            "Assets/icons/notification.png")))
+                                  width: 55,
+                                  height: 50,
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => const Noti()),
+                                      );
+                                    },
+                                    child: Container(
+                                        child: const Center(
+                                            child: SizedBox(
+                                                width: 30.0,
+                                                child: Image(
+                                                    image: AssetImage(
+                                                        "Assets/icons/notification.png"))))),
+                                  ),
+                                ),
                               ],
                             ),
                           )),

@@ -8,9 +8,11 @@ import 'package:event_spotter/widgets/elevatedbutton.dart';
 import 'package:event_spotter/widgets/explore/comment.dart';
 import 'package:event_spotter/widgets/explore/events.dart';
 import 'package:event_spotter/widgets/explore/livefeed.dart';
+import 'package:event_spotter/pages/livesnaps.dart';
 import 'package:event_spotter/widgets/map.dart';
 import 'package:event_spotter/widgets/smallbutton.dart';
 import 'package:event_spotter/widgets/toaster.dart';
+import 'package:event_spotter/widgets/topmenu.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -82,258 +84,339 @@ class _EventdetailingState extends State<Eventdetailing> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
           backgroundColor: Colors.white,
-          elevation: 0,
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 8.0, top: 8),
-            child: Smallbutton(
-              icon: FontAwesomeIcons.arrowLeft,
-              onpressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-        ),
-        body: ListView(
-          children: [
-            const SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                right: size.width * 0.03,
-                left: size.width * 0.03,
-              ),
-              child: Container(
-                width: size.width * double.infinity,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  // borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      spreadRadius: 3,
-                      blurRadius: 3,
-                      color: Colors.black12,
-                    ),
-                  ],
+          body: Stack(children: [
+            ListView(
+              children: [
+                const SizedBox(
+                  height: 60,
                 ),
-                child: Column(children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 5, left: 2, top: 2),
+                Container(
+                  decoration: const BoxDecoration(
+                      //borderRadius: BorderRadius.circular(15),
+                      ),
+                  width: size.width * double.infinity,
+                  child: widget.model!.data[index1].events.eventPictures[0]
+                              .imagePath
+                              .toString()
+                              .contains('.mp4') ||
+                          widget.model!.data[index1].events.eventPictures[0]
+                              .imagePath
+                              .toString()
+                              .contains('.mov')
+                      ? VideoPlayerScreenn(
+                          url: MainUrl +
+                              widget.model!.data[index1].events.eventPictures[0]
+                                  .imagePath)
+                      : Container(
+                          decoration: const BoxDecoration(
+                              // borderRadius: BorderRadius.circular(20)
+                              ),
+                          child: ClipRRect(
+                            //  borderRadius: BorderRadius.circular(15),
+                            child: CachedNetworkImage(
+                              width: double.infinity,
+                              imageUrl: MainUrl +
+                                  widget.model!.data[index1].events
+                                      .eventPictures[0].imagePath,
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) {
+                                return const Center(
+                                  child: CircularProgressIndicator(
+                                      color: Color(0xFF3BADB7)),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(right: 15),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      top: BorderSide(color: Colors.black12),
+                    ),
+                  ),
+                  child: IntrinsicHeight(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Button(
-                            onpressed: () {},
-                            title: widget.model!.data[index1].events.user.name,
-                            // widget.eventsModel.data[index].events
-                            //     .user.name, //new
-                            radiusofbutton: BorderRadius.circular(20),
-                            profileImage: MainUrl +
-                                widget.model!.data[index1].events.user
-                                    .profilePicture!.image),
+                        extras(
+                          FontAwesomeIcons.heart,
+                          widget.model!.data[index1].totalLikes.toString(),
+                          size,
+                          () {},
+                        ),
+
+                        //
+                        extras(
+                            FontAwesomeIcons.commentDots,
+                            widget.model!.data[index1].events.comment.length
+                                .toString(),
+                            size, () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => Commentofuser(
+                                    eventsModel: widget.model!,
+                                    index: index1,
+                                  )));
+                        }),
+                        // divider(),
+                        // divider(),
+
+                        extras(MdiIcons.share, "", size, () {
+                          share(widget.model!.data[widget.indexs!].events.id
+                              .toString());
+                        }),
+                        // divider(), //
+
+                        // extras(MdiIcons.share,
+                        //     posts[1]['share'], size),
+                        // divider(),                           //no inculded
+                        // extras(
+                        //     Icons.play_arrow_sharp,
+                        //     widget.model!.data[index1].events
+                        //         .liveFeed.length
+                        //         .toString(),
+                        //     size, () {
+                        //   setState(() {
+                        //     swapping = livefeed.livesnaps;
+                        //   });
+                        // }),
+                        extras(
+                            FontAwesomeIcons.playCircle,
+                            widget.model!.data[index1].events.liveFeed.length
+                                    .toString() +
+                                " " +
+                                "Live snaps",
+                            size, () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => Livesnaps(
+                                    model: widget.model,
+                                    indexs: widget.indexs,
+                                    id: widget.id,
+                                  )));
+                          //  Navigator.of(context).push(MaterialPageRoute(
+                          // builder: (context) => Livesnaps(
+
+                          //     )));
+                          setState(() {
+                            // swapping = livefeed.livesnaps;
+                          });
+                        }),
                       ],
                     ),
                   ),
-                  Padding(
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                    child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 15,
+                    left: 15,
+                  ),
+                  child: Container(
                     padding: const EdgeInsets.only(
-                        left: 8.0, right: 8, top: 3, bottom: 3),
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      child: AutoSizeText(
-                        widget.model!.data[index1].events.eventName,
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 17),
-                        maxFontSize: 17,
-                        minFontSize: 10,
-                        maxLines: 5,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    decoration: const BoxDecoration(
-                        //borderRadius: BorderRadius.circular(15),
-                        ),
+                        top: 15, bottom: 15, left: 15, right: 15),
                     width: size.width * double.infinity,
-                    child: widget.model!.data[index1].events.eventPictures[0]
-                                .imagePath
-                                .toString()
-                                .contains('.mp4') ||
-                            widget.model!.data[index1].events.eventPictures[0]
-                                .imagePath
-                                .toString()
-                                .contains('.mov')
-                        ? VideoPlayerScreenn(
-                            url: MainUrl +
-                                widget.model!.data[index1].events
-                                    .eventPictures[0].imagePath)
-                        : Container(
-                         
-                           
-                            decoration: const BoxDecoration(
-                                // borderRadius: BorderRadius.circular(20)
-                                ),
-                            child: ClipRRect(
-                              //  borderRadius: BorderRadius.circular(15),
-                              child: CachedNetworkImage(
-                                width: double.infinity,
-                                
-                                imageUrl: MainUrl +
-                                    widget.model!.data[index1].events
-                                        .eventPictures[0].imagePath,
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    decoration: const BoxDecoration(),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                            color: const Color(0xffE5E7EB), width: 2)),
+                    // boxShadow: [
+                    //   BoxShadow(
+                    //     spreadRadius: 3,
+                    //     blurRadius: 3,
+                    //     color: Colors.black12,
+                    //   ),
+                    // ],
+
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        //  const SizedBox(
-                        //    height: 2,
-                        //  ),
-                        Container(
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            border: Border(
-                              top: BorderSide(color: Colors.black12),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 8, left: 8),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                right: 5, left: 2, top: 2),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Buttonicon(
-                                  radiusofbutton: BorderRadius.circular(20),
-                                  icon: FontAwesomeIcons.userPlus,
-                                  title: widget.model!.data[index1].events.user
-                                          .followers.length
-                                          .toString() +
-                                      " " "Followers",
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                const Icon(
-                                  FontAwesomeIcons.calendar,
-                                  size: 13,
-                                  color: Colors.black54,
-                                ),
-                                Text(
-                                  time(index1),
-                                  style: const TextStyle(color: Colors.black87),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                const Icon(
-                                  FontAwesomeIcons.mapMarkerAlt,
-                                  size: 15,
-                                  color: Colors.black54,
-                                ),
-                                Text(
-                                    widget.model!.data[index1].km.toString() +
+                                Button(
+                                    size: 48,
+                                    onpressed: () {},
+                                    title: widget
+                                        .model!.data[index1].events.user.name,
+                                    // widget.eventsModel.data[index].events
+                                    //     .user.name, //new
+                                    radiusofbutton: BorderRadius.circular(50),
+                                    profileImage: MainUrl +
+                                        widget.model!.data[index1].events.user
+                                            .profilePicture!.image),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Text(
+                            widget.model!.data[index1].events.eventDescription,
+                            style: const TextStyle(
+                                color: Color(0xFF333333), fontSize: 16),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Text(
+                            "Event Details",
+                            style: TextStyle(
+                                color: Color(0xFF333333),
+                                fontSize: 17,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              const SizedBox(
+                                  width: 35.0,
+                                  child: Image(
+                                      image: AssetImage(
+                                          "Assets/icons/details-distance.png"))),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Column(children: [
+                                SizedBox(
+                                  width: size.width * 0.7,
+                                  child: Text(
+                                    widget.model!.data[index1].km +
                                         " " +
-                                        "away",
-                                    style:
-                                        const TextStyle(color: Colors.black87)),
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              top: BorderSide(color: Colors.black12),
-                            ),
-                          ),
-                          child: IntrinsicHeight(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                extras(
-                                  FontAwesomeIcons.thumbsUp,
-                                  widget.model!.data[index1].totalLikes
-                                      .toString(),
-                                  size,
-                                  () {},
+                                        "miles away",
+                                    maxLines: 2,
+                                    style: const TextStyle(
+                                        color: Color(0xFF242424), fontSize: 16),
+                                  ),
                                 ),
-
-                                divider(),
-                                extras(
-                                    Icons.comment,
-                                    widget.model!.data[index1].events.comment
-                                        .length
-                                        .toString(),
-                                    size, () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => Commentofuser(
-                                            eventsModel: widget.model!,
-                                            index: index1,
-                                          )));
-                                }),
-                               // divider(),
-                                divider(),
-
-                                  extras(MdiIcons.share, "", size, () {
-                                    share(widget.model!.data[widget.indexs!].events.id.toString());
-                                  }),
-                                  divider(), //
-
-                                // extras(MdiIcons.share,
-                                //     posts[1]['share'], size),
-                                // divider(),                           //no inculded
-                                extras(
-                                    Icons.play_arrow_sharp,
-                                    widget.model!.data[index1].events.liveFeed
-                                        .length
-                                        .toString(),
-                                    size, () {
-                                  setState(() {
-                                    swapping = livefeed.livesnaps;
-                                  });
-                                }),
-                              ],
-                            ),
+                                SizedBox(
+                                  width: size.width * 0.7,
+                                  child: const Text(
+                                    "Distance from your location",
+                                    style: TextStyle(
+                                        color: Color(0xFF707070), fontSize: 14),
+                                  ),
+                                ),
+                              ]),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              const SizedBox(
+                                  width: 35.0,
+                                  child: Image(
+                                      image: AssetImage(
+                                          "Assets/icons/details-date.png"))),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Column(children: [
+                                SizedBox(
+                                  width: size.width * 0.7,
+                                  child: Text(
+                                    time(index1),
+                                    maxLines: 2,
+                                    style: const TextStyle(
+                                        color: Color(0xFF242424), fontSize: 16),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: size.width * 0.7,
+                                  child: const Text(
+                                    "Event date",
+                                    style: TextStyle(
+                                        color: Color(0xFF707070), fontSize: 14),
+                                  ),
+                                ),
+                              ]),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              const SizedBox(
+                                  width: 35.0,
+                                  child: Image(
+                                      image: AssetImage(
+                                          "Assets/icons/details-link.png"))),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Column(children: [
+                                SizedBox(
+                                  width: size.width * 0.7,
+                                  child: InkWell(
+                                    onTap: () {
+                                      urllaundher();
+                                    },
+                                    child: Text(
+                                      widget.model!.data[index1].events
+                                                  .ticketLink! !=
+                                              ""
+                                          ? widget.model!.data[index1].events
+                                              .ticketLink!
+                                          : "No ticket link",
+                                      style: const TextStyle(
+                                          color: Color(0xFF242424),
+                                          fontSize: 16),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: size.width * 0.7,
+                                  child: const Text(
+                                    "Ticket link",
+                                    style: TextStyle(
+                                        color: Color(0xFF707070), fontSize: 14),
+                                  ),
+                                ),
+                              ]),
+                            ],
+                          ),
+                        ]),
                   ),
-                ]),
-              ),
+                )),
+                const SizedBox(
+                  height: 30,
+                ),
+
+                // Event location container
+                Padding(
+                  padding: EdgeInsets.only(
+                      right: size.width * 0.03,
+                      left: size.width * 0.03,
+                      top: 20),
+                  child: calloflivesnaps(size),
+                ),
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.only(
-                  right: size.width * 0.03, left: size.width * 0.03, top: 20),
-              child: calloflivesnaps(size),
-            ),
-          ],
-        ),
-      ),
+            Topmenu(
+              title: widget.model!.data[index1].events.eventName,
+            )
+          ])),
     ));
   }
-share(String ff){
-    Share.share('check out my post https://theeventspotter.com/eventDetails/'+ff);
 
+  share(String ff) {
+    Share.share(
+        'check out my post https://theeventspotter.com/eventDetails/' + ff);
   }
+
   Widget calloflivesnaps(Size size) {
     switch (swapping) {
       case livefeed.details:
@@ -349,220 +432,178 @@ share(String ff){
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                spreadRadius: 0.5,
-                blurRadius: 0.5,
-                offset: Offset(
-                  0,
-                  0,
-                ),
-              ),
-              BoxShadow(
-                color: Colors.black12,
-                spreadRadius: 0.5,
-                blurRadius: 0.5,
-                offset: Offset(
-                  0,
-                  0,
-                ),
-              )
-            ],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Details",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  widget.model!.data[index1].events.eventDescription,
-                  style: const TextStyle(color: Colors.black54, fontSize: 16),
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 7,
-        ),
-        Container(
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                spreadRadius: 0.5,
-                blurRadius: 0.5,
-                offset: Offset(
-                  0,
-                  0,
-                ),
-              ),
-              BoxShadow(
-                color: Colors.black12,
-                spreadRadius: 0.5,
-                blurRadius: 0.5,
-                offset: Offset(
-                  0,
-                  0,
-                ),
-              )
-            ],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Ticket link",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                InkWell(
-                  onTap: () {
-                    urllaundher();
-                  },
-                  child: Text(
-                    widget.model!.data[index1].events.ticketLink!,
-                    style: const TextStyle(color: Colors.black54, fontSize: 16),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 7,
-        ),
-        Container(
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  spreadRadius: 0.5,
-                  blurRadius: 0.5,
-                  offset: Offset(
-                    0,
-                    0,
-                  ),
-                ),
-                BoxShadow(
-                  color: Colors.black12,
-                  spreadRadius: 0.5,
-                  blurRadius: 0.5,
-                  offset: Offset(
-                    0,
-                    0,
-                  ),
-                )
-              ],
-            ),
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Conditions",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  Wrap(
-                      children: List.generate(
-                          widget.model!.data[index1].events.conditions.length,
-                          (index) {
+          padding: const EdgeInsets.only(
+            right: 2,
+            left: 2,
+          ),
+          child: Container(
+            padding:
+                const EdgeInsets.only(top: 15, bottom: 15, left: 15, right: 15),
+            width: size.width * double.infinity,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: const Color(0xffE5E7EB), width: 2)),
+            // boxShadow: [
+            //   BoxShadow(
+            //     spreadRadius: 3,
+            //     blurRadius: 3,
+            //     color: Colors.black12,
+            //   ),
+            // ],
+
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const SizedBox(
+                height: 15,
+              ),
+              const Text(
+                "Event Location",
+                style: TextStyle(
+                    color: Color(0xFF333333),
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Container(
+                height: size.height * 0.15,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: Offset(
+                        2,
+                        2,
+                      ),
+                    )
+                  ],
+                ),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Map(
+                      lat: widget.model!.data[index1].events.lat.toString(),
+                      long: widget.model!.data[index1].events.lng.toString(),
+                    )),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                widget.model!.data[index1].events.location.toString(),
+                style: const TextStyle(color: Color(0xFF333333), fontSize: 16),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+            ]),
+          ),
+        )),
+        const SizedBox(
+          height: 30,
+        ),
+        // Event Conditions container
+        Container(
+            child: Padding(
+          padding: const EdgeInsets.only(
+            right: 2,
+            left: 2,
+          ),
+          child: Container(
+            padding:
+                const EdgeInsets.only(top: 15, bottom: 15, left: 15, right: 15),
+            width: size.width * double.infinity,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: const Color(0xffE5E7EB), width: 2)),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const SizedBox(
+                height: 15,
+              ),
+              const Text(
+                "Event conditions",
+                style: TextStyle(
+                    color: Color(0xFF333333),
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: List.generate(
+                      widget.model!.data[index1].events.conditions.length,
+                      (index) {
                     return widget
                                 .model!.data[index1].events.conditions[index] !=
                             ''
                         ? Padding(
-                            padding: const EdgeInsets.only(right: 6.0, top: 10),
+                            padding:
+                                const EdgeInsets.only(right: 6.0, bottom: 10),
                             child: Container(
-                              padding: const  EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 15),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black12),
-                                borderRadius: BorderRadius.circular(10),
-                              
-                              ),
-                              child: Text(
-                                  widget.model!.data[index1].events
-                                      .conditions[index]
-                                      .toString(),
-                                  style: const TextStyle(color: Colors.black)),
-                            ),
+                                // padding: const EdgeInsets.symmetric(
+                                //     horizontal: 15, vertical: 15),
+                                decoration: BoxDecoration(
+                                  // border: Border.all(
+                                  //     color: Colors.black12),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                              FontAwesomeIcons.infoCircle,
+                                              size: 18,
+                                              color: Color(0xFFFF8080)),
+                                          const SizedBox(
+                                            width: 8,
+                                          ),
+                                          Text(
+                                            (index + 1).toString(),
+                                            style: const TextStyle(
+                                              color: Color(0xFF101010),
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                          widget.model!.data[index1].events
+                                              .conditions[index]
+                                              .toString(),
+                                          style: const TextStyle(
+                                              color: Colors.black)),
+                                    ])),
                           )
                         : const SizedBox();
                   })),
-                ],
+              const SizedBox(
+                height: 10,
               ),
-            )),
-        const SizedBox(
-          height: 7,
-        ),
-        const Text(
-          "Location",
-          style: TextStyle(
-              color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
-        ),
-        Container(
-          height: size.height * 0.15,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black12,
-                spreadRadius: 2,
-                blurRadius: 2,
-                offset: Offset(
-                  2,
-                  2,
-                ),
-              )
-            ],
+            ]),
           ),
-          child: Map(
-            lat: widget.model!.data[index1].events.lat.toString(),
-            long: widget.model!.data[index1].events.lng.toString(),
-          ),
-        ),
+        )),
         const SizedBox(
-          height: 10,
-        ),
-        Text(
-          widget.model!.data[index1].events.location.toString(),
-          style: const TextStyle(color: Colors.black54, fontSize: 16),
-        ),
-        const SizedBox(
-          height: 20,
+          height: 30,
         ),
         _isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)))
             : widget.model!.data[index1].events.userId == widget.id
                 ? Elevatedbutton(
                     primary: Colors.redAccent,
@@ -579,6 +620,9 @@ share(String ff){
                     },
                   )
                 : const SizedBox(),
+        const SizedBox(
+          height: 20,
+        ),
       ],
     );
   }
@@ -609,27 +653,36 @@ share(String ff){
 
   Widget livesnaps(Size size) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
+      padding: const EdgeInsets.only(
+        bottom: 20.0,
+        left: 2,
+        right: 2,
+      ),
       child: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              spreadRadius: 3,
-              blurRadius: 3,
-              offset: Offset(0, 0),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(color: const Color(0xffE5E7EB), width: 2)
+            // boxShadow: [
+            //   BoxShadow(
+            //     color: Colors.black12,
+            //     spreadRadius: 3,
+            //     blurRadius: 3,
+            //     offset: Offset(0, 0),
+            //   ),
+            // ],
             ),
-          ],
-        ),
         child: Padding(
-          padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
+          padding: const EdgeInsets.all(15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
                 "Livefeed",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                style: TextStyle(
+                    color: Color(0xFF333333),
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600),
               ),
               const SizedBox(
                 height: 20,
@@ -726,7 +779,10 @@ share(String ff){
               ),
               const Text(
                 "Snaps",
-                style: TextStyle(color: Colors.black, fontSize: 19),
+                style: TextStyle(
+                    color: Color(0xFF333333),
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600),
               ),
               const SizedBox(
                 height: 10,
@@ -829,8 +885,7 @@ share(String ff){
                 height: 15,
               ),
               Padding(
-                padding:
-                    const EdgeInsets.only(bottom: 10.0, right: 30, left: 30),
+                padding: const EdgeInsets.only(bottom: 10.0, right: 0, left: 0),
                 child: Elevatedbutton(
                     primary: const Color(0xFF304747),
                     text: "Upload Picture/Video",
@@ -842,7 +897,47 @@ share(String ff){
                                 eventId: widget.model!.data[index1].events.id,
                               )));
                     }),
-              )
+              ),
+              SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.06,
+                  width: MediaQuery.of(context).size.width,
+                  child: ElevatedButton(
+                    child: const Text(
+                      "Cancel",
+                      style: TextStyle(
+                          color: Color(0xFF101010),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600),
+                      textAlign: TextAlign.center,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      shadowColor: Colors.transparent,
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      primary: const Color(0xFFC8FBFF),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        swapping = livefeed.details;
+                      });
+                    },
+                  )),
+              // Padding(
+              //   padding: const EdgeInsets.only(bottom: 10.0, right: 0, left: 0),
+              //   child: Elevatedbutton(
+              //       primary: const Color(0xFFC8FBFF),
+              //       text: "Cancel",
+              //       width: double.infinity,
+              //       shadowColor: Colors.transparent,
+              //       coloring: const Color(0xFFC8FBFF),
+              //       textColor: const Color(0XFF101010),
+
+              //       onpressed: () {
+              //         setState(() {
+              //           swapping = livefeed.details;
+              //         });
+              //       }),
+              // )
             ],
           ),
         ),
@@ -937,7 +1032,7 @@ share(String ff){
       fit: BoxFit.cover,
       placeholder: (context, url) {
         return const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
         );
       },
     );
@@ -1119,7 +1214,7 @@ class _SnapsvideoplayerState extends State<Snapsvideoplayer> {
               // If the VideoPlayerController is still initializing, show a
               // loading spinner.
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Color(0xFF3BADB7)),
               );
             }
           },
